@@ -1,0 +1,45 @@
+query GetHomePageData {
+    homepage {
+        lastAddedGames {
+            ...baseGameData
+        }
+        mostPopularGames {
+            ...baseGameData
+        }
+        nextEvents {
+            id
+            name
+            from
+            to
+            loc
+        }
+        lastComments {
+            id
+            comment
+            added
+            game {
+                ...baseGameData
+            }
+            user {
+                id
+                person {
+                    name
+                    nickname
+                }
+                image {
+                    id
+                    path
+                }
+            }
+        }
+    }
+}
+
+fragment baseGameData on Game {
+    id
+    name
+    players
+    averageRating
+    amountOfComments
+    amountOfRatings
+}

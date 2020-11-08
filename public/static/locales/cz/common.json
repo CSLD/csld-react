@@ -1,0 +1,23 @@
+{
+  "PageHeader": {
+    "csld": "Larpová databáze",
+    "games": "Hry",
+    "events": "Kalendář akcí",
+    "blog": "Články",
+    "addEvent": "+ Přidat událost do kalendáře",
+    "addGame": "+ Přidat hru",
+    "search": {
+      "placeholder": "Hledaný výraz"
+    },
+    "signIn": "Přihlášení",
+    "signUp": "Registrace"
+  },
+
+  "HomePage": {
+    "lastAddedGames": "Naposledy přidáno",
+    "bestGames": "Nejoblíbenější",
+    "recent": "Nedávné",
+    "recentComments": "Poslední komentáře",
+    "nextEvents": "Kalendář akcí"
+  }
+}

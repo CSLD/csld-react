@@ -1,0 +1,16 @@
+export const darkTheme = {
+    background: '#272727',
+    backgroundLight: '#2F2F2F',
+    backgroundHover: '#383838',
+    backgroundControl: '#3F3F3F',
+    text: '#C0C0C0',
+    textLight: '#F0F0F0',
+    textDark: '#999',
+    textGreen: '#6dc8b7',
+    red: '#BD2430',
+    redLight: '#CC333F',
+    ratingMediocre: '#757575',
+    ratingGreat: '#BD2430',
+    ratingAverage: '#00A0B0',
+    ratingNotRated: '#CCC',
+}

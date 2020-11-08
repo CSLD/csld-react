@@ -1,0 +1,72 @@
+import React from 'react'
+import { createUseStyles } from 'react-jss'
+import { Game } from 'src/graphql/__generated__/typescript-operations'
+import { darkTheme } from '../../../theme/darkTheme'
+import { GameBaseDataPanel } from './GameBaseDataPanel'
+
+export default { title: 'GameBaseDataPanel' }
+
+const useStyles = createUseStyles({
+    wrapper: {
+        width: 275,
+        padding: 20,
+        backgroundColor: darkTheme.background,
+    },
+})
+
+const mockGreatGame = {
+    id: '123',
+    name: 'Bitva o Fort',
+    averageRating: 95,
+    players: 150,
+    amountOfComments: 12,
+    amountOfRatings: 23,
+} as Game
+
+const mockAverageGame = {
+    id: '123',
+    name: 'De Profundis: Ticho před bouří',
+    averageRating: 65,
+    players: 4,
+    amountOfComments: 0,
+    amountOfRatings: 1,
+} as Game
+
+const mockNotRatedGame = {
+    id: '123',
+    name: 'Křížová výprava chudiny 1096 premium',
+    averageRating: 0,
+    players: 38,
+    amountOfComments: 0,
+    amountOfRatings: 0,
+} as Game
+
+export const GreatGame = () => {
+    const classes = useStyles()
+
+    return (
+        <div className={classes.wrapper}>
+            <GameBaseDataPanel game={mockGreatGame} />
+        </div>
+    )
+}
+
+export const NotRatedGame = () => {
+    const classes = useStyles()
+
+    return (
+        <div className={classes.wrapper}>
+            <GameBaseDataPanel game={mockNotRatedGame} />
+        </div>
+    )
+}
+
+export const AverageGame = () => {
+    const classes = useStyles()
+
+    return (
+        <div className={classes.wrapper}>
+            <GameBaseDataPanel game={mockAverageGame} />
+        </div>
+    )
+}
