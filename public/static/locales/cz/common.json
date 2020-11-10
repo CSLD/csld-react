@@ -13,11 +13,20 @@
     "signUp": "Registrace"
   },
 
+  "PageFooter": {
+    "copyright": "© 2013–2021 Larpová databáze",
+    "team": "Tým LD: Jakub Balhar • Michal Havelka • Petr Kuběnský • Filip Appl • Tomáš Felcman • Michal Kára"
+  },
+
   "HomePage": {
     "lastAddedGames": "Naposledy přidáno",
     "bestGames": "Nejoblíbenější",
     "recent": "Nedávné",
     "recentComments": "Poslední komentáře",
-    "nextEvents": "Kalendář akcí"
+    "nextEvents": "Kalendář akcí",
+    "commentMore": "více",
+    "commentAbout": "o larpu",
+    "commentsExpand": "+ Více...",
+    "commentsShrink": "+ Méně..."
   }
 }

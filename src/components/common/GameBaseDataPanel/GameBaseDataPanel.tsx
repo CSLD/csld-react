@@ -64,7 +64,7 @@ export const GameBaseDataPanel = ({
     const classes = useStyles()
     return (
         <a className={classnames(classes.wrapper, className)} href="/">
-            <GameRatingBox rating={averageRating} className={classes.rating} />
+            <GameRatingBox amountOfRatings={amountOfRatings} rating={averageRating} className={classes.rating} />
             <div className={classes.rightWrapper}>
                 <div className={classes.name}>{name}</div>
                 <div className={classes.icons}>

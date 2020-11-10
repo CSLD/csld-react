@@ -49,3 +49,23 @@ export const Event2 = () => {
         </div>
     )
 }
+
+export const SameDate = () => {
+    const classes = useStyles()
+
+    return (
+        <div className={classes.wrapper}>
+            <EventBaseDataPanel event={{ ...mockBaseEvent2, to: mockBaseEvent2.from }} />
+        </div>
+    )
+}
+
+export const Loading = () => {
+    const classes = useStyles()
+
+    return (
+        <div className={classes.wrapper}>
+            <EventBaseDataPanel />
+        </div>
+    )
+}

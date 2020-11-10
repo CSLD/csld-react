@@ -1,0 +1,162 @@
+import React, { useMemo, useState } from 'react'
+import { createUseStyles } from 'react-jss'
+import { useTranslation } from 'react-i18next'
+import { useQuery } from '@apollo/client'
+import { darkTheme } from '../../theme/darkTheme'
+import { WidthFixer } from '../common/WidthFixer/WidthFixer'
+import { HomePageGamesPanel } from './HomePageGamesPanel'
+import { HomePageEventsPanel } from './HomePageEventsPanel'
+import { HomePageCommentsPanel, HPC_COLUMNS, HPC_ROWS_EXPANDED, HPC_ROWS_NORMAL } from './HomePageCommentsPanel'
+import { IconCaretUp } from '../common/Icons/Icons'
+import {
+    GetHomePageDataQuery,
+    GetHomePageDataQueryVariables,
+    GetMoreLastCommentsQuery,
+    GetMoreLastCommentsQueryVariables,
+} from '../../graphql/__generated__/typescript-operations'
+import { BaseCommentData } from './BaseCommentPanel'
+
+const getHomePageDataQuery = require('./graphql/getHomePageData.graphql')
+const getMoreLastCommentsQuery = require('./graphql/getMoreLastComments.graphql')
+
+const useStyles = createUseStyles({
+    gamesAndEvents: {
+        backgroundColor: darkTheme.background,
+    },
+    gamesAndEventsInner: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        padding: '8px 0 35px',
+    },
+    switcher: {
+        backgroundColor: darkTheme.backgroundControl,
+        // boxShadow: '0px 0px 1px 2px #CFCFCF',
+    },
+    switcherWidthFixer: {
+        display: 'flex',
+    },
+    switcherInner: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        color: darkTheme.textDark,
+    },
+    switchText: {
+        fontSize: '0.9rem',
+        fontWeight: 700,
+        padding: '14px 10px 7px',
+    },
+    switcherIcon: {
+        fontSize: '1.8rem',
+        color: darkTheme.backgroundWhite,
+        margin: '-12px 0 -13px',
+    },
+    comments: {
+        backgroundColor: darkTheme.backgroundNearWhite,
+        padding: '15px 0 35px',
+    },
+    pictures: {
+        backgroundColor: darkTheme.background,
+    },
+    picturesInner: {
+        padding: '30px 0',
+    },
+})
+
+const mockComments = [
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+]
+
+const commentsNormal = HPC_COLUMNS * HPC_ROWS_NORMAL
+const commentsExpanded = HPC_COLUMNS * HPC_ROWS_EXPANDED
+
+const getSlicedComments = (
+    lastComments: BaseCommentData[] = [],
+    moreComments: BaseCommentData[] = [],
+    expanded: boolean,
+) => {
+    const needComments = expanded ? commentsExpanded : commentsNormal
+
+    return [...lastComments, ...moreComments, ...mockComments].slice(0, needComments)
+}
+
+export const HomePagePanel = () => {
+    const classes = useStyles()
+    const { t } = useTranslation('common')
+    const [expanded, setExpanded] = useState(false)
+    const handleToggleExpanded = () => setExpanded(old => !old)
+    const homePageQuery = useQuery<GetHomePageDataQuery, GetHomePageDataQueryVariables>(getHomePageDataQuery, {
+        fetchPolicy: 'cache-first',
+    })
+    const moreCommentsQuery = useQuery<GetMoreLastCommentsQuery, GetMoreLastCommentsQueryVariables>(
+        getMoreLastCommentsQuery,
+        {
+            fetchPolicy: 'cache-first',
+            skip: !expanded,
+            variables: {
+                offset: commentsNormal,
+                limit: commentsExpanded - commentsNormal,
+            },
+        },
+    )
+
+    const lastAddedGames = homePageQuery.data?.homepage?.lastAddedGames
+    const topGames = homePageQuery.data?.homepage?.mostPopularGames
+    const nextEvents = homePageQuery.data?.homepage?.nextEvents
+    const lastComments = homePageQuery.data?.homepage?.lastComments
+    const moreComments = moreCommentsQuery.data?.homepage?.lastComments
+
+    const slicedComments = useMemo(() => getSlicedComments(lastComments, moreComments, expanded), [
+        getSlicedComments,
+        lastComments,
+        moreComments,
+        expanded,
+    ])
+
+    return (
+        <>
+            <div className={classes.gamesAndEvents}>
+                <WidthFixer>
+                    <div className={classes.gamesAndEventsInner}>
+                        <HomePageGamesPanel lastGames={lastAddedGames} topGames={topGames} />
+                        <HomePageEventsPanel nextEvents={nextEvents} />
+                    </div>
+                </WidthFixer>
+            </div>
+            <div className={classes.switcher}>
+                <WidthFixer className={classes.switcherWidthFixer}>
+                    <div className={classes.switcherInner}>
+                        <span className={classes.switchText}>{t('HomePage.recent')}</span>
+                        <div className={classes.switcherIcon}>
+                            <IconCaretUp />
+                        </div>
+                    </div>
+                </WidthFixer>
+            </div>
+            <div className={classes.comments}>
+                <HomePageCommentsPanel
+                    comments={slicedComments}
+                    expanded={expanded}
+                    onToggleExpanded={handleToggleExpanded}
+                />
+            </div>
+            <div className={classes.pictures}>
+                <WidthFixer className={classes.picturesInner} />
+            </div>
+        </>
+    )
+}

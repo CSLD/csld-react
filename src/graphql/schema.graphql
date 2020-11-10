@@ -112,6 +112,7 @@ type User {
 type Comment {
     id: ID!
     comment: String
+    commentAsText: String
     added: String
     isHidden: Boolean
     amountOfUpvotes: Int!

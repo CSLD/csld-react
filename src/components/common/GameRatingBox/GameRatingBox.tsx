@@ -2,12 +2,28 @@ import React from 'react'
 import { createUseStyles } from 'react-jss'
 import classnames from 'classnames'
 import { darkTheme } from 'src/theme/darkTheme'
-import { getRatingGrade } from 'src/utils/ratingUtils'
+import { getRatingForGame, MIN_NUM_RATINGS } from 'src/utils/ratingUtils'
 import { componentTestIds } from '../../componentTestIds'
 
 interface Props {
     readonly rating?: number
+    readonly amountOfRatings: number
     readonly className?: string
+}
+
+export const ratingStyles = {
+    ratingNotRated: {
+        backgroundColor: darkTheme.ratingNotRated,
+    },
+    ratingMediocre: {
+        backgroundColor: darkTheme.ratingMediocre,
+    },
+    ratingAverage: {
+        backgroundColor: darkTheme.ratingAverage,
+    },
+    ratingGreat: {
+        backgroundColor: darkTheme.ratingGreat,
+    },
 }
 
 const useStyles = createUseStyles({
@@ -20,36 +36,26 @@ const useStyles = createUseStyles({
         fontWeight: 'bold',
         color: darkTheme.textLight,
     },
-    notRated: {
-        backgroundColor: darkTheme.ratingNotRated,
-    },
-    mediocre: {
-        backgroundColor: darkTheme.ratingMediocre,
-    },
-    average: {
-        backgroundColor: darkTheme.ratingAverage,
-    },
-    great: {
-        backgroundColor: darkTheme.ratingGreat,
-    },
+    ...ratingStyles,
 })
 
-export const GameRatingBox = ({ rating, className }: Props) => {
+export const GameRatingBox = ({ rating, amountOfRatings, className }: Props) => {
     const classes = useStyles()
 
-    const ratingGrade = getRatingGrade(rating)
+    const ratingGrade = getRatingForGame(amountOfRatings, rating)
     const classNames = {
         [classes.rating]: true,
         [className || '_']: !!className,
-        [classes.notRated]: ratingGrade === 'notrated',
-        [classes.mediocre]: ratingGrade === 'mediocre',
-        [classes.average]: ratingGrade === 'average',
-        [classes.great]: ratingGrade === 'great',
+        [classes.ratingNotRated]: ratingGrade === 'notrated',
+        [classes.ratingMediocre]: ratingGrade === 'mediocre',
+        [classes.ratingAverage]: ratingGrade === 'average',
+        [classes.ratingGreat]: ratingGrade === 'great',
     }
+    const clippedRating = amountOfRatings < MIN_NUM_RATINGS ? 0 : rating
 
     return (
         <div className={classnames(classNames)} data-testid={componentTestIds.gameRatingBox.wrapper}>
-            <span>{rating ? (rating / 10).toFixed(1) : '-'}</span>
+            <span>{clippedRating ? (clippedRating / 10).toFixed(1) : '-'}</span>
         </div>
     )
 }

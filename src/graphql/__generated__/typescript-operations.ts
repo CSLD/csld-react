@@ -1,28 +1,41 @@
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
+export type BaseGameDataFragment = { __typename?: 'Game' } & Pick<
+    Game,
+    'id' | 'name' | 'players' | 'averageRating' | 'amountOfComments' | 'amountOfRatings'
+>
+
+export type BaseCommentDataFragment = { __typename?: 'Comment' } & Pick<Comment, 'id' | 'commentAsText' | 'added'> & {
+        game: { __typename?: 'Game' } & BaseGameDataFragment
+        user: { __typename?: 'User' } & Pick<User, 'id'> & {
+                person: { __typename?: 'Person' } & Pick<Person, 'name' | 'nickname'>
+                image?: Maybe<{ __typename?: 'Image' } & Pick<Image, 'id' | 'path'>>
+            }
+    }
+
 export type GetHomePageDataQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetHomePageDataQuery = { __typename?: 'Query' } & {
     homepage: { __typename?: 'Homepage' } & {
         lastAddedGames: Array<{ __typename?: 'Game' } & BaseGameDataFragment>
         mostPopularGames: Array<{ __typename?: 'Game' } & BaseGameDataFragment>
-        nextEvents: Array<{ __typename?: 'Event' } & Pick<Event, 'id' | 'name' | 'from' | 'to' | 'loc'>>
-        lastComments: Array<
-            { __typename?: 'Comment' } & Pick<Comment, 'id' | 'comment' | 'added'> & {
-                    game: { __typename?: 'Game' } & BaseGameDataFragment
-                    user: { __typename?: 'User' } & Pick<User, 'id'> & {
-                            person: { __typename?: 'Person' } & Pick<Person, 'name' | 'nickname'>
-                            image?: Maybe<{ __typename?: 'Image' } & Pick<Image, 'id' | 'path'>>
-                        }
-                }
+        nextEvents: Array<
+            { __typename?: 'Event' } & Pick<Event, 'id' | 'name' | 'from' | 'to' | 'loc' | 'amountOfPlayers'>
         >
+        lastComments: Array<{ __typename?: 'Comment' } & BaseCommentDataFragment>
     }
 }
 
-export type BaseGameDataFragment = { __typename?: 'Game' } & Pick<
-    Game,
-    'id' | 'name' | 'players' | 'averageRating' | 'amountOfComments' | 'amountOfRatings'
->
+export type GetMoreLastCommentsQueryVariables = Exact<{
+    offset?: Maybe<Scalars['Int']>
+    limit?: Maybe<Scalars['Int']>
+}>
+
+export type GetMoreLastCommentsQuery = { __typename?: 'Query' } & {
+    homepage: { __typename?: 'Homepage' } & {
+        lastComments: Array<{ __typename?: 'Comment' } & BaseCommentDataFragment>
+    }
+}
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -177,6 +190,7 @@ export type Comment = {
     __typename?: 'Comment'
     id: Scalars['ID']
     comment?: Maybe<Scalars['String']>
+    commentAsText?: Maybe<Scalars['String']>
     added?: Maybe<Scalars['String']>
     isHidden?: Maybe<Scalars['Boolean']>
     amountOfUpvotes: Scalars['Int']

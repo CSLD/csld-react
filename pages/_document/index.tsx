@@ -14,6 +14,10 @@ const style =
     '\n' +
     'a {\n' +
     '  text-decoration: none;\n' +
+    '  color: unset;\n' +
+    '  :hover {\n' +
+    '   color: unset;\n' +
+    '  }\n' +
     '}\n'
 
 class WebAppDocument extends Document {

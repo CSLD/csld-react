@@ -8,8 +8,8 @@ import { GameEventGrid } from './GameEventGrid'
 import { darkTheme } from '../../theme/darkTheme'
 
 interface Props {
-    readonly lastGames: GameBaseData[]
-    readonly topGames: GameBaseData[]
+    readonly lastGames?: (GameBaseData | undefined)[]
+    readonly topGames?: (GameBaseData | undefined)[]
 }
 
 const useStyles = createUseStyles({
@@ -41,7 +41,9 @@ const useStyles = createUseStyles({
     },
 })
 
-export const HomePageGamesPanel = ({ lastGames, topGames }: Props) => {
+const gamesLoading = [undefined, undefined, undefined, undefined, undefined, undefined]
+
+export const HomePageGamesPanel = ({ lastGames = gamesLoading, topGames = gamesLoading }: Props) => {
     const classes = useStyles()
     const { t } = useTranslation('common')
     const [carouselPage, setCarouselPage] = useState(0)

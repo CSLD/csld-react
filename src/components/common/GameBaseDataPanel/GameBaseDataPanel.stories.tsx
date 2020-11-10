@@ -41,6 +41,15 @@ const mockNotRatedGame = {
     amountOfRatings: 0,
 } as Game
 
+const tooFewRatingsGame = {
+    id: '123',
+    name: 'Křížová výprava chudiny 1096 premium',
+    averageRating: 80,
+    players: 38,
+    amountOfComments: 0,
+    amountOfRatings: 3,
+} as Game
+
 export const GreatGame = () => {
     const classes = useStyles()
 
@@ -57,6 +66,16 @@ export const NotRatedGame = () => {
     return (
         <div className={classes.wrapper}>
             <GameBaseDataPanel game={mockNotRatedGame} />
+        </div>
+    )
+}
+
+export const TooFewRatingsGame = () => {
+    const classes = useStyles()
+
+    return (
+        <div className={classes.wrapper}>
+            <GameBaseDataPanel game={tooFewRatingsGame} />
         </div>
     )
 }

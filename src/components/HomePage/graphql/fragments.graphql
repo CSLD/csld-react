@@ -1,0 +1,28 @@
+fragment baseGameData on Game {
+    id
+    name
+    players
+    averageRating
+    amountOfComments
+    amountOfRatings
+}
+
+fragment baseCommentData on Comment {
+    id
+    commentAsText
+    added
+    game {
+        ...baseGameData
+    }
+    user {
+        id
+        person {
+            name
+            nickname
+        }
+        image {
+            id
+            path
+        }
+    }
+}

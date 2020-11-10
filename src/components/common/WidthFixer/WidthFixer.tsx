@@ -11,6 +11,8 @@ const useStyles = createUseStyles({
     widthFixer: {
         width: 1200,
         margin: '0 auto',
+        padding: '0 15px',
+        boxSizing: 'border-box',
     },
 })
 

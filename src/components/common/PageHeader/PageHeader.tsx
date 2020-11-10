@@ -12,12 +12,12 @@ const useStyles = createUseStyles({
     container: {
         backgroundColor: darkTheme.backgroundLight,
         borderBottom: '1px solid black',
-        marginBottom: 20,
     },
     innerContainer: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
+        height: 55,
     },
     rightSpacer: {
         marginRight: 15,

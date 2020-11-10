@@ -3,6 +3,8 @@ import App, { AppInitialProps, AppContext } from 'next/app'
 
 import { appWithTranslation } from 'server/i18n'
 import { ErrorBoundary } from 'src/components/common/ErrorBoundary/ErrorBoundary'
+import { ApolloProvider } from '@apollo/react-hooks'
+import { createApolloClient } from '../../src/with/withApolloProvider'
 
 class WebApp extends App<AppInitialProps> {
     static async getInitialProps({ Component, ctx }: AppContext): Promise<AppInitialProps> {
@@ -16,8 +18,10 @@ class WebApp extends App<AppInitialProps> {
 
         return (
             <ErrorBoundary>
-                {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-                <Component {...pageProps} />
+                <ApolloProvider client={createApolloClient()}>
+                    {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+                    <Component {...pageProps} />
+                </ApolloProvider>
             </ErrorBoundary>
         )
     }

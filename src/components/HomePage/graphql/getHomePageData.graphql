@@ -1,3 +1,5 @@
+#import "./fragments.graphql"
+
 query GetHomePageData {
     homepage {
         lastAddedGames {
@@ -12,34 +14,10 @@ query GetHomePageData {
             from
             to
             loc
+            amountOfPlayers
         }
         lastComments {
-            id
-            comment
-            added
-            game {
-                ...baseGameData
-            }
-            user {
-                id
-                person {
-                    name
-                    nickname
-                }
-                image {
-                    id
-                    path
-                }
-            }
+            ...baseCommentData
         }
     }
-}
-
-fragment baseGameData on Game {
-    id
-    name
-    players
-    averageRating
-    amountOfComments
-    amountOfRatings
 }

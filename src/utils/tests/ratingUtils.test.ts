@@ -1,4 +1,4 @@
-import { getRatingGrade } from '../ratingUtils'
+import { getRatingForGame, getRatingGrade } from '../ratingUtils'
 
 describe('getRatingGrade', () => {
     it('should return notrated for null', () => {
@@ -31,5 +31,15 @@ describe('getRatingGrade', () => {
 
     it('should return great for 100', () => {
         expect(getRatingGrade(100)).toBe('great')
+    })
+})
+
+describe('getRatingForGame', () => {
+    it('should not return rating for less that 5 ratings', () => {
+        expect(getRatingForGame(4, 90)).toBe('notrated')
+    })
+
+    it('should not return rating for 5 and more ratings', () => {
+        expect(getRatingForGame(5, 90)).toBe('great')
     })
 })

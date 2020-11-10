@@ -1,9 +1,9 @@
 import React from 'react'
 import { createUseStyles } from 'react-jss'
+import classNames from 'classnames'
 import { GameBaseData, GameBaseDataPanel } from '../common/GameBaseDataPanel/GameBaseDataPanel'
 import { darkTheme } from '../../theme/darkTheme'
 import { EventBaseData, EventBaseDataPanel } from './EventBaseDataPanel'
-import classNames from 'classnames'
 
 const useStyles = createUseStyles({
     grid: {
@@ -20,14 +20,14 @@ const useStyles = createUseStyles({
 })
 
 interface Props {
-    readonly elements: (GameBaseData | EventBaseData)[]
+    readonly elements: (GameBaseData | EventBaseData | undefined)[]
     readonly className?: string
 }
 
 const isGame = (element: GameBaseData | EventBaseData): element is GameBaseData =>
     (element as any).players !== undefined
 
-const isEvent = (element: GameBaseData | EventBaseData): element is GameBaseData =>
+const isEvent = (element: GameBaseData | EventBaseData): element is EventBaseData =>
     (element as any).amountOfPlayers !== undefined
 
 /**
@@ -39,11 +39,11 @@ export const GameEventGrid = ({ elements, className }: Props) => {
     return (
         <div className={classNames(classes.grid, className)}>
             {elements.map(element => {
+                if (element === undefined || isEvent(element)) {
+                    return <EventBaseDataPanel event={element} className={classes.element} />
+                }
                 if (isGame(element)) {
                     return <GameBaseDataPanel game={element} className={classes.element} />
-                }
-                if (isEvent(element)) {
-                    return <EventBaseDataPanel event={element} className={classes.element} />
                 }
                 return ''
             })}

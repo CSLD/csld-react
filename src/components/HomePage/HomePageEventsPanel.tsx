@@ -1,13 +1,13 @@
 import React from 'react'
-import { EventBaseData } from './EventBaseDataPanel'
 import { createUseStyles } from 'react-jss'
+import { useTranslation } from 'react-i18next'
+import { EventBaseData } from './EventBaseDataPanel'
 import { darkTheme } from '../../theme/darkTheme'
 import { GameEventGrid } from './GameEventGrid'
-import { useTranslation } from 'react-i18next'
 import { GridHeader } from './GridHeader'
 
 interface Props {
-    readonly nextEvents: EventBaseData[]
+    readonly nextEvents?: (EventBaseData | undefined)[]
 }
 
 const useStyles = createUseStyles({
@@ -19,7 +19,9 @@ const useStyles = createUseStyles({
     },
 })
 
-export const HomePageEventsPanel = ({ nextEvents }: Props) => {
+const loadingEvents = [undefined, undefined, undefined, undefined, undefined, undefined]
+
+export const HomePageEventsPanel = ({ nextEvents = loadingEvents }: Props) => {
     const classes = useStyles()
     const { t } = useTranslation('common')
 
