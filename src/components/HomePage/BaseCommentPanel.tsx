@@ -5,13 +5,13 @@ import { useTranslation } from 'react-i18next'
 import classNames from 'classnames'
 import { format } from 'date-fns-tz'
 import { darkTheme } from '../../theme/darkTheme'
-import { ratingStyles } from '../common/GameRatingBox/GameRatingBox'
-import { getRatingForGame } from '../../utils/ratingUtils'
+import { GameRatingBox, ratingStyles } from '../common/GameRatingBox/GameRatingBox'
 
 import { parseDateTime } from '../../utils/dateUtils'
+import { ProfileImage } from '../common/ProfileImage/ProfileImage'
 
 export type BaseCommentData = Pick<Comment, 'id' | 'commentAsText' | 'added'> & {
-    readonly game: Pick<Game, 'id' | 'name' | 'averageRating' | 'amountOfRatings'>
+    readonly game: Pick<Game, 'id' | 'name' | 'totalRating' | 'amountOfRatings'>
     readonly user: Pick<User, 'id'> & {
         person: Pick<Person, 'name' | 'nickname'>
     }
@@ -67,15 +67,6 @@ const useStyles = createUseStyles({
         alignItems: 'center',
         marginTop: 8,
     },
-    profileImage: {
-        width: 50,
-        height: 50,
-        padding: 2,
-        margin: '0 15px',
-        border: `solid 1px ${darkTheme.text}`,
-        borderRadius: '50%',
-        boxSizing: 'border-box',
-    },
     link: {
         color: darkTheme.textGreen,
 
@@ -99,9 +90,6 @@ const useStyles = createUseStyles({
         flexShrink: 1,
     },
     rating: {
-        width: 13,
-        height: 11,
-        borderRadius: 2,
         margin: '0 5px',
     },
     ...ratingStyles,
@@ -111,14 +99,6 @@ export const BaseCommentPanel = ({ comment }: Props) => {
     const classes = useStyles()
     const { t } = useTranslation('common')
 
-    const ratingGrade = getRatingForGame(comment?.game?.amountOfRatings || 0, comment?.game?.averageRating)
-    const ratingClassNames = {
-        [classes.rating]: true,
-        [classes.ratingNotRated]: ratingGrade === 'notrated',
-        [classes.ratingMediocre]: ratingGrade === 'mediocre',
-        [classes.ratingAverage]: ratingGrade === 'average',
-        [classes.ratingGreat]: ratingGrade === 'great',
-    }
     const added = format(parseDateTime(comment?.added) || 0, 'dd.MM.yyyy')
 
     return (
@@ -134,7 +114,7 @@ export const BaseCommentPanel = ({ comment }: Props) => {
                 </div>
             </div>
             <div className={classes.row}>
-                <img src="/images/user-icon.png" className={classes.profileImage} alt="" />
+                <ProfileImage />
                 {comment && (
                     <div className={classes.textWrapper}>
                         <div className={classes.textRow}>
@@ -143,7 +123,11 @@ export const BaseCommentPanel = ({ comment }: Props) => {
                             </a>
                             &nbsp;
                             {t('HomePage.commentAbout')}
-                            <span className={classNames(ratingClassNames)} />
+                            <GameRatingBox
+                                amountOfRatings={comment?.game?.amountOfRatings || 0}
+                                rating={comment?.game?.totalRating}
+                                className={classes.rating}
+                            />
                             <a href="/" className={classNames(classes.gameName, classes.link)}>
                                 {comment.game.name}
                             </a>

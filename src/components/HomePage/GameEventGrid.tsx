@@ -38,12 +38,14 @@ export const GameEventGrid = ({ elements, className }: Props) => {
 
     return (
         <div className={classNames(classes.grid, className)}>
-            {elements.map(element => {
+            {elements.map((element, n) => {
                 if (element === undefined || isEvent(element)) {
-                    return <EventBaseDataPanel event={element} className={classes.element} />
+                    return (
+                        <EventBaseDataPanel event={element} className={classes.element} key={element?.id || `e_${n}`} />
+                    )
                 }
                 if (isGame(element)) {
-                    return <GameBaseDataPanel game={element} className={classes.element} />
+                    return <GameBaseDataPanel game={element} className={classes.element} key={element.id} />
                 }
                 return ''
             })}

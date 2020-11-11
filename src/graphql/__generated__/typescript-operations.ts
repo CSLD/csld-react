@@ -1,8 +1,64 @@
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
+export type GameDetailQueryVariables = Exact<{
+    id: Scalars['Int']
+}>
+
+export type GameDetailQuery = { __typename?: 'Query' } & {
+    gameById?: Maybe<
+        { __typename?: 'Game' } & Pick<
+            Game,
+            | 'id'
+            | 'name'
+            | 'players'
+            | 'menRole'
+            | 'womenRole'
+            | 'bothRole'
+            | 'hours'
+            | 'days'
+            | 'year'
+            | 'web'
+            | 'galleryURL'
+            | 'photoAuthor'
+            | 'description'
+            | 'totalRating'
+            | 'amountOfRatings'
+            | 'amountOfPlayed'
+        > & {
+                labels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name' | 'description'>>
+                ratingStats: Array<{ __typename?: 'RatingCount' } & Pick<RatingCount, 'count' | 'rating'>>
+                authors: Array<
+                    { __typename?: 'User' } & Pick<User, 'id'> & {
+                            person: { __typename?: 'Person' } & Pick<Person, 'name' | 'nickname'>
+                        }
+                >
+                groupAuthor: Array<{ __typename?: 'Group' } & Pick<Group, 'id' | 'name'>>
+                commentsPaged: { __typename?: 'CommentsPaged' } & Pick<CommentsPaged, 'totalAmount'> & {
+                        comments: Array<
+                            { __typename?: 'Comment' } & Pick<
+                                Comment,
+                                'id' | 'added' | 'amountOfUpvotes' | 'comment' | 'isHidden'
+                            > & {
+                                    user: { __typename?: 'User' } & Pick<User, 'id'> & {
+                                            person: { __typename?: 'Person' } & Pick<Person, 'name' | 'nickname'>
+                                        }
+                                }
+                        >
+                    }
+                similarGames: Array<
+                    { __typename?: 'Game' } & Pick<Game, 'id' | 'name' | 'totalRating' | 'amountOfRatings'>
+                >
+                gamesOfAuthors: Array<
+                    { __typename?: 'Game' } & Pick<Game, 'id' | 'name' | 'totalRating' | 'amountOfRatings'>
+                >
+                events: Array<{ __typename?: 'Event' } & Pick<Event, 'id' | 'name' | 'from' | 'to'>>
+            }
+    >
+}
+
 export type BaseGameDataFragment = { __typename?: 'Game' } & Pick<
     Game,
-    'id' | 'name' | 'players' | 'averageRating' | 'amountOfComments' | 'amountOfRatings'
+    'id' | 'name' | 'players' | 'totalRating' | 'amountOfComments' | 'amountOfRatings'
 >
 
 export type BaseCommentDataFragment = { __typename?: 'Comment' } & Pick<Comment, 'id' | 'commentAsText' | 'added'> & {
@@ -110,6 +166,7 @@ export type Game = {
     wantsToPlay: Array<User>
     similarGames: Array<Game>
     gamesOfAuthors: Array<Game>
+    events: Array<Event>
     /** Are these needed? */
     blueprintPath?: Maybe<Scalars['String']>
 }

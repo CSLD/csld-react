@@ -1,0 +1,75 @@
+query GameDetail($id: Int!) {
+    gameById(id: $id) {
+        id
+        name
+        players
+        menRole
+        womenRole
+        bothRole
+        hours
+        days
+        year
+        web
+        galleryURL
+        photoAuthor
+        description
+        totalRating
+        amountOfRatings
+        amountOfPlayed
+        labels {
+            id
+            name
+            description
+        }
+        ratingStats {
+            count
+            rating
+        }
+        authors {
+            id
+            person {
+                name
+                nickname
+            }
+        }
+        groupAuthor {
+            id
+            name
+        }
+        commentsPaged(offset: 0, limit: 10) {
+            totalAmount
+            comments {
+                id
+                added
+                amountOfUpvotes
+                comment
+                isHidden
+                user {
+                    id
+                    person {
+                        name
+                        nickname
+                    }
+                }
+            }
+        }
+        similarGames {
+            id
+            name
+            totalRating
+            amountOfRatings
+        }
+        gamesOfAuthors {
+            id
+            name
+            totalRating
+            amountOfRatings
+        }
+        events {
+            id
+            name
+            from
+            to
+        }
+    }
+}

@@ -2,7 +2,7 @@ fragment baseGameData on Game {
     id
     name
     players
-    averageRating
+    totalRating
     amountOfComments
     amountOfRatings
 }

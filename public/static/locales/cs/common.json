@@ -1,0 +1,65 @@
+{
+  "PageHeader": {
+    "csld": "Larpová databáze",
+    "games": "Hry",
+    "events": "Kalendář akcí",
+    "blog": "Články",
+    "addEvent": "+ Přidat událost do kalendáře",
+    "addGame": "+ Přidat hru",
+    "search": {
+      "placeholder": "Hledaný výraz"
+    },
+    "signIn": "Přihlášení",
+    "signUp": "Registrace"
+  },
+
+  "PageFooter": {
+    "copyright": "© 2013–2021 Larpová databáze",
+    "team": "Tým LD: Jakub Balhar • Michal Havelka • Petr Kuběnský • Filip Appl • Tomáš Felcman • Michal Kára"
+  },
+
+  "HomePage": {
+    "lastAddedGames": "Naposledy přidáno",
+    "bestGames": "Nejoblíbenější",
+    "recent": "Nedávné",
+    "recentComments": "Poslední komentáře",
+    "nextEvents": "Kalendář akcí",
+    "commentMore": "více",
+    "commentAbout": "o larpu",
+    "commentsExpand": "+ Více...",
+    "commentsShrink": "+ Méně..."
+  },
+
+  "Game": {
+    "players_0": "{{count}} hráč",
+    "players_1": "{{count}} hráči",
+    "players_2": "{{count}} hráčů",
+    "menRole_0": "{{count}} muž",
+    "menRole_1": "{{count}} muži",
+    "menRole_2": "{{count}} mužů",
+    "womenRole_0": "{{count}} žena",
+    "womenRole_1": "{{count}} ženy",
+    "womenRole_2": "{{count}} žen",
+    "bothRole_0": "{{count}} obojetný",
+    "bothRole_1": "{{count}} obojetní",
+    "bothRole_2": "{{count}} obojetných",
+    "hours_0": "{{count}} hodina",
+    "hours_1": "{{count}} hodiny",
+    "hours_2": "{{count}} hodin",
+    "days_0": "{{count}} den",
+    "days_1": "{{count}} dny",
+    "days_2": "{{count}} dní",
+    "year": "{{count}}",
+    "web": "Web:",
+    "gallery": "Galerie:",
+    "photoAuthor": "Autor fotografií:",
+    "authors": "Autoři:",
+    "groups": "Skupiny:"
+  },
+
+  "GameDetail": {
+    "logInToRate": "Pro hodnocení se musíte přihlásit.",
+    "totalPlayed": "{{amountOfPlayed}} celkem",
+    "similarGames": "Podobné larpy"
+  }
+}

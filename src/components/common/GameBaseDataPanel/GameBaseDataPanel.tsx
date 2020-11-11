@@ -8,7 +8,7 @@ import { IconRating, IconComment, IconUser } from '../Icons/Icons'
 
 export type GameBaseData = Pick<
     Game,
-    'id' | 'name' | 'players' | 'amountOfComments' | 'amountOfRatings' | 'averageRating'
+    'id' | 'name' | 'players' | 'amountOfComments' | 'amountOfRatings' | 'totalRating'
 >
 
 interface Props {
@@ -59,12 +59,12 @@ const useStyles = createUseStyles({
 
 export const GameBaseDataPanel = ({
     className,
-    game: { name, players, amountOfComments, amountOfRatings, averageRating },
+    game: { name, players, amountOfComments, amountOfRatings, totalRating },
 }: Props) => {
     const classes = useStyles()
     return (
         <a className={classnames(classes.wrapper, className)} href="/">
-            <GameRatingBox amountOfRatings={amountOfRatings} rating={averageRating} className={classes.rating} />
+            <GameRatingBox amountOfRatings={amountOfRatings} rating={totalRating} className={classes.rating} />
             <div className={classes.rightWrapper}>
                 <div className={classes.name}>{name}</div>
                 <div className={classes.icons}>

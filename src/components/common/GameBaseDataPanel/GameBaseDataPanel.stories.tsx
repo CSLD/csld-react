@@ -17,7 +17,7 @@ const useStyles = createUseStyles({
 const mockGreatGame = {
     id: '123',
     name: 'Bitva o Fort',
-    averageRating: 95,
+    totalRating: 95,
     players: 150,
     amountOfComments: 12,
     amountOfRatings: 23,
@@ -26,7 +26,7 @@ const mockGreatGame = {
 const mockAverageGame = {
     id: '123',
     name: 'De Profundis: Ticho před bouří',
-    averageRating: 65,
+    totalRating: 65,
     players: 4,
     amountOfComments: 0,
     amountOfRatings: 1,
@@ -35,7 +35,7 @@ const mockAverageGame = {
 const mockNotRatedGame = {
     id: '123',
     name: 'Křížová výprava chudiny 1096 premium',
-    averageRating: 0,
+    totalRating: 0,
     players: 38,
     amountOfComments: 0,
     amountOfRatings: 0,
@@ -44,7 +44,7 @@ const mockNotRatedGame = {
 const tooFewRatingsGame = {
     id: '123',
     name: 'Křížová výprava chudiny 1096 premium',
-    averageRating: 80,
+    totalRating: 80,
     players: 38,
     amountOfComments: 0,
     amountOfRatings: 3,

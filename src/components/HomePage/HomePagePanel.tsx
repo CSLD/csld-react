@@ -1,13 +1,11 @@
 import React, { useMemo, useState } from 'react'
 import { createUseStyles } from 'react-jss'
-import { useTranslation } from 'react-i18next'
 import { useQuery } from '@apollo/client'
 import { darkTheme } from '../../theme/darkTheme'
 import { WidthFixer } from '../common/WidthFixer/WidthFixer'
 import { HomePageGamesPanel } from './HomePageGamesPanel'
 import { HomePageEventsPanel } from './HomePageEventsPanel'
 import { HomePageCommentsPanel, HPC_COLUMNS, HPC_ROWS_EXPANDED, HPC_ROWS_NORMAL } from './HomePageCommentsPanel'
-import { IconCaretUp } from '../common/Icons/Icons'
 import {
     GetHomePageDataQuery,
     GetHomePageDataQueryVariables,
@@ -15,6 +13,7 @@ import {
     GetMoreLastCommentsQueryVariables,
 } from '../../graphql/__generated__/typescript-operations'
 import { BaseCommentData } from './BaseCommentPanel'
+import { TabDefinition, Tabs } from '../common/Tabs/Tabs'
 
 const getHomePageDataQuery = require('./graphql/getHomePageData.graphql')
 const getMoreLastCommentsQuery = require('./graphql/getMoreLastComments.graphql')
@@ -27,29 +26,6 @@ const useStyles = createUseStyles({
         display: 'flex',
         justifyContent: 'space-between',
         padding: '8px 0 35px',
-    },
-    switcher: {
-        backgroundColor: darkTheme.backgroundControl,
-        // boxShadow: '0px 0px 1px 2px #CFCFCF',
-    },
-    switcherWidthFixer: {
-        display: 'flex',
-    },
-    switcherInner: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        color: darkTheme.textDark,
-    },
-    switchText: {
-        fontSize: '0.9rem',
-        fontWeight: 700,
-        padding: '14px 10px 7px',
-    },
-    switcherIcon: {
-        fontSize: '1.8rem',
-        color: darkTheme.backgroundWhite,
-        margin: '-12px 0 -13px',
     },
     comments: {
         backgroundColor: darkTheme.backgroundNearWhite,
@@ -94,9 +70,17 @@ const getSlicedComments = (
     return [...lastComments, ...moreComments, ...mockComments].slice(0, needComments)
 }
 
+const tabs: Array<TabDefinition<'recent'>> = [
+    {
+        key: 'recent',
+        title: {
+            key: 'HomePage.recent',
+        },
+    },
+]
+
 export const HomePagePanel = () => {
     const classes = useStyles()
-    const { t } = useTranslation('common')
     const [expanded, setExpanded] = useState(false)
     const handleToggleExpanded = () => setExpanded(old => !old)
     const homePageQuery = useQuery<GetHomePageDataQuery, GetHomePageDataQueryVariables>(getHomePageDataQuery, {
@@ -121,7 +105,6 @@ export const HomePagePanel = () => {
     const moreComments = moreCommentsQuery.data?.homepage?.lastComments
 
     const slicedComments = useMemo(() => getSlicedComments(lastComments, moreComments, expanded), [
-        getSlicedComments,
         lastComments,
         moreComments,
         expanded,
@@ -137,16 +120,7 @@ export const HomePagePanel = () => {
                     </div>
                 </WidthFixer>
             </div>
-            <div className={classes.switcher}>
-                <WidthFixer className={classes.switcherWidthFixer}>
-                    <div className={classes.switcherInner}>
-                        <span className={classes.switchText}>{t('HomePage.recent')}</span>
-                        <div className={classes.switcherIcon}>
-                            <IconCaretUp />
-                        </div>
-                    </div>
-                </WidthFixer>
-            </div>
+            <Tabs tabs={tabs} selectedTab="recent" />
             <div className={classes.comments}>
                 <HomePageCommentsPanel
                     comments={slicedComments}

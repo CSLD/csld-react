@@ -5,4 +5,4 @@
 /**
  * String or key be translated
  */
-type StringOrTranslatable = string | { key: string; ns?: string }
+type StringOrTranslatable = string | { key: string }

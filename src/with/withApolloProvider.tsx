@@ -16,7 +16,7 @@ export const createApolloClient = () => {
     if (!apolloClient) {
         apolloClient = new ApolloClient({
             link: createHttpLink({
-                uri: 'http://localhost:8081/CSLD_war/CSLD/graphql',
+                uri: 'http://localhost:3000/graphql',
                 credentials: 'same-origin',
             }),
             cache: new InMemoryCache(),
