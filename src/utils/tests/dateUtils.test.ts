@@ -1,4 +1,4 @@
-import { hasTimePart, parseDateTime } from '../dateUtils'
+import { formatTimeRange, hasTimePart, parseDateTime } from '../dateUtils'
 
 describe('parseDateTime', () => {
     test('parse undefined', () => {
@@ -37,5 +37,45 @@ describe('hasTimePart', () => {
 
     it('should return true for date at midnight', () => {
         expect(hasTimePart(parseDateTime('2020-12-13 00:00:00'))).toBeFalsy()
+    })
+})
+
+describe('formatTimeRange', () => {
+    test('empty input', () => {
+        expect(formatTimeRange()).toEqual({
+            justOneDate: true,
+        })
+    })
+
+    test('same day', () => {
+        expect(formatTimeRange('2020-08-13', '2020-08-13')).toEqual({
+            justOneDate: true,
+            fromFormatted: '13.8.2020',
+            toFormatted: '13.8.2020',
+        })
+    })
+
+    test('date range', () => {
+        expect(formatTimeRange('2020-08-13', '2020-08-15')).toEqual({
+            justOneDate: false,
+            fromFormatted: '13.8.2020',
+            toFormatted: '15.8.2020',
+        })
+    })
+
+    test('both times', () => {
+        expect(formatTimeRange('2020-08-13 08:00:00', '2020-08-13 15:00:00')).toEqual({
+            justOneDate: false,
+            fromFormatted: '13.8.2020 08:00',
+            toFormatted: '13.8.2020 15:00',
+        })
+    })
+
+    test('on date has time', () => {
+        expect(formatTimeRange('2020-08-13', '2020-08-13 15:00:00')).toEqual({
+            justOneDate: false,
+            fromFormatted: '13.8.2020 00:00',
+            toFormatted: '13.8.2020 15:00',
+        })
     })
 })

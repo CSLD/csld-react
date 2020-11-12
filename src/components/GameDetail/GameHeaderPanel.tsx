@@ -46,12 +46,17 @@ const useStyles = createUseStyles({
         margin: '0 20px 0 0',
         width: '33%',
     },
-    right: {},
+    right: {
+        width: '66%',
+    },
     fact: {
         margin: '0 0 10px',
         color: darkTheme.textLighter,
         fontSize: '0.75rem',
         lineHeight: '150%',
+    },
+    factLink: {
+        wordBreak: 'break-all',
     },
     divider: {
         margin: '15px 0',
@@ -60,6 +65,7 @@ const useStyles = createUseStyles({
     description: {
         color: darkTheme.textLighter,
         fontSize: '0.75rem',
+        lineHeight: '140%',
     },
     link: {
         color: darkTheme.textGreen,
@@ -70,14 +76,17 @@ const useStyles = createUseStyles({
     },
     labelWrapper: {
         padding: '0 10px',
+        display: 'flex',
+        flexWrap: 'wrap',
     },
     label: {
         borderRadius: 3,
         padding: '3px 5px',
-        marginRight: 5,
+        margin: '0 5px 5px 0',
         backgroundColor: darkTheme.backgroundWhite,
         color: darkTheme.textOnLightDark,
         fontSize: '0.75rem',
+        whiteSpace: 'nowrap',
 
         '&:hover': {
             backgroundColor: darkTheme.textGreen,
@@ -88,7 +97,7 @@ const useStyles = createUseStyles({
 
 const buildFacts = (t: TFunction, i18n: Ti18n, facts: Array<{ count?: number | null; key: string }>) =>
     facts.reduce((str, fact) => {
-        if (fact.count !== undefined && fact.count !== null) {
+        if (fact.count) {
             return `${str}${str.length > 0 ? ', ' : ''}${t(fact.key, {
                 count: fact.count,
             })}`
@@ -143,7 +152,7 @@ export const GameHeaderPanel = ({ game }: Props) => {
                     <p className={classes.fact}>{playersFacts}</p>
                     <p className={classes.fact}>{timeFacts}</p>
                     {game.web && (
-                        <p className={classes.fact}>
+                        <p className={`${classes.fact} ${classes.factLink}`}>
                             {`${t('Game.web')} `}
                             <a href={game.web} className={classes.link} target="_blank" rel="noreferrer">
                                 {game.web}
@@ -151,7 +160,7 @@ export const GameHeaderPanel = ({ game }: Props) => {
                         </p>
                     )}
                     {game.galleryURL && (
-                        <p className={classes.fact}>
+                        <p className={`${classes.fact} ${classes.factLink}`}>
                             {`${t('Game.gallery')} `}
                             <a href={game.galleryURL} className={classes.link} target="_blank" rel="noreferrer">
                                 {game.galleryURL}
@@ -183,7 +192,7 @@ export const GameHeaderPanel = ({ game }: Props) => {
                     <p className={classes.fact}>
                         {t('Game.groups')}
                         &nbsp;
-                        {game.groupAuthor.length === 0 && <span>&emdash;</span>}
+                        {game.groupAuthor.length === 0 && <span>&mdash;</span>}
                         {game.groupAuthor.length > 0 &&
                             game.groupAuthor.map((group, n) => (
                                 <React.Fragment key={group.id}>
@@ -197,7 +206,7 @@ export const GameHeaderPanel = ({ game }: Props) => {
                 </div>
             </div>
             <div className={classes.divider} />
-            <p className={classes.description}>{game.description}</p>
+            <p className={classes.description} dangerouslySetInnerHTML={{ __html: game.description ?? '' }} />
             <div className={classes.divider} />
             <div className={classes.labelWrapper}>
                 {game.labels.map(label => (

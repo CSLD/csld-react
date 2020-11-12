@@ -9,6 +9,7 @@ import { GameRatingBox, ratingStyles } from '../common/GameRatingBox/GameRatingB
 
 import { parseDateTime } from '../../utils/dateUtils'
 import { ProfileImage } from '../common/ProfileImage/ProfileImage'
+import { getGameRoute } from '../../utils/routeUtils'
 
 export type BaseCommentData = Pick<Comment, 'id' | 'commentAsText' | 'added'> & {
     readonly game: Pick<Game, 'id' | 'name' | 'totalRating' | 'amountOfRatings'>
@@ -60,6 +61,7 @@ const useStyles = createUseStyles({
         flexDirection: 'row',
         color: darkTheme.textDark,
         fontSize: '0.8rem',
+        paddingLeft: 15,
     },
     textRow: {
         display: 'flex',
@@ -127,8 +129,9 @@ export const BaseCommentPanel = ({ comment }: Props) => {
                                 amountOfRatings={comment?.game?.amountOfRatings || 0}
                                 rating={comment?.game?.totalRating}
                                 className={classes.rating}
+                                size="tiny"
                             />
-                            <a href="/" className={classNames(classes.gameName, classes.link)}>
+                            <a href={getGameRoute(comment.game)} className={classNames(classes.gameName, classes.link)}>
                                 {comment.game.name}
                             </a>
                         </div>

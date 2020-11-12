@@ -20,6 +20,34 @@ const game = {
             rating: 8,
             count: 5,
         },
+        {
+            rating: 7,
+            count: 5,
+        },
+        {
+            rating: 6,
+            count: 5,
+        },
+        {
+            rating: 5,
+            count: 5,
+        },
+        {
+            rating: 4,
+            count: 3,
+        },
+        {
+            rating: 3,
+            count: 9,
+        },
+        {
+            rating: 2,
+            count: 1,
+        },
+        {
+            rating: 1,
+            count: 5,
+        },
     ],
 }
 

@@ -35,6 +35,7 @@ const useStyles = createUseStyles({
         justifyContent: 'center',
         borderRadius: 4,
         fontWeight: 700,
+        flexShrink: 0,
         color: darkTheme.textLight,
     },
     ratingTiny: {

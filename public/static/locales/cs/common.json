@@ -59,7 +59,11 @@
 
   "GameDetail": {
     "logInToRate": "Pro hodnocení se musíte přihlásit.",
-    "totalPlayed": "{{amountOfPlayed}} celkem",
-    "similarGames": "Podobné larpy"
+    "totalPlayed": "{{amountOfRatings}} celkem",
+    "similarGames": "Podobné larpy",
+    "comments": "Komentáře",
+    "photos": "Fotky",
+    "events": "Události",
+    "gamesOfAuthors": "Larpy autorů"
   }
 }

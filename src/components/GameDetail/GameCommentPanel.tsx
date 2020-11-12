@@ -75,14 +75,16 @@ export const GameCommentPanel = ({ comment }: Props) => {
     const classes = useStyles()
     const added = format(parseDateTime(comment.added) || 0, 'dd.MM.yyyy')
 
+    const { nickname, name } = comment.user.person
+
     return (
         <div className={classes.wrapper}>
             <div className={classes.header}>
                 <ProfileImage />
                 <div className={classes.headerMiddle}>
                     <div className={classes.headerNameWrapper}>
-                        <span className={classes.headerNickName}>{comment.user.person.nickname}</span>
-                        <span className={classes.headerName}>{comment.user.person.name}</span>
+                        <span className={classes.headerNickName}>{nickname || name}</span>
+                        <span className={classes.headerName}>{name}</span>
                     </div>
                     {added}
                 </div>

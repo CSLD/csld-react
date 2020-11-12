@@ -18,6 +18,6 @@ export const darkTheme = {
     redLight: '#CC333F',
     ratingMediocre: '#757575',
     ratingGreat: '#BD2430',
-    ratingAverage: '#00A0B0',
+    ratingAverage: '#6dc8b7',
     ratingNotRated: '#CCC',
 }

@@ -5,10 +5,11 @@ import { Game } from '../../../graphql/__generated__/typescript-operations'
 import { DetailListHeader } from '../DetailListHeader/DetailListHeader'
 import { darkTheme } from '../../../theme/darkTheme'
 import { GameRatingBox } from '../GameRatingBox/GameRatingBox'
+import { getGameRoute } from '../../../utils/routeUtils'
 
 interface Props {
     readonly titleKey?: string
-    readonly games?: Array<Pick<Game, 'id' | 'name' | 'totalRating' | 'amountOfRatings'>>
+    readonly games?: Array<Pick<Game, 'id' | 'name' | 'averageRating' | 'amountOfRatings' | 'year'>>
 }
 
 const useStyles = createUseStyles({
@@ -45,13 +46,15 @@ export const GameListPanel = ({ titleKey, games }: Props) => {
             {games && (
                 <div className={classes.wrapper}>
                     {games.map(game => (
-                        <a className={classes.game} href="/" key={game.id}>
+                        <a className={classes.game} href={getGameRoute(game)} key={game.id}>
                             <GameRatingBox
                                 amountOfRatings={game.amountOfRatings}
-                                rating={game.totalRating}
+                                rating={game.averageRating}
                                 size="tiny"
                             />
-                            <span className={classes.gameName}>{game.name}</span>
+                            <span className={classes.gameName}>
+                                {game.name} ({game.year})
+                            </span>
                         </a>
                     ))}
                 </div>

@@ -63,3 +63,27 @@ export const Base = () => (
         <GameHeaderPanel game={baseGame} />
     </div>
 )
+
+export const Second = () => (
+    <div style={{ padding: 20, backgroundColor: '#272727', width: 735 }}>
+        <GameHeaderPanel
+            game={{
+                ...baseGame,
+                players: 0,
+                menRole: 1,
+                womenRole: 2,
+                bothRole: 99,
+                hours: 3,
+                days: undefined,
+                web: 'https://verylongurl.wordpress.subdmain.something.com',
+                photoAuthor: undefined,
+                groupAuthor: [],
+                labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map(n => ({
+                    id: `${n}`,
+                    name: `Kategorie ${n}`,
+                    description: `Nějaký popisek pro kategorii larpů číslo ${n}`,
+                })),
+            }}
+        />
+    </div>
+)

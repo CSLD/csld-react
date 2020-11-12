@@ -1,7 +1,17 @@
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
+export type GameDetailCommentFragment = { __typename?: 'Comment' } & Pick<
+    Comment,
+    'id' | 'added' | 'amountOfUpvotes' | 'comment' | 'isHidden'
+> & {
+        user: { __typename?: 'User' } & Pick<User, 'id'> & {
+                person: { __typename?: 'Person' } & Pick<Person, 'name' | 'nickname'>
+            }
+    }
+
 export type GameDetailQueryVariables = Exact<{
-    id: Scalars['Int']
+    gameId: Scalars['Int']
+    commentsLimit: Scalars['Int']
 }>
 
 export type GameDetailQuery = { __typename?: 'Query' } & {
@@ -21,7 +31,7 @@ export type GameDetailQuery = { __typename?: 'Query' } & {
             | 'galleryURL'
             | 'photoAuthor'
             | 'description'
-            | 'totalRating'
+            | 'averageRating'
             | 'amountOfRatings'
             | 'amountOfPlayed'
         > & {
@@ -34,24 +44,31 @@ export type GameDetailQuery = { __typename?: 'Query' } & {
                 >
                 groupAuthor: Array<{ __typename?: 'Group' } & Pick<Group, 'id' | 'name'>>
                 commentsPaged: { __typename?: 'CommentsPaged' } & Pick<CommentsPaged, 'totalAmount'> & {
-                        comments: Array<
-                            { __typename?: 'Comment' } & Pick<
-                                Comment,
-                                'id' | 'added' | 'amountOfUpvotes' | 'comment' | 'isHidden'
-                            > & {
-                                    user: { __typename?: 'User' } & Pick<User, 'id'> & {
-                                            person: { __typename?: 'Person' } & Pick<Person, 'name' | 'nickname'>
-                                        }
-                                }
-                        >
+                        comments: Array<{ __typename?: 'Comment' } & GameDetailCommentFragment>
                     }
                 similarGames: Array<
-                    { __typename?: 'Game' } & Pick<Game, 'id' | 'name' | 'totalRating' | 'amountOfRatings'>
+                    { __typename?: 'Game' } & Pick<Game, 'id' | 'name' | 'averageRating' | 'amountOfRatings' | 'year'>
                 >
                 gamesOfAuthors: Array<
-                    { __typename?: 'Game' } & Pick<Game, 'id' | 'name' | 'totalRating' | 'amountOfRatings'>
+                    { __typename?: 'Game' } & Pick<Game, 'id' | 'name' | 'averageRating' | 'amountOfRatings' | 'year'>
                 >
                 events: Array<{ __typename?: 'Event' } & Pick<Event, 'id' | 'name' | 'from' | 'to'>>
+            }
+    >
+}
+
+export type MoreCommentsQueryVariables = Exact<{
+    gameId: Scalars['Int']
+    commentsOffset: Scalars['Int']
+    commentsLimit: Scalars['Int']
+}>
+
+export type MoreCommentsQuery = { __typename?: 'Query' } & {
+    gameById?: Maybe<
+        { __typename?: 'Game' } & Pick<Game, 'id'> & {
+                commentsPaged: { __typename?: 'CommentsPaged' } & Pick<CommentsPaged, 'totalAmount'> & {
+                        comments: Array<{ __typename?: 'Comment' } & GameDetailCommentFragment>
+                    }
             }
     >
 }

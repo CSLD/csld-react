@@ -1,5 +1,7 @@
-query GameDetail($id: Int!) {
-    gameById(id: $id) {
+#import './fragments.graphql'
+
+query GameDetail($gameId: Int!, $commentsLimit: Int!) {
+    gameById(id: $gameId) {
         id
         name
         players
@@ -13,7 +15,7 @@ query GameDetail($id: Int!) {
         galleryURL
         photoAuthor
         description
-        totalRating
+        averageRating
         amountOfRatings
         amountOfPlayed
         labels {
@@ -36,34 +38,25 @@ query GameDetail($id: Int!) {
             id
             name
         }
-        commentsPaged(offset: 0, limit: 10) {
+        commentsPaged(offset: 0, limit: $commentsLimit) {
             totalAmount
             comments {
-                id
-                added
-                amountOfUpvotes
-                comment
-                isHidden
-                user {
-                    id
-                    person {
-                        name
-                        nickname
-                    }
-                }
+                ...gameDetailComment
             }
         }
         similarGames {
             id
             name
-            totalRating
+            averageRating
             amountOfRatings
+            year
         }
         gamesOfAuthors {
             id
             name
-            totalRating
+            averageRating
             amountOfRatings
+            year
         }
         events {
             id

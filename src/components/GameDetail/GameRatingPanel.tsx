@@ -3,12 +3,14 @@ import React from 'react'
 import { Game } from 'src/graphql/__generated__/typescript-operations'
 import { createUseStyles } from 'react-jss'
 import { useTranslation } from 'react-i18next'
+import classNames from 'classnames'
 import { darkTheme } from '../../theme/darkTheme'
-import { GameRatingBox } from '../common/GameRatingBox/GameRatingBox'
+import { GameRatingBox, ratingStyles } from '../common/GameRatingBox/GameRatingBox'
 import { IconUser } from '../common/Icons/Icons'
+import { getRatingForGame } from '../../utils/ratingUtils'
 
 interface Props {
-    readonly game: Pick<Game, 'totalRating' | 'amountOfRatings' | 'ratingStats' | 'amountOfPlayed'>
+    readonly game: Pick<Game, 'averageRating' | 'amountOfRatings' | 'ratingStats'>
 }
 
 const useStyles = createUseStyles({
@@ -16,7 +18,6 @@ const useStyles = createUseStyles({
         color: darkTheme.text,
         fontSize: '0.8rem',
         textAlign: 'center',
-        width: 400,
     },
     row: {
         display: 'flex',
@@ -25,12 +26,12 @@ const useStyles = createUseStyles({
     left: {
         display: 'flex',
         flexDirection: 'column',
-        width: 150,
+        width: 130,
         padding: '0 10px',
         textAlign: 'center',
     },
     right: {
-        width: 245,
+        width: 200,
         padding: '0 10px',
         display: 'flex',
         flexDirection: 'column',
@@ -51,24 +52,26 @@ const useStyles = createUseStyles({
         backgroundColor: darkTheme.backgroundControl,
         borderRadius: 4,
     },
-    statRed: {
+    statGauge: {
         height: '100%',
-        backgroundColor: darkTheme.red,
         borderRadius: 4,
+        transition: 'width 0.3s ease-in',
     },
     login: {
         textAlign: 'center',
+        marginBottom: 20,
     },
     totalPlayed: {
         margin: '20px 0 10px',
     },
+    ...ratingStyles,
 })
 
-export const GameRatingPanel = ({ game: { totalRating, amountOfRatings, amountOfPlayed, ratingStats } }: Props) => {
+export const GameRatingPanel = ({ game: { averageRating, amountOfRatings, ratingStats } }: Props) => {
     const classes = useStyles()
     const { t } = useTranslation('common')
 
-    const max = ratingStats.reduce((currentMax, rating) => Math.max(currentMax, rating.rating), 0)
+    const max = ratingStats.reduce((currentMax, rating) => Math.max(currentMax, rating.count), 0)
     const statsMap = ratingStats.reduce(
         (map, entry) => {
             // eslint-disable-next-line no-param-reassign
@@ -82,26 +85,37 @@ export const GameRatingPanel = ({ game: { totalRating, amountOfRatings, amountOf
         <div className={classes.wrapper}>
             <div className={classes.row}>
                 <div className={classes.left}>
-                    <GameRatingBox amountOfRatings={amountOfRatings} rating={totalRating} size="big" />
+                    <GameRatingBox amountOfRatings={amountOfRatings} rating={averageRating} size="big" />
                     <span className={classes.totalPlayed}>
                         <IconUser />
                         &nbsp;&nbsp;
-                        {t('GameDetail.totalPlayed', { amountOfPlayed })}
+                        {t('GameDetail.totalPlayed', { amountOfRatings })}
                     </span>
                 </div>
                 <div className={classes.right}>
-                    {statsMap.map((size, n) => (
-                        // eslint-disable-next-line react/no-array-index-key
-                        <div className={classes.statsRow} key={`rating_${n}`}>
-                            <div className={classes.statsNum}>{10 - n}</div>
-                            <div className={classes.statHolder}>
-                                <div className={classes.statRed} style={{ width: size }} />
+                    {statsMap.map((size, n) => {
+                        const ratingGrade = getRatingForGame(999, (10 - n) * 10 - 1)
+                        const gaugeClassName = classNames({
+                            [classes.statGauge]: true,
+                            [classes.ratingNotRated]: ratingGrade === 'notrated',
+                            [classes.ratingMediocre]: ratingGrade === 'mediocre',
+                            [classes.ratingAverage]: ratingGrade === 'average',
+                            [classes.ratingGreat]: ratingGrade === 'great',
+                        })
+
+                        return (
+                            // eslint-disable-next-line react/no-array-index-key
+                            <div className={classes.statsRow} key={`rating_${n}`}>
+                                <div className={classes.statsNum}>{10 - n}</div>
+                                <div className={classes.statHolder}>
+                                    <div className={gaugeClassName} style={{ width: `${size}%` }} />
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        )
+                    })}
                 </div>
             </div>
-            <span className={classes.login}>{t('GameDetail.logInToRate')}</span>
+            <div className={classes.login}>{t('GameDetail.logInToRate')}</div>
         </div>
     )
 }

@@ -1,9 +1,11 @@
 import React from 'react'
 import { createUseStyles } from 'react-jss'
+import classNames from 'classnames'
 import { darkTheme } from '../../../theme/darkTheme'
 
 interface Props {
     readonly imageUrl?: string
+    readonly className?: string
 }
 
 const useStyles = createUseStyles({
@@ -11,15 +13,15 @@ const useStyles = createUseStyles({
         width: 50,
         height: 50,
         padding: 2,
-        margin: '0 15px',
+        marginRight: 15,
         border: `solid 1px ${darkTheme.text}`,
         borderRadius: '50%',
         boxSizing: 'border-box',
     },
 })
 
-export const ProfileImage = ({ imageUrl = '/images/user-icon.png' }: Props) => {
+export const ProfileImage = ({ imageUrl = '/images/user-icon.png', className }: Props) => {
     const classes = useStyles()
 
-    return <img src={imageUrl} className={classes.profileImage} alt="" />
+    return <img src={imageUrl} className={classNames(classes.profileImage, className)} alt="" />
 }

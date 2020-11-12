@@ -53,7 +53,7 @@ const useStyles = createUseStyles({
     },
 })
 
-export const Tabs = <T,>({ tabs, selectedTab, onSelectTab }: Props<T>) => {
+export const Tabs = <T extends string | number>({ tabs, selectedTab, onSelectTab }: Props<T>) => {
     const classes = useStyles()
     const { t } = useTranslation('common')
 
@@ -71,7 +71,7 @@ export const Tabs = <T,>({ tabs, selectedTab, onSelectTab }: Props<T>) => {
                     const active = tab.key === selectedTab
 
                     return (
-                        <div className={classes.tab}>
+                        <div className={classes.tab} key={tab.key}>
                             <button type="button" className={textClassName} onClick={handleSelectTab(tab.key)}>
                                 {typeof tab.title === 'string' ? tab.title : t(tab.title.key)}
                             </button>

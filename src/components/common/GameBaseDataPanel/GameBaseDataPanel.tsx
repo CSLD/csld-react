@@ -5,6 +5,7 @@ import classnames from 'classnames'
 import { darkTheme } from '../../../theme/darkTheme'
 import { GameRatingBox } from '../GameRatingBox/GameRatingBox'
 import { IconRating, IconComment, IconUser } from '../Icons/Icons'
+import { getGameRoute } from '../../../utils/routeUtils'
 
 export type GameBaseData = Pick<
     Game,
@@ -59,11 +60,11 @@ const useStyles = createUseStyles({
 
 export const GameBaseDataPanel = ({
     className,
-    game: { name, players, amountOfComments, amountOfRatings, totalRating },
+    game: { id, name, players, amountOfComments, amountOfRatings, totalRating },
 }: Props) => {
     const classes = useStyles()
     return (
-        <a className={classnames(classes.wrapper, className)} href="/">
+        <a className={classnames(classes.wrapper, className)} href={getGameRoute({ id, name })}>
             <GameRatingBox amountOfRatings={amountOfRatings} rating={totalRating} className={classes.rating} />
             <div className={classes.rightWrapper}>
                 <div className={classes.name}>{name}</div>

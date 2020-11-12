@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { format } from 'date-fns'
 import { darkTheme } from '../../theme/darkTheme'
 import { IconUser, IconLocation } from '../common/Icons/Icons'
-import { hasTimePart, parseDateTime } from '../../utils/dateUtils'
+import { formatTimeRange, hasTimePart, parseDateTime } from '../../utils/dateUtils'
 
 export type EventBaseData = Pick<Event, 'id' | 'name' | 'from' | 'to' | 'amountOfPlayers' | 'loc'>
 
@@ -49,12 +49,7 @@ const useStyles = createUseStyles({
 export const EventBaseDataPanel = ({ event, className }: Props) => {
     const classes = useStyles()
 
-    const fromDate = parseDateTime(event?.from)
-    const toDate = parseDateTime(event?.to)
-    const justDates = !hasTimePart(fromDate) && !hasTimePart(toDate)
-    const fromFormatted = fromDate && format(fromDate, justDates ? 'd.M.yyy' : 'd.M.yyy HH:mm')
-    const toFormatted = toDate && format(toDate, justDates ? 'd.M.yyy' : 'd.M.yyy HH:mm')
-    const justOneDate = fromFormatted === toFormatted
+    const { fromFormatted, toFormatted, justOneDate } = formatTimeRange(event?.from, event?.to)
 
     return (
         <a className={classNames(classes.wrapper, className)} href="/">
