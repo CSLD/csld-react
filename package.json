@@ -34,6 +34,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@fortawesome/react-fontawesome": "^0.1.12",
     "@next/bundle-analyzer": "^9.4.4",
+    "@zeit/next-css": "^1.0.1",
     "classnames": "^2.2.6",
     "cross-env": "^5.2.1",
     "date-fns": "^2.16.1",
@@ -123,7 +124,7 @@
     "webpack": "4.44.0"
   },
   "peerDependencies": {
-    "react-i18next": "^11.0.0",
-    "i18next": "^19.8.3"
+    "i18next": "^19.8.3",
+    "react-i18next": "^11.0.0"
   }
 }
