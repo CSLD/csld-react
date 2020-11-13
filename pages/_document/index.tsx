@@ -3,22 +3,24 @@ import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/do
 import { JssProvider, SheetsRegistry } from 'react-jss'
 import { darkTheme } from '../../src/theme/darkTheme'
 
-const style =
-    'body {\n' +
-    '  margin: 0;\n' +
-    '  font-family: Open Sans, sans-serif;\n' +
-    '  font-size: 16px;\n' +
-    `  background-color: ${darkTheme.backgroundLight};\n` +
-    '  box-sizing: border-box;\n' +
-    '}\n' +
-    '\n' +
-    'a {\n' +
-    '  text-decoration: none;\n' +
-    '  color: unset;\n' +
-    '  :hover {\n' +
-    '   color: unset;\n' +
-    '  }\n' +
-    '}\n'
+const style = `
+    @import url(https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&subset=latin,latin-ext,cyrillic-ext,cyrillic);
+
+    body {
+      margin: 0;
+      font-family: Open Sans, sans-serif;
+      font-size: 16px;
+      background-color: ${darkTheme.backgroundLight};
+      box-sizing: border-box;
+    }
+    
+    a {
+      text-decoration: none;
+      color: unset;
+      :hover {
+       color: unset;
+      }
+    }`
 
 class WebAppDocument extends Document {
     static async getInitialProps({ renderPage }: DocumentContext) {
