@@ -15,10 +15,11 @@ export const withApolloWrapper = withApollo(props => {
         // Do requests back to origin
         uri = `${global.window.location.origin}/graphql`
     } else if (props.headers?.host) {
-        // Server - get host from headers
-        const host = props.headers?.host || ''
-        const protocol = host.indexOf('localhost') >= 0 ? 'http://' : 'https://'
-        uri = `${protocol}${host}/graphql`
+        const host = props.headers?.['x-forwarded-host'] || props.headers?.host
+        if (host) {
+            const protocol = host.indexOf('localhost') >= 0 ? 'http://' : 'https://'
+            uri = `${protocol}${host}/graphql`
+        }
     }
 
     return new ApolloClient({
