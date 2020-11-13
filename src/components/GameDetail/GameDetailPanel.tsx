@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { createUseStyles } from 'react-jss'
 import {
+    CachedGameDataFragment,
     CommentsPaged,
     GameDetailQuery,
     GameDetailQueryVariables,
@@ -15,10 +16,11 @@ import { GameListPanel } from '../common/GameListPanel/GameListPanel'
 import { EventListPanel } from '../HomePage/EventListPanel'
 import { PAGE_SIZE, GamePagedCommentsPanel } from './GamePagedCommentsPanel'
 
+const cachedGameDataFragment = require('./graphql/cachedGameData.graphql')
 const gameDetailQuery = require('./graphql/gameDetail.graphql')
 
 interface Props {
-    readonly gameId: string
+    readonly gameId: number
 }
 
 const useStyles = createUseStyles({
@@ -27,7 +29,7 @@ const useStyles = createUseStyles({
     },
     detailsWidthFixer: {
         display: 'flex',
-        padding: 20,
+        padding: '10px 20px 20px',
     },
     detailsLeft: {
         width: 700,
@@ -44,59 +46,90 @@ const useStyles = createUseStyles({
     },
     extrasLeft: {
         width: '75%',
-        padding: '35px 0 20px',
+        padding: '25px 0 20px',
     },
     extrasRight: {
         width: '25%',
         boxSizing: 'border-box',
-        padding: '35px 0 20px 20px',
+        padding: '25px 0 20px 20px',
     },
 })
 
-type TabTabs = 'comments' | 'photos'
-const tabs: Array<TabDefinition<TabTabs>> = [
-    {
-        key: 'comments',
-        title: {
-            key: 'GameDetail.comments',
-        },
+type TabTabs = 'comments' | 'photos' | 'video'
+
+const tabComments: TabDefinition<TabTabs> = {
+    key: 'comments',
+    title: {
+        key: 'GameDetail.comments',
     },
-    {
-        key: 'photos',
-        title: {
-            key: 'GameDetail.photos',
-        },
+}
+
+const tabPhotos: TabDefinition<TabTabs> = {
+    key: 'photos',
+    title: {
+        key: 'GameDetail.photos',
     },
-]
+}
+
+const tabVideo: TabDefinition<TabTabs> = {
+    key: 'video',
+    title: {
+        key: 'GameDetail.video',
+    },
+}
+
+const emptyGame = {
+    name: '',
+    labels: [],
+    authors: [],
+    groupAuthor: [],
+    averageRating: 0,
+    amountOfRatings: 0,
+    ratingStats: [],
+    similarGames: [],
+    gamesOfAuthors: [],
+    events: [],
+    photos: [],
+    video: undefined,
+    commentsPaged: {
+        comments: [],
+        totalAmount: 0,
+    } as CommentsPaged,
+}
 
 export const GameDetailPanel = ({ gameId }: Props) => {
     const [selectedTab, setSelectedTab] = useState<TabTabs>('comments')
     const classes = useStyles()
-    const gameQuery = useQuery<Partial<GameDetailQuery>, GameDetailQueryVariables>(gameDetailQuery, {
+    const gameQuery = useQuery<GameDetailQuery, GameDetailQueryVariables>(gameDetailQuery, {
         variables: {
-            gameId: parseInt(gameId, 10),
+            gameId,
             commentsLimit: PAGE_SIZE,
         },
-        fetchPolicy: 'cache-first',
-        returnPartialData: true,
+        fetchPolicy: 'cache-and-network',
+        ssr: false, // Next threw errors about mismatching content while game page was reloaded
     })
+    let gameFragment: CachedGameDataFragment | undefined | null
+
+    try {
+        // Throws exception on server, so we guard it
+        gameFragment = gameQuery.client.readFragment<CachedGameDataFragment>({
+            id: `Game:${gameId}`,
+            fragment: cachedGameDataFragment,
+        })
+    } catch (e) {
+        // Object in cache but does not have required data - just continue
+        console.log('Fetch failed', e)
+    }
 
     const game = gameQuery.data?.gameById || {
-        id: gameId,
-        name: '',
-        labels: [],
-        authors: [],
-        groupAuthor: [],
-        averageRating: 0,
-        amountOfRatings: 0,
-        ratingStats: [],
-        similarGames: [],
-        gamesOfAuthors: [],
-        events: [],
-        commentsPaged: {
-            comments: [],
-            totalAmount: 0,
-        } as CommentsPaged,
+        ...emptyGame,
+        ...gameFragment,
+        id: `${gameId}`,
+    }
+
+    const tabs: Array<TabDefinition<TabTabs>> = [tabComments]
+    if (game.video?.path) {
+        tabs.push(tabVideo)
     }
 
     return (
@@ -114,9 +147,12 @@ export const GameDetailPanel = ({ gameId }: Props) => {
                         <div className={classes.extrasLeft}>
                             {selectedTab === 'comments' && (
                                 <GamePagedCommentsPanel
-                                    gameId={parseInt(gameId, 10)}
+                                    gameId={gameId}
                                     firstPage={game.commentsPaged as CommentsPaged}
                                 />
+                            )}
+                            {selectedTab === 'video' && (
+                                <iframe title="video" src={game.video?.path} width="800" height="450" />
                             )}
                         </div>
                         <div className={classes.extrasRight}>

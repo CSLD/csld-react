@@ -8,6 +8,7 @@ import {
     faChevronCircleLeft,
     faChevronCircleRight,
     faCaretUp,
+    faSpinner,
 } from '@fortawesome/free-solid-svg-icons'
 import { faFacebook } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -36,3 +37,5 @@ export const IconMoveRight = (props: IconProps) => <FontAwesomeIcon icon={faChev
 export const IconFacebook = (props: IconProps) => <FontAwesomeIcon icon={faFacebook} {...props} />
 
 export const IconCaretUp = (props: IconProps) => <FontAwesomeIcon icon={faCaretUp} {...props} />
+
+export const IconLoading = (props: IconProps) => <FontAwesomeIcon icon={faSpinner} pulse {...props} />

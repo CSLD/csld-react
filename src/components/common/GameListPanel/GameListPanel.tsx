@@ -6,6 +6,8 @@ import { DetailListHeader } from '../DetailListHeader/DetailListHeader'
 import { darkTheme } from '../../../theme/darkTheme'
 import { GameRatingBox } from '../GameRatingBox/GameRatingBox'
 import { getGameRoute } from '../../../utils/routeUtils'
+import Link from 'next/link'
+import { GameLink } from '../GameLink/GameLink'
 
 interface Props {
     readonly titleKey?: string
@@ -46,7 +48,7 @@ export const GameListPanel = ({ titleKey, games }: Props) => {
             {games && (
                 <div className={classes.wrapper}>
                     {games.map(game => (
-                        <a className={classes.game} href={getGameRoute(game)} key={game.id}>
+                        <GameLink game={game} className={classes.game} key={game.id}>
                             <GameRatingBox
                                 amountOfRatings={game.amountOfRatings}
                                 rating={game.averageRating}
@@ -55,7 +57,7 @@ export const GameListPanel = ({ titleKey, games }: Props) => {
                             <span className={classes.gameName}>
                                 {game.name} ({game.year})
                             </span>
-                        </a>
+                        </GameLink>
                     ))}
                 </div>
             )}

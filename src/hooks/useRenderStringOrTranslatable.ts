@@ -6,5 +6,5 @@ import { useTranslation } from 'react-i18next'
 export const useRenderStringOrTranslatable = () => {
     const { t } = useTranslation()
 
-    return { t: (value: StringOrTranslatable) => (typeof value === 'string' ? value : t(value.key, { ns: value.ns })) }
+    return { t: (value: StringOrTranslatable) => (typeof value === 'string' ? value : t(value.key)) }
 }

@@ -1,5 +1,11 @@
 import { Game } from '../graphql/__generated__/typescript-operations'
 
+/**
+ * Generate (nicey) route to the game. Do not use directly - use GameLink component!
+ *
+ * @param id Game ID
+ * @param name Game name
+ */
 export const getGameRoute = ({ id, name }: Pick<Game, 'id' | 'name'>) => {
     const stripped = (name || '')
         .normalize('NFD')

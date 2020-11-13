@@ -63,7 +63,9 @@
     "similarGames": "Podobné larpy",
     "comments": "Komentáře",
     "photos": "Fotky",
+    "video": "Video",
     "events": "Události",
-    "gamesOfAuthors": "Larpy autorů"
+    "gamesOfAuthors": "Larpy autorů",
+    "noSearchResults": "Žádná hra nenalezena"
   }
 }

@@ -1,5 +1,10 @@
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
+export type CachedGameDataFragment = { __typename?: 'Game' } & Pick<
+    Game,
+    'id' | 'name' | 'averageRating' | 'amountOfRatings'
+>
+
 export type GameDetailCommentFragment = { __typename?: 'Comment' } & Pick<
     Comment,
     'id' | 'added' | 'amountOfUpvotes' | 'comment' | 'isHidden'
@@ -37,6 +42,7 @@ export type GameDetailQuery = { __typename?: 'Query' } & {
         > & {
                 labels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name' | 'description'>>
                 ratingStats: Array<{ __typename?: 'RatingCount' } & Pick<RatingCount, 'count' | 'rating'>>
+                video?: Maybe<{ __typename?: 'Video' } & Pick<Video, 'id' | 'path'>>
                 authors: Array<
                     { __typename?: 'User' } & Pick<User, 'id'> & {
                             person: { __typename?: 'Person' } & Pick<Person, 'name' | 'nickname'>
@@ -73,11 +79,6 @@ export type MoreCommentsQuery = { __typename?: 'Query' } & {
     >
 }
 
-export type BaseGameDataFragment = { __typename?: 'Game' } & Pick<
-    Game,
-    'id' | 'name' | 'players' | 'totalRating' | 'amountOfComments' | 'amountOfRatings'
->
-
 export type BaseCommentDataFragment = { __typename?: 'Comment' } & Pick<Comment, 'id' | 'commentAsText' | 'added'> & {
         game: { __typename?: 'Game' } & BaseGameDataFragment
         user: { __typename?: 'User' } & Pick<User, 'id'> & {
@@ -109,6 +110,20 @@ export type GetMoreLastCommentsQuery = { __typename?: 'Query' } & {
         lastComments: Array<{ __typename?: 'Comment' } & BaseCommentDataFragment>
     }
 }
+
+export type SearchGamesQueryVariables = Exact<{
+    searchTerm: Scalars['String']
+    limit: Scalars['Int']
+}>
+
+export type SearchGamesQuery = { __typename?: 'Query' } & {
+    gamesBySearchTerm: Array<{ __typename?: 'Game' } & BaseGameDataFragment>
+}
+
+export type BaseGameDataFragment = { __typename?: 'Game' } & Pick<
+    Game,
+    'id' | 'name' | 'players' | 'averageRating' | 'amountOfComments' | 'amountOfRatings'
+>
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -184,6 +199,9 @@ export type Game = {
     similarGames: Array<Game>
     gamesOfAuthors: Array<Game>
     events: Array<Event>
+    video?: Maybe<Video>
+    coverImage?: Maybe<Image>
+    photos: Array<Photo>
     /** Are these needed? */
     blueprintPath?: Maybe<Scalars['String']>
 }
@@ -292,4 +310,22 @@ export type RatingCount = {
     __typename?: 'RatingCount'
     rating: Scalars['Int']
     count: Scalars['Int']
+}
+
+export type Video = {
+    __typename?: 'Video'
+    id: Scalars['ID']
+    path: Scalars['String']
+}
+
+export type Photo = {
+    __typename?: 'Photo'
+    id: Scalars['ID']
+    orderSeq?: Maybe<Scalars['Int']>
+    description?: Maybe<Scalars['String']>
+    fullWidth: Scalars['Int']
+    fullHeight: Scalars['Int']
+    featured: Scalars['Boolean']
+    game: Game
+    image: Image
 }

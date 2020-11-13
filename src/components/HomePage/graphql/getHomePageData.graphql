@@ -1,4 +1,5 @@
 #import "./fragments.graphql"
+#import "src/graphql/fragments/baseGameData.graphql"
 
 query GetHomePageData {
     homepage {

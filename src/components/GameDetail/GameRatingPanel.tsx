@@ -7,7 +7,7 @@ import classNames from 'classnames'
 import { darkTheme } from '../../theme/darkTheme'
 import { GameRatingBox, ratingStyles } from '../common/GameRatingBox/GameRatingBox'
 import { IconUser } from '../common/Icons/Icons'
-import { getRatingForGame } from '../../utils/ratingUtils'
+import { getRatingForGame, MIN_NUM_RATINGS } from '../../utils/ratingUtils'
 
 interface Props {
     readonly game: Pick<Game, 'averageRating' | 'amountOfRatings' | 'ratingStats'>
@@ -72,14 +72,15 @@ export const GameRatingPanel = ({ game: { averageRating, amountOfRatings, rating
     const { t } = useTranslation('common')
 
     const max = ratingStats.reduce((currentMax, rating) => Math.max(currentMax, rating.count), 0)
-    const statsMap = ratingStats.reduce(
-        (map, entry) => {
+    let statsMap = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    if (amountOfRatings >= MIN_NUM_RATINGS) {
+        // Compute stats only when we have enough ratings
+        statsMap = ratingStats.reduce((map, entry) => {
             // eslint-disable-next-line no-param-reassign
             map[10 - entry.rating] = Math.round((entry.count * 100) / max)
             return map
-        },
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    )
+        }, statsMap)
+    }
 
     return (
         <div className={classes.wrapper}>

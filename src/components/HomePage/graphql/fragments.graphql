@@ -1,11 +1,4 @@
-fragment baseGameData on Game {
-    id
-    name
-    players
-    totalRating
-    amountOfComments
-    amountOfRatings
-}
+#import "src/graphql/fragments/baseGameData.graphql"
 
 fragment baseCommentData on Comment {
     id

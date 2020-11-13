@@ -6,10 +6,13 @@ import { darkTheme } from '../../../theme/darkTheme'
 import { GameRatingBox } from '../GameRatingBox/GameRatingBox'
 import { IconRating, IconComment, IconUser } from '../Icons/Icons'
 import { getGameRoute } from '../../../utils/routeUtils'
+import Link from 'next/link'
+import { GameLink } from '../GameLink/GameLink'
+import classNames from 'classnames'
 
 export type GameBaseData = Pick<
     Game,
-    'id' | 'name' | 'players' | 'amountOfComments' | 'amountOfRatings' | 'totalRating'
+    'id' | 'name' | 'players' | 'amountOfComments' | 'amountOfRatings' | 'averageRating'
 >
 
 interface Props {
@@ -32,6 +35,7 @@ const useStyles = createUseStyles({
         },
     },
     rightWrapper: {
+        display: 'block',
         minWidth: 0,
     },
     rating: {
@@ -41,6 +45,7 @@ const useStyles = createUseStyles({
         marginRight: 8,
     },
     name: {
+        display: 'block',
         whiteSpace: 'nowrap',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
@@ -50,6 +55,7 @@ const useStyles = createUseStyles({
         marginBottom: 5,
     },
     icons: {
+        display: 'block',
         color: darkTheme.textDark,
         fontSize: '0.6rem',
     },
@@ -60,23 +66,23 @@ const useStyles = createUseStyles({
 
 export const GameBaseDataPanel = ({
     className,
-    game: { id, name, players, amountOfComments, amountOfRatings, totalRating },
+    game: { id, name, players, amountOfComments, amountOfRatings, averageRating },
 }: Props) => {
     const classes = useStyles()
     return (
-        <a className={classnames(classes.wrapper, className)} href={getGameRoute({ id, name })}>
-            <GameRatingBox amountOfRatings={amountOfRatings} rating={totalRating} className={classes.rating} />
-            <div className={classes.rightWrapper}>
-                <div className={classes.name}>{name}</div>
-                <div className={classes.icons}>
+        <GameLink game={{ id, name }} className={classNames(classes.wrapper, className)}>
+            <GameRatingBox amountOfRatings={amountOfRatings} rating={averageRating} className={classes.rating} />
+            <span className={classes.rightWrapper}>
+                <span className={classes.name}>{name}</span>
+                <span className={classes.icons}>
                     <IconUser />
                     <span className={classes.statValue}>{players}</span>
                     <IconComment />
                     <span className={classes.statValue}>{amountOfComments}</span>
                     <IconRating />
                     <span className={classes.statValue}>{amountOfRatings} x</span>
-                </div>
-            </div>
-        </a>
+                </span>
+            </span>
+        </GameLink>
     )
 }

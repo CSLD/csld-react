@@ -27,6 +27,10 @@ query GameDetail($gameId: Int!, $commentsLimit: Int!) {
             count
             rating
         }
+        video {
+            id
+            path
+        }
         authors {
             id
             person {
