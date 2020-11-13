@@ -20,7 +20,7 @@ const mockComment: BaseCommentData = {
         '10/10 Antonia Kauri, vězeň č. 1777... a nebo taky ne. :-) Shrnutí: Výborná akce se skvělými organizátory, kteří do hry vkládají opravdu maximum. Určitě to nebyl můj poslední ročník. Velmi ráda pojedu znovu. Mé hodnocení: Je to skvělé!',
     game: {
         id: '123',
-        totalRating: 67,
+        averageRating: 67,
         amountOfRatings: 10,
         name: 'Havraní ostrov - Návrat ztraceného poutníka',
     },

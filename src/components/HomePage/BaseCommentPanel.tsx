@@ -1,5 +1,5 @@
 import React from 'react'
-import { Comment, Game, User, Person } from 'src/graphql/__generated__/typescript-operations'
+import { Comment, Game, User, Person, Image } from 'src/graphql/__generated__/typescript-operations'
 import { createUseStyles } from 'react-jss'
 import { useTranslation } from 'react-i18next'
 import classNames from 'classnames'
@@ -15,6 +15,7 @@ export type BaseCommentData = Pick<Comment, 'id' | 'commentAsText' | 'added'> & 
     readonly game: Pick<Game, 'id' | 'name' | 'averageRating' | 'amountOfRatings'>
     readonly user: Pick<User, 'id'> & {
         person: Pick<Person, 'name' | 'nickname'>
+        image?: Pick<Image, 'id'> | null
     }
 }
 
@@ -116,7 +117,7 @@ export const BaseCommentPanel = ({ comment }: Props) => {
                 </div>
             </div>
             <div className={classes.row}>
-                <ProfileImage />
+                <ProfileImage userId={comment?.user.id} imageId={comment?.user?.image?.id} />
                 {comment && (
                     <div className={classes.textWrapper}>
                         <div className={classes.textRow}>

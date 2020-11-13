@@ -10,5 +10,8 @@ fragment gameDetailComment on Comment {
             name
             nickname
         }
+        image {
+            id
+        }
     }
 }

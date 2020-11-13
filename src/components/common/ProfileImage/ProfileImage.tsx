@@ -2,9 +2,11 @@ import React from 'react'
 import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
 import { darkTheme } from '../../../theme/darkTheme'
+import { Image } from '../../../graphql/__generated__/typescript-operations'
 
 interface Props {
-    readonly imageUrl?: string
+    readonly userId?: string
+    readonly imageId?: string
     readonly className?: string
 }
 
@@ -20,8 +22,12 @@ const useStyles = createUseStyles({
     },
 })
 
-export const ProfileImage = ({ imageUrl = '/images/user-icon.png', className }: Props) => {
+const DEFAULT_IMAGE_URL = '/images/user-icon.png'
+
+export const ProfileImage = ({ userId, imageId, className }: Props) => {
     const classes = useStyles()
+
+    const imageUrl = userId && imageId ? `/user-icon?id=${userId}&imageId=${imageId}` : DEFAULT_IMAGE_URL
 
     return <img src={imageUrl} className={classNames(classes.profileImage, className)} alt="" />
 }

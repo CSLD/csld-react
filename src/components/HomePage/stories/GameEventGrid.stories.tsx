@@ -8,7 +8,7 @@ export default { title: 'GameEventGrid' }
 const mockBaseGame: GameBaseData = {
     id: '123',
     name: 'Florie',
-    totalRating: 95,
+    averageRating: 95,
     players: 150,
     amountOfComments: 12,
     amountOfRatings: 23,

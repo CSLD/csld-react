@@ -5,7 +5,7 @@ import nextI18NextMiddleware from 'next-i18next/middleware'
 
 import nextI18next from './i18n'
 import routes from './routes'
-import devProxy from './proxy'
+import proxy from './proxy'
 
 require('dotenv').config()
 
@@ -24,8 +24,8 @@ app.prepare().then(() => {
     if (process.env.PROXY_MODE === 'local') {
         // eslint-disable-next-line global-require
         const proxyMiddleware = require('http-proxy-middleware')
-        Object.keys(devProxy).forEach(context => {
-            server.use(proxyMiddleware(context, devProxy[context]))
+        Object.keys(proxy).forEach(context => {
+            server.use(proxyMiddleware(context, proxy[context]))
         })
     }
 

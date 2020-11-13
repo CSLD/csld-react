@@ -7,19 +7,18 @@ export default { title: 'HomePageGamesPanel' }
 const mockBaseGame: GameBaseData = {
     id: '123',
     name: 'Florie',
-    totalRating: 95,
+    averageRating: 95,
     players: 150,
     amountOfComments: 12,
     amountOfRatings: 23,
 }
 
 const mockLastGames = [
-    { ...mockBaseGame, name: 'Florie 2000', totalRating: 0 },
-    { ...mockBaseGame, name: 'Florie 2001', totalRating: 0 },
-    { ...mockBaseGame, name: 'Florie 2002', totalRating: 0 },
-    { ...mockBaseGame, name: 'Florie 2003', totalRating: 0 },
-    { ...mockBaseGame, name: 'Florie 2004', totalRating: 0 },
-    { ...mockBaseGame, name: 'Florie 2005', totalRating: 0 },
+    { ...mockBaseGame, name: 'Florie 2000', averageRating: 0 },
+    { ...mockBaseGame, name: 'Florie 2001', averageRating: 0 },
+    { ...mockBaseGame, name: 'Florie 2002', averageRating: 0 },
+    { ...mockBaseGame, name: 'Florie 2003', averageRating: 0 },
+    { ...mockBaseGame, name: 'Florie 2004', averageRating: 0 },
 ]
 
 const mockTopGames = [

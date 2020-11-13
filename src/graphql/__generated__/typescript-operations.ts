@@ -11,6 +11,7 @@ export type GameDetailCommentFragment = { __typename?: 'Comment' } & Pick<
 > & {
         user: { __typename?: 'User' } & Pick<User, 'id'> & {
                 person: { __typename?: 'Person' } & Pick<Person, 'name' | 'nickname'>
+                image?: Maybe<{ __typename?: 'Image' } & Pick<Image, 'id'>>
             }
     }
 

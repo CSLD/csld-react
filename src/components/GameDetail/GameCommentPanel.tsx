@@ -1,7 +1,7 @@
 import React from 'react'
 import { createUseStyles } from 'react-jss'
 import { format } from 'date-fns-tz'
-import { Comment, Person, User } from '../../graphql/__generated__/typescript-operations'
+import { Comment, Image, Person, User } from '../../graphql/__generated__/typescript-operations'
 import { darkTheme } from '../../theme/darkTheme'
 import { ProfileImage } from '../common/ProfileImage/ProfileImage'
 import { parseDateTime } from '../../utils/dateUtils'
@@ -10,6 +10,7 @@ interface Props {
     readonly comment: Pick<Comment, 'id' | 'comment' | 'added' | 'amountOfUpvotes' | 'isHidden'> & {
         user: Pick<User, 'id'> & {
             person: Pick<Person, 'nickname' | 'name'>
+            image?: Pick<Image, 'id'> | null
         }
     }
 }
@@ -80,7 +81,7 @@ export const GameCommentPanel = ({ comment }: Props) => {
     return (
         <div className={classes.wrapper}>
             <div className={classes.header}>
-                <ProfileImage />
+                <ProfileImage userId={comment.user.id} imageId={comment.user.image?.id} />
                 <div className={classes.headerMiddle}>
                     <div className={classes.headerNameWrapper}>
                         <span className={classes.headerNickName}>{nickname || name}</span>
