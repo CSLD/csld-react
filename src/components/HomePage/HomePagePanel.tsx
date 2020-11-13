@@ -84,12 +84,12 @@ export const HomePagePanel = () => {
     const [expanded, setExpanded] = useState(false)
     const handleToggleExpanded = () => setExpanded(old => !old)
     const homePageQuery = useQuery<GetHomePageDataQuery, GetHomePageDataQueryVariables>(getHomePageDataQuery, {
-        fetchPolicy: 'cache-first',
+        fetchPolicy: 'cache-and-network',
     })
     const moreCommentsQuery = useQuery<GetMoreLastCommentsQuery, GetMoreLastCommentsQueryVariables>(
         getMoreLastCommentsQuery,
         {
-            fetchPolicy: 'cache-first',
+            fetchPolicy: 'cache-and-network',
             skip: !expanded,
             variables: {
                 offset: commentsNormal,

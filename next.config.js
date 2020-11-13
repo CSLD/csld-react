@@ -2,7 +2,6 @@ const withPlugins = require('next-compose-plugins')
 const withBundleAnalyzer = require('@next/bundle-analyzer')
 const nextRuntimeDotenv = require('next-runtime-dotenv')
 const graphql = require('next-plugin-graphql')
-const withCSS = require('@zeit/next-css')
 
 const withConfig = nextRuntimeDotenv({ public: ['API_URL', 'API_KEY'] })
 
@@ -27,4 +26,4 @@ const nextConfig = {
     },
 }
 
-module.exports = withConfig(withPlugins([withBundleAnalyzer, graphql, withCSS], nextConfig))
+module.exports = withConfig(withPlugins([withBundleAnalyzer, graphql], nextConfig))

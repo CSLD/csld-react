@@ -8,7 +8,7 @@ import { IconFacebook } from '../Icons/Icons'
 interface Props {}
 
 const useStyles = createUseStyles({
-    wrapper: {
+    footerWrapper: {
         borderTop: '1px solid black',
         background: 'backgroundLight',
         padding: '10px 0',
@@ -31,7 +31,7 @@ export const PageFooter = () => {
     const { t } = useTranslation('common')
 
     return (
-        <div className={classes.wrapper}>
+        <div className={classes.footerWrapper}>
             <WidthFixer>
                 <span>{t('PageFooter.copyright')}</span>
                 &nbsp;&nbsp;&nbsp;

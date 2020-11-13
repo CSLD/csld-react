@@ -5,13 +5,15 @@ import { appWithTranslation } from 'server/i18n'
 import { ErrorBoundary } from 'src/components/common/ErrorBoundary/ErrorBoundary'
 import { ApolloProvider } from '@apollo/react-hooks'
 import { config } from '@fortawesome/fontawesome-svg-core'
-import { createApolloClient } from '../../src/with/withApolloProvider'
+import { WithApolloProps } from 'next-with-apollo'
+import { withApolloWrapper } from '../../src/with/withApolloProvider'
+
 import '@fortawesome/fontawesome-svg-core/styles.css'
 
 // Import the CSS
 config.autoAddCss = false // Tell Font Awesome to skip adding the CSS automatically since it's being imported above
 
-class WebApp extends App<AppInitialProps> {
+class WebApp extends App<AppInitialProps & WithApolloProps<any>> {
     static async getInitialProps({ Component, ctx }: AppContext): Promise<AppInitialProps> {
         const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {}
 
@@ -19,11 +21,11 @@ class WebApp extends App<AppInitialProps> {
     }
 
     render() {
-        const { Component, pageProps } = this.props
+        const { Component, pageProps, apollo } = this.props
 
         return (
             <ErrorBoundary>
-                <ApolloProvider client={createApolloClient()}>
+                <ApolloProvider client={apollo}>
                     {/* eslint-disable-next-line react/jsx-props-no-spreading */}
                     <Component {...pageProps} />
                 </ApolloProvider>
@@ -32,4 +34,4 @@ class WebApp extends App<AppInitialProps> {
     }
 }
 
-export default appWithTranslation(WebApp)
+export default appWithTranslation(withApolloWrapper(WebApp))
