@@ -41,7 +41,7 @@ export const EventListPanel = ({ events, titleKey }: Props) => {
                     const { fromFormatted, toFormatted, justOneDate } = formatTimeRange(event?.from, event?.to)
 
                     return (
-                        <a href="/" className={classes.event}>
+                        <a href="/" className={classes.event} key={event.id}>
                             {event.name} ({justOneDate ? fromFormatted : `${fromFormatted} - ${toFormatted}`})
                         </a>
                     )

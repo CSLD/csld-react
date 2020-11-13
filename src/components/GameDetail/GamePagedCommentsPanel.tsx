@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import { useQuery } from '@apollo/client'
 import {
@@ -42,6 +42,7 @@ export const PAGE_SIZE = 10
 
 export const GamePagedCommentsPanel = ({ gameId, firstPage }: Props) => {
     const [offset, setOffset] = useState(0)
+    const lastPageRef = useRef<CommentsPaged | undefined>(firstPage)
     const classes = useStyles()
     const query = useQuery<MoreCommentsQuery, MoreCommentsQueryVariables>(moreCommentsQuery, {
         variables: {
@@ -50,9 +51,12 @@ export const GamePagedCommentsPanel = ({ gameId, firstPage }: Props) => {
             commentsLimit: PAGE_SIZE,
         },
         skip: !!firstPage && offset === 0,
+        ssr: false,
     })
 
-    const page = (query.data && query.data.gameById?.commentsPaged) || firstPage
+    lastPageRef.current = (query.data && (query.data.gameById?.commentsPaged as CommentsPaged)) || lastPageRef.current
+    const page = lastPageRef.current
+
     const lastPageOffset = page ? page.totalAmount - (page.totalAmount % 10) : 0
     const prevPageOffset = Math.max(offset - PAGE_SIZE, 0)
     const nextPageOffset = Math.min(offset + PAGE_SIZE, lastPageOffset)

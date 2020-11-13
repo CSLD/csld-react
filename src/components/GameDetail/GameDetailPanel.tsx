@@ -93,7 +93,7 @@ const emptyGame = {
     video: undefined,
     commentsPaged: {
         comments: [],
-        totalAmount: 0,
+        totalAmount: -1,
     } as CommentsPaged,
 }
 
@@ -148,11 +148,15 @@ export const GameDetailPanel = ({ gameId }: Props) => {
                             {selectedTab === 'comments' && (
                                 <GamePagedCommentsPanel
                                     gameId={gameId}
-                                    firstPage={game.commentsPaged as CommentsPaged}
+                                    firstPage={
+                                        game.commentsPaged.totalAmount >= 0
+                                            ? (game.commentsPaged as CommentsPaged)
+                                            : undefined
+                                    }
                                 />
                             )}
                             {selectedTab === 'video' && (
-                                <iframe title="video" src={game.video?.path} width="800" height="450" />
+                                <iframe title="video" src={game.video?.path || ''} width="800" height="450" />
                             )}
                         </div>
                         <div className={classes.extrasRight}>

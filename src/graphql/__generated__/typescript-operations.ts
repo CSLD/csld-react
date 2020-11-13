@@ -316,7 +316,7 @@ export type RatingCount = {
 export type Video = {
     __typename?: 'Video'
     id: Scalars['ID']
-    path: Scalars['String']
+    path?: Maybe<Scalars['String']>
 }
 
 export type Photo = {
