@@ -6,8 +6,7 @@ import { HeaderNavLink } from './HeaderNavLink'
 import { darkTheme } from '../../../theme/darkTheme'
 import { WidthFixer } from '../WidthFixer/WidthFixer'
 import { HeaderSearchForm } from './HeaderSearchForm'
-
-interface Props {}
+import HeaderUser from './HeaderUser'
 
 const useStyles = createUseStyles({
     placeholder: {
@@ -69,22 +68,25 @@ export const PageHeader = () => {
                                 />
                             </a>
                         </Link>
-                        <HeaderNavLink href="/">{t('PageHeader.games')}</HeaderNavLink>
-                        <HeaderNavLink href="/">{t('PageHeader.events')}</HeaderNavLink>
+                        <HeaderNavLink href="/" as="/">
+                            {t('PageHeader.games')}
+                        </HeaderNavLink>
+                        <HeaderNavLink href="/" as="/">
+                            {t('PageHeader.events')}
+                        </HeaderNavLink>
                         <HeaderNavLink href="https://larpy.cz" target="_blank">
                             {t('PageHeader.blog')}
                         </HeaderNavLink>
-                        <HeaderNavLink href="/">
+                        <HeaderNavLink href="/" as="/">
                             <span className={classes.buttonLike}>{t('PageHeader.addEvent')}</span>
                         </HeaderNavLink>
-                        <HeaderNavLink href="/">
+                        <HeaderNavLink href="/" as="/">
                             <span className={classes.buttonLike}>{t('PageHeader.addGame')}</span>
                         </HeaderNavLink>
                     </div>
                     <div className={classes.part}>
                         <HeaderSearchForm />
-                        <HeaderNavLink href="/">{t('PageHeader.signIn')}</HeaderNavLink>
-                        <HeaderNavLink href="/">{t('PageHeader.signUp')}</HeaderNavLink>
+                        <HeaderUser />
                     </div>
                 </WidthFixer>
             </nav>

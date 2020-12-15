@@ -1,10 +1,12 @@
 import React from 'react'
 import { createUseStyles } from 'react-jss'
+import Link from 'next/link'
 import { darkTheme } from '../../../theme/darkTheme'
 
 interface Props {
-    href: string
-    target?: string
+    readonly href: string
+    readonly as?: string
+    readonly target?: string
 }
 
 const useStyles = createUseStyles({
@@ -23,12 +25,23 @@ const useStyles = createUseStyles({
     },
 })
 
-export const HeaderNavLink: React.FC<Props> = ({ href, target, children }) => {
+export const HeaderNavLink: React.FC<Props> = ({ href, as, target, children }) => {
     const classes = useStyles()
 
+    if (target) {
+        // External link
+        return (
+            <a className={classes.link} href={href} target={target}>
+                {children}
+            </a>
+        )
+    }
+
     return (
-        <a className={classes.link} href={href} target={target}>
-            {children}
-        </a>
+        <Link href={href} as={as} passHref>
+            <a href="/" className={classes.link}>
+                {children}
+            </a>
+        </Link>
     )
 }

@@ -10,7 +10,11 @@
       "placeholder": "Hledaný výraz"
     },
     "signIn": "Přihlášení",
-    "signUp": "Registrace"
+    "signUp": "Registrace",
+    "myPage": "Moje stránka",
+    "settings": "Nastavení",
+    "admin": "Administrace",
+    "logOut": "Odhlásit se"
   },
 
   "PageFooter": {
@@ -67,5 +71,31 @@
     "events": "Události",
     "gamesOfAuthors": "Larpy autorů",
     "noSearchResults": "Žádná hra nenalezena"
+  },
+
+  "SignIn": {
+    "email": "Email",
+    "password": "Heslo",
+    "keepLoggedIn": "Trvalé přihlášení",
+    "forgotPassword":  "Zapomenuté heslo",
+    "submit": "Přihlásit",
+    "error": "Přihlašovací údaje nesouhlasí. Zkuste to znovu, nebo použijte odkaz pro zapomenuté heslo pod formulářem."
+  },
+
+  "Errors": {
+    "emailRequired": "Neplatná emailová adresa",
+    "required": "Povinná hodnota",
+    "integerRequired": "Musíte zadat kladné celé číslo"
+  },
+
+  "RecoverPassword": {
+    "sent": "Na zadanou adresu byl odeslán email s instrukcemi pro obnovu hesla.",
+    "error": "Zadaný email není evidován v databázi.",
+    "email": "Zadejte email",
+    "submit": "Odeslat",
+    "password": "Heslo",
+    "passwordConfirmation": "Potvrzení hesla",
+    "passwordConfirmationError": "Hesla jsou různá",
+    "changeError": "Nastavení hesla nebylo úspěšné, odkaz nejspíš již není platný. Zkuste si nechat poslat nový."
   }
 }

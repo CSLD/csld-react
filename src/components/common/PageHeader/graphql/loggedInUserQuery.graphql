@@ -1,0 +1,10 @@
+query LoggedInUser {
+    loggedInUser {
+        id
+        role
+        person {
+            name
+            nickname
+        }
+    }
+}

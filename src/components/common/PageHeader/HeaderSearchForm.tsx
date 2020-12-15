@@ -35,6 +35,7 @@ const useStyles = createUseStyles({
         borderBottomLeftRadius: 4,
         width: 150,
         outline: 0,
+        fontSize: '0.69rem',
     },
     searchButton: {
         backgroundColor: darkTheme.backgroundControl,
@@ -101,7 +102,7 @@ export const HeaderSearchForm = () => {
         skip: !searchActive,
     })
 
-    const games = searchResult.data?.gamesBySearchTerm || lastGames.current
+    const games = searchResult.data?.games.bySearchTerm || lastGames.current
     lastGames.current = games
     const haveGames = games && games.length > 0
     const loadingWithData = haveGames && searchResult.loading

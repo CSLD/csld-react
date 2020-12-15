@@ -16,7 +16,7 @@ export type GameDetailCommentFragment = { __typename?: 'Comment' } & Pick<
     }
 
 export type GameDetailQueryVariables = Exact<{
-    gameId: Scalars['Int']
+    gameId: Scalars['ID']
     commentsLimit: Scalars['Int']
 }>
 
@@ -65,7 +65,7 @@ export type GameDetailQuery = { __typename?: 'Query' } & {
 }
 
 export type MoreCommentsQueryVariables = Exact<{
-    gameId: Scalars['Int']
+    gameId: Scalars['ID']
     commentsOffset: Scalars['Int']
     commentsLimit: Scalars['Int']
 }>
@@ -91,7 +91,7 @@ export type BaseCommentDataFragment = { __typename?: 'Comment' } & Pick<Comment,
 export type GetHomePageDataQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetHomePageDataQuery = { __typename?: 'Query' } & {
-    homepage: { __typename?: 'Homepage' } & {
+    homepage: { __typename?: 'HomepageQuery' } & {
         lastAddedGames: Array<{ __typename?: 'Game' } & BaseGameDataFragment>
         mostPopularGames: Array<{ __typename?: 'Game' } & BaseGameDataFragment>
         nextEvents: Array<
@@ -107,9 +107,56 @@ export type GetMoreLastCommentsQueryVariables = Exact<{
 }>
 
 export type GetMoreLastCommentsQuery = { __typename?: 'Query' } & {
-    homepage: { __typename?: 'Homepage' } & {
+    homepage: { __typename?: 'HomepageQuery' } & {
         lastComments: Array<{ __typename?: 'Comment' } & BaseCommentDataFragment>
     }
+}
+
+export type FinishRecoverPasswordMutationVariables = Exact<{
+    newPassword: Scalars['String']
+    token: Scalars['String']
+}>
+
+export type FinishRecoverPasswordMutation = { __typename?: 'Mutation' } & {
+    user: { __typename?: 'UserMutation' } & {
+        finishRecoverPassword?: Maybe<{ __typename?: 'User' } & Pick<User, 'id'>>
+    }
+}
+
+export type StartRecoverPasswordMutationVariables = Exact<{
+    email: Scalars['String']
+    recoverUrl: Scalars['String']
+}>
+
+export type StartRecoverPasswordMutation = { __typename?: 'Mutation' } & {
+    user: { __typename?: 'UserMutation' } & Pick<UserMutation, 'startRecoverPassword'>
+}
+
+export type CreateUserMutationMutationVariables = Exact<{
+    input: CreateUserInput
+}>
+
+export type CreateUserMutationMutation = { __typename?: 'Mutation' } & {
+    user: { __typename?: 'UserMutation' } & { createUser: { __typename?: 'User' } & Pick<User, 'id'> }
+}
+
+export type LogInMutationVariables = Exact<{
+    userName: Scalars['String']
+    password: Scalars['String']
+}>
+
+export type LogInMutation = { __typename?: 'Mutation' } & {
+    user: { __typename?: 'UserMutation' } & { logIn?: Maybe<{ __typename?: 'User' } & Pick<User, 'id'>> }
+}
+
+export type LoggedInUserQueryVariables = Exact<{ [key: string]: never }>
+
+export type LoggedInUserQuery = { __typename?: 'Query' } & {
+    loggedInUser?: Maybe<
+        { __typename?: 'User' } & Pick<User, 'id' | 'role'> & {
+                person: { __typename?: 'Person' } & Pick<Person, 'name' | 'nickname'>
+            }
+    >
 }
 
 export type SearchGamesQueryVariables = Exact<{
@@ -118,7 +165,13 @@ export type SearchGamesQueryVariables = Exact<{
 }>
 
 export type SearchGamesQuery = { __typename?: 'Query' } & {
-    gamesBySearchTerm: Array<{ __typename?: 'Game' } & BaseGameDataFragment>
+    games: { __typename?: 'GamesQuery' } & { bySearchTerm: Array<{ __typename?: 'Game' } & BaseGameDataFragment> }
+}
+
+export type SignOutMutationVariables = Exact<{ [key: string]: never }>
+
+export type SignOutMutation = { __typename?: 'Mutation' } & {
+    user: { __typename?: 'UserMutation' } & { logOut?: Maybe<{ __typename?: 'User' } & Pick<User, 'id'>> }
 }
 
 export type BaseGameDataFragment = { __typename?: 'Game' } & Pick<
@@ -137,32 +190,105 @@ export type Scalars = {
 
 export type Query = {
     __typename?: 'Query'
-    homepage: Homepage
+    homepage: HomepageQuery
+    loggedInUser?: Maybe<User>
     gameById?: Maybe<Game>
-    gamesBySearchTerm: Array<Game>
+    eventById?: Maybe<Event>
+    userById?: Maybe<User>
+    userByEmail?: Maybe<User>
+    games: GamesQuery
+    authorizedRequiredLabels: Array<Label>
+    authorizedOptionalLabels: Array<Label>
+    admin: AdminQuery
+    donations: Array<Donation>
 }
 
 export type QueryGameByIdArgs = {
-    id: Scalars['Int']
+    id: Scalars['ID']
 }
 
-export type QueryGamesBySearchTermArgs = {
-    searchTerm: Scalars['String']
-    offset?: Maybe<Scalars['Int']>
-    limit?: Maybe<Scalars['Int']>
+export type QueryEventByIdArgs = {
+    id: Scalars['ID']
 }
 
-export type Homepage = {
-    __typename?: 'Homepage'
+export type QueryUserByIdArgs = {
+    id: Scalars['ID']
+}
+
+export type QueryUserByEmailArgs = {
+    email: Scalars['String']
+}
+
+export type Mutation = {
+    __typename?: 'Mutation'
+    user: UserMutation
+    game: GameMutation
+    event: EventMutation
+    admin: AdminMutation
+}
+
+export type HomepageQuery = {
+    __typename?: 'HomepageQuery'
     lastAddedGames: Array<Game>
     mostPopularGames: Array<Game>
     lastComments: Array<Comment>
     nextEvents: Array<Event>
 }
 
-export type HomepageLastCommentsArgs = {
+export type HomepageQueryLastCommentsArgs = {
     offset?: Maybe<Scalars['Int']>
     limit?: Maybe<Scalars['Int']>
+}
+
+export type GamesQuery = {
+    __typename?: 'GamesQuery'
+    bySearchTerm: Array<Game>
+    recentAndMostPlayed: GamesPaged
+    mostPlayed: GamesPaged
+    recent: GamesPaged
+    best: GamesPaged
+    mostCommented: GamesPaged
+}
+
+export type GamesQueryBySearchTermArgs = {
+    searchTerm: Scalars['String']
+    offset?: Maybe<Scalars['Int']>
+    limit?: Maybe<Scalars['Int']>
+}
+
+export type GamesQueryRecentAndMostPlayedArgs = {
+    offset?: Maybe<Scalars['Int']>
+    limit?: Maybe<Scalars['Int']>
+    requiredLabels?: Maybe<Array<Scalars['ID']>>
+    otherLabels?: Maybe<Array<Scalars['ID']>>
+}
+
+export type GamesQueryMostPlayedArgs = {
+    offset?: Maybe<Scalars['Int']>
+    limit?: Maybe<Scalars['Int']>
+    requiredLabels?: Maybe<Array<Scalars['ID']>>
+    otherLabels?: Maybe<Array<Scalars['ID']>>
+}
+
+export type GamesQueryRecentArgs = {
+    offset?: Maybe<Scalars['Int']>
+    limit?: Maybe<Scalars['Int']>
+    requiredLabels?: Maybe<Array<Scalars['ID']>>
+    otherLabels?: Maybe<Array<Scalars['ID']>>
+}
+
+export type GamesQueryBestArgs = {
+    offset?: Maybe<Scalars['Int']>
+    limit?: Maybe<Scalars['Int']>
+    requiredLabels?: Maybe<Array<Scalars['ID']>>
+    otherLabels?: Maybe<Array<Scalars['ID']>>
+}
+
+export type GamesQueryMostCommentedArgs = {
+    offset?: Maybe<Scalars['Int']>
+    limit?: Maybe<Scalars['Int']>
+    requiredLabels?: Maybe<Array<Scalars['ID']>>
+    otherLabels?: Maybe<Array<Scalars['ID']>>
 }
 
 export type Game = {
@@ -218,6 +344,12 @@ export type CommentsPaged = {
     totalAmount: Scalars['Int']
 }
 
+export type GamesPaged = {
+    __typename?: 'GamesPaged'
+    games: Array<Game>
+    totalAmount: Scalars['Int']
+}
+
 export type Event = {
     __typename?: 'Event'
     id: Scalars['ID']
@@ -270,7 +402,7 @@ export type User = {
     __typename?: 'User'
     id: Scalars['ID']
     lastRating?: Maybe<Scalars['Int']>
-    role?: Maybe<Scalars['Int']>
+    role?: Maybe<UserRole>
     person: Person
     amountOfComments: Scalars['Int']
     amountOfPlayed: Scalars['Int']
@@ -329,4 +461,335 @@ export type Photo = {
     featured: Scalars['Boolean']
     game: Game
     image: Image
+}
+
+export type UserMutation = {
+    __typename?: 'UserMutation'
+    logIn?: Maybe<User>
+    logOut?: Maybe<User>
+    createUser: User
+    updateLoggedInUser: User
+    updateLoggedInUserPassword: User
+    startRecoverPassword?: Maybe<Scalars['Boolean']>
+    finishRecoverPassword?: Maybe<User>
+}
+
+export type UserMutationLogInArgs = {
+    userName: Scalars['String']
+    password: Scalars['String']
+}
+
+export type UserMutationCreateUserArgs = {
+    input: CreateUserInput
+}
+
+export type UserMutationUpdateLoggedInUserArgs = {
+    input: UpdateLoggedInUserInput
+}
+
+export type UserMutationUpdateLoggedInUserPasswordArgs = {
+    oldPassword: Scalars['String']
+    newPassword: Scalars['String']
+}
+
+export type UserMutationStartRecoverPasswordArgs = {
+    email: Scalars['String']
+    recoverUrl: Scalars['String']
+}
+
+export type UserMutationFinishRecoverPasswordArgs = {
+    token: Scalars['String']
+    newPassword: Scalars['String']
+}
+
+export type CreateUserInput = {
+    email: Scalars['String']
+    password: Scalars['String']
+    profilePicture?: Maybe<UploadedFileInput>
+    name: Scalars['String']
+    nickname?: Maybe<Scalars['String']>
+    birthDate?: Maybe<Scalars['String']>
+    city?: Maybe<Scalars['String']>
+    recaptcha: Scalars['String']
+}
+
+export type UpdateLoggedInUserInput = {
+    email: Scalars['String']
+    profilePicture?: Maybe<UploadedFileInput>
+    name: Scalars['String']
+    nickname?: Maybe<Scalars['String']>
+    birthDate?: Maybe<Scalars['String']>
+    city?: Maybe<Scalars['String']>
+}
+
+export type GameMutation = {
+    __typename?: 'GameMutation'
+    createGame: Game
+    updateGame: Game
+    deleteGame: Game
+    rateGame: Game
+    deleteGameRating: Game
+    setGamePlayedState: Game
+    createOrUpdateComment: Game
+    setCommentVisible: Game
+    setCommentLiked: Game
+}
+
+export type GameMutationCreateGameArgs = {
+    input?: Maybe<CreateGameInput>
+}
+
+export type GameMutationUpdateGameArgs = {
+    input?: Maybe<UpdateGameInput>
+}
+
+export type GameMutationDeleteGameArgs = {
+    gameId: Scalars['ID']
+}
+
+export type GameMutationRateGameArgs = {
+    gameId: Scalars['ID']
+    rating?: Maybe<Scalars['Int']>
+}
+
+export type GameMutationDeleteGameRatingArgs = {
+    gameId: Scalars['ID']
+    userId?: Maybe<Scalars['ID']>
+}
+
+export type GameMutationSetGamePlayedStateArgs = {
+    gameId: Scalars['ID']
+    state: Scalars['Int']
+}
+
+export type GameMutationCreateOrUpdateCommentArgs = {
+    gameId: Scalars['ID']
+    comment: Scalars['String']
+}
+
+export type GameMutationSetCommentVisibleArgs = {
+    commentId: Scalars['ID']
+    visible: Scalars['Boolean']
+}
+
+export type GameMutationSetCommentLikedArgs = {
+    commentId: Scalars['ID']
+    liked: Scalars['Boolean']
+}
+
+export type CreateGameInput = {
+    recaptcha: Scalars['String']
+    name: Scalars['String']
+    description: Scalars['String']
+    authors: Array<Scalars['ID']>
+    newAuthors: Array<NewAuthorInput>
+    groupAuthors: Array<Scalars['ID']>
+    newGroupAuthors: Array<NewGroupAuthorInput>
+    labels: Array<Scalars['ID']>
+    newLabels: Array<NewLabelInput>
+    year?: Maybe<Scalars['Int']>
+    players?: Maybe<Scalars['Int']>
+    menRole?: Maybe<Scalars['Int']>
+    womenRole?: Maybe<Scalars['Int']>
+    bothRole?: Maybe<Scalars['Int']>
+    hours?: Maybe<Scalars['Int']>
+    days?: Maybe<Scalars['Int']>
+    coverPhoto?: Maybe<UploadedFileInput>
+    web?: Maybe<Scalars['String']>
+    photoAuthor?: Maybe<Scalars['String']>
+    galleryURL?: Maybe<Scalars['String']>
+    video?: Maybe<Scalars['String']>
+    ratingsDisabled?: Maybe<Scalars['Boolean']>
+    commentsDisabled?: Maybe<Scalars['Boolean']>
+}
+
+export type UpdateGameInput = {
+    id: Scalars['ID']
+    name: Scalars['String']
+    description: Scalars['String']
+    authors: Array<Scalars['ID']>
+    newAuthors: Array<NewAuthorInput>
+    groupAuthors: Array<Scalars['ID']>
+    newGroupAuthors: Array<NewGroupAuthorInput>
+    labels: Array<Scalars['ID']>
+    newLabels: Array<NewLabelInput>
+    year?: Maybe<Scalars['Int']>
+    players?: Maybe<Scalars['Int']>
+    menRole?: Maybe<Scalars['Int']>
+    womenRole?: Maybe<Scalars['Int']>
+    bothRole?: Maybe<Scalars['Int']>
+    hours?: Maybe<Scalars['Int']>
+    days?: Maybe<Scalars['Int']>
+    coverPhoto?: Maybe<UploadedFileInput>
+    web?: Maybe<Scalars['String']>
+    photoAuthor?: Maybe<Scalars['String']>
+    galleryURL?: Maybe<Scalars['String']>
+    video?: Maybe<Scalars['String']>
+    ratingsDisabled?: Maybe<Scalars['Boolean']>
+    commentsDisabled?: Maybe<Scalars['Boolean']>
+}
+
+export type UploadedFileInput = {
+    fileName: Scalars['String']
+    contents: Scalars['String']
+}
+
+export type NewAuthorInput = {
+    email?: Maybe<Scalars['String']>
+    name: Scalars['String']
+    nickname?: Maybe<Scalars['String']>
+}
+
+export type NewGroupAuthorInput = {
+    name: Scalars['String']
+}
+
+export type NewLabelInput = {
+    name: Scalars['String']
+    description?: Maybe<Scalars['String']>
+}
+
+export type EventMutation = {
+    __typename?: 'EventMutation'
+    createEvent: Event
+    updateEvent: Event
+    deleteEvent: Event
+}
+
+export type EventMutationCreateEventArgs = {
+    input: CreateEventInput
+}
+
+export type EventMutationUpdateEventArgs = {
+    input: UpdateEventInput
+}
+
+export type EventMutationDeleteEventArgs = {
+    id: Scalars['ID']
+}
+
+export type CreateEventInput = {
+    recaptcha: Scalars['String']
+    name: Scalars['String']
+    fromDate: Scalars['String']
+    toDate: Scalars['String']
+    amountOfPlayers: Scalars['Int']
+    web?: Maybe<Scalars['String']>
+    loc: Scalars['String']
+    description?: Maybe<Scalars['String']>
+    games: Array<Scalars['ID']>
+    labels: Array<Scalars['ID']>
+    newLabels: Array<NewLabelInput>
+    latitude?: Maybe<Scalars['Float']>
+    longitude?: Maybe<Scalars['Float']>
+}
+
+export type UpdateEventInput = {
+    id: Scalars['ID']
+    name: Scalars['String']
+    fromDate: Scalars['String']
+    toDate: Scalars['String']
+    amountOfPlayers: Scalars['Int']
+    web?: Maybe<Scalars['String']>
+    loc: Scalars['String']
+    description?: Maybe<Scalars['String']>
+    games: Array<Scalars['ID']>
+    labels: Array<Scalars['ID']>
+    newLabels: Array<NewLabelInput>
+    latitude?: Maybe<Scalars['Float']>
+    longitude?: Maybe<Scalars['Float']>
+}
+
+export type AdminQuery = {
+    __typename?: 'AdminQuery'
+    allLabels: Array<Label>
+    allUsers: Array<User>
+    ratingStats: Array<RatingStats>
+    commentStats: Array<CommentStats>
+    selfRated: Array<SelfRated>
+}
+
+export type RatingStats = {
+    __typename?: 'RatingStats'
+    year: Scalars['Int']
+    month: Scalars['Int']
+    numRatings: Scalars['Int']
+    averageRating: Scalars['Float']
+}
+
+export type CommentStats = {
+    __typename?: 'CommentStats'
+    year: Scalars['Int']
+    month: Scalars['Int']
+    amount: Scalars['Int']
+}
+
+export type SelfRated = {
+    __typename?: 'SelfRated'
+    user: User
+    game: Game
+}
+
+export type AdminMutation = {
+    __typename?: 'AdminMutation'
+    updateLabel: Label
+    setLabelRequired: Label
+    setLabelAuthorized: Label
+    deleteLabel?: Maybe<Label>
+    setUserRole: User
+    deleteUser?: Maybe<User>
+}
+
+export type AdminMutationUpdateLabelArgs = {
+    input: UpdateLabelInput
+}
+
+export type AdminMutationSetLabelRequiredArgs = {
+    labelId: Scalars['ID']
+    required: Scalars['Boolean']
+}
+
+export type AdminMutationSetLabelAuthorizedArgs = {
+    labelId: Scalars['ID']
+    authorized: Scalars['Boolean']
+}
+
+export type AdminMutationDeleteLabelArgs = {
+    labelId: Scalars['ID']
+}
+
+export type AdminMutationSetUserRoleArgs = {
+    userId: Scalars['ID']
+    role: UserRoleIn
+}
+
+export type AdminMutationDeleteUserArgs = {
+    userId: Scalars['ID']
+}
+
+export enum UserRole {
+    User = 'USER',
+    Editor = 'EDITOR',
+    Admin = 'ADMIN',
+    Author = 'AUTHOR',
+    Anonymous = 'ANONYMOUS',
+}
+
+export enum UserRoleIn {
+    User = 'USER',
+    Editor = 'EDITOR',
+    Admin = 'ADMIN',
+}
+
+export type UpdateLabelInput = {
+    id: Scalars['ID']
+    name: Scalars['String']
+    description?: Maybe<Scalars['String']>
+}
+
+export type Donation = {
+    __typename?: 'Donation'
+    amount: Scalars['Float']
+    donor?: Maybe<Scalars['String']>
+    description?: Maybe<Scalars['String']>
 }

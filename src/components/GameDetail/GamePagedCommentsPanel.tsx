@@ -12,7 +12,7 @@ import { GameCommentPanel } from './GameCommentPanel'
 const moreCommentsQuery = require('./graphql/moreComments.graphql')
 
 interface Props {
-    readonly gameId: number
+    readonly gameId: string
     readonly firstPage?: CommentsPaged
 }
 

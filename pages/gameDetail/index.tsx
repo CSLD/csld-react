@@ -14,7 +14,7 @@ const GameDetailPage: NextPage<Props, InitialProps> = () => {
     return (
         <>
             <PageHeader />
-            <GameDetailPanel gameId={parseInt(router.query.id as string, 10)} />
+            <GameDetailPanel gameId={router.query.id as string} />
             <PageFooter />
         </>
     )

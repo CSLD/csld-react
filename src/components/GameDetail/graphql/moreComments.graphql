@@ -1,6 +1,6 @@
 #import './fragments.graphql'
 
-query MoreComments($gameId: Int!, $commentsOffset: Int!, $commentsLimit: Int!) {
+query MoreComments($gameId: ID!, $commentsOffset: Int!, $commentsLimit: Int!) {
     gameById(id: $gameId) {
         id
         commentsPaged(offset: $commentsOffset, limit: $commentsLimit) {

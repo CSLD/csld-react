@@ -20,7 +20,7 @@ const cachedGameDataFragment = require('./graphql/cachedGameData.graphql')
 const gameDetailQuery = require('./graphql/gameDetail.graphql')
 
 interface Props {
-    readonly gameId: number
+    readonly gameId: string
 }
 
 const useStyles = createUseStyles({
