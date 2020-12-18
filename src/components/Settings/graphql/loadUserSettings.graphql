@@ -1,0 +1,12 @@
+query LoadUserSettings {
+    loggedInUser {
+        id
+        person {
+            email
+            name
+            nickname
+            birthDate
+            city
+        }
+    }
+}

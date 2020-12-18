@@ -132,12 +132,22 @@ export type StartRecoverPasswordMutation = { __typename?: 'Mutation' } & {
     user: { __typename?: 'UserMutation' } & Pick<UserMutation, 'startRecoverPassword'>
 }
 
-export type CreateUserMutationMutationVariables = Exact<{
-    input: CreateUserInput
+export type LoadUserSettingsQueryVariables = Exact<{ [key: string]: never }>
+
+export type LoadUserSettingsQuery = { __typename?: 'Query' } & {
+    loggedInUser?: Maybe<
+        { __typename?: 'User' } & Pick<User, 'id'> & {
+                person: { __typename?: 'Person' } & Pick<Person, 'email' | 'name' | 'nickname' | 'birthDate' | 'city'>
+            }
+    >
+}
+
+export type UpdateUserSettingsMutationVariables = Exact<{
+    input: UpdateLoggedInUserInput
 }>
 
-export type CreateUserMutationMutation = { __typename?: 'Mutation' } & {
-    user: { __typename?: 'UserMutation' } & { createUser: { __typename?: 'User' } & Pick<User, 'id'> }
+export type UpdateUserSettingsMutation = { __typename?: 'Mutation' } & {
+    user: { __typename?: 'UserMutation' } & { updateLoggedInUser: { __typename?: 'User' } & Pick<User, 'id'> }
 }
 
 export type LogInMutationVariables = Exact<{
@@ -147,6 +157,30 @@ export type LogInMutationVariables = Exact<{
 
 export type LogInMutation = { __typename?: 'Mutation' } & {
     user: { __typename?: 'UserMutation' } & { logIn?: Maybe<{ __typename?: 'User' } & Pick<User, 'id'>> }
+}
+
+export type CheckEmailQueryVariables = Exact<{
+    email: Scalars['String']
+}>
+
+export type CheckEmailQuery = { __typename?: 'Query' } & {
+    userByEmail?: Maybe<
+        { __typename?: 'User' } & Pick<User, 'id'> & { person: { __typename?: 'Person' } & Pick<Person, 'name'> }
+    >
+}
+
+export type CreateUserMutationVariables = Exact<{
+    input: CreateUserInput
+}>
+
+export type CreateUserMutation = { __typename?: 'Mutation' } & {
+    user: { __typename?: 'UserMutation' } & { createUser: { __typename?: 'User' } & Pick<User, 'id'> }
+}
+
+export type GetConfigQueryVariables = Exact<{ [key: string]: never }>
+
+export type GetConfigQuery = { __typename?: 'Query' } & {
+    config: { __typename?: 'Config' } & Pick<Config, 'reCaptchaKey'>
 }
 
 export type LoggedInUserQueryVariables = Exact<{ [key: string]: never }>
@@ -201,18 +235,19 @@ export type Query = {
     authorizedOptionalLabels: Array<Label>
     admin: AdminQuery
     donations: Array<Donation>
+    config: Config
 }
 
 export type QueryGameByIdArgs = {
-    id: Scalars['ID']
+    gameId: Scalars['ID']
 }
 
 export type QueryEventByIdArgs = {
-    id: Scalars['ID']
+    eventId: Scalars['ID']
 }
 
 export type QueryUserByIdArgs = {
-    id: Scalars['ID']
+    userId: Scalars['ID']
 }
 
 export type QueryUserByEmailArgs = {
@@ -578,7 +613,6 @@ export type GameMutationSetCommentLikedArgs = {
 }
 
 export type CreateGameInput = {
-    recaptcha: Scalars['String']
     name: Scalars['String']
     description: Scalars['String']
     authors: Array<Scalars['ID']>
@@ -669,7 +703,6 @@ export type EventMutationDeleteEventArgs = {
 }
 
 export type CreateEventInput = {
-    recaptcha: Scalars['String']
     name: Scalars['String']
     fromDate: Scalars['String']
     toDate: Scalars['String']
@@ -792,4 +825,9 @@ export type Donation = {
     amount: Scalars['Float']
     donor?: Maybe<Scalars['String']>
     description?: Maybe<Scalars['String']>
+}
+
+export type Config = {
+    __typename?: 'Config'
+    reCaptchaKey: Scalars['String']
 }

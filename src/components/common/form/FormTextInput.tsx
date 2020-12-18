@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { FocusEvent, useState } from 'react'
 import { FieldInputProps, FieldMetaState } from 'react-final-form'
-import { Form, InputGroup, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { Form, InputGroup } from 'react-bootstrap'
 import FieldWithError from './FieldWithError'
-import { createUseStyles } from 'react-jss'
 
 export interface FormTextInputProps {
     readonly input: FieldInputProps<string>
@@ -13,10 +12,12 @@ export interface FormTextInputProps {
     readonly appendIcon?: React.ReactElement
     readonly hint?: string
     readonly type?: string
+    readonly onBlur?: (e: FocusEvent<HTMLInputElement>) => void
+    readonly errorHint?: React.ReactNode
 }
 
 const FormTextInput = ({
-    input,
+    input: { onBlur: inputOnBlur, ...inputRest },
     meta,
     showErrorPlaceholder = true,
     placeholder,
@@ -24,29 +25,54 @@ const FormTextInput = ({
     type,
     appendIcon,
     hint,
+    errorHint,
+    onBlur,
 }: FormTextInputProps) => {
+    const [wasBlurred, setWasBlurred] = useState(false)
+
+    const handleOnBlur = (e: FocusEvent<HTMLInputElement>) => {
+        setWasBlurred(true)
+        inputOnBlur?.(e)
+        onBlur?.(e)
+    }
+
     return (
-        <FieldWithError meta={meta} showErrorPlaceholder={showErrorPlaceholder}>
-            {label && <Form.Label>{label}</Form.Label>}
-            {appendIcon && (
-                <InputGroup>
+        <FieldWithError
+            meta={meta}
+            showErrorPlaceholder={showErrorPlaceholder}
+            hint={hint}
+            errorHint={errorHint}
+            hideError={!wasBlurred}
+        >
+            {isInvalid => (
+                <>
+                    {label && <Form.Label>{label}</Form.Label>}
+                    {appendIcon && (
+                        <InputGroup>
+                            <Form.Control
+                                isInvalid={isInvalid}
+                                type={type}
+                                onBlur={handleOnBlur}
+                                /* eslint-disable-next-line react/jsx-props-no-spreading */
+                                {...inputRest}
+                                placeholder={placeholder}
+                            />
+                            <InputGroup.Append>{appendIcon}</InputGroup.Append>
+                        </InputGroup>
+                    )}
                     {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-                    <Form.Control type={type} {...input} placeholder={placeholder} />
-                    <InputGroup.Append>
-                        {hint && (
-                            <OverlayTrigger
-                                placement="bottom"
-                                overlay={<Tooltip id={`${input.name}-tooltip`}>{hint}</Tooltip>}
-                            >
-                                <InputGroup.Text>{appendIcon}</InputGroup.Text>
-                            </OverlayTrigger>
-                        )}
-                        {!hint && appendIcon}
-                    </InputGroup.Append>
-                </InputGroup>
+                    {!appendIcon && (
+                        <Form.Control
+                            isInvalid={isInvalid}
+                            type={type}
+                            onBlur={handleOnBlur}
+                            /* eslint-disable-next-line react/jsx-props-no-spreading */
+                            {...inputRest}
+                            placeholder={placeholder}
+                        />
+                    )}
+                </>
             )}
-            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-            {!appendIcon && <Form.Control type={type} {...input} placeholder={placeholder} />}
         </FieldWithError>
     )
 }

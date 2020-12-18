@@ -79,7 +79,7 @@ const RecoverPasswordFinish = ({ token }: Props) => {
     }
 
     return (
-        <FormPageRow>
+        <FormPageRow headerText={t('RecoverPassword.header')}>
             {state === 'error' && <div className={classes.error}>{t('RecoverPassword.changeError')}</div>}
             <FinalForm<FormData>
                 onSubmit={onSubmit}

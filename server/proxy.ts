@@ -33,7 +33,8 @@ const proxy: { [key: string]: {} } = {
         onProxyRes,
     },
     '/user-icon': {
-        target: process.env.USER_ICON_BASE,
+        target: process.env.API_URL,
+        pathRewrite: { '^/user-icon': process.env.USER_ICON_PATH },
         changeOrigin: true,
     },
 }

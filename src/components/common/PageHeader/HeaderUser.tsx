@@ -79,6 +79,9 @@ const HeaderUser = () => {
         if (eventKey === 'settings') {
             router.push('/settings')
         }
+        if (eventKey === 'changePassword') {
+            router.push('/settings/changePassword')
+        }
         if (eventKey === 'admin') {
             router.push('/admin')
         }
@@ -102,6 +105,7 @@ const HeaderUser = () => {
                 <Dropdown.Menu>
                     <Dropdown.Item eventKey="myPage">{t('PageHeader.myPage')}</Dropdown.Item>
                     <Dropdown.Item eventKey="settings">{t('PageHeader.settings')}</Dropdown.Item>
+                    <Dropdown.Item eventKey="changePassword">{t('PageHeader.changePassword')}</Dropdown.Item>
                     {showAdminMenu && <Dropdown.Item eventKey="admin">{t('PageHeader.admin')}</Dropdown.Item>}
                     <Dropdown.Item eventKey="logOut">{t('PageHeader.logOut')}</Dropdown.Item>
                 </Dropdown.Menu>

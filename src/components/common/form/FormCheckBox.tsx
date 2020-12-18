@@ -10,11 +10,21 @@ export interface FormCheckBoxProps {
     readonly label: string
 }
 
-const FormCheckBox = ({ input, label, meta, showErrorPlaceholder }: FormCheckBoxProps) => {
+const FormCheckBox = ({ input: { value, ...inputRest }, label, meta, showErrorPlaceholder }: FormCheckBoxProps) => {
     return (
         <FieldWithError meta={meta} showErrorPlaceholder={showErrorPlaceholder}>
-            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-            <Form.Check type={'checkbox' as any} label={label} {...input} />
+            {isInvalid => (
+                <>
+                    <Form.Check
+                        isInvalid={isInvalid}
+                        type={'checkbox' as any}
+                        label={label}
+                        checked={value}
+                        /* eslint-disable-next-line react/jsx-props-no-spreading */
+                        {...inputRest}
+                    />
+                </>
+            )}
         </FieldWithError>
     )
 }

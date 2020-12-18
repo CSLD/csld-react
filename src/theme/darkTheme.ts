@@ -7,6 +7,7 @@ export const darkTheme = {
     backgroundAlmostNearWhite2: '#E7E7E7',
     backgroundNearWhite: '#EFEFEF',
     backgroundWhite: '#f5f5f5',
+    backgroundRealWhite: '#fff',
     text: '#C0C0C0',
     textLighter: '#AFAFAF',
     textLight: '#F0F0F0',

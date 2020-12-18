@@ -1,7 +1,7 @@
 #import './fragments.graphql'
 
 query GameDetail($gameId: ID!, $commentsLimit: Int!) {
-    gameById(id: $gameId) {
+    gameById(gameId: $gameId) {
         id
         name
         players

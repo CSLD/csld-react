@@ -2,9 +2,11 @@ import React from 'react'
 import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
 import { darkTheme } from '../../../theme/darkTheme'
+import Link from 'next/link'
+import { UrlObject } from 'url'
 
 interface Props {
-    readonly href?: string
+    readonly href: string | UrlObject
     readonly className?: string
 }
 
@@ -23,8 +25,10 @@ export const TextLink: React.FC<Props> = ({ href, className, children }) => {
     const classes = useStyles()
 
     return (
-        <a href={href} className={classNames(classes.link, className)}>
-            {children}
-        </a>
+        <Link href={href}>
+            <a href={typeof href === 'string' ? href : '/'} className={classNames(classes.link, className)}>
+                {children}
+            </a>
+        </Link>
     )
 }

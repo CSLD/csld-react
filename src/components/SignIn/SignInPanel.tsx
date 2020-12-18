@@ -74,7 +74,7 @@ const SignInPanel = () => {
     }
 
     return (
-        <FormPageRow>
+        <FormPageRow headerText={t('SignIn.header')}>
             {state === 'error' && <div className={classes.error}>{t('SignIn.error')}</div>}
             <FinalForm<FormData>
                 onSubmit={onSubmit}
@@ -89,9 +89,7 @@ const SignInPanel = () => {
                                 showErrorPlaceholder={false}
                             /> */}
                         <div className={classes.recoverPassword}>
-                            <Link href={{ pathname: '/recoverPassword' }} passHref>
-                                <TextLink>{t('SignIn.forgotPassword')}</TextLink>
-                            </Link>
+                            <TextLink href={{ pathname: '/recoverPassword' }}>{t('SignIn.forgotPassword')}</TextLink>
                         </div>
                         <Button variant="dark" type="submit" disabled={state === 'loading'}>
                             {t('SignIn.submit')}

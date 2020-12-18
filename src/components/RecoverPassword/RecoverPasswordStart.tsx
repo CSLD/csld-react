@@ -61,7 +61,7 @@ const RecoverPasswordStart = () => {
     }
 
     return (
-        <FormPageRow>
+        <FormPageRow headerText={t('RecoverPassword.header')}>
             {state === 'sent' && <div className={classes.sent}>{t('RecoverPassword.sent')}</div>}
             {state === 'error' && <div className={classes.error}>{t('RecoverPassword.error')}</div>}
             <FinalForm<FormData>
