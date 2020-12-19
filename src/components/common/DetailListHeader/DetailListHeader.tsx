@@ -10,6 +10,7 @@ const useStyles = createUseStyles({
         padding: '10px 15px',
         borderRadius: 3,
         margin: 0,
+        display: 'flex',
     },
 })
 

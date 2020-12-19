@@ -167,7 +167,9 @@ export const HeaderSearchForm = () => {
                                 [classes.gameSpacer]: n > 0,
                                 [classes.gameLoading]: loadingWithData,
                             })
-                            return <GameBaseDataPanel key={game.id} game={game} className={gameClasses} />
+                            return (
+                                <GameBaseDataPanel key={game.id} game={game} className={gameClasses} variant="dark" />
+                            )
                         })}
                 </div>
             )}

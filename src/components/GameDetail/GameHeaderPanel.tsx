@@ -4,6 +4,7 @@ import { Game, User, Person, Group, Label } from 'src/graphql/__generated__/type
 import { useTranslation } from 'react-i18next'
 import { i18n as Ti18n, TFunction } from 'i18next'
 import { darkTheme } from '../../theme/darkTheme'
+import UserLink from '../common/UserLink'
 
 interface Props {
     readonly game: Pick<
@@ -181,11 +182,11 @@ export const GameHeaderPanel = ({ game }: Props) => {
                         {game.authors.map((author, n) => (
                             <React.Fragment key={author.id}>
                                 {n > 0 && ', '}
-                                <a href="/" className={classes.link}>
+                                <UserLink userId={author.id} className={classes.link}>
                                     {author.person.nickname}
                                     {author.person.nickname && author.person.name ? ' ' : ''}
                                     {author.person.name}
-                                </a>
+                                </UserLink>
                             </React.Fragment>
                         ))}
                     </p>

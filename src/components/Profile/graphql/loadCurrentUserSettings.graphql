@@ -1,6 +1,8 @@
-query LoadUserSettings {
+query LoadCurrentUserSettings {
     loggedInUser {
         id
+        amountOfPlayed
+        amountOfCreated
         person {
             email
             name

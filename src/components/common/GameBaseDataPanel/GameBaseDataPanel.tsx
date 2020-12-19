@@ -17,22 +17,33 @@ export type GameBaseData = Pick<
 
 interface Props {
     readonly game: GameBaseData
+    readonly variant: 'dark' | 'light'
     readonly className?: string
 }
 
 const useStyles = createUseStyles({
+    wrapperLight: {
+        background: darkTheme.backgroundWhite,
+        color: darkTheme.textOnLightLighter,
+        '&:hover': {
+            backgroundColor: darkTheme.backgroundAlmostNearWhite2,
+            color: darkTheme.textOnLightLighter,
+        },
+    },
+    wrapperDark: {
+        background: darkTheme.backgroundLight,
+        color: darkTheme.text,
+        '&:hover': {
+            backgroundColor: darkTheme.backgroundHover,
+            color: darkTheme.text,
+        },
+    },
     wrapper: {
         display: 'flex',
         flexDirection: 'row',
-        background: darkTheme.backgroundLight,
         borderRadius: 4,
-        color: darkTheme.text,
         padding: 15,
         boxSizing: 'border-box',
-
-        '&:hover': {
-            backgroundColor: darkTheme.backgroundHover,
-        },
     },
     rightWrapper: {
         display: 'block',
@@ -51,7 +62,6 @@ const useStyles = createUseStyles({
         textOverflow: 'ellipsis',
         fontSize: '0.82rem',
         fontWeight: 700,
-        marginTop: 4,
         marginBottom: 5,
     },
     icons: {
@@ -65,12 +75,21 @@ const useStyles = createUseStyles({
 })
 
 export const GameBaseDataPanel = ({
-    className,
+    variant,
     game: { id, name, players, amountOfComments, amountOfRatings, averageRating },
+    className,
 }: Props) => {
     const classes = useStyles()
     return (
-        <GameLink game={{ id, name }} className={classNames(classes.wrapper, className)}>
+        <GameLink
+            game={{ id, name }}
+            className={classNames({
+                [classes.wrapper]: true,
+                [classes.wrapperDark]: variant === 'dark',
+                [classes.wrapperLight]: variant === 'light',
+                [className || 'x']: !!className,
+            })}
+        >
             <GameRatingBox amountOfRatings={amountOfRatings} rating={averageRating} className={classes.rating} />
             <span className={classes.rightWrapper}>
                 <span className={classes.name}>{name}</span>

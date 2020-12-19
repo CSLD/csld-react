@@ -5,16 +5,6 @@ export type CachedGameDataFragment = { __typename?: 'Game' } & Pick<
     'id' | 'name' | 'averageRating' | 'amountOfRatings'
 >
 
-export type GameDetailCommentFragment = { __typename?: 'Comment' } & Pick<
-    Comment,
-    'id' | 'added' | 'amountOfUpvotes' | 'comment' | 'isHidden'
-> & {
-        user: { __typename?: 'User' } & Pick<User, 'id'> & {
-                person: { __typename?: 'Person' } & Pick<Person, 'name' | 'nickname'>
-                image?: Maybe<{ __typename?: 'Image' } & Pick<Image, 'id'>>
-            }
-    }
-
 export type GameDetailQueryVariables = Exact<{
     gameId: Scalars['ID']
     commentsLimit: Scalars['Int']
@@ -112,6 +102,105 @@ export type GetMoreLastCommentsQuery = { __typename?: 'Query' } & {
     }
 }
 
+export type ChangePasswordMutationVariables = Exact<{
+    oldPassword: Scalars['String']
+    newPassword: Scalars['String']
+}>
+
+export type ChangePasswordMutation = { __typename?: 'Mutation' } & {
+    user: { __typename?: 'UserMutation' } & { updateLoggedInUserPassword: { __typename?: 'User' } & Pick<User, 'id'> }
+}
+
+export type UserProfileDataFragment = { __typename?: 'User' } & Pick<
+    User,
+    'id' | 'amountOfPlayed' | 'amountOfCreated'
+> & {
+        person: { __typename?: 'Person' } & Pick<Person, 'email' | 'name' | 'nickname' | 'birthDate' | 'city'>
+        authoredGames: Array<{ __typename?: 'Game' } & BaseGameDataFragment>
+        playedGames: Array<
+            { __typename?: 'GameWithRating' } & Pick<GameWithRating, 'rating'> & {
+                    game: { __typename?: 'Game' } & Pick<Game, 'year'> & BaseGameDataFragment
+                }
+        >
+        wantedGames: Array<{ __typename?: 'Game' } & Pick<Game, 'year'> & BaseGameDataFragment>
+    }
+
+export type LoadCurrentUserProfileQueryVariables = Exact<{
+    commentsLimit: Scalars['Int']
+}>
+
+export type LoadCurrentUserProfileQuery = { __typename?: 'Query' } & {
+    loggedInUser?: Maybe<
+        { __typename?: 'User' } & {
+            commentsPaged: { __typename?: 'CommentsPaged' } & Pick<CommentsPaged, 'totalAmount'> & {
+                    comments: Array<
+                        { __typename?: 'Comment' } & {
+                            game: { __typename?: 'Game' } & BaseGameDataFragment
+                        } & GameDetailCommentFragment
+                    >
+                }
+        } & UserProfileDataFragment
+    >
+}
+
+export type LoadCurrentUserSettingsQueryVariables = Exact<{ [key: string]: never }>
+
+export type LoadCurrentUserSettingsQuery = { __typename?: 'Query' } & {
+    loggedInUser?: Maybe<
+        { __typename?: 'User' } & Pick<User, 'id' | 'amountOfPlayed' | 'amountOfCreated'> & {
+                person: { __typename?: 'Person' } & Pick<Person, 'email' | 'name' | 'nickname' | 'birthDate' | 'city'>
+            }
+    >
+}
+
+export type LoadUserProfileQueryVariables = Exact<{
+    userId: Scalars['ID']
+    commentsLimit: Scalars['Int']
+}>
+
+export type LoadUserProfileQuery = { __typename?: 'Query' } & {
+    loggedInUser?: Maybe<{ __typename?: 'User' } & Pick<User, 'id'>>
+    userById?: Maybe<
+        { __typename?: 'User' } & {
+            commentsPaged: { __typename?: 'CommentsPaged' } & Pick<CommentsPaged, 'totalAmount'> & {
+                    comments: Array<
+                        { __typename?: 'Comment' } & {
+                            game: { __typename?: 'Game' } & BaseGameDataFragment
+                        } & GameDetailCommentFragment
+                    >
+                }
+        } & UserProfileDataFragment
+    >
+}
+
+export type MoreUserCommentsQueryVariables = Exact<{
+    userId: Scalars['ID']
+    offset: Scalars['Int']
+    limit: Scalars['Int']
+}>
+
+export type MoreUserCommentsQuery = { __typename?: 'Query' } & {
+    userById?: Maybe<
+        { __typename?: 'User' } & {
+            commentsPaged: { __typename?: 'CommentsPaged' } & Pick<CommentsPaged, 'totalAmount'> & {
+                    comments: Array<
+                        { __typename?: 'Comment' } & {
+                            game: { __typename?: 'Game' } & BaseGameDataFragment
+                        } & GameDetailCommentFragment
+                    >
+                }
+        }
+    >
+}
+
+export type UpdateUserSettingsMutationVariables = Exact<{
+    input: UpdateLoggedInUserInput
+}>
+
+export type UpdateUserSettingsMutation = { __typename?: 'Mutation' } & {
+    user: { __typename?: 'UserMutation' } & { updateLoggedInUser: { __typename?: 'User' } & Pick<User, 'id'> }
+}
+
 export type FinishRecoverPasswordMutationVariables = Exact<{
     newPassword: Scalars['String']
     token: Scalars['String']
@@ -132,24 +221,6 @@ export type StartRecoverPasswordMutation = { __typename?: 'Mutation' } & {
     user: { __typename?: 'UserMutation' } & Pick<UserMutation, 'startRecoverPassword'>
 }
 
-export type LoadUserSettingsQueryVariables = Exact<{ [key: string]: never }>
-
-export type LoadUserSettingsQuery = { __typename?: 'Query' } & {
-    loggedInUser?: Maybe<
-        { __typename?: 'User' } & Pick<User, 'id'> & {
-                person: { __typename?: 'Person' } & Pick<Person, 'email' | 'name' | 'nickname' | 'birthDate' | 'city'>
-            }
-    >
-}
-
-export type UpdateUserSettingsMutationVariables = Exact<{
-    input: UpdateLoggedInUserInput
-}>
-
-export type UpdateUserSettingsMutation = { __typename?: 'Mutation' } & {
-    user: { __typename?: 'UserMutation' } & { updateLoggedInUser: { __typename?: 'User' } & Pick<User, 'id'> }
-}
-
 export type LogInMutationVariables = Exact<{
     userName: Scalars['String']
     password: Scalars['String']
@@ -159,22 +230,12 @@ export type LogInMutation = { __typename?: 'Mutation' } & {
     user: { __typename?: 'UserMutation' } & { logIn?: Maybe<{ __typename?: 'User' } & Pick<User, 'id'>> }
 }
 
-export type CheckEmailQueryVariables = Exact<{
-    email: Scalars['String']
-}>
-
-export type CheckEmailQuery = { __typename?: 'Query' } & {
-    userByEmail?: Maybe<
-        { __typename?: 'User' } & Pick<User, 'id'> & { person: { __typename?: 'Person' } & Pick<Person, 'name'> }
-    >
-}
-
 export type CreateUserMutationVariables = Exact<{
     input: CreateUserInput
 }>
 
 export type CreateUserMutation = { __typename?: 'Mutation' } & {
-    user: { __typename?: 'UserMutation' } & { createUser: { __typename?: 'User' } & Pick<User, 'id'> }
+    user: { __typename?: 'UserMutation' } & { createUser?: Maybe<{ __typename?: 'User' } & Pick<User, 'id'>> }
 }
 
 export type GetConfigQueryVariables = Exact<{ [key: string]: never }>
@@ -212,6 +273,16 @@ export type BaseGameDataFragment = { __typename?: 'Game' } & Pick<
     Game,
     'id' | 'name' | 'players' | 'averageRating' | 'amountOfComments' | 'amountOfRatings'
 >
+
+export type GameDetailCommentFragment = { __typename?: 'Comment' } & Pick<
+    Comment,
+    'id' | 'added' | 'amountOfUpvotes' | 'comment' | 'isHidden'
+> & {
+        user: { __typename?: 'User' } & Pick<User, 'id'> & {
+                person: { __typename?: 'Person' } & Pick<Person, 'name' | 'nickname'>
+                image?: Maybe<{ __typename?: 'Image' } & Pick<Image, 'id'>>
+            }
+    }
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -351,6 +422,7 @@ export type Game = {
     ratingsDisabled?: Maybe<Scalars['Boolean']>
     commentsDisabled?: Maybe<Scalars['Boolean']>
     labels: Array<Label>
+    currentUsersComment?: Maybe<Comment>
     comments: Array<Comment>
     commentsPaged: CommentsPaged
     authors: Array<User>
@@ -439,11 +511,26 @@ export type User = {
     lastRating?: Maybe<Scalars['Int']>
     role?: Maybe<UserRole>
     person: Person
-    amountOfComments: Scalars['Int']
-    amountOfPlayed: Scalars['Int']
-    amountOfCreated: Scalars['Int']
+    amountOfComments?: Maybe<Scalars['Int']>
+    amountOfPlayed?: Maybe<Scalars['Int']>
+    amountOfCreated?: Maybe<Scalars['Int']>
     image?: Maybe<Image>
-    commented: Array<Comment>
+    commentsPaged: CommentsPaged
+    ratings: Array<Rating>
+    playedGames: Array<GameWithRating>
+    wantedGames: Array<Game>
+    authoredGames: Array<Game>
+}
+
+export type UserCommentsPagedArgs = {
+    offset: Scalars['Int']
+    limit: Scalars['Int']
+}
+
+export type GameWithRating = {
+    __typename?: 'GameWithRating'
+    game: Game
+    rating?: Maybe<Scalars['Int']>
 }
 
 export type Comment = {
@@ -502,7 +589,7 @@ export type UserMutation = {
     __typename?: 'UserMutation'
     logIn?: Maybe<User>
     logOut?: Maybe<User>
-    createUser: User
+    createUser?: Maybe<User>
     updateLoggedInUser: User
     updateLoggedInUserPassword: User
     startRecoverPassword?: Maybe<Scalars['Boolean']>

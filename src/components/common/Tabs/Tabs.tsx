@@ -20,7 +20,7 @@ interface Props<T> {
 const useStyles = createUseStyles({
     wrapper: {
         backgroundColor: darkTheme.backgroundControl,
-        // boxShadow: '0px 0px 1px 2px #CFCFCF',
+        boxShadow: '0px 1px 1px 0 #000',
     },
     widthFixer: {
         display: 'flex',
@@ -34,7 +34,7 @@ const useStyles = createUseStyles({
         fontSize: '0.9rem',
         fontWeight: 700,
         padding: '14px 5px 7px',
-        margin: '0 5px',
+        margin: '0 10px',
         background: 'transparent',
         color: darkTheme.textDark,
         outline: 0,
@@ -47,9 +47,9 @@ const useStyles = createUseStyles({
         },
     },
     tabIcon: {
-        fontSize: '1.8rem',
+        fontSize: '1.75rem',
         color: darkTheme.backgroundWhite,
-        margin: '-12px 0 -13px',
+        margin: '-17px 0 -17px',
     },
 })
 

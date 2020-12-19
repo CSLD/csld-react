@@ -1,17 +1,23 @@
 import React from 'react'
 import { createUseStyles } from 'react-jss'
 import { format } from 'date-fns-tz'
-import { Comment, Image, Person, User } from '../../graphql/__generated__/typescript-operations'
-import { darkTheme } from '../../theme/darkTheme'
-import { ProfileImage } from '../common/ProfileImage/ProfileImage'
-import { parseDateTime } from '../../utils/dateUtils'
+import { Comment, Game, Image, Person, User } from '../../../graphql/__generated__/typescript-operations'
+import { darkTheme } from '../../../theme/darkTheme'
+import { ProfileImage } from '../ProfileImage/ProfileImage'
+import { parseDateTime } from '../../../utils/dateUtils'
+import { useTranslation } from 'react-i18next'
+import { GameRatingBox } from '../GameRatingBox/GameRatingBox'
+import { GameLink } from '../GameLink/GameLink'
+import classNames from 'classnames'
+import UserLink from '../UserLink'
 
 interface Props {
     readonly comment: Pick<Comment, 'id' | 'comment' | 'added' | 'amountOfUpvotes' | 'isHidden'> & {
-        user: Pick<User, 'id'> & {
-            person: Pick<Person, 'nickname' | 'name'>
-            image?: Pick<Image, 'id'> | null
+        readonly user: Pick<User, 'id'> & {
+            readonly person: Pick<Person, 'nickname' | 'name'>
+            readonly image?: Pick<Image, 'id'> | null
         }
+        readonly game: Pick<Game, 'id' | 'name' | 'averageRating' | 'amountOfRatings'>
     }
 }
 
@@ -31,6 +37,7 @@ const useStyles = createUseStyles({
         fontSize: '0.75rem',
     },
     headerNameWrapper: {
+        display: 'block',
         borderRadius: 3,
         backgroundColor: darkTheme.backgroundWhite,
         overflow: 'hidden',
@@ -63,30 +70,52 @@ const useStyles = createUseStyles({
     likesCircle: {
         display: 'inline-block',
         textAlign: 'center',
-        minWidth: 20,
-        height: 19,
-        paddingTop: 6,
+        minWidth: 30,
+        height: 30,
+        paddingTop: 3,
         borderRadius: 15,
         padding: 5,
         backgroundColor: darkTheme.backgroundWhite,
     },
+    game: {
+        display: 'flex',
+        fontSize: '0.75rem',
+        alignItems: 'center',
+    },
+    rating: {
+        margin: '0 5px',
+    },
+    gameName: {
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        minWidth: 0,
+        flexShrink: 1,
+        color: darkTheme.textGreenDark,
+
+        '&:hover': {
+            color: darkTheme.textOnLight,
+        },
+    },
 })
 
-export const GameCommentPanel = ({ comment }: Props) => {
+const GameCommentPanel = ({ comment }: Props) => {
     const classes = useStyles()
+    const { t } = useTranslation('common')
     const added = format(parseDateTime(comment.added) || 0, 'dd.MM.yyyy')
 
     const { nickname, name } = comment.user.person
+    const { game } = comment
 
     return (
         <div className={classes.wrapper}>
             <div className={classes.header}>
                 <ProfileImage userId={comment.user.id} imageId={comment.user.image?.id} />
                 <div className={classes.headerMiddle}>
-                    <div className={classes.headerNameWrapper}>
+                    <UserLink userId={comment.user.id} className={classes.headerNameWrapper}>
                         <span className={classes.headerNickName}>{nickname || name}</span>
                         <span className={classes.headerName}>{name}</span>
-                    </div>
+                    </UserLink>
                     {added}
                 </div>
                 <div className={classes.headerLikes}>
@@ -94,6 +123,22 @@ export const GameCommentPanel = ({ comment }: Props) => {
                 </div>
             </div>
             <p className={classes.text} dangerouslySetInnerHTML={{ __html: comment.comment ?? '' }} />
+            {game && (
+                <div className={classes.game}>
+                    {t('Game.aboutGame')}
+                    <GameRatingBox
+                        amountOfRatings={game.amountOfRatings || 0}
+                        rating={game.averageRating}
+                        className={classes.rating}
+                        size="tiny"
+                    />
+                    <GameLink game={game} className={classes.gameName}>
+                        {game.name}
+                    </GameLink>
+                </div>
+            )}
         </div>
     )
 }
+
+export default GameCommentPanel

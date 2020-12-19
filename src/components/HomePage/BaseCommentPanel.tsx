@@ -10,6 +10,7 @@ import { GameRatingBox, ratingStyles } from '../common/GameRatingBox/GameRatingB
 import { parseDateTime } from '../../utils/dateUtils'
 import { ProfileImage } from '../common/ProfileImage/ProfileImage'
 import { GameLink } from '../common/GameLink/GameLink'
+import UserLink from '../common/UserLink'
 
 export type BaseCommentData = Pick<Comment, 'id' | 'commentAsText' | 'added'> & {
     readonly game: Pick<Game, 'id' | 'name' | 'averageRating' | 'amountOfRatings'>
@@ -71,10 +72,10 @@ const useStyles = createUseStyles({
         marginTop: 8,
     },
     link: {
-        color: darkTheme.textGreen,
+        color: darkTheme.textGreenDark,
 
         '&:hover': {
-            color: darkTheme.textDark,
+            color: darkTheme.textOnLight,
         },
     },
     textWrapper: {
@@ -121,9 +122,9 @@ export const BaseCommentPanel = ({ comment }: Props) => {
                 {comment && (
                     <div className={classes.textWrapper}>
                         <div className={classes.textRow}>
-                            <a href="/" className={classes.link}>
+                            <UserLink userId={comment.user.id} className={classes.link}>
                                 {comment.user.person.nickname || comment.user.person.name}
-                            </a>
+                            </UserLink>
                             &nbsp;
                             {t('HomePage.commentAbout')}
                             <GameRatingBox

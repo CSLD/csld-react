@@ -55,7 +55,7 @@ export const GreatGame = () => {
 
     return (
         <div className={classes.wrapper}>
-            <GameBaseDataPanel game={mockGreatGame} />
+            <GameBaseDataPanel game={mockGreatGame} variant="dark" />
         </div>
     )
 }
@@ -65,7 +65,7 @@ export const NotRatedGame = () => {
 
     return (
         <div className={classes.wrapper}>
-            <GameBaseDataPanel game={mockNotRatedGame} />
+            <GameBaseDataPanel game={mockNotRatedGame} variant="dark" />
         </div>
     )
 }
@@ -75,7 +75,7 @@ export const TooFewRatingsGame = () => {
 
     return (
         <div className={classes.wrapper}>
-            <GameBaseDataPanel game={tooFewRatingsGame} />
+            <GameBaseDataPanel game={tooFewRatingsGame} variant="dark" />
         </div>
     )
 }
@@ -85,7 +85,17 @@ export const AverageGame = () => {
 
     return (
         <div className={classes.wrapper}>
-            <GameBaseDataPanel game={mockAverageGame} />
+            <GameBaseDataPanel game={mockAverageGame} variant="dark" />
+        </div>
+    )
+}
+
+export const GreatGameLight = () => {
+    const classes = useStyles()
+
+    return (
+        <div className={classes.wrapper}>
+            <GameBaseDataPanel game={mockGreatGame} variant="light" />
         </div>
     )
 }

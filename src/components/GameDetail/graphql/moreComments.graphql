@@ -1,4 +1,4 @@
-#import './fragments.graphql'
+#import '../../../graphql/fragments/gameDetailComment.graphql'
 
 query MoreComments($gameId: ID!, $commentsOffset: Int!, $commentsLimit: Int!) {
     gameById(gameId: $gameId) {

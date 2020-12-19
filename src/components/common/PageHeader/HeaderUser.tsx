@@ -74,13 +74,13 @@ const HeaderUser = () => {
 
     const handleSelect = async (eventKey: any) => {
         if (eventKey === 'myPage') {
-            router.push('/userDetail')
+            router.push({ pathname: '/profile', query: { id: 'current' } }, '/profile/current')
         }
         if (eventKey === 'settings') {
-            router.push('/settings')
+            router.push({ pathname: '/profile', query: { id: 'settings' } }, '/profile/settings')
         }
         if (eventKey === 'changePassword') {
-            router.push('/settings/changePassword')
+            router.push({ pathname: '/profile', query: { id: 'changePassword' } }, '/profile/changePassword')
         }
         if (eventKey === 'admin') {
             router.push('/admin')

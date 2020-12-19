@@ -15,6 +15,7 @@ export const darkTheme = {
     textGreen: '#6dc8b7',
     textGreenDark: '#00a0b0',
     textOnLight: '#5f5f5f',
+    textOnLightLighter: '#7f7f7f',
     textOnLightDark: '#333',
     red: '#BD2430',
     redLight: '#CC333F',
