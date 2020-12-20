@@ -31,6 +31,8 @@ export type GameDetailQuery = { __typename?: 'Query' } & {
             | 'amountOfRatings'
             | 'amountOfPlayed'
         > & {
+                currentUsersRating?: Maybe<{ __typename?: 'Rating' } & Pick<Rating, 'id' | 'rating' | 'state'>>
+                currentUsersComment?: Maybe<{ __typename?: 'Comment' } & Pick<Comment, 'id' | 'comment'>>
                 labels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name' | 'description'>>
                 ratingStats: Array<{ __typename?: 'RatingCount' } & Pick<RatingCount, 'count' | 'rating'>>
                 video?: Maybe<{ __typename?: 'Video' } & Pick<Video, 'id' | 'path'>>
@@ -68,6 +70,37 @@ export type MoreCommentsQuery = { __typename?: 'Query' } & {
                     }
             }
     >
+}
+
+export type RefetchGameRatingQueryVariables = Exact<{
+    gameId: Scalars['ID']
+}>
+
+export type RefetchGameRatingQuery = { __typename?: 'Query' } & {
+    gameById?: Maybe<
+        { __typename?: 'Game' } & {
+            currentUsersRating?: Maybe<{ __typename?: 'Rating' } & Pick<Rating, 'id' | 'rating' | 'state'>>
+            ratingStats: Array<{ __typename?: 'RatingCount' } & Pick<RatingCount, 'count' | 'rating'>>
+        }
+    >
+}
+
+export type UpdateGameRatingMutationVariables = Exact<{
+    gameId: Scalars['ID']
+    rating: Scalars['Int']
+}>
+
+export type UpdateGameRatingMutation = { __typename?: 'Mutation' } & {
+    game: { __typename?: 'GameMutation' } & { rateGame: { __typename?: 'Game' } & Pick<Game, 'id'> }
+}
+
+export type UpdateGameStateMutationVariables = Exact<{
+    gameId: Scalars['ID']
+    state: Scalars['Int']
+}>
+
+export type UpdateGameStateMutation = { __typename?: 'Mutation' } & {
+    game: { __typename?: 'GameMutation' } & { setGamePlayedState: { __typename?: 'Game' } & Pick<Game, 'id'> }
 }
 
 export type BaseCommentDataFragment = { __typename?: 'Comment' } & Pick<Comment, 'id' | 'commentAsText' | 'added'> & {
@@ -115,6 +148,7 @@ export type UserProfileDataFragment = { __typename?: 'User' } & Pick<
     User,
     'id' | 'amountOfPlayed' | 'amountOfCreated'
 > & {
+        image?: Maybe<{ __typename?: 'Image' } & Pick<Image, 'id'>>
         person: { __typename?: 'Person' } & Pick<Person, 'email' | 'name' | 'nickname' | 'birthDate' | 'city'>
         authoredGames: Array<{ __typename?: 'Game' } & BaseGameDataFragment>
         playedGames: Array<
@@ -148,6 +182,7 @@ export type LoadCurrentUserSettingsQueryVariables = Exact<{ [key: string]: never
 export type LoadCurrentUserSettingsQuery = { __typename?: 'Query' } & {
     loggedInUser?: Maybe<
         { __typename?: 'User' } & Pick<User, 'id' | 'amountOfPlayed' | 'amountOfCreated'> & {
+                image?: Maybe<{ __typename?: 'Image' } & Pick<Image, 'id'>>
                 person: { __typename?: 'Person' } & Pick<Person, 'email' | 'name' | 'nickname' | 'birthDate' | 'city'>
             }
     >
@@ -249,6 +284,7 @@ export type LoggedInUserQueryVariables = Exact<{ [key: string]: never }>
 export type LoggedInUserQuery = { __typename?: 'Query' } & {
     loggedInUser?: Maybe<
         { __typename?: 'User' } & Pick<User, 'id' | 'role'> & {
+                image?: Maybe<{ __typename?: 'Image' } & Pick<Image, 'id'>>
                 person: { __typename?: 'Person' } & Pick<Person, 'name' | 'nickname'>
             }
     >
@@ -283,6 +319,26 @@ export type GameDetailCommentFragment = { __typename?: 'Comment' } & Pick<
                 image?: Maybe<{ __typename?: 'Image' } & Pick<Image, 'id'>>
             }
     }
+
+export type CheckEmailQueryVariables = Exact<{
+    email: Scalars['String']
+}>
+
+export type CheckEmailQuery = { __typename?: 'Query' } & {
+    userByEmail?: Maybe<
+        { __typename?: 'User' } & Pick<User, 'id'> & { person: { __typename?: 'Person' } & Pick<Person, 'name'> }
+    >
+}
+
+export type LoggedInUserHookQueryVariables = Exact<{ [key: string]: never }>
+
+export type LoggedInUserHookQuery = { __typename?: 'Query' } & {
+    loggedInUser?: Maybe<
+        { __typename?: 'User' } & Pick<User, 'id' | 'role'> & {
+                person: { __typename?: 'Person' } & Pick<Person, 'name'>
+            }
+    >
+}
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -423,6 +479,7 @@ export type Game = {
     commentsDisabled?: Maybe<Scalars['Boolean']>
     labels: Array<Label>
     currentUsersComment?: Maybe<Comment>
+    currentUsersRating?: Maybe<Rating>
     comments: Array<Comment>
     commentsPaged: CommentsPaged
     authors: Array<User>

@@ -2,10 +2,9 @@ import React from 'react'
 import { Event } from 'src/graphql/__generated__/typescript-operations'
 import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
-import { format } from 'date-fns'
 import { darkTheme } from '../../theme/darkTheme'
 import { IconUser, IconLocation } from '../common/Icons/Icons'
-import { formatTimeRange, hasTimePart, parseDateTime } from '../../utils/dateUtils'
+import { formatTimeRange } from '../../utils/dateUtils'
 
 export type EventBaseData = Pick<Event, 'id' | 'name' | 'from' | 'to' | 'amountOfPlayers' | 'loc'>
 
@@ -30,6 +29,7 @@ const useStyles = createUseStyles({
 
         '&:hover': {
             backgroundColor: darkTheme.backgroundHover,
+            color: darkTheme.textDark,
         },
     },
     name: {

@@ -1,0 +1,13 @@
+query RefetchGameRating($gameId: ID!) {
+    gameById(gameId: $gameId) {
+        currentUsersRating {
+            id
+            rating
+            state
+        }
+        ratingStats {
+            count
+            rating
+        }
+    }
+}

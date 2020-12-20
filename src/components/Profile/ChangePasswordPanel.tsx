@@ -5,6 +5,7 @@ import { Form as FinalForm } from 'react-final-form'
 import { Button } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { TFunction } from 'i18next'
+import { createUseStyles } from 'react-jss'
 import FormPageRow from '../common/FormPageRow/FormPageRow'
 import FormTextInputField from '../common/form/FormTextInputField'
 import { fieldValidator, validateRequired } from '../../utils/validationUtils'
@@ -15,7 +16,6 @@ import {
 } from '../../graphql/__generated__/typescript-operations'
 import UserDetailPanel from './UserDetailPanel'
 import UserProfileTabs from './UserProfileTabs'
-import { createUseStyles } from 'react-jss'
 import { darkTheme } from '../../theme/darkTheme'
 
 const loadUserSettingsGql = require('./graphql/loadCurrentUserSettings.graphql')
@@ -79,7 +79,7 @@ const ChangePasswordPanel = () => {
 
     return (
         <>
-            <UserDetailPanel id={loggedInUser?.id} userData={loggedInUser ?? undefined} />
+            <UserDetailPanel userData={loggedInUser ?? undefined} />
             <UserProfileTabs selectedTab="changePassword" />
             <FormPageRow headerText={t('ChangePassword.header')}>
                 {state === 'oldPasswordError' && (

@@ -14,6 +14,7 @@ const signOutMutation = require('./graphql/signOutMutation.graphql')
 interface CustomToggleProps {
     userId: string
     userName: string
+    imageId?: string
     onClick: MouseEventHandler<HTMLButtonElement>
 }
 
@@ -42,26 +43,28 @@ const useStyles = createUseStyles({
     },
 })
 
-const CustomToggle = React.forwardRef<HTMLButtonElement, CustomToggleProps>(({ onClick, userId, userName }, ref) => {
-    const classes = useStyles()
+const CustomToggle = React.forwardRef<HTMLButtonElement, CustomToggleProps>(
+    ({ onClick, userId, userName, imageId }, ref) => {
+        const classes = useStyles()
 
-    return (
-        <button
-            type="button"
-            ref={ref}
-            className={classes.button}
-            onClick={e => {
-                e.preventDefault()
-                onClick(e)
-            }}
-        >
-            <img src={`/user-icon?id=${userId}`} className={classes.image} alt="" />
-            &nbsp;
-            {userName}
-            &nbsp; &#x25bc;
-        </button>
-    )
-})
+        return (
+            <button
+                type="button"
+                ref={ref}
+                className={classes.button}
+                onClick={e => {
+                    e.preventDefault()
+                    onClick(e)
+                }}
+            >
+                <img src={`/user-icon?id=${userId}&imageId=${imageId}`} className={classes.image} alt="" />
+                &nbsp;
+                {userName}
+                &nbsp; &#x25bc;
+            </button>
+        )
+    },
+)
 
 const HeaderUser = () => {
     const { t } = useTranslation('common')
@@ -100,7 +103,12 @@ const HeaderUser = () => {
 
         return (
             <Dropdown onSelect={handleSelect}>
-                <Dropdown.Toggle as={CustomToggle} userId={user.id} userName={user.person.name} />
+                <Dropdown.Toggle
+                    as={CustomToggle}
+                    userId={user.id}
+                    userName={user.person.name}
+                    imageId={user.image?.id}
+                />
 
                 <Dropdown.Menu>
                     <Dropdown.Item eventKey="myPage">{t('PageHeader.myPage')}</Dropdown.Item>

@@ -4,6 +4,9 @@ fragment userProfileData on User {
     id
     amountOfPlayed
     amountOfCreated
+    image {
+        id
+    }
     person {
         email
         name

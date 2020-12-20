@@ -73,7 +73,12 @@
     "video": "Video",
     "events": "Události",
     "gamesOfAuthors": "Larpy autorů",
-    "noSearchResults": "Žádná hra nenalezena"
+    "noSearchResults": "Žádná hra nenalezena",
+    "yourRating": "Vaše hodnocení je: {{rating}}",
+    "notPlayed": "Nehrál jsem",
+    "iPlayed": "Hrál jsem",
+    "wantToPlay": "Chci hrát",
+    "rate": "Vaše hodnocení je:"
   },
 
   "SignIn": {

@@ -84,10 +84,11 @@ const UserProfilePanel = ({ userId, user, profileOnly }: Props) => {
     return (
         <>
             <UserDetailPanel
-                id={userId}
                 userData={
                     user
                         ? {
+                              id: user.id,
+                              image: user.image ?? undefined,
                               person: user.person,
                               amountOfCreated: user.amountOfCreated,
                               amountOfPlayed: user.amountOfPlayed,
@@ -100,10 +101,11 @@ const UserProfilePanel = ({ userId, user, profileOnly }: Props) => {
                 <WidthFixer>
                     <Row>
                         <Col md={9}>
-                            {user && user.amountOfCreated > 0 && (
+                            {user && (user.amountOfCreated ?? 0) > 0 && (
                                 <div className={classes.authoredGames}>
                                     {user.authoredGames.map(game => (
                                         <GameBaseDataPanel
+                                            key={game.id}
                                             game={game}
                                             className={classes.authoredGame}
                                             variant="light"

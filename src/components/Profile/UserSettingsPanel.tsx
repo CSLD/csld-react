@@ -91,7 +91,7 @@ const UserSettingsPanel = () => {
 
     return (
         <>
-            <UserDetailPanel id={loggedInUser?.id} userData={loggedInUser ?? undefined} />
+            <UserDetailPanel userData={loggedInUser ?? undefined} />
             <UserProfileTabs selectedTab="settings" />
             <FormPageRow headerText={t('UserSettings.header')}>
                 {state === 'error' && <div className={classes.error}>{t('UserSettings.error')}</div>}

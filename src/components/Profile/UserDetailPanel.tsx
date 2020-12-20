@@ -1,13 +1,17 @@
 import React from 'react'
 import { createUseStyles } from 'react-jss'
-import { darkTheme } from '../../theme/darkTheme'
-import { WidthFixer } from '../common/WidthFixer/WidthFixer'
 import { useTranslation } from 'react-i18next'
 import { Maybe } from 'graphql/jsutils/Maybe'
+import { darkTheme } from '../../theme/darkTheme'
+import { WidthFixer } from '../common/WidthFixer/WidthFixer'
 
 interface UserData {
-    readonly amountOfPlayed: number
-    readonly amountOfCreated: number
+    readonly id: string
+    readonly amountOfPlayed?: Maybe<number>
+    readonly amountOfCreated?: Maybe<number>
+    readonly image?: {
+        readonly id: string
+    }
     readonly person: {
         readonly name: string
         readonly email: string
@@ -17,7 +21,6 @@ interface UserData {
 }
 
 interface Props {
-    readonly id?: string
     readonly userData?: UserData
 }
 
@@ -59,7 +62,7 @@ const computeAge = (birthDate: Maybe<string>) => {
     return Math.round((new Date().getTime() - new Date(birthDate).getTime()) / (365.2425 * 24 * 60 * 60 * 1000))
 }
 
-const UserDetailPanel = ({ id, userData }: Props) => {
+const UserDetailPanel = ({ userData }: Props) => {
     const classes = useStyles()
     const { t } = useTranslation('common')
     const age = computeAge(userData?.person.birthDate)
@@ -67,8 +70,14 @@ const UserDetailPanel = ({ id, userData }: Props) => {
     return (
         <div className={classes.wrapper}>
             <WidthFixer className={classes.fixer}>
-                {id && <img src={`/user-icon?id=${id}`} className={classes.image} alt="" />}
-                {!id && <div className={classes.image} />}
+                {userData && (
+                    <img
+                        src={`/user-icon?id=${userData.id}&imageId=${userData?.image?.id}`}
+                        className={classes.image}
+                        alt=""
+                    />
+                )}
+                {!userData && <div className={classes.image} />}
                 {userData && (
                     <div>
                         <div className={classes.header}>

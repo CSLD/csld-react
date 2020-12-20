@@ -1,13 +1,9 @@
-query LoggedInUser {
+query LoggedInUserHook {
     loggedInUser {
         id
         role
-        image {
-            id
-        }
         person {
             name
-            nickname
         }
     }
 }

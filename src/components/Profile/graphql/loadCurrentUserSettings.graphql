@@ -3,6 +3,9 @@ query LoadCurrentUserSettings {
         id
         amountOfPlayed
         amountOfCreated
+        image {
+            id
+        }
         person {
             email
             name

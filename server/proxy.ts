@@ -1,9 +1,28 @@
 require('dotenv').config()
 
+// Change cookie path to /graphql
 const transformCookiePath = (cookie: string) => {
-    if (cookie.startsWith('JSESSIONID')) {
+    if (cookie.startsWith('JSESSIONID') || cookie.startsWith('LoggedIn')) {
         const parts = cookie.split(';')
-        return `${parts[0]}; Path=/graphql;${parts[2]}`
+        const newParts = parts.map(part => {
+            const iEq = part.indexOf('=')
+            if (iEq < 0) {
+                // No '='
+                return part
+            }
+            let iStart = 0
+            while (part[iStart] === ' ') {
+                iStart += 1
+            }
+            if (part.substring(iStart, iEq).toLowerCase() === 'path') {
+                // Use /graphql path
+                return ' Path=/graphql'
+            }
+
+            // Not our cookie
+            return part
+        })
+        return newParts.join(';')
     }
 
     return cookie

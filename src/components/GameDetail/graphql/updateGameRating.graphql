@@ -1,0 +1,7 @@
+mutation UpdateGameRating($gameId: ID!, $rating: Int!) {
+    game {
+        rateGame(gameId: $gameId, rating: $rating) {
+            id
+        }
+    }
+}

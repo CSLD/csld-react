@@ -1,16 +1,22 @@
 import React from 'react'
 
-import { Game } from 'src/graphql/__generated__/typescript-operations'
+import { Game, Rating } from 'src/graphql/__generated__/typescript-operations'
 import { createUseStyles } from 'react-jss'
 import { useTranslation } from 'react-i18next'
 import classNames from 'classnames'
+import { Maybe } from 'graphql/jsutils/Maybe'
 import { darkTheme } from '../../theme/darkTheme'
 import { GameRatingBox, ratingStyles } from '../common/GameRatingBox/GameRatingBox'
 import { IconUser } from '../common/Icons/Icons'
 import { getRatingForGame, MIN_NUM_RATINGS } from '../../utils/ratingUtils'
+import { useLoggedInUser } from '../../hooks/useLoggedInUser'
+import RatingStateButtons from './RatingStateButtons'
+import RatingStars from './RatingStars'
 
 interface Props {
-    readonly game: Pick<Game, 'averageRating' | 'amountOfRatings' | 'ratingStats'>
+    readonly game: Pick<Game, 'id' | 'averageRating' | 'amountOfRatings' | 'ratingStats'> & {
+        currentUsersRating?: Maybe<Pick<Rating, 'rating' | 'state'>>
+    }
 }
 
 const useStyles = createUseStyles({
@@ -21,12 +27,12 @@ const useStyles = createUseStyles({
     },
     row: {
         display: 'flex',
-        marginBottom: 30,
+        marginBottom: 25,
     },
     left: {
         display: 'flex',
         flexDirection: 'column',
-        width: 130,
+        width: 150,
         padding: '0 10px',
         textAlign: 'center',
     },
@@ -64,12 +70,18 @@ const useStyles = createUseStyles({
     totalPlayed: {
         margin: '20px 0 10px',
     },
+    yourRating: {
+        marginBottom: 25,
+    },
     ...ratingStyles,
 })
 
-export const GameRatingPanel = ({ game: { averageRating, amountOfRatings, ratingStats } }: Props) => {
+export const GameRatingPanel = ({
+    game: { id: gameId, averageRating, amountOfRatings, ratingStats, currentUsersRating },
+}: Props) => {
     const classes = useStyles()
     const { t } = useTranslation('common')
+    const loggedInUser = useLoggedInUser()
 
     const max = ratingStats.reduce((currentMax, rating) => Math.max(currentMax, rating.count), 0)
     let statsMap = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -82,6 +94,10 @@ export const GameRatingPanel = ({ game: { averageRating, amountOfRatings, rating
         }, statsMap)
     }
 
+    const ratingNum = currentUsersRating?.rating ?? 0
+    const rating = ratingNum || '-'
+    const ratingState = currentUsersRating?.state ?? 0
+
     return (
         <div className={classes.wrapper}>
             <div className={classes.row}>
@@ -92,6 +108,10 @@ export const GameRatingPanel = ({ game: { averageRating, amountOfRatings, rating
                         &nbsp;&nbsp;
                         {t('GameDetail.totalPlayed', { amountOfRatings })}
                     </span>
+                    {loggedInUser && (
+                        <span className={classes.yourRating}>{t('GameDetail.yourRating', { rating })}</span>
+                    )}
+                    {loggedInUser && <RatingStateButtons gameId={gameId} state={ratingState} />}
                 </div>
                 <div className={classes.right}>
                     {statsMap.map((size, n) => {
@@ -116,7 +136,8 @@ export const GameRatingPanel = ({ game: { averageRating, amountOfRatings, rating
                     })}
                 </div>
             </div>
-            <div className={classes.login}>{t('GameDetail.logInToRate')}</div>
+            {!loggedInUser && <div className={classes.login}>{t('GameDetail.logInToRate')}</div>}
+            {loggedInUser && <RatingStars gameId={gameId} rating={ratingNum} />}
         </div>
     )
 }

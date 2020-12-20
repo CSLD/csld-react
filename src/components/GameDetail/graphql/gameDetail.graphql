@@ -18,6 +18,15 @@ query GameDetail($gameId: ID!, $commentsLimit: Int!) {
         averageRating
         amountOfRatings
         amountOfPlayed
+        currentUsersRating {
+            id
+            rating
+            state
+        }
+        currentUsersComment {
+            id
+            comment
+        }
         labels {
             id
             name
