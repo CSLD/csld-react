@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useApolloClient, useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
 import { createUseStyles } from 'react-jss'
@@ -19,6 +19,7 @@ import { useIsEmailAvailable } from '../../hooks/useIsEmailAvailable'
 import { convertDateFromGraphql, convertDateInput, convertFileInput } from '../../utils/graphqlUtils'
 import UserDetailPanel from './UserDetailPanel'
 import UserProfileTabs from './UserProfileTabs'
+import { UserContext } from '../common/UserContext/UserContext'
 
 const loadUserSettingsGql = require('./graphql/loadCurrentUserSettings.graphql')
 const updateUserSettingsGql = require('./graphql/updateUserSettings.graphql')
@@ -51,6 +52,7 @@ const UserSettingsPanel = () => {
     const [state, setState] = useState<TState>('idle')
     const { usedByName, isEmailAvailable } = useIsEmailAvailable()
     const loggedInUser = loadQuery.data?.loggedInUser
+    const userContext = useContext(UserContext)
 
     const onSubmit = async (data: FormData) => {
         setState('loading')
@@ -77,6 +79,7 @@ const UserSettingsPanel = () => {
         })
 
         // Success - go to profile
+        userContext?.actions?.reload()
         router.push({ pathname: '/profile', query: { id: 'current' } }, '/profile/current')
         return undefined
     }
