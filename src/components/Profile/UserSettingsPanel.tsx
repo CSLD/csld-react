@@ -82,11 +82,11 @@ const UserSettingsPanel = () => {
     }
 
     const initialValues = loggedInUser && {
-        email: loggedInUser.person.email,
-        name: loggedInUser.person.name,
-        nickname: loggedInUser.person.nickname || undefined,
-        city: loggedInUser.person.city || undefined,
-        birthDate: convertDateFromGraphql(loggedInUser.person.birthDate),
+        email: loggedInUser.email,
+        name: loggedInUser.name,
+        nickname: loggedInUser.nickname || undefined,
+        city: loggedInUser.city || undefined,
+        birthDate: convertDateFromGraphql(loggedInUser.birthDate),
     }
 
     return (

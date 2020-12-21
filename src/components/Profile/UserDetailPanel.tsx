@@ -9,15 +9,13 @@ interface UserData {
     readonly id: string
     readonly amountOfPlayed?: Maybe<number>
     readonly amountOfCreated?: Maybe<number>
-    readonly image?: {
+    readonly image?: Maybe<{
         readonly id: string
-    }
-    readonly person: {
-        readonly name: string
-        readonly email: string
-        readonly nickname?: Maybe<string>
-        readonly birthDate?: Maybe<string>
-    }
+    }>
+    readonly name: string
+    readonly email: string
+    readonly nickname?: Maybe<string>
+    readonly birthDate?: Maybe<string>
 }
 
 interface Props {
@@ -65,7 +63,7 @@ const computeAge = (birthDate: Maybe<string>) => {
 const UserDetailPanel = ({ userData }: Props) => {
     const classes = useStyles()
     const { t } = useTranslation('common')
-    const age = computeAge(userData?.person.birthDate)
+    const age = computeAge(userData?.birthDate)
 
     return (
         <div className={classes.wrapper}>
@@ -81,7 +79,7 @@ const UserDetailPanel = ({ userData }: Props) => {
                 {userData && (
                     <div>
                         <div className={classes.header}>
-                            {userData.person.nickname} {userData.person.name} {userData.person.email}
+                            {userData.nickname} {userData.name} {userData.email}
                         </div>
                         <div className={classes.text}>
                             {t('UserDetail.player', { count: userData.amountOfPlayed ?? 0 })}

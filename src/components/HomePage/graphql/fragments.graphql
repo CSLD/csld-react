@@ -9,10 +9,8 @@ fragment baseCommentData on Comment {
     }
     user {
         id
-        person {
-            name
-            nickname
-        }
+        name
+        nickname
         image {
             id
             path

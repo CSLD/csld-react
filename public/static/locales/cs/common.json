@@ -80,7 +80,8 @@
     "wantToPlay": "Chci hrát",
     "rate": "Vaše hodnocení je:",
     "addComment": "Přidat váš komentář",
-    "updateComment": "Upravit váš komentář"
+    "updateComment": "Upravit váš komentář",
+    "ratings": "Hodnocení"
   },
 
   "SignIn": {

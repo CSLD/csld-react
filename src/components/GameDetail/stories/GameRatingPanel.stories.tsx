@@ -4,6 +4,7 @@ import { GameRatingPanel } from '../GameRatingPanel'
 export default { title: 'GameRatingPanel' }
 
 const game = {
+    id: '123',
     averageRating: 80,
     amountOfRatings: 18,
     amountOfPlayed: 21,

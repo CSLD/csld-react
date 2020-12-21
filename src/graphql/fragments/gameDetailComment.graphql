@@ -6,10 +6,8 @@ fragment gameDetailComment on Comment {
     isHidden
     user {
         id
-        person {
-            name
-            nickname
-        }
+        name
+        nickname
         image {
             id
         }

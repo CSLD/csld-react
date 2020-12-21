@@ -20,17 +20,13 @@ Hra je pro 24 hráčů alias studentů, kteří si prožijí fyzicky a hlavně p
     authors: [
         {
             id: '1',
-            person: {
-                name: 'Robin Hudcovič',
-                nickname: 'Kammi',
-            },
+            name: 'Robin Hudcovič',
+            nickname: 'Kammi',
         },
         {
             id: '2',
-            person: {
-                name: 'Michaela Hájková',
-                nickname: 'Sandriel',
-            },
+            name: 'Michaela Hájková',
+            nickname: 'Sandriel',
         },
     ],
     groupAuthor: [

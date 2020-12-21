@@ -14,7 +14,10 @@ import { GameHeaderPanel } from './GameHeaderPanel'
 import { GameRatingPanel } from './GameRatingPanel'
 import { GameListPanel } from '../common/GameListPanel/GameListPanel'
 import { EventListPanel } from '../HomePage/EventListPanel'
-import { PAGE_SIZE, GamePagedCommentsPanel } from './GamePagedCommentsPanel'
+import { GamePagedCommentsPanel } from './GamePagedCommentsPanel'
+import RatingsListPanel from './RatingsListPanel'
+import { isAtLeastEditor } from '../../utils/roleUtils'
+import { useLoggedInUser } from '../../hooks/useLoggedInUser'
 
 const cachedGameDataFragment = require('./graphql/cachedGameData.graphql')
 const gameDetailQuery = require('./graphql/gameDetail.graphql')
@@ -52,6 +55,10 @@ const useStyles = createUseStyles({
         width: '25%',
         boxSizing: 'border-box',
         padding: '25px 0 20px 20px',
+    },
+    coverImage: {
+        display: 'none',
+        width: '100%',
     },
 })
 
@@ -99,11 +106,11 @@ const emptyGame = {
 
 export const GameDetailPanel = ({ gameId }: Props) => {
     const [selectedTab, setSelectedTab] = useState<TabTabs>('comments')
+    const loggedInUser = useLoggedInUser()
     const classes = useStyles()
     const gameQuery = useQuery<GameDetailQuery, GameDetailQueryVariables>(gameDetailQuery, {
         variables: {
             gameId,
-            commentsLimit: PAGE_SIZE,
         },
         fetchPolicy: 'cache-and-network',
         ssr: false, // Next threw errors about mismatching content while game page was reloaded
@@ -118,13 +125,16 @@ export const GameDetailPanel = ({ gameId }: Props) => {
         })
     } catch (e) {
         // Object in cache but does not have required data - just continue
+        // eslint-disable-next-line no-console
         console.log('Fetch failed', e)
     }
 
     const game = gameQuery.data?.gameById || {
         ...emptyGame,
         ...gameFragment,
+        ratings: [],
         currentUsersComment: undefined,
+        coverImage: undefined,
         id: `${gameId}`,
     }
 
@@ -133,9 +143,20 @@ export const GameDetailPanel = ({ gameId }: Props) => {
         tabs.push(tabVideo)
     }
 
+    const handleRefetch = () => gameQuery.refetch()
+
+    const atLeastEditor = isAtLeastEditor(loggedInUser.role)
+
     return (
         <>
             <div className={classes.details}>
+                {game.coverImage && (
+                    <img
+                        className={classes.coverImage}
+                        alt=""
+                        src={`/game-image/?id=${game.id}&imageId=${game.coverImage.id}`}
+                    />
+                )}
                 <WidthFixer className={classes.detailsWidthFixer}>
                     <div className={classes.detailsLeft}>{game.name && <GameHeaderPanel game={game} />}</div>
                     <div className={classes.detailsRight}>
@@ -146,17 +167,7 @@ export const GameDetailPanel = ({ gameId }: Props) => {
                 <div className={classes.extras}>
                     <WidthFixer className={classes.extrasWidthFixer}>
                         <div className={classes.extrasLeft}>
-                            {selectedTab === 'comments' && (
-                                <GamePagedCommentsPanel
-                                    gameId={gameId}
-                                    firstPage={
-                                        game.commentsPaged.totalAmount >= 0
-                                            ? (game.commentsPaged as CommentsPaged)
-                                            : undefined
-                                    }
-                                    currentUsersComment={game.currentUsersComment?.comment ?? undefined}
-                                />
-                            )}
+                            {selectedTab === 'comments' && <GamePagedCommentsPanel gameId={gameId} />}
                             {selectedTab === 'video' && (
                                 <iframe title="video" src={game.video?.path || ''} width="800" height="450" />
                             )}
@@ -165,6 +176,13 @@ export const GameDetailPanel = ({ gameId }: Props) => {
                             <GameListPanel games={game.similarGames} titleKey="GameDetail.similarGames" />
                             <EventListPanel events={game.events} titleKey="GameDetail.events" />
                             <GameListPanel games={game.gamesOfAuthors} titleKey="GameDetail.gamesOfAuthors" />
+                            {atLeastEditor && (
+                                <RatingsListPanel
+                                    gameId={game.id}
+                                    ratings={game.ratings}
+                                    onRatingDeleted={handleRefetch}
+                                />
+                            )}
                         </div>
                     </WidthFixer>
                 </div>

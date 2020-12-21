@@ -11,6 +11,8 @@ import {
     faSpinner,
     faPlus,
     faEdit,
+    faEye,
+    faTrash,
 } from '@fortawesome/free-solid-svg-icons'
 import { faFacebook } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -45,3 +47,7 @@ export const IconLoading = (props: IconProps) => <FontAwesomeIcon icon={faSpinne
 export const IconPlus = (props: IconProps) => <FontAwesomeIcon icon={faPlus} {...props} />
 
 export const IconEdit = (props: IconProps) => <FontAwesomeIcon icon={faEdit} {...props} />
+
+export const IconEye = (props: IconProps) => <FontAwesomeIcon icon={faEye} {...props} />
+
+export const IconTrash = (props: IconProps) => <FontAwesomeIcon icon={faTrash} {...props} />

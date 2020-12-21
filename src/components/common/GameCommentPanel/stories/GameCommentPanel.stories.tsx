@@ -1,5 +1,5 @@
 import React from 'react'
-import { GameCommentPanel } from '../GameCommentPanel'
+import GameCommentPanel from '../GameCommentPanel'
 
 export default { title: 'GameCommentPanel' }
 
@@ -14,15 +14,13 @@ const comment = {
     isHidden: false,
     user: {
         id: '12',
-        person: {
-            name: 'Jenda Zahradník',
-            nickname: 'Zahry',
-        },
+        name: 'Jenda Zahradník',
+        nickname: 'Zahry',
     },
 }
 
 export const Panel = () => (
     <div style={{ background: '#efefef', padding: 20, width: 800 }}>
-        <GameCommentPanel comment={comment} />
+        <GameCommentPanel comment={comment} showVisibilityButton onChangeCommentVisibility={() => {}} />
     </div>
 )

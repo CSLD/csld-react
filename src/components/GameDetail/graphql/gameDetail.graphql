@@ -1,6 +1,4 @@
-#import '../../../graphql/fragments/gameDetailComment.graphql'
-
-query GameDetail($gameId: ID!, $commentsLimit: Int!) {
+query GameDetail($gameId: ID!) {
     gameById(gameId: $gameId) {
         id
         name
@@ -18,14 +16,13 @@ query GameDetail($gameId: ID!, $commentsLimit: Int!) {
         averageRating
         amountOfRatings
         amountOfPlayed
+        coverImage {
+            id
+        }
         currentUsersRating {
             id
             rating
             state
-        }
-        currentUsersComment {
-            id
-            comment
         }
         labels {
             id
@@ -42,20 +39,12 @@ query GameDetail($gameId: ID!, $commentsLimit: Int!) {
         }
         authors {
             id
-            person {
-                name
-                nickname
-            }
+            name
+            nickname
         }
         groupAuthor {
             id
             name
-        }
-        commentsPaged(offset: 0, limit: $commentsLimit) {
-            totalAmount
-            comments {
-                ...gameDetailComment
-            }
         }
         similarGames {
             id
@@ -76,6 +65,14 @@ query GameDetail($gameId: ID!, $commentsLimit: Int!) {
             name
             from
             to
+        }
+        ratings {
+            id
+            rating
+            user {
+                id
+                name
+            }
         }
     }
 }

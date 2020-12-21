@@ -118,15 +118,6 @@ type Label {
     isAuthorized: Boolean
 }
 
-type Person {
-    name: String!
-    description: String
-    email: String!
-    nickname: String
-    birthDate: String
-    city: String
-}
-
 type Image {
     id: ID!
     path: String
@@ -137,7 +128,6 @@ type User {
     id: ID!
     lastRating: Int
     role: UserRole
-    person: Person!
     amountOfComments: Int
     amountOfPlayed: Int
     amountOfCreated: Int
@@ -147,6 +137,12 @@ type User {
     playedGames: [GameWithRating!]!
     wantedGames: [Game!]!
     authoredGames: [Game!]!
+    name: String!
+    description: String
+    email: String!
+    nickname: String
+    birthDate: String
+    city: String
 }
 
 type GameWithRating {

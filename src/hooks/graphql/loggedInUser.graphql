@@ -1,9 +1,0 @@
-query LoggedInUserHook {
-    loggedInUser {
-        id
-        role
-        person {
-            name
-        }
-    }
-}

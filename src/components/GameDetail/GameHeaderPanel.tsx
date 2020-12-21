@@ -1,6 +1,6 @@
 import React from 'react'
 import { createUseStyles } from 'react-jss'
-import { Game, User, Person, Group, Label } from 'src/graphql/__generated__/typescript-operations'
+import { Game, User, Group, Label, Image } from 'src/graphql/__generated__/typescript-operations'
 import { useTranslation } from 'react-i18next'
 import { i18n as Ti18n, TFunction } from 'i18next'
 import { darkTheme } from '../../theme/darkTheme'
@@ -24,11 +24,7 @@ interface Props {
         | 'description'
     > & {
         labels: Array<Pick<Label, 'id' | 'name' | 'description'>>
-        authors: Array<
-            Pick<User, 'id'> & {
-                person: Pick<Person, 'name' | 'nickname'>
-            }
-        >
+        authors: Array<Pick<User, 'id' | 'name' | 'nickname'>>
         groupAuthor: Array<Pick<Group, 'id' | 'name'>>
     }
 }
@@ -183,9 +179,9 @@ export const GameHeaderPanel = ({ game }: Props) => {
                             <React.Fragment key={author.id}>
                                 {n > 0 && ', '}
                                 <UserLink userId={author.id} className={classes.link}>
-                                    {author.person.nickname}
-                                    {author.person.nickname && author.person.name ? ' ' : ''}
-                                    {author.person.name}
+                                    {author.nickname}
+                                    {author.nickname && author.name ? ' ' : ''}
+                                    {author.name}
                                 </UserLink>
                             </React.Fragment>
                         ))}

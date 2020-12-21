@@ -20,7 +20,7 @@ export const useIsEmailAvailable = () => {
             const { userByEmail } = result.data
             if (userByEmail && userByEmail.id !== currentUserId) {
                 // Email used by someone other than the current user
-                setUsedByName(userByEmail.person.name)
+                setUsedByName(userByEmail.name)
                 return false
             }
         }

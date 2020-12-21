@@ -1,24 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import { format } from 'date-fns-tz'
-import { Comment, Game, Image, Person, User } from '../../../graphql/__generated__/typescript-operations'
+import { useTranslation } from 'react-i18next'
+import classNames from 'classnames'
+import { Comment, Game, Image, User } from '../../../graphql/__generated__/typescript-operations'
 import { darkTheme } from '../../../theme/darkTheme'
 import { ProfileImage } from '../ProfileImage/ProfileImage'
 import { parseDateTime } from '../../../utils/dateUtils'
-import { useTranslation } from 'react-i18next'
 import { GameRatingBox } from '../GameRatingBox/GameRatingBox'
 import { GameLink } from '../GameLink/GameLink'
-import classNames from 'classnames'
 import UserLink from '../UserLink'
+import { IconEye } from '../Icons/Icons'
 
 interface Props {
     readonly comment: Pick<Comment, 'id' | 'comment' | 'added' | 'amountOfUpvotes' | 'isHidden'> & {
-        readonly user: Pick<User, 'id'> & {
-            readonly person: Pick<Person, 'nickname' | 'name'>
+        readonly user: Pick<User, 'id' | 'nickname' | 'name'> & {
             readonly image?: Pick<Image, 'id'> | null
         }
-        readonly game: Pick<Game, 'id' | 'name' | 'averageRating' | 'amountOfRatings'>
+        readonly game?: Pick<Game, 'id' | 'name' | 'averageRating' | 'amountOfRatings'>
     }
+    readonly showVisibilityButton: boolean
+    readonly onChangeCommentVisibility: (commentId: string, isHidden: boolean) => void
 }
 
 const useStyles = createUseStyles({
@@ -67,6 +69,30 @@ const useStyles = createUseStyles({
         height: '100%',
         textAlign: 'right',
     },
+    commentHiddenButton: {
+        display: 'inline-block',
+        minWidth: 30,
+        height: 30,
+        textAlign: 'center',
+        paddingTop: 3,
+        borderRadius: 15,
+        padding: 5,
+        marginRight: 8,
+        border: 0,
+        backgroundColor: darkTheme.backgroundWhite,
+        color: darkTheme.textOnLight,
+        '&:hover': {
+            backgroundColor: darkTheme.textGreen,
+            color: darkTheme.textOnLight,
+        },
+        '&:focus': {
+            outline: 0,
+        },
+    },
+    commentHiddenButtonActive: {
+        backgroundColor: darkTheme.backgroundControl,
+        color: darkTheme.text,
+    },
     likesCircle: {
         display: 'inline-block',
         textAlign: 'center',
@@ -76,6 +102,7 @@ const useStyles = createUseStyles({
         borderRadius: 15,
         padding: 5,
         backgroundColor: darkTheme.backgroundWhite,
+        color: darkTheme.textOnLight,
     },
     game: {
         display: 'flex',
@@ -99,13 +126,19 @@ const useStyles = createUseStyles({
     },
 })
 
-const GameCommentPanel = ({ comment }: Props) => {
+const GameCommentPanel = ({ comment, showVisibilityButton, onChangeCommentVisibility }: Props) => {
     const classes = useStyles()
     const { t } = useTranslation('common')
     const added = format(parseDateTime(comment.added) || 0, 'dd.MM.yyyy')
+    const [visibilityButtonActive, setVisibilityButtonActive] = useState(comment.isHidden)
 
-    const { nickname, name } = comment.user.person
+    const { nickname, name } = comment.user
     const { game } = comment
+
+    const handleToggleVisibility = () => {
+        setVisibilityButtonActive(!visibilityButtonActive)
+        onChangeCommentVisibility(comment.id, !comment.isHidden)
+    }
 
     return (
         <div className={classes.wrapper}>
@@ -119,6 +152,18 @@ const GameCommentPanel = ({ comment }: Props) => {
                     {added}
                 </div>
                 <div className={classes.headerLikes}>
+                    {showVisibilityButton && (
+                        <button
+                            type="button"
+                            className={classNames({
+                                [classes.commentHiddenButton]: true,
+                                [classes.commentHiddenButtonActive]: visibilityButtonActive,
+                            })}
+                            onClick={handleToggleVisibility}
+                        >
+                            <IconEye />
+                        </button>
+                    )}
                     <div className={classes.likesCircle}>{comment.amountOfUpvotes}</div>
                 </div>
             </div>

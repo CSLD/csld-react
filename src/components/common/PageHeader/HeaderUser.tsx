@@ -1,14 +1,15 @@
-import React, { MouseEventHandler } from 'react'
+import React, { MouseEventHandler, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useApolloClient, useQuery } from '@apollo/client'
+import { useApolloClient } from '@apollo/client'
 import { Dropdown } from 'react-bootstrap'
 import { useRouter } from 'next/router'
 import { createUseStyles } from 'react-jss'
 import { HeaderNavLink } from './HeaderNavLink'
-import { LoggedInUserQuery, UserRole } from '../../../graphql/__generated__/typescript-operations'
+import { UserRole } from '../../../graphql/__generated__/typescript-operations'
 import { darkTheme } from '../../../theme/darkTheme'
+import { UserContext } from '../UserContext/UserContext'
+import { isAtLeastEditor } from '../../../utils/roleUtils'
 
-const loggedInUserQuery = require('./graphql/loggedInUserQuery.graphql')
 const signOutMutation = require('./graphql/signOutMutation.graphql')
 
 interface CustomToggleProps {
@@ -70,10 +71,9 @@ const HeaderUser = () => {
     const { t } = useTranslation('common')
     const router = useRouter()
     const client = useApolloClient()
+    const userContext = useContext(UserContext)
 
-    const loggedInQueryResult = useQuery<LoggedInUserQuery>(loggedInUserQuery, { fetchPolicy: 'network-only' })
-
-    const user = loggedInQueryResult.data?.loggedInUser
+    const user = userContext?.value
 
     const handleSelect = async (eventKey: any) => {
         if (eventKey === 'myPage') {
@@ -93,35 +93,31 @@ const HeaderUser = () => {
                 mutation: signOutMutation,
             })
 
-            loggedInQueryResult.refetch()
+            userContext?.actions?.reload()
             router.push('/homepage', '/')
         }
     }
 
-    if (user) {
-        const showAdminMenu = user.role === UserRole.Admin || user.role === UserRole.Editor
-
+    if (user?.id) {
         return (
             <Dropdown onSelect={handleSelect}>
-                <Dropdown.Toggle
-                    as={CustomToggle}
-                    userId={user.id}
-                    userName={user.person.name}
-                    imageId={user.image?.id}
-                />
+                <Dropdown.Toggle as={CustomToggle} userId={user.id} userName={user.name || ''} imageId={user.imageId} />
 
                 <Dropdown.Menu>
                     <Dropdown.Item eventKey="myPage">{t('PageHeader.myPage')}</Dropdown.Item>
                     <Dropdown.Item eventKey="settings">{t('PageHeader.settings')}</Dropdown.Item>
                     <Dropdown.Item eventKey="changePassword">{t('PageHeader.changePassword')}</Dropdown.Item>
-                    {showAdminMenu && <Dropdown.Item eventKey="admin">{t('PageHeader.admin')}</Dropdown.Item>}
+                    {isAtLeastEditor(user.role) && (
+                        <Dropdown.Item eventKey="admin">{t('PageHeader.admin')}</Dropdown.Item>
+                    )}
                     <Dropdown.Item eventKey="logOut">{t('PageHeader.logOut')}</Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
         )
     }
 
-    if (loggedInQueryResult.loading) {
+    if (user) {
+        // Loading
         return null
     }
 

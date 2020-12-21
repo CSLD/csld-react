@@ -5,9 +5,17 @@ export type CachedGameDataFragment = { __typename?: 'Game' } & Pick<
     'id' | 'name' | 'averageRating' | 'amountOfRatings'
 >
 
+export type DeleteRatingMutationVariables = Exact<{
+    gameId: Scalars['ID']
+    userId: Scalars['ID']
+}>
+
+export type DeleteRatingMutation = { __typename?: 'Mutation' } & {
+    game: { __typename?: 'GameMutation' } & { deleteGameRating: { __typename?: 'Game' } & Pick<Game, 'id'> }
+}
+
 export type GameDetailQueryVariables = Exact<{
     gameId: Scalars['ID']
-    commentsLimit: Scalars['Int']
 }>
 
 export type GameDetailQuery = { __typename?: 'Query' } & {
@@ -31,20 +39,13 @@ export type GameDetailQuery = { __typename?: 'Query' } & {
             | 'amountOfRatings'
             | 'amountOfPlayed'
         > & {
+                coverImage?: Maybe<{ __typename?: 'Image' } & Pick<Image, 'id'>>
                 currentUsersRating?: Maybe<{ __typename?: 'Rating' } & Pick<Rating, 'id' | 'rating' | 'state'>>
-                currentUsersComment?: Maybe<{ __typename?: 'Comment' } & Pick<Comment, 'id' | 'comment'>>
                 labels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name' | 'description'>>
                 ratingStats: Array<{ __typename?: 'RatingCount' } & Pick<RatingCount, 'count' | 'rating'>>
                 video?: Maybe<{ __typename?: 'Video' } & Pick<Video, 'id' | 'path'>>
-                authors: Array<
-                    { __typename?: 'User' } & Pick<User, 'id'> & {
-                            person: { __typename?: 'Person' } & Pick<Person, 'name' | 'nickname'>
-                        }
-                >
+                authors: Array<{ __typename?: 'User' } & Pick<User, 'id' | 'name' | 'nickname'>>
                 groupAuthor: Array<{ __typename?: 'Group' } & Pick<Group, 'id' | 'name'>>
-                commentsPaged: { __typename?: 'CommentsPaged' } & Pick<CommentsPaged, 'totalAmount'> & {
-                        comments: Array<{ __typename?: 'Comment' } & GameDetailCommentFragment>
-                    }
                 similarGames: Array<
                     { __typename?: 'Game' } & Pick<Game, 'id' | 'name' | 'averageRating' | 'amountOfRatings' | 'year'>
                 >
@@ -52,6 +53,11 @@ export type GameDetailQuery = { __typename?: 'Query' } & {
                     { __typename?: 'Game' } & Pick<Game, 'id' | 'name' | 'averageRating' | 'amountOfRatings' | 'year'>
                 >
                 events: Array<{ __typename?: 'Event' } & Pick<Event, 'id' | 'name' | 'from' | 'to'>>
+                ratings: Array<
+                    { __typename?: 'Rating' } & Pick<Rating, 'id' | 'rating'> & {
+                            user: { __typename?: 'User' } & Pick<User, 'id' | 'name'>
+                        }
+                >
             }
     >
 }
@@ -115,8 +121,7 @@ export type UpdateGameStateMutation = { __typename?: 'Mutation' } & {
 
 export type BaseCommentDataFragment = { __typename?: 'Comment' } & Pick<Comment, 'id' | 'commentAsText' | 'added'> & {
         game: { __typename?: 'Game' } & BaseGameDataFragment
-        user: { __typename?: 'User' } & Pick<User, 'id'> & {
-                person: { __typename?: 'Person' } & Pick<Person, 'name' | 'nickname'>
+        user: { __typename?: 'User' } & Pick<User, 'id' | 'name' | 'nickname'> & {
                 image?: Maybe<{ __typename?: 'Image' } & Pick<Image, 'id' | 'path'>>
             }
     }
@@ -156,10 +161,9 @@ export type ChangePasswordMutation = { __typename?: 'Mutation' } & {
 
 export type UserProfileDataFragment = { __typename?: 'User' } & Pick<
     User,
-    'id' | 'amountOfPlayed' | 'amountOfCreated'
+    'id' | 'amountOfPlayed' | 'amountOfCreated' | 'email' | 'name' | 'nickname' | 'birthDate' | 'city'
 > & {
         image?: Maybe<{ __typename?: 'Image' } & Pick<Image, 'id'>>
-        person: { __typename?: 'Person' } & Pick<Person, 'email' | 'name' | 'nickname' | 'birthDate' | 'city'>
         authoredGames: Array<{ __typename?: 'Game' } & BaseGameDataFragment>
         playedGames: Array<
             { __typename?: 'GameWithRating' } & Pick<GameWithRating, 'rating'> & {
@@ -191,10 +195,10 @@ export type LoadCurrentUserSettingsQueryVariables = Exact<{ [key: string]: never
 
 export type LoadCurrentUserSettingsQuery = { __typename?: 'Query' } & {
     loggedInUser?: Maybe<
-        { __typename?: 'User' } & Pick<User, 'id' | 'amountOfPlayed' | 'amountOfCreated'> & {
-                image?: Maybe<{ __typename?: 'Image' } & Pick<Image, 'id'>>
-                person: { __typename?: 'Person' } & Pick<Person, 'email' | 'name' | 'nickname' | 'birthDate' | 'city'>
-            }
+        { __typename?: 'User' } & Pick<
+            User,
+            'id' | 'amountOfPlayed' | 'amountOfCreated' | 'email' | 'name' | 'nickname' | 'birthDate' | 'city'
+        > & { image?: Maybe<{ __typename?: 'Image' } & Pick<Image, 'id'>> }
     >
 }
 
@@ -289,17 +293,6 @@ export type GetConfigQuery = { __typename?: 'Query' } & {
     config: { __typename?: 'Config' } & Pick<Config, 'reCaptchaKey'>
 }
 
-export type LoggedInUserQueryVariables = Exact<{ [key: string]: never }>
-
-export type LoggedInUserQuery = { __typename?: 'Query' } & {
-    loggedInUser?: Maybe<
-        { __typename?: 'User' } & Pick<User, 'id' | 'role'> & {
-                image?: Maybe<{ __typename?: 'Image' } & Pick<Image, 'id'>>
-                person: { __typename?: 'Person' } & Pick<Person, 'name' | 'nickname'>
-            }
-    >
-}
-
 export type SearchGamesQueryVariables = Exact<{
     searchTerm: Scalars['String']
     limit: Scalars['Int']
@@ -315,6 +308,25 @@ export type SignOutMutation = { __typename?: 'Mutation' } & {
     user: { __typename?: 'UserMutation' } & { logOut?: Maybe<{ __typename?: 'User' } & Pick<User, 'id'>> }
 }
 
+export type SetCommentVisibleMutationVariables = Exact<{
+    commentId: Scalars['ID']
+    visible: Scalars['Boolean']
+}>
+
+export type SetCommentVisibleMutation = { __typename?: 'Mutation' } & {
+    game: { __typename?: 'GameMutation' } & { setCommentVisible: { __typename?: 'Game' } & Pick<Game, 'id'> }
+}
+
+export type LoggedInUserQueryVariables = Exact<{ [key: string]: never }>
+
+export type LoggedInUserQuery = { __typename?: 'Query' } & {
+    loggedInUser?: Maybe<
+        { __typename?: 'User' } & Pick<User, 'id' | 'role' | 'name' | 'nickname'> & {
+                image?: Maybe<{ __typename?: 'Image' } & Pick<Image, 'id'>>
+            }
+    >
+}
+
 export type BaseGameDataFragment = { __typename?: 'Game' } & Pick<
     Game,
     'id' | 'name' | 'players' | 'averageRating' | 'amountOfComments' | 'amountOfRatings'
@@ -324,8 +336,7 @@ export type GameDetailCommentFragment = { __typename?: 'Comment' } & Pick<
     Comment,
     'id' | 'added' | 'amountOfUpvotes' | 'comment' | 'isHidden'
 > & {
-        user: { __typename?: 'User' } & Pick<User, 'id'> & {
-                person: { __typename?: 'Person' } & Pick<Person, 'name' | 'nickname'>
+        user: { __typename?: 'User' } & Pick<User, 'id' | 'name' | 'nickname'> & {
                 image?: Maybe<{ __typename?: 'Image' } & Pick<Image, 'id'>>
             }
     }
@@ -335,19 +346,7 @@ export type CheckEmailQueryVariables = Exact<{
 }>
 
 export type CheckEmailQuery = { __typename?: 'Query' } & {
-    userByEmail?: Maybe<
-        { __typename?: 'User' } & Pick<User, 'id'> & { person: { __typename?: 'Person' } & Pick<Person, 'name'> }
-    >
-}
-
-export type LoggedInUserHookQueryVariables = Exact<{ [key: string]: never }>
-
-export type LoggedInUserHookQuery = { __typename?: 'Query' } & {
-    loggedInUser?: Maybe<
-        { __typename?: 'User' } & Pick<User, 'id' | 'role'> & {
-                person: { __typename?: 'Person' } & Pick<Person, 'name'>
-            }
-    >
+    userByEmail?: Maybe<{ __typename?: 'User' } & Pick<User, 'id' | 'name'>>
 }
 
 /** All built-in and custom scalars, mapped to their actual values */
@@ -555,16 +554,6 @@ export type Label = {
     isAuthorized?: Maybe<Scalars['Boolean']>
 }
 
-export type Person = {
-    __typename?: 'Person'
-    name: Scalars['String']
-    description?: Maybe<Scalars['String']>
-    email: Scalars['String']
-    nickname?: Maybe<Scalars['String']>
-    birthDate?: Maybe<Scalars['String']>
-    city?: Maybe<Scalars['String']>
-}
-
 export type Image = {
     __typename?: 'Image'
     id: Scalars['ID']
@@ -577,7 +566,6 @@ export type User = {
     id: Scalars['ID']
     lastRating?: Maybe<Scalars['Int']>
     role?: Maybe<UserRole>
-    person: Person
     amountOfComments?: Maybe<Scalars['Int']>
     amountOfPlayed?: Maybe<Scalars['Int']>
     amountOfCreated?: Maybe<Scalars['Int']>
@@ -587,6 +575,12 @@ export type User = {
     playedGames: Array<GameWithRating>
     wantedGames: Array<Game>
     authoredGames: Array<Game>
+    name: Scalars['String']
+    description?: Maybe<Scalars['String']>
+    email: Scalars['String']
+    nickname?: Maybe<Scalars['String']>
+    birthDate?: Maybe<Scalars['String']>
+    city?: Maybe<Scalars['String']>
 }
 
 export type UserCommentsPagedArgs = {

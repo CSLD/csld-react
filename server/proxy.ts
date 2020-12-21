@@ -56,6 +56,11 @@ const proxy: { [key: string]: {} } = {
         pathRewrite: { '^/user-icon': process.env.USER_ICON_PATH },
         changeOrigin: true,
     },
+    '/game-image': {
+        target: process.env.API_URL,
+        pathRewrite: { '^/game-image': process.env.GAME_IMAGE_PATH },
+        changeOrigin: true,
+    },
 }
 
 export default proxy

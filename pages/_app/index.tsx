@@ -6,6 +6,7 @@ import { ErrorBoundary } from 'src/components/common/ErrorBoundary/ErrorBoundary
 import { ApolloProvider } from '@apollo/react-hooks'
 import { config } from '@fortawesome/fontawesome-svg-core'
 import { WithApolloProps } from 'next-with-apollo'
+import UserContextProvider from 'src/components/common/UserContext/UserContextProvider'
 import { withApolloWrapper } from '../../src/with/withApolloProvider'
 
 import '@fortawesome/fontawesome-svg-core/styles.css'
@@ -26,8 +27,10 @@ class WebApp extends App<AppInitialProps & WithApolloProps<any>> {
         return (
             <ErrorBoundary>
                 <ApolloProvider client={apollo}>
-                    {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-                    <Component {...pageProps} />
+                    <UserContextProvider>
+                        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+                        <Component {...pageProps} />
+                    </UserContextProvider>
                 </ApolloProvider>
             </ErrorBoundary>
         )

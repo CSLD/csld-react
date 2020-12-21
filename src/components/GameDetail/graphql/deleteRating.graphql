@@ -1,0 +1,7 @@
+mutation DeleteRating($gameId: ID!, $userId: ID!) {
+    game {
+        deleteGameRating(gameId: $gameId, userId: $userId) {
+            id
+        }
+    }
+}

@@ -26,10 +26,8 @@ const mockComment: BaseCommentData = {
     },
     user: {
         id: '123',
-        person: {
-            nickname: 'Triss',
-            name: 'Zdenka',
-        },
+        nickname: 'Triss',
+        name: 'Zdenka',
     },
 }
 

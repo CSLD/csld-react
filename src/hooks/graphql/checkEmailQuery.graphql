@@ -1,8 +1,6 @@
 query CheckEmail($email: String!) {
     userByEmail(email: $email) {
         id
-        person {
-            name
-        }
+        name
     }
 }

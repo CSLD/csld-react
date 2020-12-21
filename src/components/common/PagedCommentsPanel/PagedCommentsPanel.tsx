@@ -1,8 +1,17 @@
 import React from 'react'
 import { createUseStyles } from 'react-jss'
-import { CommentsPaged } from '../../../graphql/__generated__/typescript-operations'
+import { useApolloClient } from '@apollo/client'
+import {
+    CommentsPaged,
+    SetCommentVisibleMutation,
+    SetCommentVisibleMutationVariables,
+} from '../../../graphql/__generated__/typescript-operations'
 import { darkTheme } from '../../../theme/darkTheme'
 import GameCommentPanel from '../GameCommentPanel/GameCommentPanel'
+import { useLoggedInUser } from '../../../hooks/useLoggedInUser'
+import { isAtLeastEditor } from '../../../utils/roleUtils'
+
+const setCommentVisibleGql = require('./graphql/setCommentVisible.graphql')
 
 interface Props {
     readonly page?: CommentsPaged
@@ -35,6 +44,8 @@ const useStyles = createUseStyles({
 
 const PagedCommentsPanel = ({ offset, page, pageSize, onOffsetChanged }: Props) => {
     const classes = useStyles()
+    const client = useApolloClient()
+    const loggedInUser = useLoggedInUser()
 
     const lastPageOffset = page ? page.totalAmount - (page.totalAmount % 10) : 0
     const prevPageOffset = Math.max(offset - pageSize, 0)
@@ -44,11 +55,25 @@ const PagedCommentsPanel = ({ offset, page, pageSize, onOffsetChanged }: Props) 
         pageOffsets.push(pageOffset)
     }
 
+    const handleChangeCommentVisibility = (commentId: string, isHidden: boolean) => {
+        client.mutate<SetCommentVisibleMutation, SetCommentVisibleMutationVariables>({
+            mutation: setCommentVisibleGql,
+            variables: { commentId, visible: !isHidden },
+        })
+    }
+
+    const showVisibilityButton = isAtLeastEditor(loggedInUser?.role)
+
     return (
         <>
             {page &&
                 (page as CommentsPaged).comments.map(comment => (
-                    <GameCommentPanel key={comment.id} comment={comment} />
+                    <GameCommentPanel
+                        key={comment.id}
+                        comment={comment}
+                        showVisibilityButton={showVisibilityButton}
+                        onChangeCommentVisibility={handleChangeCommentVisibility}
+                    />
                 ))}
             <div className={classes.buttons}>
                 <button type="button" className={classes.button} onClick={() => onOffsetChanged(0)}>

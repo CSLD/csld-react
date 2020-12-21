@@ -20,8 +20,6 @@ const updateCommentGql = require('./graphql/updateComment.graphql')
 
 interface Props {
     readonly gameId: string
-    readonly firstPage?: CommentsPaged
-    readonly currentUsersComment?: string
 }
 
 export const PAGE_SIZE = 10
@@ -34,21 +32,21 @@ const useStyles = createUseStyles({
     },
 })
 
-export const GamePagedCommentsPanel = ({ gameId, firstPage, currentUsersComment }: Props) => {
+export const GamePagedCommentsPanel = ({ gameId }: Props) => {
     const [offset, setOffset] = useState(0)
     const [editModalShown, setEditModalShown] = useState(false)
-    const lastPageRef = useRef<CommentsPaged | undefined>(firstPage)
+    const lastPageRef = useRef<CommentsPaged | undefined>(undefined)
     const classes = useStyles()
     const { t } = useTranslation('common')
     const loggedInUser = useLoggedInUser()
     const client = useApolloClient()
+
     const query = useQuery<MoreCommentsQuery, MoreCommentsQueryVariables>(moreCommentsGql, {
         variables: {
             gameId,
             commentsOffset: offset,
             commentsLimit: PAGE_SIZE,
         },
-        skip: !!firstPage && offset === 0,
         ssr: false,
     })
 
@@ -63,15 +61,15 @@ export const GamePagedCommentsPanel = ({ gameId, firstPage, currentUsersComment 
                 comment: newText,
             },
         })
-        const query2 = await query.refetch()
-        lastPageRef.current =
-            (query2.data && (query2.data.gameById?.commentsPaged as CommentsPaged)) || lastPageRef.current
+        await query.refetch()
         setEditModalShown(false)
     }
 
+    const currentUsersComment = query.data?.gameById?.currentUsersComment?.comment
+
     return (
         <>
-            {loggedInUser?.id && firstPage && (
+            {loggedInUser?.id && page && (
                 <div className={classes.commentButtonWrapper}>
                     {!currentUsersComment && (
                         <Button size="sm" variant="light" onClick={() => setEditModalShown(true)}>
