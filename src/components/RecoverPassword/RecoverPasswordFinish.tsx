@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import { useTranslation } from 'react-i18next'
 import { Form as FinalForm } from 'react-final-form'
@@ -14,6 +14,7 @@ import {
     FinishRecoverPasswordMutation,
     FinishRecoverPasswordMutationVariables,
 } from '../../graphql/__generated__/typescript-operations'
+import { UserContext } from '../common/UserContext/UserContext'
 
 interface Props {
     readonly token: string
@@ -57,6 +58,7 @@ const RecoverPasswordFinish = ({ token }: Props) => {
     const classes = useStyles()
     const client = useApolloClient()
     const router = useRouter()
+    const userContext = useContext(UserContext)
 
     const onSubmit = ({ password }: FormData) => {
         setState('loading')
@@ -74,6 +76,7 @@ const RecoverPasswordFinish = ({ token }: Props) => {
             })
             .then(() => {
                 // Success
+                userContext?.actions?.reload()
                 router.push('/homepage', '/')
             })
     }

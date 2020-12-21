@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { UserContext, UserContextShape, UserContextValue } from './UserContext'
 import {
@@ -11,37 +11,37 @@ const loggedInUserGql = require('./graphql/loggedInUserQuery.graphql')
 
 const UserContextProvider: React.FC = ({ children }) => {
     const [value, setValue] = useState<UserContextValue | undefined>(undefined)
+
     const query = useQuery<LoggedInUserQuery, LoggedInUserQueryVariables>(loggedInUserGql, {
         ssr: false,
-        onCompleted: data => {
+        fetchPolicy: 'network-only',
+        onCompleted: (data: LoggedInUserQuery) => {
             const { loggedInUser } = data
-            if (loggedInUser) {
-                setValue({
-                    id: loggedInUser.id,
-                    name: loggedInUser.name,
-                    nickName: loggedInUser.nickname ?? undefined,
-                    imageId: loggedInUser.image?.id,
-                    role: loggedInUser.role ?? UserRole.Anonymous,
-                })
-            }
+            console.log({ loggedInUser })
+            setValue(
+                loggedInUser
+                    ? {
+                          id: loggedInUser.id,
+                          name: loggedInUser.name,
+                          nickName: loggedInUser.nickname ?? undefined,
+                          imageId: loggedInUser.image?.id,
+                          role: loggedInUser.role ?? UserRole.Anonymous,
+                      }
+                    : undefined,
+            )
         },
+        notifyOnNetworkStatusChange: true,
     })
     const { loading } = query
 
     const providerValue: UserContextShape | undefined = useMemo(() => {
-        if (!value && !loading) {
-            return undefined
-        }
-
         return {
-            value: value ?? {},
+            value: !value && !loading ? undefined : value ?? {},
             actions: {
-                reload: () => {
-                    query.refetch()
-                },
+                reload: async () => query.refetch(),
             },
         }
-    }, [value, loading])
+    }, [value, loading, query])
 
     return <UserContext.Provider value={providerValue}>{children}</UserContext.Provider>
 }

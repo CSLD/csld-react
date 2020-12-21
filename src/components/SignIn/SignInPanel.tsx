@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Form as FinalForm } from 'react-final-form'
 import { useTranslation } from 'react-i18next'
 import { Button } from 'react-bootstrap'
@@ -14,6 +14,7 @@ import { validateEmail, validateRequired, validateWithValidators } from '../../u
 import { LogInMutation, LogInMutationVariables } from '../../graphql/__generated__/typescript-operations'
 import { TextLink } from '../common/TextLink/TextLink'
 import FormPageRow from '../common/FormPageRow/FormPageRow'
+import { UserContext } from '../common/UserContext/UserContext'
 
 const logInMutation = require('./graphql/logInMutation.graphql')
 
@@ -51,6 +52,7 @@ const SignInPanel = () => {
     const client = useApolloClient()
     const router = useRouter()
     const [state, setState] = useState<TState>('idle')
+    const userContext = useContext(UserContext)
 
     const onSubmit = async (data: FormData) => {
         setState('loading')
@@ -66,6 +68,7 @@ const SignInPanel = () => {
             // Success
 
             // Go to homepage
+            userContext?.actions?.reload()
             router.push('/homepage', '/')
             return
         }

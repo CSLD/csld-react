@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import { useTranslation } from 'react-i18next'
 import { useApolloClient } from '@apollo/client'
@@ -16,6 +16,7 @@ import { TextLink } from '../common/TextLink/TextLink'
 import ReCaptchaField from './ReCaptchaField'
 import { convertDateInput, convertFileInput } from '../../utils/graphqlUtils'
 import { useIsEmailAvailable } from '../../hooks/useIsEmailAvailable'
+import { UserContext } from '../common/UserContext/UserContext'
 
 const createUserlGql = require(`./graphql/createUserMutation.graphql`)
 
@@ -66,6 +67,7 @@ const SignUpPanel = () => {
     const router = useRouter()
     const [state, setState] = useState<TState>('idle')
     const { usedByName, isEmailAvailable } = useIsEmailAvailable()
+    const userContext = useContext(UserContext)
 
     const onSubmit = async (data: FormData) => {
         setState('loading')
@@ -93,6 +95,7 @@ const SignUpPanel = () => {
 
         if (res.data?.user?.createUser?.id) {
             // Success - go to homepage
+            userContext?.actions?.reload()
             router.push('/homepage', '/')
             return undefined
         }

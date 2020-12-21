@@ -27,6 +27,17 @@ export const withApolloWrapper = withApollo(props => {
             uri,
             credentials: 'same-origin',
         }),
-        cache: new InMemoryCache().restore(initialState || {}),
+        cache: new InMemoryCache({
+            typePolicies: {
+                Mutation: {
+                    fields: {
+                        user: (existing, incoming) => ({ ...existing, incoming }),
+                        game: (existing, incoming) => ({ ...existing, incoming }),
+                        event: (existing, incoming) => ({ ...existing, incoming }),
+                        admin: (existing, incoming) => ({ ...existing, incoming }),
+                    },
+                },
+            },
+        }).restore(initialState || {}),
     })
 })

@@ -10,7 +10,7 @@ export interface UserContextValue {
 }
 
 export interface UserContextShape {
-    readonly value: UserContextValue
+    readonly value?: UserContextValue
     readonly actions: {
         reload: () => void
     }
