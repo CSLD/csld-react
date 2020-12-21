@@ -32,22 +32,19 @@ const transformCookiePath = (cookie: string) => {
  * We must rewrite JSESSION cookie path so that browser sends them in subsequent requests
  */
 const onProxyRes = (proxyRes: any) => {
-    const names = ['Set-Cookie', 'set-cookie']
-
-    names.forEach(headerName => {
-        const setCookie = proxyRes.headers[headerName]
-        if (setCookie) {
-            if (Array.isArray(setCookie)) {
-                // eslint-disable-next-line no-param-reassign
-                proxyRes.headers[headerName] = setCookie.map(cookie => transformCookiePath(cookie))
-            } else {
-                // Just a string
-                // eslint-disable-next-line no-param-reassign
-                proxyRes.headers[headerName] = transformCookiePath(setCookie)
-            }
+    const setCookie = proxyRes.headers['set-cookie']
+    if (setCookie) {
+        if (Array.isArray(setCookie)) {
+            // eslint-disable-next-line no-param-reassign
+            proxyRes.headers['set-cookie'] = setCookie.map(cookie => transformCookiePath(cookie))
+        } else {
+            // Just a string
+            // eslint-disable-next-line no-param-reassign
+            proxyRes.headers['set-cookie'] = transformCookiePath(setCookie)
         }
-    })
+    }
 }
+
 const proxy: { [key: string]: {} } = {
     '/graphql': {
         target: process.env.API_URL,

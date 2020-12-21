@@ -145,7 +145,7 @@ export const GameDetailPanel = ({ gameId }: Props) => {
 
     const handleRefetch = () => gameQuery.refetch()
 
-    const atLeastEditor = isAtLeastEditor(loggedInUser.role)
+    const atLeastEditor = isAtLeastEditor(loggedInUser?.role)
 
     return (
         <>
