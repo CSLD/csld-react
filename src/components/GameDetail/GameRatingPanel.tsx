@@ -137,7 +137,7 @@ export const GameRatingPanel = ({
                 </div>
             </div>
             {!loggedInUser && <div className={classes.login}>{t('GameDetail.logInToRate')}</div>}
-            {loggedInUser && <RatingStars gameId={gameId} rating={ratingNum} />}
+            {loggedInUser?.id && <RatingStars gameId={gameId} rating={ratingNum} />}
         </div>
     )
 }

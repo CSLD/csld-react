@@ -78,7 +78,9 @@
     "notPlayed": "Nehrál jsem",
     "iPlayed": "Hrál jsem",
     "wantToPlay": "Chci hrát",
-    "rate": "Vaše hodnocení je:"
+    "rate": "Vaše hodnocení je:",
+    "addComment": "Přidat váš komentář",
+    "updateComment": "Upravit váš komentář"
   },
 
   "SignIn": {
@@ -178,5 +180,11 @@
     "submit": "Nastavit heslo",
     "error": "Chyba při nastavování hesla",
     "oldPasswordError": "Staré heslo nesouhlasí"
+  },
+
+  "EditCommentModal": {
+    "title": "Váš komentář",
+    "cancel": "Storno",
+    "save": "Uložit"
   }
 }

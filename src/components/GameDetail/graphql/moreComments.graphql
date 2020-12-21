@@ -9,5 +9,9 @@ query MoreComments($gameId: ID!, $commentsOffset: Int!, $commentsLimit: Int!) {
             }
             totalAmount
         }
+        currentUsersComment {
+            id
+            comment
+        }
     }
 }

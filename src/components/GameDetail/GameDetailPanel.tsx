@@ -64,12 +64,12 @@ const tabComments: TabDefinition<TabTabs> = {
     },
 }
 
-const tabPhotos: TabDefinition<TabTabs> = {
-    key: 'photos',
-    title: {
-        key: 'GameDetail.photos',
-    },
-}
+// const tabPhotos: TabDefinition<TabTabs> = {
+//     key: 'photos',
+//     title: {
+//         key: 'GameDetail.photos',
+//     },
+// }
 
 const tabVideo: TabDefinition<TabTabs> = {
     key: 'video',
@@ -124,6 +124,7 @@ export const GameDetailPanel = ({ gameId }: Props) => {
     const game = gameQuery.data?.gameById || {
         ...emptyGame,
         ...gameFragment,
+        currentUsersComment: undefined,
         id: `${gameId}`,
     }
 
@@ -153,6 +154,7 @@ export const GameDetailPanel = ({ gameId }: Props) => {
                                             ? (game.commentsPaged as CommentsPaged)
                                             : undefined
                                     }
+                                    currentUsersComment={game.currentUsersComment?.comment ?? undefined}
                                 />
                             )}
                             {selectedTab === 'video' && (

@@ -68,6 +68,7 @@ export type MoreCommentsQuery = { __typename?: 'Query' } & {
                 commentsPaged: { __typename?: 'CommentsPaged' } & Pick<CommentsPaged, 'totalAmount'> & {
                         comments: Array<{ __typename?: 'Comment' } & GameDetailCommentFragment>
                     }
+                currentUsersComment?: Maybe<{ __typename?: 'Comment' } & Pick<Comment, 'id' | 'comment'>>
             }
     >
 }
@@ -83,6 +84,15 @@ export type RefetchGameRatingQuery = { __typename?: 'Query' } & {
             ratingStats: Array<{ __typename?: 'RatingCount' } & Pick<RatingCount, 'count' | 'rating'>>
         }
     >
+}
+
+export type UpdateCommentMutationVariables = Exact<{
+    gameId: Scalars['ID']
+    comment: Scalars['String']
+}>
+
+export type UpdateCommentMutation = { __typename?: 'Mutation' } & {
+    game: { __typename?: 'GameMutation' } & { createOrUpdateComment: { __typename?: 'Game' } & Pick<Game, 'id'> }
 }
 
 export type UpdateGameRatingMutationVariables = Exact<{

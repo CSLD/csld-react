@@ -9,6 +9,8 @@ import {
     faChevronCircleRight,
     faCaretUp,
     faSpinner,
+    faPlus,
+    faEdit,
 } from '@fortawesome/free-solid-svg-icons'
 import { faFacebook } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -39,3 +41,7 @@ export const IconFacebook = (props: IconProps) => <FontAwesomeIcon icon={faFaceb
 export const IconCaretUp = (props: IconProps) => <FontAwesomeIcon icon={faCaretUp} {...props} />
 
 export const IconLoading = (props: IconProps) => <FontAwesomeIcon icon={faSpinner} pulse {...props} />
+
+export const IconPlus = (props: IconProps) => <FontAwesomeIcon icon={faPlus} {...props} />
+
+export const IconEdit = (props: IconProps) => <FontAwesomeIcon icon={faEdit} {...props} />

@@ -90,7 +90,7 @@ const UserProfilePanel = ({ userId, user, profileOnly }: Props) => {
                               id: user.id,
                               image: user.image ?? undefined,
                               person: user.person,
-                              amountOfCreated: user.amountOfCreated,
+                              amountOfCreated: user.authoredGames?.length ?? 0,
                               amountOfPlayed: user.amountOfPlayed,
                           }
                         : undefined
@@ -101,7 +101,7 @@ const UserProfilePanel = ({ userId, user, profileOnly }: Props) => {
                 <WidthFixer>
                     <Row>
                         <Col md={9}>
-                            {user && (user.amountOfCreated ?? 0) > 0 && (
+                            {user && (user.authoredGames?.length ?? 0) > 0 && (
                                 <div className={classes.authoredGames}>
                                     {user.authoredGames.map(game => (
                                         <GameBaseDataPanel
