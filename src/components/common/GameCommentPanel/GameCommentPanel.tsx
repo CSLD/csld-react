@@ -9,7 +9,7 @@ import { ProfileImage } from '../ProfileImage/ProfileImage'
 import { parseDateTime } from '../../../utils/dateUtils'
 import { GameRatingBox } from '../GameRatingBox/GameRatingBox'
 import { GameLink } from '../GameLink/GameLink'
-import UserLink from '../UserLink'
+import UserLink from '../UserLink/UserLink'
 import { IconEye } from '../Icons/Icons'
 
 interface Props {

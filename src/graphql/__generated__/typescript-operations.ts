@@ -119,6 +119,34 @@ export type UpdateGameStateMutation = { __typename?: 'Mutation' } & {
     game: { __typename?: 'GameMutation' } & { setGamePlayedState: { __typename?: 'Game' } & Pick<Game, 'id'> }
 }
 
+export type CreateGroupMutationVariables = Exact<{
+    input: CreateGroupInput
+}>
+
+export type CreateGroupMutation = { __typename?: 'Mutation' } & {
+    group: { __typename?: 'GroupMutation' } & { createGroup: { __typename?: 'Group' } & Pick<Group, 'id'> }
+}
+
+export type LoadGroupQueryVariables = Exact<{
+    groupId: Scalars['ID']
+}>
+
+export type LoadGroupQuery = { __typename?: 'Query' } & {
+    groupById?: Maybe<
+        { __typename?: 'Group' } & Pick<Group, 'id' | 'name'> & {
+                authorsOf: Array<{ __typename?: 'Game' } & BaseGameDataFragment>
+            }
+    >
+}
+
+export type UpdateGroupMutationVariables = Exact<{
+    input: UpdateGroupInput
+}>
+
+export type UpdateGroupMutation = { __typename?: 'Mutation' } & {
+    group: { __typename?: 'GroupMutation' } & { updateGroup: { __typename?: 'Group' } & Pick<Group, 'id'> }
+}
+
 export type BaseCommentDataFragment = { __typename?: 'Comment' } & Pick<Comment, 'id' | 'commentAsText' | 'added'> & {
         game: { __typename?: 'Game' } & BaseGameDataFragment
         user: { __typename?: 'User' } & Pick<User, 'id' | 'name' | 'nickname'> & {
@@ -363,6 +391,7 @@ export type Query = {
     homepage: HomepageQuery
     loggedInUser?: Maybe<User>
     gameById?: Maybe<Game>
+    groupById?: Maybe<Group>
     eventById?: Maybe<Event>
     userById?: Maybe<User>
     userByEmail?: Maybe<User>
@@ -376,6 +405,10 @@ export type Query = {
 
 export type QueryGameByIdArgs = {
     gameId: Scalars['ID']
+}
+
+export type QueryGroupByIdArgs = {
+    groupId: Scalars['ID']
 }
 
 export type QueryEventByIdArgs = {
@@ -394,6 +427,7 @@ export type Mutation = {
     __typename?: 'Mutation'
     user: UserMutation
     game: GameMutation
+    group: GroupMutation
     event: EventMutation
     admin: AdminMutation
 }
@@ -760,6 +794,20 @@ export type GameMutationSetCommentLikedArgs = {
     liked: Scalars['Boolean']
 }
 
+export type GroupMutation = {
+    __typename?: 'GroupMutation'
+    createGroup: Group
+    updateGroup: Group
+}
+
+export type GroupMutationCreateGroupArgs = {
+    input?: Maybe<CreateGroupInput>
+}
+
+export type GroupMutationUpdateGroupArgs = {
+    input?: Maybe<UpdateGroupInput>
+}
+
 export type CreateGameInput = {
     name: Scalars['String']
     description: Scalars['String']
@@ -978,4 +1026,13 @@ export type Donation = {
 export type Config = {
     __typename?: 'Config'
     reCaptchaKey: Scalars['String']
+}
+
+export type CreateGroupInput = {
+    name: Scalars['String']
+}
+
+export type UpdateGroupInput = {
+    id: Scalars['ID']
+    name: Scalars['String']
 }

@@ -1,10 +1,11 @@
 import React from 'react'
 import { createUseStyles } from 'react-jss'
-import { Game, User, Group, Label, Image } from 'src/graphql/__generated__/typescript-operations'
+import { Game, User, Group, Label } from 'src/graphql/__generated__/typescript-operations'
 import { useTranslation } from 'react-i18next'
 import { i18n as Ti18n, TFunction } from 'i18next'
 import { darkTheme } from '../../theme/darkTheme'
-import UserLink from '../common/UserLink'
+import UserLink from '../common/UserLink/UserLink'
+import GroupLink from '../common/GroupLink/GroupLink'
 
 interface Props {
     readonly game: Pick<
@@ -194,9 +195,9 @@ export const GameHeaderPanel = ({ game }: Props) => {
                             game.groupAuthor.map((group, n) => (
                                 <React.Fragment key={group.id}>
                                     {n > 0 && ', '}
-                                    <a href="/" className={classes.link}>
+                                    <GroupLink groupId={group.id} className={classes.link}>
                                         {group.name}
-                                    </a>
+                                    </GroupLink>
                                 </React.Fragment>
                             ))}
                     </p>

@@ -187,5 +187,20 @@
     "title": "Váš komentář",
     "cancel": "Storno",
     "save": "Uložit"
+  },
+
+  "GroupDetail": {
+    "createGroup": "Přidat skupinu",
+    "editGroup": "Editovat skupinu",
+    "authorsOf_0": "Tvůrci jednoho larpu",
+    "authorsOf_1": "Tvůrci {{count}} larpů",
+    "authorsOf_2": "Tvůrci {{count}} larpů"
+  },
+  "GroupEditModal": {
+    "titleCreate": "Přidat skupinu",
+    "titleEdit": "Editovat skupinu",
+    "cancel": "Storno",
+    "save": "Uložit",
+    "name": "Název"
   }
 }

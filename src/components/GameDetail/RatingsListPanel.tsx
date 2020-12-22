@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useApolloClient } from '@apollo/client'
 import { useTranslation } from 'react-i18next'
 import { createUseStyles } from 'react-jss'
@@ -12,7 +12,7 @@ import {
 import { DetailListHeader } from '../common/DetailListHeader/DetailListHeader'
 import { darkTheme } from '../../theme/darkTheme'
 import { IconTrash } from '../common/Icons/Icons'
-import UserLink from '../common/UserLink'
+import UserLink from '../common/UserLink/UserLink'
 
 const deleteRatingGql = require('./graphql/deleteRating.graphql')
 
@@ -71,11 +71,13 @@ const RatingsListPanel = ({ gameId, ratings, onRatingDeleted }: Props) => {
         onRatingDeleted()
     }
 
+    const ratingsSorted = useMemo(() => [...ratings].sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0)), [ratings])
+
     return (
         <>
             <DetailListHeader>{t('GameDetail.ratings')}</DetailListHeader>
             <div className={classes.wrapper}>
-                {ratings
+                {ratingsSorted
                     .filter(rating => !!rating.rating)
                     .map(rating => (
                         <div

@@ -2,6 +2,7 @@ type Query {
     homepage: HomepageQuery!
     loggedInUser: User
     gameById(gameId: ID!): Game
+    groupById(groupId: ID!): Group
     eventById(eventId: ID!): Event
     userById(userId: ID!): User
     userByEmail(email: String!): User
@@ -16,6 +17,7 @@ type Query {
 type Mutation {
     user: UserMutation!
     game: GameMutation!
+    group: GroupMutation!
     event: EventMutation!
     admin: AdminMutation!
 }
@@ -238,6 +240,11 @@ type GameMutation {
     setCommentLiked(commentId: ID!, liked: Boolean!): Game!
 }
 
+type GroupMutation {
+    createGroup(input: CreateGroupInput): Group!
+    updateGroup(input: UpdateGroupInput): Group!
+}
+
 input CreateGameInput {
     name: String!
     description: String!
@@ -409,4 +416,13 @@ type Donation {
 
 type Config {
     reCaptchaKey: String!
+}
+
+input CreateGroupInput {
+    name: String!
+}
+
+input UpdateGroupInput {
+    id: ID!
+    name: String!
 }

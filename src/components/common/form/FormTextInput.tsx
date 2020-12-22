@@ -14,6 +14,7 @@ export interface FormTextInputProps {
     readonly type?: string
     readonly onBlur?: (e: FocusEvent<HTMLInputElement>) => void
     readonly errorHint?: React.ReactNode
+    readonly autoFocus?: boolean
 }
 
 const FormTextInput = ({
@@ -26,6 +27,7 @@ const FormTextInput = ({
     appendIcon,
     hint,
     errorHint,
+    autoFocus,
     onBlur,
 }: FormTextInputProps) => {
     const [wasBlurred, setWasBlurred] = useState(false)
@@ -53,6 +55,7 @@ const FormTextInput = ({
                                 isInvalid={isInvalid}
                                 type={type}
                                 onBlur={handleOnBlur}
+                                autoFocus={autoFocus}
                                 /* eslint-disable-next-line react/jsx-props-no-spreading */
                                 {...inputRest}
                                 placeholder={placeholder}

@@ -1,7 +1,7 @@
 import React from 'react'
 import { GameRatingPanel } from '../GameRatingPanel'
 
-export default { title: 'GameRatingPanel' }
+// export default { title: 'GameRatingPanel' }
 
 const game = {
     id: '123',
@@ -52,4 +52,4 @@ const game = {
     ],
 }
 
-export const Panel = () => <GameRatingPanel game={game} />
+// export const Panel = () => <GameRatingPanel game={game} />

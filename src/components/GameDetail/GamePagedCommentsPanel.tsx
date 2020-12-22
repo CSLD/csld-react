@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useApolloClient, useQuery } from '@apollo/client'
 import { Button } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
@@ -40,6 +40,10 @@ export const GamePagedCommentsPanel = ({ gameId }: Props) => {
     const { t } = useTranslation('common')
     const loggedInUser = useLoggedInUser()
     const client = useApolloClient()
+    // Clear cached page when gameId changes
+    useEffect(() => {
+        lastPageRef.current = undefined
+    }, [gameId])
 
     const query = useQuery<MoreCommentsQuery, MoreCommentsQueryVariables>(moreCommentsGql, {
         variables: {
