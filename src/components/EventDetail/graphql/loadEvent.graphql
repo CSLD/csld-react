@@ -1,0 +1,22 @@
+#import "src/graphql/fragments/baseGameData.graphql"
+
+query LoadEvent($eventId: ID!) {
+    eventById(eventId: $eventId) {
+        id
+        name
+        amountOfPlayers
+        web
+        loc
+        from
+        to
+        description
+        labels {
+            id
+            name
+            description
+        }
+        games {
+            ...baseGameData
+        }
+    }
+}

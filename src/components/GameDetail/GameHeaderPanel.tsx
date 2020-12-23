@@ -6,6 +6,7 @@ import { i18n as Ti18n, TFunction } from 'i18next'
 import { darkTheme } from '../../theme/darkTheme'
 import UserLink from '../common/UserLink/UserLink'
 import GroupLink from '../common/GroupLink/GroupLink'
+import DetailLabelList from '../common/DetailLabelList/DetailLabelList'
 
 interface Props {
     readonly game: Pick<
@@ -70,25 +71,6 @@ const useStyles = createUseStyles({
 
         '&:hover': {
             color: darkTheme.text,
-        },
-    },
-    labelWrapper: {
-        padding: '0 10px',
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
-    label: {
-        borderRadius: 3,
-        padding: '3px 5px',
-        margin: '0 5px 5px 0',
-        backgroundColor: darkTheme.backgroundWhite,
-        color: darkTheme.textOnLightDark,
-        fontSize: '0.75rem',
-        whiteSpace: 'nowrap',
-
-        '&:hover': {
-            backgroundColor: darkTheme.textGreen,
-            color: darkTheme.backgroundWhite,
         },
     },
 })
@@ -206,13 +188,7 @@ export const GameHeaderPanel = ({ game }: Props) => {
             <div className={classes.divider} />
             <p className={classes.description} dangerouslySetInnerHTML={{ __html: game.description ?? '' }} />
             <div className={classes.divider} />
-            <div className={classes.labelWrapper}>
-                {game.labels.map(label => (
-                    <a href="/" className={classes.label} key={label.id} title={label.description ?? undefined}>
-                        {label.name}
-                    </a>
-                ))}
-            </div>
+            <DetailLabelList labels={game.labels} />
         </div>
     )
 }

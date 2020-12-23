@@ -1,5 +1,21 @@
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
+export type LoadEventQueryVariables = Exact<{
+    eventId: Scalars['ID']
+}>
+
+export type LoadEventQuery = { __typename?: 'Query' } & {
+    eventById?: Maybe<
+        { __typename?: 'Event' } & Pick<
+            Event,
+            'id' | 'name' | 'amountOfPlayers' | 'web' | 'loc' | 'from' | 'to' | 'description'
+        > & {
+                labels?: Maybe<Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name'>>>
+                games?: Maybe<Array<{ __typename?: 'Game' } & BaseGameDataFragment>>
+            }
+    >
+}
+
 export type CachedGameDataFragment = { __typename?: 'Game' } & Pick<
     Game,
     'id' | 'name' | 'averageRating' | 'amountOfRatings'

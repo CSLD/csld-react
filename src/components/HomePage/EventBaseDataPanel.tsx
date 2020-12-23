@@ -5,6 +5,7 @@ import classNames from 'classnames'
 import { darkTheme } from '../../theme/darkTheme'
 import { IconUser, IconLocation } from '../common/Icons/Icons'
 import { formatTimeRange } from '../../utils/dateUtils'
+import EventLink from '../common/EventLink/EventLink'
 
 export type EventBaseData = Pick<Event, 'id' | 'name' | 'from' | 'to' | 'amountOfPlayers' | 'loc'>
 
@@ -51,30 +52,30 @@ export const EventBaseDataPanel = ({ event, className }: Props) => {
 
     const { fromFormatted, toFormatted, justOneDate } = formatTimeRange(event?.from, event?.to)
 
+    if (!event) {
+        return <div className={classNames(classes.wrapper, className)} />
+    }
+
     return (
-        <a className={classNames(classes.wrapper, className)} href="/">
-            {event && (
-                <>
-                    <div className={classes.name}>{event?.name}</div>
-                    <div>
-                        {justOneDate ? (
-                            fromFormatted
-                        ) : (
-                            <>
-                                {fromFormatted}
-                                &nbsp;-&nbsp;
-                                {toFormatted}
-                            </>
-                        )}
-                    </div>
-                    <div>
-                        <IconUser />
-                        <span className={classes.textByIcon}>{event.amountOfPlayers}</span>
-                        <IconLocation />
-                        <span className={classes.textByIcon}>{event.loc || '-'}</span>
-                    </div>
-                </>
-            )}
-        </a>
+        <EventLink event={event} className={classNames(classes.wrapper, className)}>
+            <div className={classes.name}>{event.name}</div>
+            <div>
+                {justOneDate ? (
+                    fromFormatted
+                ) : (
+                    <>
+                        {fromFormatted}
+                        &nbsp;-&nbsp;
+                        {toFormatted}
+                    </>
+                )}
+            </div>
+            <div>
+                <IconUser />
+                <span className={classes.textByIcon}>{event.amountOfPlayers}</span>
+                <IconLocation />
+                <span className={classes.textByIcon}>{event.loc || '-'}</span>
+            </div>
+        </EventLink>
     )
 }

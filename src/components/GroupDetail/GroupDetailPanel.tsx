@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { createUseStyles } from 'react-jss'
 import { Col, Row } from 'react-bootstrap'
+import { useTranslation } from 'react-i18next'
 import { LoadGroupQuery, LoadGroupQueryVariables } from '../../graphql/__generated__/typescript-operations'
 import { darkTheme } from '../../theme/darkTheme'
 import { WidthFixer } from '../common/WidthFixer/WidthFixer'
@@ -11,7 +12,7 @@ import ActionButton from '../common/ActionButton/ActionButton'
 import GroupEditModal from './GroupEditModal'
 import { GameBaseDataPanel } from '../common/GameBaseDataPanel/GameBaseDataPanel'
 import { IconPlus } from '../common/Icons/Icons'
-import { useTranslation } from 'react-i18next'
+import DetailGameList from '../common/DetailGameList/DetailGameList'
 
 const loadGroupGql = require('./graphql/loadGroup.graphql')
 
@@ -98,16 +99,7 @@ const GroupDetailPanel = ({ groupId }: Props) => {
                     {data?.groupById && (
                         <Row>
                             <Col md={9}>
-                                <div className={classes.authoredGames}>
-                                    {authorsOf.map(game => (
-                                        <GameBaseDataPanel
-                                            key={game.id}
-                                            game={game}
-                                            className={classes.authoredGame}
-                                            variant="light"
-                                        />
-                                    ))}
-                                </div>
+                                <DetailGameList games={authorsOf} />
                             </Col>
                             <Col md={3}>
                                 {isAtLeastEditor(loggedInUser?.role) && (

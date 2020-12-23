@@ -1,18 +1,20 @@
-import { Game } from '../graphql/__generated__/typescript-operations'
+import { Game, Event } from '../graphql/__generated__/typescript-operations'
 
-/**
- * Generate (nicey) route to the game. Do not use directly - use GameLink component!
- *
- * @param id Game ID
- * @param name Game name
- */
-export const getGameRoute = ({ id, name }: Pick<Game, 'id' | 'name'>) => {
-    const stripped = (name || '')
+const stripName = (name: string | null | undefined) =>
+    (name ?? '')
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
         .toLowerCase()
         .replace(/[^a-zA-Z0-9]/g, '-')
         .replace(/-+/g, '-')
         .replace(/-$/g, '')
-    return `/larp/${stripped}/cs/${id}`
-}
+
+/**
+ * Generate SEO route to the game. Do not use directly - use GameLink component!
+ *
+ * @param id Game ID
+ * @param name Game name
+ */
+export const getGameRoute = ({ id, name }: Pick<Game, 'id' | 'name'>) => `/larp/${stripName(name)}/cs/${id}`
+
+export const getEventRoute = ({ id, name }: Pick<Event, 'id' | 'name'>) => `/event/${stripName(name)}/${id}`

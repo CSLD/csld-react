@@ -191,16 +191,28 @@
 
   "GroupDetail": {
     "createGroup": "Přidat skupinu",
-    "editGroup": "Editovat skupinu",
+    "editGroup": "Upravit skupinu",
     "authorsOf_0": "Tvůrci jednoho larpu",
     "authorsOf_1": "Tvůrci {{count}} larpů",
     "authorsOf_2": "Tvůrci {{count}} larpů"
   },
   "GroupEditModal": {
     "titleCreate": "Přidat skupinu",
-    "titleEdit": "Editovat skupinu",
+    "titleEdit": "Upravit skupinu",
     "cancel": "Storno",
     "save": "Uložit",
     "name": "Název"
+  },
+  "Event": {
+    "web": "Web",
+    "loc": "Místo"
+  },
+  "EventDetail": {
+    "players_0": "jeden hráč",
+    "players_1": "{{count}} hráči",
+    "players_2": "{{count}} hráčů",
+    "date": "Datum",
+    "edit": "Upravit událost",
+    "delete": "Smazat událost"
   }
 }

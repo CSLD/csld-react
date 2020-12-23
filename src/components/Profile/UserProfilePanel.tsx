@@ -17,6 +17,7 @@ import { GameBaseDataPanel } from '../common/GameBaseDataPanel/GameBaseDataPanel
 import UserPagedCommentsPanel from './UserPagedCommentsPanel'
 import { GameListPanel } from '../common/GameListPanel/GameListPanel'
 import { DetailListHeader } from '../common/DetailListHeader/DetailListHeader'
+import DetailGameList from '../common/DetailGameList/DetailGameList'
 
 export type UserProfileUser = Maybe<
     { __typename?: 'User' } & {
@@ -105,16 +106,7 @@ const UserProfilePanel = ({ userId, user, profileOnly }: Props) => {
                     <Row>
                         <Col md={9}>
                             {user && (user.authoredGames?.length ?? 0) > 0 && (
-                                <div className={classes.authoredGames}>
-                                    {user.authoredGames.map(game => (
-                                        <GameBaseDataPanel
-                                            key={game.id}
-                                            game={game}
-                                            className={classes.authoredGame}
-                                            variant="light"
-                                        />
-                                    ))}
-                                </div>
+                                <DetailGameList games={user.authoredGames} />
                             )}
                             {user && (
                                 <UserPagedCommentsPanel

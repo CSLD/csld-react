@@ -6,6 +6,8 @@ import { DetailListHeader } from '../common/DetailListHeader/DetailListHeader'
 import { darkTheme } from '../../theme/darkTheme'
 import { formatTimeRange } from '../../utils/dateUtils'
 
+import EventLink from '../common/EventLink/EventLink'
+
 interface Props {
     readonly events: Array<Pick<Event, 'id' | 'name' | 'from' | 'to'>>
     readonly titleKey?: string
@@ -41,9 +43,9 @@ export const EventListPanel = ({ events, titleKey }: Props) => {
                     const { fromFormatted, toFormatted, justOneDate } = formatTimeRange(event?.from, event?.to)
 
                     return (
-                        <a href="/" className={classes.event} key={event.id}>
+                        <EventLink className={classes.event} key={event.id} event={event}>
                             {event.name} ({justOneDate ? fromFormatted : `${fromFormatted} - ${toFormatted}`})
-                        </a>
+                        </EventLink>
                     )
                 })}
             </div>
