@@ -10,7 +10,7 @@ export type LoadEventQuery = { __typename?: 'Query' } & {
             Event,
             'id' | 'name' | 'amountOfPlayers' | 'web' | 'loc' | 'from' | 'to' | 'description'
         > & {
-                labels?: Maybe<Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name'>>>
+                labels?: Maybe<Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name' | 'description'>>>
                 games?: Maybe<Array<{ __typename?: 'Game' } & BaseGameDataFragment>>
             }
     >
@@ -133,6 +133,33 @@ export type UpdateGameStateMutationVariables = Exact<{
 
 export type UpdateGameStateMutation = { __typename?: 'Mutation' } & {
     game: { __typename?: 'GameMutation' } & { setGamePlayedState: { __typename?: 'Game' } & Pick<Game, 'id'> }
+}
+
+export type LoadLabelsQueryVariables = Exact<{ [key: string]: never }>
+
+export type LoadLabelsQuery = { __typename?: 'Query' } & {
+    authorizedRequiredLabels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name' | 'description'>>
+    authorizedOptionalLabels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name' | 'description'>>
+}
+
+export type SearchAuthorsQueryVariables = Exact<{
+    query: Scalars['String']
+    offset: Scalars['Int']
+    limit: Scalars['Int']
+}>
+
+export type SearchAuthorsQuery = { __typename?: 'Query' } & {
+    usersByQuery: Array<{ __typename?: 'User' } & Pick<User, 'id' | 'name' | 'nickname' | 'birthDate'>>
+}
+
+export type SearchGroupsQueryVariables = Exact<{
+    query: Scalars['String']
+    offset: Scalars['Int']
+    limit: Scalars['Int']
+}>
+
+export type SearchGroupsQuery = { __typename?: 'Query' } & {
+    groupsByQuery: Array<{ __typename?: 'Group' } & Pick<Group, 'id' | 'name'>>
 }
 
 export type CreateGroupMutationVariables = Exact<{
@@ -338,12 +365,12 @@ export type GetConfigQuery = { __typename?: 'Query' } & {
 }
 
 export type SearchGamesQueryVariables = Exact<{
-    searchTerm: Scalars['String']
+    query: Scalars['String']
     limit: Scalars['Int']
 }>
 
 export type SearchGamesQuery = { __typename?: 'Query' } & {
-    games: { __typename?: 'GamesQuery' } & { bySearchTerm: Array<{ __typename?: 'Game' } & BaseGameDataFragment> }
+    games: { __typename?: 'GamesQuery' } & { byQuery: Array<{ __typename?: 'Game' } & BaseGameDataFragment> }
 }
 
 export type SignOutMutationVariables = Exact<{ [key: string]: never }>
@@ -390,7 +417,7 @@ export type CheckEmailQueryVariables = Exact<{
 }>
 
 export type CheckEmailQuery = { __typename?: 'Query' } & {
-    userByEmail?: Maybe<{ __typename?: 'User' } & Pick<User, 'id' | 'name'>>
+    userByEmail?: Maybe<{ __typename?: 'User' } & Pick<User, 'id' | 'email' | 'name' | 'nickname'>>
 }
 
 /** All built-in and custom scalars, mapped to their actual values */
@@ -408,9 +435,11 @@ export type Query = {
     loggedInUser?: Maybe<User>
     gameById?: Maybe<Game>
     groupById?: Maybe<Group>
+    groupsByQuery: Array<Group>
     eventById?: Maybe<Event>
     userById?: Maybe<User>
     userByEmail?: Maybe<User>
+    usersByQuery: Array<User>
     games: GamesQuery
     authorizedRequiredLabels: Array<Label>
     authorizedOptionalLabels: Array<Label>
@@ -427,6 +456,12 @@ export type QueryGroupByIdArgs = {
     groupId: Scalars['ID']
 }
 
+export type QueryGroupsByQueryArgs = {
+    query: Scalars['String']
+    offset?: Maybe<Scalars['Int']>
+    limit?: Maybe<Scalars['Int']>
+}
+
 export type QueryEventByIdArgs = {
     eventId: Scalars['ID']
 }
@@ -437,6 +472,12 @@ export type QueryUserByIdArgs = {
 
 export type QueryUserByEmailArgs = {
     email: Scalars['String']
+}
+
+export type QueryUsersByQueryArgs = {
+    query: Scalars['String']
+    offset?: Maybe<Scalars['Int']>
+    limit?: Maybe<Scalars['Int']>
 }
 
 export type Mutation = {
@@ -463,7 +504,7 @@ export type HomepageQueryLastCommentsArgs = {
 
 export type GamesQuery = {
     __typename?: 'GamesQuery'
-    bySearchTerm: Array<Game>
+    byQuery: Array<Game>
     recentAndMostPlayed: GamesPaged
     mostPlayed: GamesPaged
     recent: GamesPaged
@@ -471,8 +512,8 @@ export type GamesQuery = {
     mostCommented: GamesPaged
 }
 
-export type GamesQueryBySearchTermArgs = {
-    searchTerm: Scalars['String']
+export type GamesQueryByQueryArgs = {
+    query: Scalars['String']
     offset?: Maybe<Scalars['Int']>
     limit?: Maybe<Scalars['Int']>
 }

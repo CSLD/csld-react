@@ -88,21 +88,21 @@ const CHANGE_TIMEOUT = 500
 export const HeaderSearchForm = () => {
     const classes = useStyles()
     const { t } = useTranslation('common')
-    const [searchTerm, setSearchTerm] = useState('')
+    const [query, setQuery] = useState('')
     const [focused, setFocused] = useState(false)
     const hideTimeoutRef = useRef(0)
     const changeTimeoutRef = useRef(0)
     const lastGames = useRef<BaseGameDataFragment[]>([])
-    const searchActive = searchTerm.length >= 3
+    const searchActive = query.length >= 3
     const searchResult = useQuery<SearchGamesQuery, SearchGamesQueryVariables>(searchGamesQuery, {
         variables: {
-            searchTerm,
+            query,
             limit: MAX_RESULTS,
         },
         skip: !searchActive,
     })
 
-    const games = searchResult.data?.games.bySearchTerm || lastGames.current
+    const games = searchResult.data?.games.byQuery || lastGames.current
     lastGames.current = games
     const haveGames = games && games.length > 0
     const loadingWithData = haveGames && searchResult.loading
@@ -128,13 +128,13 @@ export const HeaderSearchForm = () => {
             window.clearTimeout(changeTimeoutRef.current)
         }
         const newValue = event.target.value
-        if (searchTerm.length < MIN_SEARCH_LENGTH && newValue.length >= MIN_SEARCH_LENGTH) {
+        if (query.length < MIN_SEARCH_LENGTH && newValue.length >= MIN_SEARCH_LENGTH) {
             // Just went over limit - start searching right away
-            setSearchTerm(event.target.value)
+            setQuery(event.target.value)
             changeTimeoutRef.current = 0
         } else {
             // Set after a while to rate limit search queries
-            changeTimeoutRef.current = window.setTimeout(() => setSearchTerm(newValue), CHANGE_TIMEOUT)
+            changeTimeoutRef.current = window.setTimeout(() => setQuery(newValue), CHANGE_TIMEOUT)
         }
     }
 

@@ -6,10 +6,10 @@ const integerRe = /^(0|([1-9][0-9]*))$/
 
 const dateRe = /^([0-9]+).([0-9]+).([0-9]+)$/
 
-type Validator = (input?: string) => string | undefined
+type Validator<T> = (input?: T) => string | undefined
 
 type ValidatorMap<T, U extends keyof T> = {
-    [key in U]: Validator | Validator[] | undefined
+    [key in U]: Validator<T[key]> | Validator<T[key]>[] | undefined
 }
 
 interface ResultMap {
@@ -20,6 +20,8 @@ const isStringOrUndefined = (input: any): input is string | undefined =>
     input === undefined || typeof input === 'string'
 
 export const validateRequired = (input?: string) => (input ? undefined : 'Errors.required')
+
+export const validateRequiredArray = (input?: unknown[]) => (input?.length ? undefined : 'Errors.required')
 
 export const validateEmail = (input?: string) => (!input || emailRe.test(input) ? undefined : 'Errors.emailRequired')
 
@@ -50,7 +52,7 @@ export const validateDate = (input?: string): string | undefined => {
     return undefined
 }
 
-export const fieldValidator = (t: TFunction, validators: Validator | Validator[]) => (input?: string) => {
+export const fieldValidator = <T>(t: TFunction, validators: Validator<T> | Validator<T>[]) => (input?: T) => {
     const result = Array.isArray(validators)
         ? validators.reduce<string | undefined>((error, validator) => error || validator(input), undefined)
         : validators(input)
@@ -66,7 +68,7 @@ export const validateWithValidators = <T extends object, K extends keyof T>(
     return Object.keys(validators).reduce((map, key) => {
         const input = data[key as K]
         if (isStringOrUndefined(input)) {
-            const val = validators[key as K] as Validator | Validator[]
+            const val = validators[key as K] as Validator<T[K]> | Validator<T[K]>[]
 
             if (val) {
                 const result = Array.isArray(val)

@@ -8,7 +8,7 @@ import { useLayoutEffect, useRef } from 'react'
  *
  * @return Ref to place at some element around the form / desired input
  */
-export const useFocusInput = <T extends HTMLElement>(name: string) => {
+export const useFocusInput = <T extends Element>(name: string) => {
     const wrapperRef = useRef<T | null>(null)
     useLayoutEffect(() => {
         setTimeout(() => {

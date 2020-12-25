@@ -18,6 +18,9 @@ const useStyles = createUseStyles({
     hintHolder: {
         color: darkTheme.text,
     },
+    forcedFeedback: {
+        display: 'block',
+    },
 })
 
 const FieldWithError: React.FC<Props> = ({
@@ -34,8 +37,13 @@ const FieldWithError: React.FC<Props> = ({
 
     return (
         <Form.Group controlId={controlId}>
-            {children(showError || !!errorHint)}
-            <Form.Control.Feedback type="invalid">{meta.error}</Form.Control.Feedback>
+            {children(!!showError || !!errorHint)}
+            {/* Autocomplete (AsyncTypeahead) does not work properly with Feedback so we must force-show it */}
+            {showError && (
+                <Form.Control.Feedback type="invalid" className={classes.forcedFeedback}>
+                    {meta.error}
+                </Form.Control.Feedback>
+            )}
             {!showError && errorHint}
             {!showError && !errorHint && (hint || showErrorPlaceholder) && (
                 <Form.Text className={classes.hintHolder}>{hint || '\u00A0'}</Form.Text>

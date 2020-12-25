@@ -214,5 +214,82 @@
     "date": "Datum",
     "edit": "Upravit událost",
     "delete": "Smazat událost"
+  },
+  "GameEdit": {
+    "help": "Nápověda",
+    "help1": "Je záměrem, aby každý larp měl více štítků.",
+    "help2": "Každý larp musí mít alespoň jeden štítek ze sekce povinné.",
+    "help3": "Pokud larp nespadá jednoznačně pod jeden štítků, zaškrtněte jich více a upřesněte rozdíl v popisu.",
+    "help4": "Každý nový štítek musí být schválen moderátorem.",
+    "addGame": "Přidat hru",
+    "requiredFields": "Povinné údaje",
+    "additionalFields": "Rozšiřující údaje",
+    "presentationFields": "Prezentace hry",
+    "settingsFields": "Nastavení hry",
+    "name": "Název hry",
+    "description": "Zde zadejte popis hry",
+    "authors": "Autoři hry",
+    "groups": "Skupiny podílející se na hře",
+    "year": "Rok vytvoření",
+    "players": "Hráčů",
+    "womenRole": "Ženské role",
+    "menRole": "Mužské role",
+    "bothRole": "Obojetné role",
+    "hours": "Hodin",
+    "days": "Dní",
+    "coverImage": "Titulní obrázek",
+    "coverImageHint": "Maximální velikost fotografie jsou 2MB.",
+    "web": "Webová stránka",
+    "photoAuthor": "Autor fotografií",
+    "galleryUrl": "Odkaz na fotogalerii",
+    "video": "Video ze hry",
+    "ratingsDisabled": "Zakázat hodnocení",
+    "ratingsDisabledHint": "Již existující hodnocení budou zachována, uživatelé je však nebudou moci měnit, ani nebude možné přidávat nová hodnocení.",
+    "commentsDisabled": "Zakázat komentování",
+    "commentsDisabledHint": "Pokud nějaké komentáře ke hře již existují, budou nadále vidět a jejich autoři je budou moci upravovat, nebude ale možno přidávat komentáře nové.",
+    "requiredLabels": "Povinné",
+    "optionalLabels": "Volitelné",
+    "newLabel": "Nový štítek",
+    "save": "Uložit",
+    "labelsHint": "Označte štítky, které vystihují váš larp. Pokud nespadá jednoznačně pod jednu kategorii, vyberte jich více.",
+    "createAuthor": "Vytvořit autora",
+    "profileLink": "Profil",
+    "createGroup": "Vytvořit skupinu",
+    "groupLink": "Profil",
+    "labels": "Štítky",
+    "formError": "Formulář obsahuje chyby"
+  },
+  "AutoComplete": {
+    "startTyping": "Napište alespoň tři znaky pro vyhledání",
+    "noResults": "Žádné výsledky nenalezeny",
+    "searching": "Vyhledávám..."
+  },
+  "NewGroupModal": {
+    "title": "Nová skupina",
+    "name": "Název",
+    "cancel": "Storno",
+    "save": "Uložit"
+  },
+  "NewAuthorModal": {
+    "title": "Nový autor",
+    "email": "Email",
+    "emailHint": "Email není povinný",
+    "name": "Jméno",
+    "nickname": "Přezdívka",
+    "cancel": "Storno",
+    "save": "Uložit",
+    "emailAlreadyUsed": "Tento email je již používán uživatelem {{name}}.",
+    "addUser": "Přidat jako autora"
+  },
+  "NewLabelsField": {
+    "newLabel": "Nový štítek"
+  },
+  "NewLabelModal": {
+    "title": "Vytvořit štítek",
+    "name": "Název",
+    "description": "Popis",
+    "cancel": "Storno",
+    "save": "Uložit",
+    "labelExists": "Tento štítek už existuje"
   }
 }

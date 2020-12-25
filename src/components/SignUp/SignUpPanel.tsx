@@ -66,7 +66,7 @@ const SignUpPanel = () => {
     const client = useApolloClient()
     const router = useRouter()
     const [state, setState] = useState<TState>('idle')
-    const { usedByName, isEmailAvailable } = useIsEmailAvailable()
+    const { usedByUser, isEmailAvailable } = useIsEmailAvailable()
     const userContext = useContext(UserContext)
 
     const onSubmit = async (data: FormData) => {
@@ -122,7 +122,7 @@ const SignUpPanel = () => {
                                 placeholder={t('UserFields.email')}
                                 validate={fieldValidator(t, [validateRequired, validateEmail])}
                                 onBlur={handleEmailOnBlur}
-                                errorHint={usedByName ? <EmailUsedErrorHint name={usedByName} /> : undefined}
+                                errorHint={usedByUser ? <EmailUsedErrorHint name={usedByUser.name} /> : undefined}
                             />
                             <Row className={classes.rowFixer}>
                                 <Col>
@@ -184,7 +184,7 @@ const SignUpPanel = () => {
                                 </Col>
                             </Row>
                             <ReCaptchaField name="recaptcha" />
-                            <Button variant="dark" type="submit" disabled={state === 'loading' || !!usedByName}>
+                            <Button variant="dark" type="submit" disabled={state === 'loading' || !!usedByUser}>
                                 {t('SignUp.submit')}
                             </Button>
                         </form>

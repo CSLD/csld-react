@@ -50,7 +50,7 @@ const UserSettingsPanel = () => {
     const classes = useStyles()
     const router = useRouter()
     const [state, setState] = useState<TState>('idle')
-    const { usedByName, isEmailAvailable } = useIsEmailAvailable()
+    const { usedByUser, isEmailAvailable } = useIsEmailAvailable()
     const loggedInUser = loadQuery.data?.loggedInUser
     const userContext = useContext(UserContext)
 
@@ -115,9 +115,9 @@ const UserSettingsPanel = () => {
                                         validate={fieldValidator(t, [validateRequired, validateEmail])}
                                         onBlur={handleEmailOnBlur}
                                         errorHint={
-                                            usedByName ? (
+                                            usedByUser ? (
                                                 <Form.Control.Feedback type="invalid">
-                                                    {t('UserSettings.emailAlreadyUsed', { name: usedByName })}
+                                                    {t('UserSettings.emailAlreadyUsed', { name: usedByUser.name })}
                                                 </Form.Control.Feedback>
                                             ) : (
                                                 undefined
@@ -165,7 +165,7 @@ const UserSettingsPanel = () => {
                                             />
                                         </Col>
                                     </Row>
-                                    <Button variant="dark" type="submit" disabled={state === 'loading' || !!usedByName}>
+                                    <Button variant="dark" type="submit" disabled={state === 'loading' || !!usedByUser}>
                                         {t('UserSettings.submit')}
                                     </Button>
                                 </form>

@@ -91,7 +91,6 @@ export const GamePagedCommentsPanel = ({ gameId }: Props) => {
             )}
             {editModalShown && (
                 <EditCommentModal
-                    show
                     oldText={currentUsersComment || ''}
                     onHide={() => setEditModalShown(false)}
                     onSubmit={handleSaveComment}

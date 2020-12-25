@@ -10,6 +10,7 @@ import UserContextProvider from 'src/components/common/UserContext/UserContextPr
 import { withApolloWrapper } from '../../src/with/withApolloProvider'
 
 import '@fortawesome/fontawesome-svg-core/styles.css'
+import 'react-bootstrap-typeahead/css/Typeahead.css'
 
 // Import the CSS
 config.autoAddCss = false // Tell Font Awesome to skip adding the CSS automatically since it's being imported above

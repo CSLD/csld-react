@@ -8,11 +8,18 @@ export interface FormCheckBoxProps {
     readonly meta: FieldMetaState<boolean>
     readonly showErrorPlaceholder?: boolean
     readonly label: string
+    readonly hint?: string
 }
 
-const FormCheckBox = ({ input: { value, ...inputRest }, label, meta, showErrorPlaceholder }: FormCheckBoxProps) => {
+const FormCheckBox = ({
+    input: { value, ...inputRest },
+    label,
+    hint,
+    meta,
+    showErrorPlaceholder,
+}: FormCheckBoxProps) => {
     return (
-        <FieldWithError meta={meta} showErrorPlaceholder={showErrorPlaceholder}>
+        <FieldWithError meta={meta} hint={hint} showErrorPlaceholder={showErrorPlaceholder}>
             {isInvalid => (
                 <>
                     <Form.Check

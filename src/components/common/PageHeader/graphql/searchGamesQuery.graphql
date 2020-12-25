@@ -1,8 +1,8 @@
 #import "src/graphql/fragments/baseGameData.graphql"
 
-query SearchGames($searchTerm: String! $limit: Int!) {
+query SearchGames($query: String! $limit: Int!) {
     games {
-        bySearchTerm(offset: 0, limit: $limit, searchTerm: $searchTerm) {
+        byQuery(offset: 0, limit: $limit, query: $query) {
             ...baseGameData
         }
     }
