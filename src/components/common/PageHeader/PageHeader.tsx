@@ -77,10 +77,10 @@ export const PageHeader = () => {
                         <HeaderNavLink href="https://larpy.cz" target="_blank">
                             {t('PageHeader.blog')}
                         </HeaderNavLink>
-                        <HeaderNavLink href="/" as="/">
+                        <HeaderNavLink href={{ pathname: '/eventEdit' }} as="/eventEdit">
                             <span className={classes.buttonLike}>{t('PageHeader.addEvent')}</span>
                         </HeaderNavLink>
-                        <HeaderNavLink href="/" as="/">
+                        <HeaderNavLink href={{ pathname: '/gameEdit' }} as="/gameEdit">
                             <span className={classes.buttonLike}>{t('PageHeader.addGame')}</span>
                         </HeaderNavLink>
                     </div>

@@ -1,8 +1,9 @@
 import React from 'react'
 import { useField } from 'react-final-form'
-import { Form } from 'react-bootstrap'
+import { Form, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { FieldValidator } from 'final-form'
 import { Label } from '../../../graphql/__generated__/typescript-operations'
+import FormCheckLabelWithTooltip from './FormCheckLabelWithTooltip'
 
 interface Props {
     readonly name: string
@@ -41,7 +42,7 @@ const FormLabelListField = ({ name, labels, validate }: Props) => {
                         checked={value.includes(label.id)}
                         onChange={handleChange(label.id)}
                     />
-                    <Form.Check.Label>{label.name}</Form.Check.Label>
+                    <FormCheckLabelWithTooltip label={label.name} tooltip={label.description} tooltipId={label.id} />
                     {index === lastIndex && <Form.Control.Feedback type="invalid">{error}</Form.Control.Feedback>}
                 </Form.Check>
             ))}

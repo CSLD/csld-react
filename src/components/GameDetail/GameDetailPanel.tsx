@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { createUseStyles } from 'react-jss'
+import { useTranslation } from 'react-i18next'
+import { useRouter } from 'next/router'
 import {
     CachedGameDataFragment,
     CommentsPaged,
+    DeleteGameMutation,
+    DeleteGameMutationVariables,
     GameDetailQuery,
     GameDetailQueryVariables,
 } from '../../graphql/__generated__/typescript-operations'
@@ -18,9 +22,12 @@ import { GamePagedCommentsPanel } from './GamePagedCommentsPanel'
 import RatingsListPanel from './RatingsListPanel'
 import { isAtLeastEditor } from '../../utils/roleUtils'
 import { useLoggedInUser } from '../../hooks/useLoggedInUser'
+import ActionButton from '../common/ActionButton/ActionButton'
+import ConfirmationModal from '../common/ConfirmationModal/ConfirmationModal'
 
-const cachedGameDataFragment = require('./graphql/cachedGameData.graphql')
-const gameDetailQuery = require('./graphql/gameDetail.graphql')
+const cachedGameDataGql = require('./graphql/cachedGameData.graphql')
+const gameDetailGql = require('./graphql/gameDetail.graphql')
+const deleteGameGql = require('./graphql/deleteGame.graphql')
 
 interface Props {
     readonly gameId: string
@@ -57,7 +64,6 @@ const useStyles = createUseStyles({
         padding: '25px 0 20px 20px',
     },
     coverImage: {
-        display: 'none',
         width: '100%',
     },
 })
@@ -106,9 +112,20 @@ const emptyGame = {
 
 export const GameDetailPanel = ({ gameId }: Props) => {
     const [selectedTab, setSelectedTab] = useState<TabTabs>('comments')
+    const [deleteConfirmShown, setDeleteConfirmShown] = useState(false)
     const loggedInUser = useLoggedInUser()
+    const { t } = useTranslation('common')
     const classes = useStyles()
-    const gameQuery = useQuery<GameDetailQuery, GameDetailQueryVariables>(gameDetailQuery, {
+    const router = useRouter()
+    const [deleteGame, { loading: deleteLoading }] = useMutation<DeleteGameMutation, DeleteGameMutationVariables>(
+        deleteGameGql,
+        {
+            variables: {
+                gameId,
+            },
+        },
+    )
+    const gameQuery = useQuery<GameDetailQuery, GameDetailQueryVariables>(gameDetailGql, {
         variables: {
             gameId,
         },
@@ -121,7 +138,7 @@ export const GameDetailPanel = ({ gameId }: Props) => {
         // Throws exception on server, so we guard it
         gameFragment = gameQuery.client.readFragment<CachedGameDataFragment>({
             id: `Game:${gameId}`,
-            fragment: cachedGameDataFragment,
+            fragment: cachedGameDataGql,
         })
     } catch (e) {
         // Object in cache but does not have required data - just continue
@@ -145,48 +162,70 @@ export const GameDetailPanel = ({ gameId }: Props) => {
 
     const handleRefetch = () => gameQuery.refetch()
 
+    const handleEditGame = () => {
+        router.push({ pathname: '/gameEdit', query: { id: gameId } }, `/gameEdit/${gameId}`)
+    }
+
+    const handleDeleteGame = () => setDeleteConfirmShown(true)
+
+    const handleHideDeleteModel = () => setDeleteConfirmShown(false)
+
+    const handleDoDeleteGame = () => {
+        deleteGame().then(() => {
+            setDeleteConfirmShown(false)
+            router.push({ pathname: '/homepage' }, '/')
+        })
+    }
+
     const atLeastEditor = isAtLeastEditor(loggedInUser?.role)
 
     return (
-        <>
-            <div className={classes.details}>
-                {game.coverImage && (
-                    <img
-                        className={classes.coverImage}
-                        alt=""
-                        src={`/game-image/?id=${game.id}&imageId=${game.coverImage.id}`}
-                    />
-                )}
-                <WidthFixer className={classes.detailsWidthFixer}>
-                    <div className={classes.detailsLeft}>{game.name && <GameHeaderPanel game={game} />}</div>
-                    <div className={classes.detailsRight}>
-                        <GameRatingPanel game={game} />
+        <div className={classes.details}>
+            {game.coverImage && (
+                <img
+                    className={classes.coverImage}
+                    alt=""
+                    src={`/game-image/?id=${game.id}&imageId=${game.coverImage.id}`}
+                />
+            )}
+            <WidthFixer className={classes.detailsWidthFixer}>
+                <div className={classes.detailsLeft}>{game.name && <GameHeaderPanel game={game} />}</div>
+                <div className={classes.detailsRight}>
+                    <GameRatingPanel game={game} />
+                </div>
+            </WidthFixer>
+            <Tabs tabs={tabs} selectedTab={selectedTab} onSelectTab={setSelectedTab} />
+            <div className={classes.extras}>
+                <WidthFixer className={classes.extrasWidthFixer}>
+                    <div className={classes.extrasLeft}>
+                        {selectedTab === 'comments' && <GamePagedCommentsPanel gameId={gameId} />}
+                        {selectedTab === 'video' && (
+                            <iframe title="video" src={game.video?.path || ''} width="800" height="450" />
+                        )}
+                    </div>
+                    <div className={classes.extrasRight}>
+                        {atLeastEditor && (
+                            <>
+                                <ActionButton onClick={handleEditGame}>{t('GameDetail.editGame')}</ActionButton>
+                                <ActionButton onClick={handleDeleteGame}>{t('GameDetail.deleteGame')}</ActionButton>
+                            </>
+                        )}
+                        <GameListPanel games={game.similarGames} titleKey="GameDetail.similarGames" />
+                        <EventListPanel events={game.events} titleKey="GameDetail.events" />
+                        <GameListPanel games={game.gamesOfAuthors} titleKey="GameDetail.gamesOfAuthors" />
+                        {atLeastEditor && (
+                            <RatingsListPanel gameId={game.id} ratings={game.ratings} onRatingDeleted={handleRefetch} />
+                        )}
                     </div>
                 </WidthFixer>
-                <Tabs tabs={tabs} selectedTab={selectedTab} onSelectTab={setSelectedTab} />
-                <div className={classes.extras}>
-                    <WidthFixer className={classes.extrasWidthFixer}>
-                        <div className={classes.extrasLeft}>
-                            {selectedTab === 'comments' && <GamePagedCommentsPanel gameId={gameId} />}
-                            {selectedTab === 'video' && (
-                                <iframe title="video" src={game.video?.path || ''} width="800" height="450" />
-                            )}
-                        </div>
-                        <div className={classes.extrasRight}>
-                            <GameListPanel games={game.similarGames} titleKey="GameDetail.similarGames" />
-                            <EventListPanel events={game.events} titleKey="GameDetail.events" />
-                            <GameListPanel games={game.gamesOfAuthors} titleKey="GameDetail.gamesOfAuthors" />
-                            {atLeastEditor && (
-                                <RatingsListPanel
-                                    gameId={game.id}
-                                    ratings={game.ratings}
-                                    onRatingDeleted={handleRefetch}
-                                />
-                            )}
-                        </div>
-                    </WidthFixer>
-                </div>
             </div>
-        </>
+            <ConfirmationModal
+                show={deleteConfirmShown}
+                content={t('GameDetail.deleteGameConfirmation')}
+                onHide={handleHideDeleteModel}
+                onCancel={handleHideDeleteModel}
+                onConfirm={handleDoDeleteGame}
+            />
+        </div>
     )
 }

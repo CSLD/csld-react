@@ -13,4 +13,12 @@ fragment gameRatingsUpdate on Game {
         count
         rating
     }
+    ratings {
+        id
+        rating
+        user {
+            id
+            name
+        }
+    }
 }

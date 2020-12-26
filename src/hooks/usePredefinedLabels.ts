@@ -10,7 +10,7 @@ export interface LabelData {
     readonly description?: string
 }
 
-const mapper = ({ id, name, description }: Pick<Label, 'id' | 'name' | 'description'>): LabelData => ({
+export const labelMapper = ({ id, name, description }: Pick<Label, 'id' | 'name' | 'description'>): LabelData => ({
     id,
     name: name ?? '',
     description: description ?? undefined,
@@ -39,8 +39,8 @@ export const useLoadLabels = (existingRequiredLabels?: LabelData[], existingOpti
 
     useQuery<LoadLabelsQuery, LoadLabelsQueryVariables>(loadLabelsGql, {
         onCompleted: data => {
-            setRequiredLabels(sortLabels(data.authorizedRequiredLabels.map(mapper)))
-            setOptionalLabels(sortLabels(data.authorizedOptionalLabels.map(mapper)))
+            setRequiredLabels(sortLabels(data.authorizedRequiredLabels.map(labelMapper)))
+            setOptionalLabels(sortLabels(data.authorizedOptionalLabels.map(labelMapper)))
         },
         skip: requiredLabels.length > 0 && optionalLabels.length > 0,
     })

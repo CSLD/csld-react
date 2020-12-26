@@ -1,9 +1,10 @@
-import React, { useRef, useState } from 'react'
+import React from 'react'
 import { createUseStyles } from 'react-jss'
 import { Form } from 'react-final-form'
 import { Button, Col, Row } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import classNames from 'classnames'
+import { useMutation } from '@apollo/client'
 import { darkTheme } from '../../theme/darkTheme'
 import FormTextInputField from '../common/form/FormTextInputField'
 import FormRichTextInputField, { RichTextFieldValue } from '../common/form/FormRichTextInputField'
@@ -12,6 +13,7 @@ import {
     validatePositiveInteger,
     validateRequired,
     validateRequiredArray,
+    validateRequiredRichText,
 } from '../../utils/validationUtils'
 import FormFileInputField from '../common/form/FormFileInputField'
 import FormCheckBoxField from '../common/form/FormCheckBoxField'
@@ -22,6 +24,21 @@ import { Author } from './NewAuthorModal'
 import FormLabelListField from '../common/form/FormLabelListField'
 import NewLabelsField, { NewLabel } from '../common/form/NewLabelsField/NewLabelsField'
 import { LabelData, useLoadLabels } from '../../hooks/usePredefinedLabels'
+import {
+    CreateGameInput,
+    CreateGameMutation,
+    CreateGameMutationVariables,
+    Game,
+    UpdateGameInput,
+    UpdateGameMutation,
+    UpdateGameMutationVariables,
+} from '../../graphql/__generated__/typescript-operations'
+import { editorStateToHtml } from '../common/form/richTextInputUtils'
+import { convertFileInput } from '../../utils/graphqlUtils'
+import { useFocusInput } from '../../hooks/useFocusInput'
+
+const createGameGql = require('./graphql/createGame.graphql')
+const updateGameGql = require('./graphql/updateGame.graphql')
 
 export interface FormValues {
     name?: string
@@ -43,21 +60,23 @@ export interface FormValues {
     ratingsDisabled?: boolean
     commentsDisabled?: boolean
     requiredLabels: string[]
-    otherLabels: string[]
+    optionalLabels: string[]
     newLabels: NewLabel[]
 }
 
 interface Props {
+    readonly gameId?: string
     readonly initialValues?: FormValues
     readonly existingRequiredLabels?: LabelData[]
     readonly existingOptionalLabels?: LabelData[]
+    readonly onGameSaved: (game: Pick<Game, 'id' | 'name'>) => void
 }
 
 const emptyInitialValues: FormValues = {
     authors: [],
     groupAuthors: [],
     requiredLabels: [],
-    otherLabels: [],
+    optionalLabels: [],
     newLabels: [],
 }
 
@@ -90,18 +109,83 @@ const useStyles = createUseStyles({
     },
 })
 
-const GameEditPanel = ({ initialValues, existingRequiredLabels, existingOptionalLabels }: Props) => {
+const convertInt = (input?: string) => (input ? parseInt(input, 10) : undefined)
+
+const createInputFromValues = (data: FormValues): CreateGameInput => ({
+    name: data.name || '',
+    description: editorStateToHtml(data.description) || '',
+    authors: data.authors.map(({ id }) => id).filter(id => !!id) as string[],
+    newAuthors: data.authors.filter(({ id }) => !id).map(({ email, name, nickname }) => ({ email, name, nickname })),
+    groupAuthors: data.groupAuthors.map(({ id }) => id).filter(id => !!id) as string[],
+    newGroupAuthors: data.groupAuthors.filter(({ id }) => !id).map(({ name }) => ({ name })),
+    labels: [...data.requiredLabels, ...data.optionalLabels],
+    newLabels: data.newLabels,
+    year: convertInt(data.year),
+    players: convertInt(data.players),
+    menRole: convertInt(data.menRole),
+    womenRole: convertInt(data.womenRole),
+    bothRole: convertInt(data.bothRole),
+    hours: convertInt(data.hours),
+    days: convertInt(data.days),
+    coverImage: convertFileInput(data.coverImage),
+    web: data.web,
+    photoAuthor: data.photoAuthor,
+    galleryURL: data.galleryUrl,
+    video: data.video,
+    ratingsDisabled: data.ratingsDisabled,
+    commentsDisabled: data.commentsDisabled,
+})
+
+const updateInputFromValues = (gameId: string, data: FormValues): UpdateGameInput => ({
+    id: gameId,
+    ...createInputFromValues(data),
+})
+
+/**
+ * Contains inner form, calls callback after game is created (or updated)
+ */
+const GameEditPanel = ({
+    gameId,
+    initialValues,
+    existingRequiredLabels,
+    existingOptionalLabels,
+    onGameSaved,
+}: Props) => {
     const classes = useStyles()
     const { t } = useTranslation('common')
-    const [loading, setLoading] = useState(false)
     const { requiredLabels, optionalLabels, existingLabelNames } = useLoadLabels(
         existingRequiredLabels,
         existingOptionalLabels,
     )
+    const formRef = useFocusInput<HTMLFormElement>('name')
+    const [createGame, { loading: createGameLoading }] = useMutation<CreateGameMutation, CreateGameMutationVariables>(
+        createGameGql,
+    )
+    const [updateGame, { loading: updateGameLoading }] = useMutation<UpdateGameMutation, UpdateGameMutationVariables>(
+        updateGameGql,
+    )
 
-    const handleOnSubmit = () => {
-        setLoading(true)
+    const handleOnSubmit = (data: FormValues) => {
+        if (gameId) {
+            const input: UpdateGameInput = updateInputFromValues(gameId, data)
+            updateGame({ variables: { input } }).then(response => {
+                const updatedGame = response.data?.game.updateGame
+                if (updatedGame) {
+                    onGameSaved(updatedGame)
+                }
+            })
+        } else {
+            const input: CreateGameInput = createInputFromValues(data)
+            createGame({ variables: { input } }).then(response => {
+                const createdGame = response.data?.game.createGame
+                if (createdGame) {
+                    onGameSaved(createdGame)
+                }
+            })
+        }
     }
+
+    const loading = createGameLoading || updateGameLoading
 
     const piValidator = fieldValidator(t, validatePositiveInteger)
 
@@ -109,7 +193,7 @@ const GameEditPanel = ({ initialValues, existingRequiredLabels, existingOptional
         <Form onSubmit={handleOnSubmit} initialValues={initialValues || emptyInitialValues}>
             {({ handleSubmit, submitFailed }) => {
                 return (
-                    <form onSubmit={handleSubmit} className={classes.form}>
+                    <form onSubmit={handleSubmit} className={classes.form} ref={formRef}>
                         <Row>
                             <Col md={9}>
                                 <header className={classes.header}>{t('GameEdit.help')}</header>
@@ -127,7 +211,11 @@ const GameEditPanel = ({ initialValues, existingRequiredLabels, existingOptional
                                     validate={fieldValidator(t, validateRequired)}
                                     autoFocus
                                 />
-                                <FormRichTextInputField name="description" hint={t('GameEdit.description')} />
+                                <FormRichTextInputField
+                                    name="description"
+                                    hint={t('GameEdit.description')}
+                                    validate={fieldValidator(t, validateRequiredRichText)}
+                                />
                                 <header className={classes.subHeader}>{t('GameEdit.additionalFields')}</header>
                                 <Row>
                                     <Col md={6}>

@@ -81,7 +81,10 @@
     "rate": "Vaše hodnocení je:",
     "addComment": "Přidat váš komentář",
     "updateComment": "Upravit váš komentář",
-    "ratings": "Hodnocení"
+    "ratings": "Hodnocení",
+    "editGame": "Upravit hru",
+    "deleteGame": "Smazat hru",
+    "deleteGameConfirmation": "Opravdu smazat hru?"
   },
 
   "SignIn": {
@@ -238,7 +241,7 @@
     "hours": "Hodin",
     "days": "Dní",
     "coverImage": "Titulní obrázek",
-    "coverImageHint": "Maximální velikost fotografie jsou 2MB.",
+    "coverImageHint": "Maximální velikost souboru jsou 2MB.",
     "web": "Webová stránka",
     "photoAuthor": "Autor fotografií",
     "galleryUrl": "Odkaz na fotogalerii",
@@ -291,5 +294,10 @@
     "cancel": "Storno",
     "save": "Uložit",
     "labelExists": "Tento štítek už existuje"
+  },
+  "ConfirmationModal": {
+    "title": "Potvrzení",
+    "confirm": "Potvrdit",
+    "cancel": "Storno"
   }
 }

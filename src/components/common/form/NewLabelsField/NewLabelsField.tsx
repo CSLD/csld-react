@@ -3,6 +3,7 @@ import { useField } from 'react-final-form'
 import { Button, Form } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import NewLabelModal from './NewLabelModal'
+import FormCheckLabelWithTooltip from '../FormCheckLabelWithTooltip'
 
 export interface NewLabel {
     readonly name: string
@@ -41,7 +42,13 @@ const NewLabelsField = ({ name: fieldName, existingLabelNames }: Props) => {
                     <Form.Check
                         key={label.name}
                         type={'checkbox' as any}
-                        label={label.name}
+                        label={
+                            <FormCheckLabelWithTooltip
+                                label={label.name}
+                                tooltip={label.description}
+                                tooltipId={label.name}
+                            />
+                        }
                         checked
                         onChange={handleRemoveLabel(label.name)}
                     />

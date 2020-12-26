@@ -9,7 +9,15 @@ export const htmlToEditorState = (html: string) => {
     return EditorState.createWithContent(contentState)
 }
 
-export const editorStateToHtml = (editorState: EditorState) => {
+export const editorStateToHtml = (editorState?: EditorState | string) => {
+    if (!editorState) {
+        return undefined
+    }
+
+    if (typeof editorState === 'string') {
+        return editorState
+    }
+
     const rawContentState = convertToRaw(editorState.getCurrentContent())
     return draftToHtml(rawContentState)
 }

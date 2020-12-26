@@ -71,7 +71,7 @@ export const GameListPanel = ({ titleKey, games, ratingMap }: Props) => {
                                 size="tiny"
                             />
                             <span className={classes.gameName}>
-                                {game.name} ({game.year})
+                                {game.name} ({game.year || '?'})
                             </span>
                             {ratingMap && ratingMap[game.id] && (
                                 <span className={classes.rating}>{ratingMap[game.id]}</span>

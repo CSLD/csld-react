@@ -21,14 +21,35 @@ export type CachedGameDataFragment = { __typename?: 'Game' } & Pick<
     'id' | 'name' | 'averageRating' | 'amountOfRatings'
 >
 
+export type DeleteGameMutationVariables = Exact<{
+    gameId: Scalars['ID']
+}>
+
+export type DeleteGameMutation = { __typename?: 'Mutation' } & {
+    game: { __typename?: 'GameMutation' } & { deleteGame: { __typename?: 'Game' } & Pick<Game, 'id'> }
+}
+
 export type DeleteRatingMutationVariables = Exact<{
     gameId: Scalars['ID']
     userId: Scalars['ID']
 }>
 
 export type DeleteRatingMutation = { __typename?: 'Mutation' } & {
-    game: { __typename?: 'GameMutation' } & { deleteGameRating: { __typename?: 'Game' } & Pick<Game, 'id'> }
+    game: { __typename?: 'GameMutation' } & { deleteGameRating: { __typename?: 'Game' } & GameRatingsUpdateFragment }
 }
+
+export type GameRatingsUpdateFragment = { __typename?: 'Game' } & Pick<
+    Game,
+    'id' | 'averageRating' | 'totalRating' | 'amountOfRatings' | 'amountOfPlayed'
+> & {
+        currentUsersRating?: Maybe<{ __typename?: 'Rating' } & Pick<Rating, 'id' | 'rating' | 'state'>>
+        ratingStats: Array<{ __typename?: 'RatingCount' } & Pick<RatingCount, 'count' | 'rating'>>
+        ratings: Array<
+            { __typename?: 'Rating' } & Pick<Rating, 'id' | 'rating'> & {
+                    user: { __typename?: 'User' } & Pick<User, 'id' | 'name'>
+                }
+        >
+    }
 
 export type GameDetailQueryVariables = Exact<{
     gameId: Scalars['ID']
@@ -95,19 +116,6 @@ export type MoreCommentsQuery = { __typename?: 'Query' } & {
     >
 }
 
-export type RefetchGameRatingQueryVariables = Exact<{
-    gameId: Scalars['ID']
-}>
-
-export type RefetchGameRatingQuery = { __typename?: 'Query' } & {
-    gameById?: Maybe<
-        { __typename?: 'Game' } & {
-            currentUsersRating?: Maybe<{ __typename?: 'Rating' } & Pick<Rating, 'id' | 'rating' | 'state'>>
-            ratingStats: Array<{ __typename?: 'RatingCount' } & Pick<RatingCount, 'count' | 'rating'>>
-        }
-    >
-}
-
 export type UpdateCommentMutationVariables = Exact<{
     gameId: Scalars['ID']
     comment: Scalars['String']
@@ -123,7 +131,7 @@ export type UpdateGameRatingMutationVariables = Exact<{
 }>
 
 export type UpdateGameRatingMutation = { __typename?: 'Mutation' } & {
-    game: { __typename?: 'GameMutation' } & { rateGame: { __typename?: 'Game' } & Pick<Game, 'id'> }
+    game: { __typename?: 'GameMutation' } & { rateGame: { __typename?: 'Game' } & GameRatingsUpdateFragment }
 }
 
 export type UpdateGameStateMutationVariables = Exact<{
@@ -132,12 +140,47 @@ export type UpdateGameStateMutationVariables = Exact<{
 }>
 
 export type UpdateGameStateMutation = { __typename?: 'Mutation' } & {
-    game: { __typename?: 'GameMutation' } & { setGamePlayedState: { __typename?: 'Game' } & Pick<Game, 'id'> }
+    game: { __typename?: 'GameMutation' } & { setGamePlayedState: { __typename?: 'Game' } & GameRatingsUpdateFragment }
 }
 
-export type LoadLabelsQueryVariables = Exact<{ [key: string]: never }>
+export type CreateGameMutationVariables = Exact<{
+    input: CreateGameInput
+}>
 
-export type LoadLabelsQuery = { __typename?: 'Query' } & {
+export type CreateGameMutation = { __typename?: 'Mutation' } & {
+    game: { __typename?: 'GameMutation' } & { createGame: { __typename?: 'Game' } & Pick<Game, 'id' | 'name'> }
+}
+
+export type LoadGameForEditQueryVariables = Exact<{
+    gameId: Scalars['ID']
+}>
+
+export type LoadGameForEditQuery = { __typename?: 'Query' } & {
+    gameById?: Maybe<
+        { __typename?: 'Game' } & Pick<
+            Game,
+            | 'id'
+            | 'name'
+            | 'description'
+            | 'year'
+            | 'players'
+            | 'womenRole'
+            | 'menRole'
+            | 'bothRole'
+            | 'hours'
+            | 'days'
+            | 'web'
+            | 'photoAuthor'
+            | 'galleryURL'
+            | 'ratingsDisabled'
+            | 'commentsDisabled'
+        > & {
+                authors: Array<{ __typename?: 'User' } & Pick<User, 'id' | 'name' | 'nickname'>>
+                groupAuthor: Array<{ __typename?: 'Group' } & Pick<Group, 'id' | 'name'>>
+                video?: Maybe<{ __typename?: 'Video' } & Pick<Video, 'id' | 'path'>>
+                labels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'isRequired'>>
+            }
+    >
     authorizedRequiredLabels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name' | 'description'>>
     authorizedOptionalLabels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name' | 'description'>>
 }
@@ -160,6 +203,14 @@ export type SearchGroupsQueryVariables = Exact<{
 
 export type SearchGroupsQuery = { __typename?: 'Query' } & {
     groupsByQuery: Array<{ __typename?: 'Group' } & Pick<Group, 'id' | 'name'>>
+}
+
+export type UpdateGameMutationVariables = Exact<{
+    input: UpdateGameInput
+}>
+
+export type UpdateGameMutation = { __typename?: 'Mutation' } & {
+    game: { __typename?: 'GameMutation' } & { updateGame: { __typename?: 'Game' } & Pick<Game, 'id' | 'name'> }
 }
 
 export type CreateGroupMutationVariables = Exact<{
@@ -418,6 +469,13 @@ export type CheckEmailQueryVariables = Exact<{
 
 export type CheckEmailQuery = { __typename?: 'Query' } & {
     userByEmail?: Maybe<{ __typename?: 'User' } & Pick<User, 'id' | 'email' | 'name' | 'nickname'>>
+}
+
+export type LoadLabelsQueryVariables = Exact<{ [key: string]: never }>
+
+export type LoadLabelsQuery = { __typename?: 'Query' } & {
+    authorizedRequiredLabels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name' | 'description'>>
+    authorizedOptionalLabels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name' | 'description'>>
 }
 
 /** All built-in and custom scalars, mapped to their actual values */
@@ -810,11 +868,11 @@ export type GameMutation = {
 }
 
 export type GameMutationCreateGameArgs = {
-    input?: Maybe<CreateGameInput>
+    input: CreateGameInput
 }
 
 export type GameMutationUpdateGameArgs = {
-    input?: Maybe<UpdateGameInput>
+    input: UpdateGameInput
 }
 
 export type GameMutationDeleteGameArgs = {
@@ -881,7 +939,7 @@ export type CreateGameInput = {
     bothRole?: Maybe<Scalars['Int']>
     hours?: Maybe<Scalars['Int']>
     days?: Maybe<Scalars['Int']>
-    coverPhoto?: Maybe<UploadedFileInput>
+    coverImage?: Maybe<UploadedFileInput>
     web?: Maybe<Scalars['String']>
     photoAuthor?: Maybe<Scalars['String']>
     galleryURL?: Maybe<Scalars['String']>
@@ -907,7 +965,7 @@ export type UpdateGameInput = {
     bothRole?: Maybe<Scalars['Int']>
     hours?: Maybe<Scalars['Int']>
     days?: Maybe<Scalars['Int']>
-    coverPhoto?: Maybe<UploadedFileInput>
+    coverImage?: Maybe<UploadedFileInput>
     web?: Maybe<Scalars['String']>
     photoAuthor?: Maybe<Scalars['String']>
     galleryURL?: Maybe<Scalars['String']>

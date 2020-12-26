@@ -1,8 +1,49 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { createUseStyles } from 'react-jss'
-import GameEditPanel from './GameEditPanel'
+import { useRouter } from 'next/router'
+import GameEditPanel, { FormValues } from './GameEditPanel'
 import { darkTheme } from '../../theme/darkTheme'
 import { WidthFixer } from '../common/WidthFixer/WidthFixer'
+import {
+    Game,
+    Group,
+    Label,
+    LoadGameForEditQuery,
+    LoadGameForEditQueryVariables,
+    Maybe,
+    User,
+    Video,
+} from '../../graphql/__generated__/typescript-operations'
+import { getGameRoute } from '../../utils/routeUtils'
+import { useQuery } from '@apollo/client'
+import { formatAuthorLabel } from './NewAuthorModal'
+import { labelMapper } from '../../hooks/usePredefinedLabels'
+
+const loadGameForEditGql = require('./graphql/loadGameForEdit.graphql')
+
+type LoadedGame = Pick<
+    Game,
+    | 'id'
+    | 'name'
+    | 'description'
+    | 'year'
+    | 'players'
+    | 'womenRole'
+    | 'menRole'
+    | 'bothRole'
+    | 'hours'
+    | 'days'
+    | 'web'
+    | 'photoAuthor'
+    | 'galleryURL'
+    | 'ratingsDisabled'
+    | 'commentsDisabled'
+> & {
+    authors: Array<{ __typename?: 'User' } & Pick<User, 'id' | 'name' | 'nickname'>>
+    groupAuthor: Array<{ __typename?: 'Group' } & Pick<Group, 'id' | 'name'>>
+    video?: Maybe<{ __typename?: 'Video' } & Pick<Video, 'id' | 'path'>>
+    labels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'isRequired'>>
+}
 
 const useStyles = createUseStyles({
     row: {
@@ -14,13 +55,83 @@ const useStyles = createUseStyles({
     },
 })
 
-const GameEditPage = () => {
+interface Props {
+    readonly gameId?: string
+}
+
+const formatInt = (value?: number | null) => (typeof value === 'number' ? value.toString() : undefined)
+
+const toInitialValues = (game: LoadedGame): FormValues => ({
+    name: game.name ?? undefined,
+    description: game.description ?? undefined,
+    authors: game.authors.map(author => ({
+        name: author.name,
+        nickname: author.nickname ?? undefined,
+        id: author.id,
+        itemLabel: formatAuthorLabel(author),
+    })),
+    groupAuthors: game.groupAuthor.map(groupAuthor => ({
+        id: groupAuthor.id,
+        name: groupAuthor.name ?? '',
+        itemLabel: groupAuthor.name ?? '',
+    })),
+    year: formatInt(game.year),
+    players: formatInt(game.players),
+    womenRole: formatInt(game.womenRole),
+    menRole: formatInt(game.menRole),
+    bothRole: formatInt(game.bothRole),
+    hours: formatInt(game.hours),
+    days: formatInt(game.days),
+    web: game.web ?? undefined,
+    photoAuthor: game.photoAuthor ?? undefined,
+    galleryUrl: game.galleryURL ?? undefined,
+    ratingsDisabled: game.ratingsDisabled === true,
+    commentsDisabled: game.commentsDisabled === true,
+    requiredLabels: game.labels.filter(({ isRequired }) => isRequired).map(({ id }) => id),
+    optionalLabels: game.labels.filter(({ isRequired }) => !isRequired).map(({ id }) => id),
+    newLabels: [],
+})
+
+const GameEditPage = ({ gameId }: Props) => {
     const classes = useStyles()
+    const router = useRouter()
+    const { data } = useQuery<LoadGameForEditQuery, LoadGameForEditQueryVariables>(loadGameForEditGql, {
+        variables: {
+            gameId: gameId || '',
+        },
+        skip: !gameId,
+    })
+
+    const gameById = data?.gameById
+    const authorizedOptionalLabels = data?.authorizedOptionalLabels
+    const authorizedRequiredLabels = data?.authorizedRequiredLabels
+    const initialValues = useMemo(() => (gameById ? toInitialValues(gameById) : undefined), [gameById])
+    const existingOptionalLabels = useMemo(
+        () => (authorizedOptionalLabels ? authorizedOptionalLabels.map(labelMapper) : undefined),
+        [authorizedOptionalLabels],
+    )
+    const existingRequiredLabels = useMemo(
+        () => (authorizedRequiredLabels ? authorizedRequiredLabels.map(labelMapper) : undefined),
+        [authorizedRequiredLabels],
+    )
+    const ready = !gameId || !!initialValues
+
+    const handleGameSaved = (game: Pick<Game, 'id' | 'name'>) => {
+        router.push({ pathname: '/gameDetail', query: { id: game.id } }, getGameRoute(game))
+    }
 
     return (
         <div className={classes.row}>
             <WidthFixer className={classes.body}>
-                <GameEditPanel />
+                {ready && (
+                    <GameEditPanel
+                        gameId={gameId}
+                        onGameSaved={handleGameSaved}
+                        initialValues={initialValues}
+                        existingOptionalLabels={existingOptionalLabels}
+                        existingRequiredLabels={existingRequiredLabels}
+                    />
+                )}
             </WidthFixer>
         </div>
     )

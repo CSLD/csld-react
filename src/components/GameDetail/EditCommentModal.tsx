@@ -23,7 +23,7 @@ const EditCommentModal = ({ oldText, onHide, onSubmit }: Props) => {
     const handleSave = ({ comment }: FormValues) => {
         setLoading(true)
         const markup = editorStateToHtml(comment)
-        onSubmit(markup).finally(() => {
+        onSubmit(markup || '').finally(() => {
             setLoading(false)
         })
     }

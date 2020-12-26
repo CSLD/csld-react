@@ -4,6 +4,7 @@ import { DraftHandleValue, Editor, EditorState, RichUtils } from 'draft-js'
 import { Form } from 'react-bootstrap'
 import {
     BoldButton,
+    DraftJsStyleButtonProps,
     HeadlineOneButton,
     HeadlineThreeButton,
     HeadlineTwoButton,
@@ -17,6 +18,7 @@ import { FieldValidator } from 'final-form'
 import FieldWithError from './FieldWithError'
 import { darkTheme } from '../../../theme/darkTheme'
 import { htmlToEditorState } from './richTextInputUtils'
+import classNames from 'classnames'
 
 export type RichTextFieldValue = EditorState | string | undefined
 
@@ -58,12 +60,52 @@ const useStyles = createUseStyles({
         overflowY: 'scroll',
         background: darkTheme.backgroundRealWhite,
     },
+    editorWrapperRegular: {
+        '&:focus-within': {
+            borderColor: '#80bdff',
+            boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+        },
+    },
+    editorWrapperInvalid: {
+        borderColor: '#dc3545',
+
+        '&:focus-within': {
+            boxShadow: '0 0 0 0.2rem rgba(220,53,69,.25)',
+        },
+    },
     editorP: {
         marginBottom: '1rem',
     },
 })
 
 const isEditorState = (value: RichTextFieldValue): value is EditorState => !!value && typeof value !== 'string'
+
+const ButtonBar = ({ theme, getEditorState, setEditorState }: DraftJsStyleButtonProps) => {
+    const buttonBarRef = useRef<HTMLDivElement | null>(null)
+    // Set tabIndex of all buttons to -1 so we don't tab through them
+    useEffect(() => {
+        const elm = buttonBarRef.current
+        if (elm) {
+            const buttons = elm.getElementsByTagName('button')
+            for (let i = 0; i < buttons.length; i += 1) {
+                buttons.item(i)?.setAttribute('tabIndex', '-1')
+            }
+        }
+    })
+
+    return (
+        <div ref={buttonBarRef}>
+            <HeadlineOneButton theme={theme} getEditorState={getEditorState} setEditorState={setEditorState} />
+            <HeadlineTwoButton theme={theme} getEditorState={getEditorState} setEditorState={setEditorState} />
+            <HeadlineThreeButton theme={theme} getEditorState={getEditorState} setEditorState={setEditorState} />
+            <BoldButton theme={theme} getEditorState={getEditorState} setEditorState={setEditorState} />
+            <ItalicButton theme={theme} getEditorState={getEditorState} setEditorState={setEditorState} />
+            <UnderlineButton theme={theme} getEditorState={getEditorState} setEditorState={setEditorState} />
+            <UnorderedListButton theme={theme} getEditorState={getEditorState} setEditorState={setEditorState} />
+            <OrderedListButton theme={theme} getEditorState={getEditorState} setEditorState={setEditorState} />
+        </div>
+    )
+}
 
 const FormRichTextInputField = ({
     name,
@@ -155,45 +197,19 @@ const FormRichTextInputField = ({
             errorHint={errorHint}
             hideError={!wasBlurred}
         >
-            {() => (
+            {isInvalid => (
                 <>
                     {label && <Form.Label>{label}</Form.Label>}
-                    <div>
-                        <HeadlineOneButton
-                            theme={classes}
-                            getEditorState={getEditorState}
-                            setEditorState={setEditorState}
-                        />
-                        <HeadlineTwoButton
-                            theme={classes}
-                            getEditorState={getEditorState}
-                            setEditorState={setEditorState}
-                        />
-                        <HeadlineThreeButton
-                            theme={classes}
-                            getEditorState={getEditorState}
-                            setEditorState={setEditorState}
-                        />
-                        <BoldButton theme={classes} getEditorState={getEditorState} setEditorState={setEditorState} />
-                        <ItalicButton theme={classes} getEditorState={getEditorState} setEditorState={setEditorState} />
-                        <UnderlineButton
-                            theme={classes}
-                            getEditorState={getEditorState}
-                            setEditorState={setEditorState}
-                        />
-                        <UnorderedListButton
-                            theme={classes}
-                            getEditorState={getEditorState}
-                            setEditorState={setEditorState}
-                        />
-                        <OrderedListButton
-                            theme={classes}
-                            getEditorState={getEditorState}
-                            setEditorState={setEditorState}
-                        />
-                    </div>
+                    <ButtonBar theme={classes} getEditorState={getEditorState} setEditorState={setEditorState} />
                     {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-                    <div className={classes.editorWrapper} onClick={focusEditor}>
+                    <div
+                        className={classNames({
+                            [classes.editorWrapper]: true,
+                            [classes.editorWrapperInvalid]: isInvalid,
+                            [classes.editorWrapperRegular]: !isInvalid,
+                        })}
+                        onClick={focusEditor}
+                    >
                         {isEditorState(value) && (
                             <Editor
                                 ref={editorRef}

@@ -8,5 +8,6 @@ routes.add('/profile/:id', 'profile')
 routes.add('/group/:id', 'groupDetail')
 routes.add('/event/:name/:id', 'eventDetail')
 routes.add('/recoverPassword/:token', 'recoverPassword')
+routes.add('/gameEdit/:id', 'gameEdit')
 
 export default routes

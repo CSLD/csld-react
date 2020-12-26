@@ -76,13 +76,13 @@ export const GamePagedCommentsPanel = ({ gameId }: Props) => {
             {loggedInUser?.id && page && (
                 <div className={classes.commentButtonWrapper}>
                     {!currentUsersComment && (
-                        <Button size="sm" variant="light" onClick={() => setEditModalShown(true)}>
+                        <Button size="sm" variant="dark" onClick={() => setEditModalShown(true)}>
                             <IconPlus />
                             &nbsp;&nbsp;{t('GameDetail.addComment')}
                         </Button>
                     )}
                     {currentUsersComment && (
-                        <Button size="sm" variant="light" onClick={() => setEditModalShown(true)}>
+                        <Button size="sm" variant="dark" onClick={() => setEditModalShown(true)}>
                             <IconEdit />
                             &nbsp;&nbsp;{t('GameDetail.updateComment')}
                         </Button>

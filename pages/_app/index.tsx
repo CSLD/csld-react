@@ -7,6 +7,7 @@ import { ApolloProvider } from '@apollo/react-hooks'
 import { config } from '@fortawesome/fontawesome-svg-core'
 import { WithApolloProps } from 'next-with-apollo'
 import UserContextProvider from 'src/components/common/UserContext/UserContextProvider'
+import { Router } from 'next/router'
 import { withApolloWrapper } from '../../src/with/withApolloProvider'
 
 import '@fortawesome/fontawesome-svg-core/styles.css'
@@ -20,6 +21,16 @@ class WebApp extends App<AppInitialProps & WithApolloProps<any>> {
         const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {}
 
         return { pageProps }
+    }
+
+    componentDidMount() {
+        Router.events.on('routeChangeComplete', () => {
+            // Reset window scroll on route change (= when we went to another page)
+            window.scroll({
+                top: 0,
+                left: 0,
+            })
+        })
     }
 
     render() {

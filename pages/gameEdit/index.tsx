@@ -14,7 +14,7 @@ const GameEditPage: NextPage<Props, InitialProps> = () => {
     return (
         <>
             <PageHeader />
-            <GameEditPagePanel />
+            <GameEditPagePanel gameId={router.query.id as string} />
             <PageFooter />
         </>
     )

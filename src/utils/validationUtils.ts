@@ -1,4 +1,5 @@
 import { TFunction } from 'i18next'
+import { EditorState } from 'draft-js'
 
 const emailRe = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
@@ -22,6 +23,20 @@ const isStringOrUndefined = (input: any): input is string | undefined =>
 export const validateRequired = (input?: string) => (input ? undefined : 'Errors.required')
 
 export const validateRequiredArray = (input?: unknown[]) => (input?.length ? undefined : 'Errors.required')
+
+export const validateRequiredRichText = (input?: EditorState | string | undefined) => {
+    if (!input) {
+        return 'Errors.required'
+    }
+
+    if (typeof input === 'object') {
+        if (!input.getCurrentContent().hasText()) {
+            return 'Errors.required'
+        }
+    }
+
+    return undefined
+}
 
 export const validateEmail = (input?: string) => (!input || emailRe.test(input) ? undefined : 'Errors.emailRequired')
 

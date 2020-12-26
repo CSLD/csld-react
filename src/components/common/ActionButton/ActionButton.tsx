@@ -15,7 +15,7 @@ const useStyles = createUseStyles({
         fontSize: '0.75rem',
         width: '100%',
         textAlign: 'left',
-        margin: '10px 0',
+        margin: '0 0 20px',
 
         '&:focus': {
             outline: `1px dotted ${darkTheme.text}`,
