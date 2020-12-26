@@ -1,6 +1,6 @@
 import React from 'react'
-import { GameBaseData, GameBaseDataPanel } from '../GameBaseDataPanel/GameBaseDataPanel'
 import { createUseStyles } from 'react-jss'
+import { GameBaseData, GameBaseDataPanel } from '../GameBaseDataPanel/GameBaseDataPanel'
 
 interface Props {
     readonly games: GameBaseData[]

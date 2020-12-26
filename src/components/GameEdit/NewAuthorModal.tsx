@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button, Modal, Form as BSForm } from 'react-bootstrap'
 import { Form } from 'react-final-form'
+import { createUseStyles } from 'react-jss'
 import { useFocusInput } from '../../hooks/useFocusInput'
 import FormTextInputField from '../common/form/FormTextInputField'
 import { fieldValidator, validateEmail, validateRequired } from '../../utils/validationUtils'
 import { useIsEmailAvailable } from '../../hooks/useIsEmailAvailable'
-import { createUseStyles } from 'react-jss'
 
 export interface Author {
     readonly id?: string

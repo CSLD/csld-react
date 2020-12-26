@@ -10,7 +10,6 @@ import { useLoggedInUser } from '../../hooks/useLoggedInUser'
 import { isAtLeastEditor } from '../../utils/roleUtils'
 import ActionButton from '../common/ActionButton/ActionButton'
 import GroupEditModal from './GroupEditModal'
-import { GameBaseDataPanel } from '../common/GameBaseDataPanel/GameBaseDataPanel'
 import { IconPlus } from '../common/Icons/Icons'
 import DetailGameList from '../common/DetailGameList/DetailGameList'
 

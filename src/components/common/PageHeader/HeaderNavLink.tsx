@@ -1,12 +1,11 @@
 import React from 'react'
 import { createUseStyles } from 'react-jss'
 import Link from 'next/link'
-import { UrlObject } from 'url'
 import { darkTheme } from '../../../theme/darkTheme'
+import { Route } from '../../../hooks/useRoutes'
 
 interface Props {
-    readonly href: UrlObject | string
-    readonly as?: string
+    readonly route: string | Route
     readonly target?: string
 }
 
@@ -26,20 +25,20 @@ const useStyles = createUseStyles({
     },
 })
 
-export const HeaderNavLink: React.FC<Props> = ({ href, as, target, children }) => {
+export const HeaderNavLink: React.FC<Props> = ({ route, target, children }) => {
     const classes = useStyles()
 
-    if (typeof href === 'string' && target) {
+    if (typeof route === 'string') {
         // External link
         return (
-            <a className={classes.link} href={href} target={target}>
+            <a className={classes.link} href={route} target={target}>
                 {children}
             </a>
         )
     }
 
     return (
-        <Link href={href} as={as} passHref>
+        <Link href={route.href} as={route.as} passHref>
             <a href="/" className={classes.link}>
                 {children}
             </a>

@@ -1,7 +1,7 @@
 import React from 'react'
-import { useRouter } from 'next/router'
 import { useTranslation } from 'react-i18next'
 import { TabDefinition, Tabs } from '../common/Tabs/Tabs'
+import { useRoutes } from '../../hooks/useRoutes'
 
 type Tab = 'profile' | 'settings' | 'changePassword'
 
@@ -11,11 +11,22 @@ interface Props {
 }
 
 const UserProfileTabs = ({ selectedTab, profileOnly }: Props) => {
-    const router = useRouter()
+    const routes = useRoutes()
     const handleSelectTab = (tab: Tab) => {
         if (tab !== selectedTab) {
-            const id = tab === 'profile' ? 'current' : tab
-            router.push({ pathname: '/profile', query: { id } }, `/profile/${id}`)
+            switch (tab) {
+                case 'profile':
+                    routes.push(routes.currentProfile())
+                    break
+                case 'settings':
+                    routes.push(routes.userSettings())
+                    break
+                case 'changePassword':
+                    routes.push(routes.changePassword())
+                    break
+                default:
+                // Should not happen
+            }
         }
     }
     const { t } = useTranslation('common')

@@ -2,16 +2,21 @@ import React from 'react'
 
 import { Game } from 'src/graphql/__generated__/typescript-operations'
 import Link from 'next/link'
-import { getGameRoute } from '../../../utils/routeUtils'
+import { useRoutes } from '../../../hooks/useRoutes'
 
 interface Props {
     readonly game: Pick<Game, 'id' | 'name'>
     readonly className?: string
 }
 
-export const GameLink: React.FC<Props> = ({ game, className, children }) => (
-    <Link href={{ pathname: '/gameDetail', query: { id: game.id } }} as={getGameRoute(game)}>
-        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-        <a className={className}>{children}</a>
-    </Link>
-)
+export const GameLink: React.FC<Props> = ({ game, className, children }) => {
+    const routes = useRoutes()
+    const route = routes.gameDetail(game.id, game.name ?? '')
+
+    return (
+        <Link href={route.href} as={route.as}>
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+            <a className={className}>{children}</a>
+        </Link>
+    )
+}

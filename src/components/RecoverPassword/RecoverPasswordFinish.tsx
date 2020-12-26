@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next'
 import { Form as FinalForm } from 'react-final-form'
 import { Button } from 'react-bootstrap'
 import { useApolloClient } from '@apollo/client'
-import { useRouter } from 'next/router'
 import { TFunction } from 'i18next'
+import { useRoutes } from 'src/hooks/useRoutes'
 import FormPageRow from '../common/FormPageRow/FormPageRow'
 import { darkTheme } from '../../theme/darkTheme'
 import FormTextInputField from '../common/form/FormTextInputField'
@@ -57,7 +57,7 @@ const RecoverPasswordFinish = ({ token }: Props) => {
     const [state, setState] = useState<TState>('initial')
     const classes = useStyles()
     const client = useApolloClient()
-    const router = useRouter()
+    const routes = useRoutes()
     const userContext = useContext(UserContext)
 
     const onSubmit = ({ password }: FormData) => {
@@ -77,7 +77,7 @@ const RecoverPasswordFinish = ({ token }: Props) => {
             .then(() => {
                 // Success
                 userContext?.actions?.reload()
-                router.push('/homepage', '/')
+                routes.push(routes.homepage())
             })
     }
 

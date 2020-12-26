@@ -2,13 +2,12 @@ import React, { MouseEventHandler, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useApolloClient } from '@apollo/client'
 import { Dropdown } from 'react-bootstrap'
-import { useRouter } from 'next/router'
 import { createUseStyles } from 'react-jss'
 import { HeaderNavLink } from './HeaderNavLink'
-import { UserRole } from '../../../graphql/__generated__/typescript-operations'
 import { darkTheme } from '../../../theme/darkTheme'
 import { UserContext } from '../UserContext/UserContext'
 import { isAtLeastEditor } from '../../../utils/roleUtils'
+import { useRoutes } from '../../../hooks/useRoutes'
 
 const signOutMutation = require('./graphql/signOutMutation.graphql')
 
@@ -69,7 +68,7 @@ const CustomToggle = React.forwardRef<HTMLButtonElement, CustomToggleProps>(
 
 const HeaderUser = () => {
     const { t } = useTranslation('common')
-    const router = useRouter()
+    const routes = useRoutes()
     const client = useApolloClient()
     const userContext = useContext(UserContext)
 
@@ -77,16 +76,16 @@ const HeaderUser = () => {
 
     const handleSelect = async (eventKey: any) => {
         if (eventKey === 'myPage') {
-            router.push({ pathname: '/profile', query: { id: 'current' } }, '/profile/current')
+            routes.push(routes.currentProfile())
         }
         if (eventKey === 'settings') {
-            router.push({ pathname: '/profile', query: { id: 'settings' } }, '/profile/settings')
+            routes.push(routes.userSettings())
         }
         if (eventKey === 'changePassword') {
-            router.push({ pathname: '/profile', query: { id: 'changePassword' } }, '/profile/changePassword')
+            routes.push(routes.changePassword())
         }
         if (eventKey === 'admin') {
-            router.push('/admin')
+            routes.push(routes.adminMenu())
         }
         if (eventKey === 'logOut') {
             await client.mutate({
@@ -94,7 +93,7 @@ const HeaderUser = () => {
             })
 
             userContext?.actions?.reload()
-            router.push('/homepage', '/')
+            routes.push(routes.homepage())
         }
     }
 
@@ -123,12 +122,8 @@ const HeaderUser = () => {
 
     return (
         <>
-            <HeaderNavLink href="/signIn" as="/signIn">
-                {t('PageHeader.signIn')}
-            </HeaderNavLink>
-            <HeaderNavLink href="/signUp" as="/signUp">
-                {t('PageHeader.signUp')}
-            </HeaderNavLink>
+            <HeaderNavLink route={routes.signIn()}>{t('PageHeader.signIn')}</HeaderNavLink>
+            <HeaderNavLink route={routes.signUp()}>{t('PageHeader.signUp')}</HeaderNavLink>
         </>
     )
 }

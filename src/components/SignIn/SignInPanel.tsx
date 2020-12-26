@@ -5,16 +5,14 @@ import { Button } from 'react-bootstrap'
 import { createUseStyles } from 'react-jss'
 import { TFunction } from 'i18next'
 import { useApolloClient } from '@apollo/client'
-import { useRouter } from 'next/router'
-import Link from 'next/link'
 import FormTextInputField from '../common/form/FormTextInputField'
-import { WidthFixer } from '../common/WidthFixer/WidthFixer'
 import { darkTheme } from '../../theme/darkTheme'
 import { validateEmail, validateRequired, validateWithValidators } from '../../utils/validationUtils'
 import { LogInMutation, LogInMutationVariables } from '../../graphql/__generated__/typescript-operations'
 import { TextLink } from '../common/TextLink/TextLink'
 import FormPageRow from '../common/FormPageRow/FormPageRow'
 import { UserContext } from '../common/UserContext/UserContext'
+import { useRoutes } from '../../hooks/useRoutes'
 
 const logInMutation = require('./graphql/logInMutation.graphql')
 
@@ -50,7 +48,7 @@ const SignInPanel = () => {
     const { t } = useTranslation('common')
     const classes = useStyles()
     const client = useApolloClient()
-    const router = useRouter()
+    const routes = useRoutes()
     const [state, setState] = useState<TState>('idle')
     const userContext = useContext(UserContext)
 
@@ -69,12 +67,13 @@ const SignInPanel = () => {
 
             // Go to homepage
             userContext?.actions?.reload()
-            router.push('/homepage', '/')
+            routes.push(routes.homepage())
             return
         }
 
         setState('error')
     }
+    const { href: recoverHref, as: recoverAs } = routes.recoverPasswordStart()
 
     return (
         <FormPageRow headerText={t('SignIn.header')}>
@@ -92,7 +91,9 @@ const SignInPanel = () => {
                                 showErrorPlaceholder={false}
                             /> */}
                         <div className={classes.recoverPassword}>
-                            <TextLink href={{ pathname: '/recoverPassword' }}>{t('SignIn.forgotPassword')}</TextLink>
+                            <TextLink href={recoverHref} as={recoverAs}>
+                                {t('SignIn.forgotPassword')}
+                            </TextLink>
                         </div>
                         <Button variant="dark" type="submit" disabled={state === 'loading'}>
                             {t('SignIn.submit')}

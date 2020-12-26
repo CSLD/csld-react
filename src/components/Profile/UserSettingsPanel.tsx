@@ -1,10 +1,10 @@
 import React, { useContext, useState } from 'react'
 import { useApolloClient, useQuery } from '@apollo/client'
-import { useRouter } from 'next/router'
 import { createUseStyles } from 'react-jss'
 import { Form as FinalForm } from 'react-final-form'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
+import { useRoutes } from 'src/hooks/useRoutes'
 import FormPageRow from '../common/FormPageRow/FormPageRow'
 import FormTextInputField from '../common/form/FormTextInputField'
 import { fieldValidator, validateDate, validateEmail, validateRequired } from '../../utils/validationUtils'
@@ -23,7 +23,6 @@ import { UserContext } from '../common/UserContext/UserContext'
 
 const loadUserSettingsGql = require('./graphql/loadCurrentUserSettings.graphql')
 const updateUserSettingsGql = require('./graphql/updateUserSettings.graphql')
-// const refreshUserGql = require('../common/PageHeader/graphql/loggedInUserQuery.graphql')
 
 const useStyles = createUseStyles({
     error: {
@@ -48,7 +47,7 @@ const UserSettingsPanel = () => {
     const client = useApolloClient()
     const { t } = useTranslation('common')
     const classes = useStyles()
-    const router = useRouter()
+    const routes = useRoutes()
     const [state, setState] = useState<TState>('idle')
     const { usedByUser, isEmailAvailable } = useIsEmailAvailable()
     const loggedInUser = loadQuery.data?.loggedInUser
@@ -80,7 +79,7 @@ const UserSettingsPanel = () => {
 
         // Success - go to profile
         userContext?.actions?.reload()
-        router.push({ pathname: '/profile', query: { id: 'current' } }, '/profile/current')
+        routes.push(routes.currentProfile())
         return undefined
     }
 

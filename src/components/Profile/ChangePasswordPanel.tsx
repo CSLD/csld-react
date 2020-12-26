@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { useApolloClient, useQuery } from '@apollo/client'
-import { useRouter } from 'next/router'
 import { Form as FinalForm } from 'react-final-form'
 import { Button } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { TFunction } from 'i18next'
 import { createUseStyles } from 'react-jss'
+import { darkTheme } from 'src/theme/darkTheme'
+import { useRoutes } from 'src/hooks/useRoutes'
 import FormPageRow from '../common/FormPageRow/FormPageRow'
 import FormTextInputField from '../common/form/FormTextInputField'
 import { fieldValidator, validateRequired } from '../../utils/validationUtils'
@@ -16,7 +17,6 @@ import {
 } from '../../graphql/__generated__/typescript-operations'
 import UserDetailPanel from './UserDetailPanel'
 import UserProfileTabs from './UserProfileTabs'
-import { darkTheme } from '../../theme/darkTheme'
 
 const loadUserSettingsGql = require('./graphql/loadCurrentUserSettings.graphql')
 const changePasswordGql = require('./graphql/changePassword.graphql')
@@ -47,7 +47,7 @@ const ChangePasswordPanel = () => {
     const loadQuery = useQuery<LoadCurrentUserSettingsQuery>(loadUserSettingsGql)
     const client = useApolloClient()
     const { t } = useTranslation('common')
-    const router = useRouter()
+    const routes = useRoutes()
     const [state, setState] = useState<TState>('idle')
     const loggedInUser = loadQuery.data?.loggedInUser
     const classes = useStyles()
@@ -66,7 +66,7 @@ const ChangePasswordPanel = () => {
             })
             .then(() => {
                 // Success - go to profile
-                router.push({ pathname: '/profile', query: { id: 'current' } }, '/profile/current')
+                routes.push(routes.currentProfile())
             })
             .catch(e => {
                 if (e?.graphQLErrors?.[0]?.extensions?.path) {

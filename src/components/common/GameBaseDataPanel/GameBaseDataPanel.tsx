@@ -1,14 +1,11 @@
 import React from 'react'
 import { Game } from 'src/graphql/__generated__/typescript-operations'
 import { createUseStyles } from 'react-jss'
-import classnames from 'classnames'
+import classNames from 'classnames'
 import { darkTheme } from '../../../theme/darkTheme'
 import { GameRatingBox } from '../GameRatingBox/GameRatingBox'
 import { IconRating, IconComment, IconUser } from '../Icons/Icons'
-import { getGameRoute } from '../../../utils/routeUtils'
-import Link from 'next/link'
 import { GameLink } from '../GameLink/GameLink'
-import classNames from 'classnames'
 
 export type GameBaseData = Pick<
     Game,

@@ -15,10 +15,10 @@ import {
 } from 'draft-js-buttons'
 import { createUseStyles } from 'react-jss'
 import { FieldValidator } from 'final-form'
+import classNames from 'classnames'
 import FieldWithError from './FieldWithError'
 import { darkTheme } from '../../../theme/darkTheme'
 import { htmlToEditorState } from './richTextInputUtils'
-import classNames from 'classnames'
 
 export type RichTextFieldValue = EditorState | string | undefined
 
@@ -169,7 +169,7 @@ const FormRichTextInputField = ({
                 focusEditor()
             }, 100)
         }
-    }, [autoFocus, value, autoFocusedRef])
+    }, [autoFocus, value, autoFocusedRef, setEditorState])
 
     const handleKeyCommand = (command: any, oldState: EditorState): DraftHandleValue => {
         const newState = RichUtils.handleKeyCommand(oldState, command)

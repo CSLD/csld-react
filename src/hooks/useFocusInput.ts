@@ -19,7 +19,7 @@ export const useFocusInput = <T extends Element>(name: string) => {
                 }
             }
         }, 100)
-    }, [wrapperRef])
+    }, [wrapperRef, name])
 
     return wrapperRef
 }

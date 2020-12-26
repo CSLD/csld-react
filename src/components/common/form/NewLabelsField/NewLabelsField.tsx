@@ -43,6 +43,7 @@ const NewLabelsField = ({ name: fieldName, existingLabelNames }: Props) => {
                         key={label.name}
                         type={'checkbox' as any}
                         label={
+                            /* eslint-disable-next-line react/jsx-wrap-multilines */
                             <FormCheckLabelWithTooltip
                                 label={label.name}
                                 tooltip={label.description}

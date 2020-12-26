@@ -3,6 +3,7 @@ import { createUseStyles } from 'react-jss'
 import { useQuery } from '@apollo/client'
 import { useTranslation } from 'react-i18next'
 import { Col, Row } from 'react-bootstrap'
+import classNames from 'classnames'
 import { darkTheme } from '../../theme/darkTheme'
 import { LoadEventQuery, LoadEventQueryVariables } from '../../graphql/__generated__/typescript-operations'
 import { WidthFixer } from '../common/WidthFixer/WidthFixer'
@@ -12,7 +13,6 @@ import DetailLabelList from '../common/DetailLabelList/DetailLabelList'
 import { useLoggedInUser } from '../../hooks/useLoggedInUser'
 import { isAtLeastEditor } from '../../utils/roleUtils'
 import ActionButton from '../common/ActionButton/ActionButton'
-import classNames from 'classnames'
 
 const loadEventGql = require('./graphql/loadEvent.graphql')
 
@@ -116,6 +116,7 @@ const EventDetailPanel = ({ eventId }: Props) => {
                             {event.description && (
                                 <div
                                     className={classNames(classes.text, classes.description)}
+                                    /* eslint-disable-next-line react/no-danger */
                                     dangerouslySetInnerHTML={{ __html: event.description }}
                                 />
                             )}

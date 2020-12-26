@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
 import { createUseStyles } from 'react-jss'
 import { useTranslation } from 'react-i18next'
-import { useRouter } from 'next/router'
 import {
     CachedGameDataFragment,
     CommentsPaged,
@@ -24,6 +23,7 @@ import { isAtLeastEditor } from '../../utils/roleUtils'
 import { useLoggedInUser } from '../../hooks/useLoggedInUser'
 import ActionButton from '../common/ActionButton/ActionButton'
 import ConfirmationModal from '../common/ConfirmationModal/ConfirmationModal'
+import { useRoutes } from '../../hooks/useRoutes'
 
 const cachedGameDataGql = require('./graphql/cachedGameData.graphql')
 const gameDetailGql = require('./graphql/gameDetail.graphql')
@@ -116,7 +116,7 @@ export const GameDetailPanel = ({ gameId }: Props) => {
     const loggedInUser = useLoggedInUser()
     const { t } = useTranslation('common')
     const classes = useStyles()
-    const router = useRouter()
+    const routes = useRoutes()
     const [deleteGame, { loading: deleteLoading }] = useMutation<DeleteGameMutation, DeleteGameMutationVariables>(
         deleteGameGql,
         {
@@ -163,7 +163,7 @@ export const GameDetailPanel = ({ gameId }: Props) => {
     const handleRefetch = () => gameQuery.refetch()
 
     const handleEditGame = () => {
-        router.push({ pathname: '/gameEdit', query: { id: gameId } }, `/gameEdit/${gameId}`)
+        routes.push(routes.gameEdit(gameId))
     }
 
     const handleDeleteGame = () => setDeleteConfirmShown(true)
@@ -173,7 +173,7 @@ export const GameDetailPanel = ({ gameId }: Props) => {
     const handleDoDeleteGame = () => {
         deleteGame().then(() => {
             setDeleteConfirmShown(false)
-            router.push({ pathname: '/homepage' }, '/')
+            routes.push(routes.homepage())
         })
     }
 
@@ -222,6 +222,7 @@ export const GameDetailPanel = ({ gameId }: Props) => {
             <ConfirmationModal
                 show={deleteConfirmShown}
                 content={t('GameDetail.deleteGameConfirmation')}
+                loading={deleteLoading}
                 onHide={handleHideDeleteModel}
                 onCancel={handleHideDeleteModel}
                 onConfirm={handleDoDeleteGame}

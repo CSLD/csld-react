@@ -1,6 +1,6 @@
 import React from 'react'
 import { useField } from 'react-final-form'
-import { Form, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { Form } from 'react-bootstrap'
 import { FieldValidator } from 'final-form'
 import { Label } from '../../../graphql/__generated__/typescript-operations'
 import FormCheckLabelWithTooltip from './FormCheckLabelWithTooltip'

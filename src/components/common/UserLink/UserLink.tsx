@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import { useRoutes } from '../../../hooks/useRoutes'
 
 interface Props {
     readonly userId: string
@@ -14,11 +15,16 @@ interface Props {
  * @param children Link contents
  */
 
-const UserLink: React.FC<Props> = ({ userId, className, children }) => (
-    <Link href={{ pathname: '/profile', query: { id: userId } }} as={`/profile/${userId}`}>
-        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-        <a className={className}>{children}</a>
-    </Link>
-)
+const UserLink: React.FC<Props> = ({ userId, className, children }) => {
+    const routes = useRoutes()
+    const route = routes.userProfile(userId)
+
+    return (
+        <Link href={route.href} as={route.as}>
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+            <a className={className}>{children}</a>
+        </Link>
+    )
+}
 
 export default UserLink

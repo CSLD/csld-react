@@ -7,6 +7,7 @@ import { darkTheme } from '../../../theme/darkTheme'
 import { WidthFixer } from '../WidthFixer/WidthFixer'
 import { HeaderSearchForm } from './HeaderSearchForm'
 import HeaderUser from './HeaderUser'
+import { useRoutes } from '../../../hooks/useRoutes'
 
 const useStyles = createUseStyles({
     placeholder: {
@@ -52,6 +53,7 @@ const useStyles = createUseStyles({
 export const PageHeader = () => {
     const classes = useStyles()
     const { t } = useTranslation('common')
+    const routes = useRoutes()
 
     return (
         <>
@@ -68,19 +70,15 @@ export const PageHeader = () => {
                                 />
                             </a>
                         </Link>
-                        <HeaderNavLink href="/" as="/">
-                            {t('PageHeader.games')}
-                        </HeaderNavLink>
-                        <HeaderNavLink href="/" as="/">
-                            {t('PageHeader.events')}
-                        </HeaderNavLink>
-                        <HeaderNavLink href="https://larpy.cz" target="_blank">
+                        <HeaderNavLink route={routes.games()}>{t('PageHeader.games')}</HeaderNavLink>
+                        <HeaderNavLink route={routes.events()}>{t('PageHeader.events')}</HeaderNavLink>
+                        <HeaderNavLink route="https://larpy.cz" target="_blank">
                             {t('PageHeader.blog')}
                         </HeaderNavLink>
-                        <HeaderNavLink href={{ pathname: '/eventEdit' }} as="/eventEdit">
+                        <HeaderNavLink route={routes.eventCreate()}>
                             <span className={classes.buttonLike}>{t('PageHeader.addEvent')}</span>
                         </HeaderNavLink>
-                        <HeaderNavLink href={{ pathname: '/gameEdit' }} as="/gameEdit">
+                        <HeaderNavLink route={routes.gameCreate()}>
                             <span className={classes.buttonLike}>{t('PageHeader.addGame')}</span>
                         </HeaderNavLink>
                     </div>

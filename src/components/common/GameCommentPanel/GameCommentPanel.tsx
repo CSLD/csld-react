@@ -167,6 +167,7 @@ const GameCommentPanel = ({ comment, showVisibilityButton, onChangeCommentVisibi
                     <div className={classes.likesCircle}>{comment.amountOfUpvotes}</div>
                 </div>
             </div>
+            {/* eslint-disable-next-line react/no-danger */}
             <p className={classes.text} dangerouslySetInnerHTML={{ __html: comment.comment ?? '' }} />
             {game && (
                 <div className={classes.game}>

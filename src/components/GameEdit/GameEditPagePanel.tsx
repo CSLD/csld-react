@@ -1,6 +1,8 @@
 import React, { useMemo } from 'react'
 import { createUseStyles } from 'react-jss'
-import { useRouter } from 'next/router'
+import { useQuery } from '@apollo/client'
+import { labelMapper } from 'src/hooks/usePredefinedLabels'
+import { useRoutes } from 'src/hooks/useRoutes'
 import GameEditPanel, { FormValues } from './GameEditPanel'
 import { darkTheme } from '../../theme/darkTheme'
 import { WidthFixer } from '../common/WidthFixer/WidthFixer'
@@ -14,10 +16,7 @@ import {
     User,
     Video,
 } from '../../graphql/__generated__/typescript-operations'
-import { getGameRoute } from '../../utils/routeUtils'
-import { useQuery } from '@apollo/client'
 import { formatAuthorLabel } from './NewAuthorModal'
-import { labelMapper } from '../../hooks/usePredefinedLabels'
 
 const loadGameForEditGql = require('./graphql/loadGameForEdit.graphql')
 
@@ -94,7 +93,7 @@ const toInitialValues = (game: LoadedGame): FormValues => ({
 
 const GameEditPage = ({ gameId }: Props) => {
     const classes = useStyles()
-    const router = useRouter()
+    const routes = useRoutes()
     const { data } = useQuery<LoadGameForEditQuery, LoadGameForEditQueryVariables>(loadGameForEditGql, {
         variables: {
             gameId: gameId || '',
@@ -117,7 +116,7 @@ const GameEditPage = ({ gameId }: Props) => {
     const ready = !gameId || !!initialValues
 
     const handleGameSaved = (game: Pick<Game, 'id' | 'name'>) => {
-        router.push({ pathname: '/gameDetail', query: { id: game.id } }, getGameRoute(game))
+        routes.push(routes.gameDetail(game.id, game.name))
     }
 
     return (

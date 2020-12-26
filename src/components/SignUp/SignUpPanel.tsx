@@ -2,10 +2,11 @@ import React, { useContext, useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import { useTranslation } from 'react-i18next'
 import { useApolloClient } from '@apollo/client'
-import { useRouter } from 'next/router'
 import { Form as FinalForm } from 'react-final-form'
 import { TFunction } from 'i18next'
 import { Button, Col, Row, Form } from 'react-bootstrap'
+import { useRoutes } from 'src/hooks/useRoutes'
+import { UrlObject } from 'url'
 import FormPageRow from '../common/FormPageRow/FormPageRow'
 import FormTextInputField from '../common/form/FormTextInputField'
 import { darkTheme } from '../../theme/darkTheme'
@@ -50,12 +51,15 @@ const validate = (t: TFunction) => (data: FormData) => {
     }
 }
 
-const EmailUsedErrorHint = ({ name }: { name: string }) => {
+const EmailUsedErrorHint = ({ name, href, as }: { name: string; href: UrlObject; as: string }) => {
     const { t } = useTranslation('common')
     return (
         <Form.Text>
             {t('SignUp.emailAlreadyUsed', { name })}{' '}
-            <TextLink href="/recoverPassword">{t('SignUp.forgotPassword')}</TextLink>.
+            <TextLink href={href} as={as}>
+                {t('SignUp.forgotPassword')}
+            </TextLink>
+            .
         </Form.Text>
     )
 }
@@ -64,10 +68,11 @@ const SignUpPanel = () => {
     const { t } = useTranslation('common')
     const classes = useStyles()
     const client = useApolloClient()
-    const router = useRouter()
+    const routes = useRoutes()
     const [state, setState] = useState<TState>('idle')
     const { usedByUser, isEmailAvailable } = useIsEmailAvailable()
     const userContext = useContext(UserContext)
+    const { href: recoverHref, as: recoverAs } = routes.recoverPasswordStart()
 
     const onSubmit = async (data: FormData) => {
         setState('loading')
@@ -96,7 +101,7 @@ const SignUpPanel = () => {
         if (res.data?.user?.createUser?.id) {
             // Success - go to homepage
             userContext?.actions?.reload()
-            router.push('/homepage', '/')
+            routes.push(routes.homepage())
             return undefined
         }
 
@@ -122,7 +127,13 @@ const SignUpPanel = () => {
                                 placeholder={t('UserFields.email')}
                                 validate={fieldValidator(t, [validateRequired, validateEmail])}
                                 onBlur={handleEmailOnBlur}
-                                errorHint={usedByUser ? <EmailUsedErrorHint name={usedByUser.name} /> : undefined}
+                                errorHint={
+                                    usedByUser ? (
+                                        <EmailUsedErrorHint name={usedByUser.name} href={recoverHref} as={recoverAs} />
+                                    ) : (
+                                        undefined
+                                    )
+                                }
                             />
                             <Row className={classes.rowFixer}>
                                 <Col>

@@ -2,7 +2,6 @@ import React from 'react'
 import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
 import { darkTheme } from '../../../theme/darkTheme'
-import { Image } from '../../../graphql/__generated__/typescript-operations'
 
 interface Props {
     readonly userId?: string

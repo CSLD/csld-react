@@ -1,9 +1,9 @@
-import React from 'react'
-import { GameRatingPanel } from '../GameRatingPanel'
+// import React from 'react'
+// import { GameRatingPanel } from '../GameRatingPanel'
 
 // export default { title: 'GameRatingPanel' }
 
-const game = {
+export const game = {
     id: '123',
     averageRating: 80,
     amountOfRatings: 18,

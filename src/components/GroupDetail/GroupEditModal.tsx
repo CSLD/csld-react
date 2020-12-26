@@ -3,7 +3,8 @@ import { Button, Modal } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { useMutation } from '@apollo/client'
 import { Form } from 'react-final-form'
-import { useRouter } from 'next/router'
+import { useFocusInput } from 'src/hooks/useFocusInput'
+import { useRoutes } from 'src/hooks/useRoutes'
 import {
     CreateGroupMutation,
     CreateGroupMutationVariables,
@@ -12,7 +13,6 @@ import {
 } from '../../graphql/__generated__/typescript-operations'
 import FormTextInputField from '../common/form/FormTextInputField'
 import { fieldValidator, validateRequired } from '../../utils/validationUtils'
-import { useFocusInput } from '../../hooks/useFocusInput'
 
 const createGroupGql = require('./graphql/createGroup.graphql')
 const updateGroupGql = require('./graphql/updateGroup.graphql')
@@ -35,7 +35,7 @@ const GroupEditModal = ({ id, initialName, onHide }: Props) => {
     const [updateMutation, { loading: updateLoading }] = useMutation<UpdateGroupMutation, UpdateGroupMutationVariables>(
         updateGroupGql,
     )
-    const router = useRouter()
+    const routes = useRoutes()
     const formRef = useFocusInput<HTMLFormElement>('name')
 
     const loading = createLoading || updateLoading
@@ -49,7 +49,7 @@ const GroupEditModal = ({ id, initialName, onHide }: Props) => {
                 const newId = res.data?.group.createGroup.id
 
                 if (newId) {
-                    router.push({ pathname: '/group', query: { id: newId } }, `/group/${newId}`)
+                    routes.push(routes.groupDetail(newId))
                 }
             })
         }
