@@ -3,9 +3,7 @@ import { createUseStyles } from 'react-jss'
 import { Form } from 'react-final-form'
 import { Button, Col, Row } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
-import classNames from 'classnames'
 import { useMutation } from '@apollo/client'
-import { darkTheme } from '../../theme/darkTheme'
 import FormTextInputField from '../common/form/FormTextInputField'
 import FormRichTextInputField, { RichTextFieldValue } from '../common/form/FormRichTextInputField'
 import {
@@ -21,9 +19,7 @@ import AuthorsAutoCompleteField from './AuthorsAutoCompleteField'
 import GroupsAutoCompleteField from './GroupsAutoCompleteField'
 import { GroupAuthor } from './NewGroupModal'
 import { Author } from './NewAuthorModal'
-import FormLabelListField from '../common/form/FormLabelListField'
-import NewLabelsField, { NewLabel } from '../common/form/NewLabelsField/NewLabelsField'
-import { LabelData, useLoadLabels } from '../../hooks/usePredefinedLabels'
+import { NewLabel } from '../common/form/NewLabelsField/NewLabelsField'
 import {
     CreateGameInput,
     CreateGameMutation,
@@ -36,6 +32,8 @@ import {
 import { editorStateToHtml } from '../common/form/richTextInputUtils'
 import { convertFileInput } from '../../utils/graphqlUtils'
 import { useFocusInput } from '../../hooks/useFocusInput'
+import { formClasses } from '../../utils/formClasses'
+import LabelsEditColumn, { LabelFromGql } from '../common/LabelsEditColumn/LabelsEditColumn'
 
 const createGameGql = require('./graphql/createGame.graphql')
 const updateGameGql = require('./graphql/updateGame.graphql')
@@ -67,8 +65,8 @@ export interface FormValues {
 interface Props {
     readonly gameId?: string
     readonly initialValues?: FormValues
-    readonly existingRequiredLabels?: LabelData[]
-    readonly existingOptionalLabels?: LabelData[]
+    readonly authorizedRequiredLabels?: LabelFromGql[]
+    readonly authorizedOptionalLabels?: LabelFromGql[]
     readonly onGameSaved: (game: Pick<Game, 'id' | 'name'>) => void
 }
 
@@ -80,34 +78,7 @@ const emptyInitialValues: FormValues = {
     newLabels: [],
 }
 
-const useStyles = createUseStyles({
-    form: {
-        color: darkTheme.textOnLight,
-    },
-    helpText: {
-        fontSize: '0.75rem',
-    },
-    header: {
-        backgroundColor: darkTheme.backgroundRealWhite,
-        fontSize: '1.25rem',
-        color: darkTheme.textOnLight,
-        borderBottom: '1px solid rgba(0,0,0,.1)',
-        margin: '0 0 12px -18px',
-        padding: '8px 8px 8px 18px',
-    },
-    headerRight: {
-        margin: '0 -18px 12px -18px',
-    },
-    subHeader: {
-        color: darkTheme.textOnLight,
-        borderBottom: '1px solid rgba(0,0,0,.1)',
-        marginBottom: 20,
-    },
-    formError: {
-        marginLeft: 16,
-        color: darkTheme.red,
-    },
-})
+const useStyles = createUseStyles(formClasses)
 
 const convertInt = (input?: string) => (input ? parseInt(input, 10) : undefined)
 
@@ -144,19 +115,15 @@ const updateInputFromValues = (gameId: string, data: FormValues): UpdateGameInpu
 /**
  * Contains inner form, calls callback after game is created (or updated)
  */
-const GameEditPanel = ({
+const GameEditForm = ({
     gameId,
     initialValues,
-    existingRequiredLabels,
-    existingOptionalLabels,
+    authorizedOptionalLabels,
+    authorizedRequiredLabels,
     onGameSaved,
 }: Props) => {
     const classes = useStyles()
     const { t } = useTranslation('common')
-    const { requiredLabels, optionalLabels, existingLabelNames } = useLoadLabels(
-        existingRequiredLabels,
-        existingOptionalLabels,
-    )
     const formRef = useFocusInput<HTMLFormElement>('name')
     const [createGame, { loading: createGameLoading }] = useMutation<CreateGameMutation, CreateGameMutationVariables>(
         createGameGql,
@@ -335,19 +302,10 @@ const GameEditPanel = ({
                                 {submitFailed && <span className={classes.formError}>{t('GameEdit.formError')}</span>}
                             </Col>
                             <Col md={3}>
-                                <header className={classNames(classes.header, classes.headerRight)}>
-                                    {t('GameEdit.labels')}
-                                </header>
-                                <p className={classes.helpText}>{t('GameEdit.labelsHint')}</p>
-                                <header className={classes.subHeader}>{t('GameEdit.requiredLabels')}</header>
-                                <FormLabelListField
-                                    name="requiredLabels"
-                                    labels={requiredLabels}
-                                    validate={fieldValidator(t, validateRequiredArray)}
+                                <LabelsEditColumn
+                                    authorizedOptionalLabels={authorizedOptionalLabels}
+                                    authorizedRequiredLabels={authorizedRequiredLabels}
                                 />
-                                <header className={classes.subHeader}>{t('GameEdit.optionalLabels')}</header>
-                                <FormLabelListField name="optionalLabels" labels={optionalLabels} />
-                                <NewLabelsField name="newLabels" existingLabelNames={existingLabelNames} />
                             </Col>
                         </Row>
                     </form>
@@ -357,4 +315,4 @@ const GameEditPanel = ({
     )
 }
 
-export default GameEditPanel
+export default GameEditForm

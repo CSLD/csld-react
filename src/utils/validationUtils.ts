@@ -7,6 +7,8 @@ const integerRe = /^(0|([1-9][0-9]*))$/
 
 const dateRe = /^([0-9]+).([0-9]+).([0-9]+)$/
 
+const timeRe = /^([0-9]+):([0-9]+)$/
+
 type Validator<T> = (input?: T) => string | undefined
 
 type ValidatorMap<T, U extends keyof T> = {
@@ -62,6 +64,27 @@ export const validateDate = (input?: string): string | undefined => {
     const testDate = new Date(year, month - 1, day)
     if (testDate.getDate() !== day || testDate.getMonth() !== month - 1 || testDate.getFullYear() !== year) {
         return 'Errors.invalidDate'
+    }
+
+    return undefined
+}
+
+export const validateTime = (value?: string) => {
+    if (!value) {
+        return undefined
+    }
+
+    const match = timeRe.exec(value)
+
+    if (!match) {
+        return 'Errors.invalidTimeFormat'
+    }
+
+    const hours = parseInt(match[1], 10)
+    const minutes = parseInt(match[2], 10)
+
+    if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
+        return 'Errors.invalidTime'
     }
 
     return undefined

@@ -1,4 +1,4 @@
-import { validateDate } from '../validationUtils'
+import { validateDate, validateTime } from '../validationUtils'
 
 describe('validateDate', () => {
     it('should pass undefined date as valid', () => {
@@ -31,5 +31,39 @@ describe('validateDate', () => {
 
     it('should pass correct date', () => {
         expect(validateDate('28.2.2021')).toBeUndefined()
+    })
+})
+
+describe('validateTime', () => {
+    it('should return OK on undefined input', () => {
+        expect(validateTime()).toBeUndefined()
+    })
+
+    it('should return OK on empty input', () => {
+        expect(validateTime()).toBeUndefined()
+    })
+
+    it('should return invalidTimeFormat on invalid format', () => {
+        expect(validateTime('dklqdqw')).toBe('Errors.invalidTimeFormat')
+    })
+
+    it('should return invalidTimeFormat on negative numbers format', () => {
+        expect(validateTime('00:-01')).toBe('Errors.invalidTimeFormat')
+    })
+
+    it('should return invalidTime when hour is too high', () => {
+        expect(validateTime('24:01')).toBe('Errors.invalidTime')
+    })
+
+    it('should return invalidTime when minute is too high', () => {
+        expect(validateTime('02:60')).toBe('Errors.invalidTime')
+    })
+
+    it('should return undefined when time is 23:59', () => {
+        expect(validateTime('23:59')).toBeUndefined()
+    })
+
+    it('should return undefined when time is 00:00', () => {
+        expect(validateTime('00:00')).toBeUndefined()
     })
 })

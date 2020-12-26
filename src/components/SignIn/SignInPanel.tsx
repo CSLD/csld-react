@@ -13,6 +13,7 @@ import { TextLink } from '../common/TextLink/TextLink'
 import FormPageRow from '../common/FormPageRow/FormPageRow'
 import { UserContext } from '../common/UserContext/UserContext'
 import { useRoutes } from '../../hooks/useRoutes'
+import { useFocusInput } from '../../hooks/useFocusInput'
 
 const logInMutation = require('./graphql/logInMutation.graphql')
 
@@ -49,6 +50,7 @@ const SignInPanel = () => {
     const classes = useStyles()
     const client = useApolloClient()
     const routes = useRoutes()
+    const formRef = useFocusInput<HTMLFormElement>('email')
     const [state, setState] = useState<TState>('idle')
     const userContext = useContext(UserContext)
 
@@ -82,7 +84,7 @@ const SignInPanel = () => {
                 onSubmit={onSubmit}
                 validate={validate(t)}
                 render={({ handleSubmit }) => (
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} ref={formRef}>
                         <FormTextInputField name="email" placeholder={t('SignIn.email')} />
                         <FormTextInputField name="password" type="password" placeholder={t('SignIn.password')} />
                         {/* <FormCheckBoxField

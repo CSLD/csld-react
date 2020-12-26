@@ -24,7 +24,7 @@ interface Props<T extends ModelBase> {
     readonly placeholder?: string
     readonly hint?: string
     readonly validate?: FieldValidator<T[]>
-    readonly entityBaseUrl?: string
+    readonly createUrl?: (item: T) => string
     readonly createNewText?: ReactNode
     readonly entityLinkText?: ReactNode
     readonly loading?: boolean
@@ -32,14 +32,14 @@ interface Props<T extends ModelBase> {
     readonly onSearch: (query: string) => Promise<T[]>
 }
 
-interface RenderMenuProps {
-    readonly entityBaseUrl?: string
+interface RenderMenuProps<T> {
+    readonly createUrl?: (item: T) => string
     readonly createNewText?: ReactNode
     readonly entityLinkText?: ReactNode
     readonly onCreateNew: () => void
 }
 
-interface OptionsMenuProps<T extends ModelBase> extends RenderMenuProps {
+interface OptionsMenuProps<T extends ModelBase> extends RenderMenuProps<T> {
     readonly results: Array<TypeaheadResult<T>>
     readonly menuProps: TypeaheadMenuProps<T>
 }
@@ -74,7 +74,7 @@ const NO_RESULTS = ''
 const OptionsMenu = <T extends ModelBase>({
     results,
     menuProps,
-    entityBaseUrl,
+    createUrl,
     createNewText,
     entityLinkText,
     onCreateNew,
@@ -91,16 +91,11 @@ const OptionsMenu = <T extends ModelBase>({
             {searching && <div className={classes.message}>{t('AutoComplete.searching')}</div>}
             {noResults && <div className={classes.message}>{t('AutoComplete.noResults')}</div>}
             {!noResults &&
-                results.map((author, position) => (
-                    <MenuItem<T> key={author.id || position} option={author} position={position}>
-                        {author.itemLabel}
-                        {entityBaseUrl && (
-                            <span
-                                role="link"
-                                tabIndex={0}
-                                className={classes.link}
-                                onClick={openLink(`${entityBaseUrl}${author.id}`)}
-                            >
+                results.map((item, position) => (
+                    <MenuItem<T> key={item.id || position} option={item} position={position}>
+                        {item.itemLabel}
+                        {createUrl && (
+                            <span role="link" tabIndex={0} className={classes.link} onClick={openLink(createUrl(item))}>
                                 {entityLinkText} <IconExternalLink />
                             </span>
                         )}
@@ -113,7 +108,7 @@ const OptionsMenu = <T extends ModelBase>({
     )
 }
 
-const renderMenuHof = <T extends ModelBase>(rmp: RenderMenuProps) => (
+const renderMenuHof = <T extends ModelBase>(rmp: RenderMenuProps<T>) => (
     results: Array<TypeaheadResult<T>>,
     menuProps: TypeaheadMenuProps<T>,
 ) => {
@@ -123,7 +118,7 @@ const renderMenuHof = <T extends ModelBase>(rmp: RenderMenuProps) => (
             menuProps={menuProps}
             entityLinkText={rmp.entityLinkText}
             createNewText={rmp.createNewText}
-            entityBaseUrl={rmp.entityBaseUrl}
+            createUrl={rmp.createUrl}
             onCreateNew={rmp.onCreateNew}
         />
     )
@@ -134,7 +129,7 @@ const FormAutoCompleteField = <T extends ModelBase>({
     placeholder,
     hint,
     validate,
-    entityBaseUrl,
+    createUrl,
     createNewText,
     entityLinkText,
     loading,
@@ -168,7 +163,7 @@ const FormAutoCompleteField = <T extends ModelBase>({
     }
 
     const renderMenu = renderMenuHof<T>({
-        entityBaseUrl,
+        createUrl,
         createNewText,
         entityLinkText,
         onCreateNew: handleCreateNew,

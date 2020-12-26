@@ -1,5 +1,13 @@
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
+export type DeleteEventMutationVariables = Exact<{
+    eventId: Scalars['ID']
+}>
+
+export type DeleteEventMutation = { __typename?: 'Mutation' } & {
+    event: { __typename?: 'EventMutation' } & { deleteEvent: { __typename?: 'Event' } & Pick<Event, 'id'> }
+}
+
 export type LoadEventQueryVariables = Exact<{
     eventId: Scalars['ID']
 }>
@@ -8,12 +16,60 @@ export type LoadEventQuery = { __typename?: 'Query' } & {
     eventById?: Maybe<
         { __typename?: 'Event' } & Pick<
             Event,
-            'id' | 'name' | 'amountOfPlayers' | 'web' | 'loc' | 'from' | 'to' | 'description'
+            'id' | 'name' | 'amountOfPlayers' | 'web' | 'loc' | 'from' | 'to' | 'description' | 'allowedActions'
         > & {
                 labels?: Maybe<Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name' | 'description'>>>
                 games?: Maybe<Array<{ __typename?: 'Game' } & BaseGameDataFragment>>
             }
     >
+}
+
+export type AutoCompleteGamesQueryVariables = Exact<{
+    query: Scalars['String']
+    offset: Scalars['Int']
+    limit: Scalars['Int']
+}>
+
+export type AutoCompleteGamesQuery = { __typename?: 'Query' } & {
+    games: { __typename?: 'GamesQuery' } & {
+        byQuery: Array<{ __typename?: 'Game' } & Pick<Game, 'id' | 'name' | 'year'>>
+    }
+}
+
+export type CreateEventMutationVariables = Exact<{
+    input: CreateEventInput
+}>
+
+export type CreateEventMutation = { __typename?: 'Mutation' } & {
+    event: { __typename?: 'EventMutation' } & { createEvent: { __typename?: 'Event' } & Pick<Event, 'id' | 'name'> }
+}
+
+export type LoadEventForEditQueryVariables = Exact<{
+    eventId: Scalars['ID']
+}>
+
+export type LoadEventForEditQuery = { __typename?: 'Query' } & {
+    eventById?: Maybe<
+        { __typename?: 'Event' } & Pick<
+            Event,
+            'id' | 'name' | 'from' | 'to' | 'amountOfPlayers' | 'web' | 'loc' | 'description'
+        > & {
+                games?: Maybe<Array<{ __typename?: 'Game' } & Pick<Game, 'id' | 'name' | 'year'>>>
+                labels?: Maybe<
+                    Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name' | 'description' | 'isRequired'>>
+                >
+            }
+    >
+    authorizedRequiredLabels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name' | 'description'>>
+    authorizedOptionalLabels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name' | 'description'>>
+}
+
+export type UpdateEventMutationVariables = Exact<{
+    input: UpdateEventInput
+}>
+
+export type UpdateEventMutation = { __typename?: 'Mutation' } & {
+    event: { __typename?: 'EventMutation' } & { updateEvent: { __typename?: 'Event' } & Pick<Event, 'id' | 'name'> }
 }
 
 export type CachedGameDataFragment = { __typename?: 'Game' } & Pick<
@@ -75,6 +131,7 @@ export type GameDetailQuery = { __typename?: 'Query' } & {
             | 'averageRating'
             | 'amountOfRatings'
             | 'amountOfPlayed'
+            | 'allowedActions'
         > & {
                 coverImage?: Maybe<{ __typename?: 'Image' } & Pick<Image, 'id'>>
                 currentUsersRating?: Maybe<{ __typename?: 'Rating' } & Pick<Rating, 'id' | 'rating' | 'state'>>
@@ -651,8 +708,7 @@ export type Game = {
     video?: Maybe<Video>
     coverImage?: Maybe<Image>
     photos: Array<Photo>
-    /** Are these needed? */
-    blueprintPath?: Maybe<Scalars['String']>
+    allowedActions?: Maybe<Array<AllowedAction>>
 }
 
 export type GameCommentsPagedArgs = {
@@ -686,6 +742,7 @@ export type Event = {
     location?: Maybe<EventLocation>
     labels?: Maybe<Array<Label>>
     games?: Maybe<Array<Game>>
+    allowedActions?: Maybe<Array<AllowedAction>>
 }
 
 export type EventLocation = {
@@ -1010,7 +1067,7 @@ export type EventMutationUpdateEventArgs = {
 }
 
 export type EventMutationDeleteEventArgs = {
-    id: Scalars['ID']
+    eventId: Scalars['ID']
 }
 
 export type CreateEventInput = {
@@ -1150,4 +1207,9 @@ export type CreateGroupInput = {
 export type UpdateGroupInput = {
     id: Scalars['ID']
     name: Scalars['String']
+}
+
+export enum AllowedAction {
+    Edit = 'EDIT',
+    Delete = 'DELETE',
 }

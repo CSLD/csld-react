@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { useField } from 'react-final-form'
 import FormAutoCompleteField from '../common/form/FormAutoCompleteField'
 import NewAuthorModal, { Author, formatAuthorLabel } from './NewAuthorModal'
+import { useRoutes } from '../../hooks/useRoutes'
 
 const searchAuthorsGql = require('./graphql/searchAuthors.graphql')
 
@@ -20,6 +21,7 @@ const AuthorsAutoCompleteField = ({ name, placeholder, hint, validate }: Props) 
     const { t } = useTranslation('common')
     const [showModal, setShowModal] = useState(false)
     const { input } = useField(name)
+    const routes = useRoutes()
     const { loading, refetch } = useQuery<SearchAuthorsQuery, SearchAuthorsQueryVariables>(searchAuthorsGql, {
         skip: true,
     })
@@ -58,7 +60,7 @@ const AuthorsAutoCompleteField = ({ name, placeholder, hint, validate }: Props) 
                 onSearch={handleSearch}
                 placeholder={placeholder}
                 hint={hint}
-                entityBaseUrl="/profile/"
+                createUrl={(item: Author) => routes.userProfile(item.id || '').as}
                 createNewText={t('GameEdit.createAuthor')}
                 validate={validate}
                 loading={loading}

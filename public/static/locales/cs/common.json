@@ -101,7 +101,9 @@
     "emailRequired": "Neplatná emailová adresa",
     "required": "Povinná hodnota",
     "integerRequired": "Musíte zadat kladné celé číslo",
-    "invalidDate": "Datum není platné"
+    "invalidDate": "Datum není platné",
+    "invalidTimeFormat": "Formát času musí být HH:MM",
+    "invalidTime": "Neplatný čas"
   },
 
   "RecoverPassword": {
@@ -216,7 +218,8 @@
     "players_2": "{{count}} hráčů",
     "date": "Datum",
     "edit": "Upravit událost",
-    "delete": "Smazat událost"
+    "delete": "Smazat událost",
+    "deleteEventConfirmation": "Opravdu smazat událost?"
   },
   "GameEdit": {
     "help": "Nápověda",
@@ -250,16 +253,11 @@
     "ratingsDisabledHint": "Již existující hodnocení budou zachována, uživatelé je však nebudou moci měnit, ani nebude možné přidávat nová hodnocení.",
     "commentsDisabled": "Zakázat komentování",
     "commentsDisabledHint": "Pokud nějaké komentáře ke hře již existují, budou nadále vidět a jejich autoři je budou moci upravovat, nebude ale možno přidávat komentáře nové.",
-    "requiredLabels": "Povinné",
-    "optionalLabels": "Volitelné",
-    "newLabel": "Nový štítek",
     "save": "Uložit",
-    "labelsHint": "Označte štítky, které vystihují váš larp. Pokud nespadá jednoznačně pod jednu kategorii, vyberte jich více.",
     "createAuthor": "Vytvořit autora",
     "profileLink": "Profil",
     "createGroup": "Vytvořit skupinu",
     "groupLink": "Profil",
-    "labels": "Štítky",
     "formError": "Formulář obsahuje chyby"
   },
   "AutoComplete": {
@@ -299,5 +297,33 @@
     "title": "Potvrzení",
     "confirm": "Potvrdit",
     "cancel": "Storno"
+  },
+  "EventEdit": {
+    "addEvent": "Přidat událost",
+    "requiredFields": "Povinné údaje",
+    "name": "Název",
+    "fromDate": "Začátek události (datum)",
+    "fromTime": "Začátek události (čas)",
+    "toDate": "Konec události (datum)",
+    "toTime": "Konec události (čas)",
+    "timeHint": "Ve formátu HH:MM",
+    "amountOfPlayers": "Počet hráčů",
+    "web":  "Webová stránka",
+    "loc": "Místo události",
+    "description": "Popis události",
+    "games": "Spárovat s existujícími hrami",
+    "formError": "Formulář obsahuje chyby",
+    "save": "Uložit",
+    "createGame": "Založit novou hru",
+    "gameLink": "Detail",
+    "dateMismatch": "Koncové datum nesmí být dřívější, než počáteční datum",
+    "timeMismatch": "Koncový čas nesmí být dřívější, než počáteční čas",
+    "fillBothTimes": "Časy musí být oba vyplněny nebo oba prázdné"
+  },
+  "LabelsEditColumn": {
+    "labels": "Štítky",
+    "requiredLabels": "Povinné",
+    "optionalLabels": "Volitelné",
+    "labelsHint": "Označte štítky, které vystihují váš larp. Pokud nespadá jednoznačně pod jednu kategorii, vyberte jich více."
   }
 }

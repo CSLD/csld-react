@@ -1,20 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { createUseStyles } from 'react-jss'
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { useTranslation } from 'react-i18next'
 import { Col, Row } from 'react-bootstrap'
 import classNames from 'classnames'
 import { darkTheme } from '../../theme/darkTheme'
-import { LoadEventQuery, LoadEventQueryVariables } from '../../graphql/__generated__/typescript-operations'
+import {
+    DeleteEventMutation,
+    DeleteEventMutationVariables,
+    LoadEventQuery,
+    LoadEventQueryVariables,
+} from '../../graphql/__generated__/typescript-operations'
 import { WidthFixer } from '../common/WidthFixer/WidthFixer'
 import DetailGameList from '../common/DetailGameList/DetailGameList'
 import { formatTimeRange } from '../../utils/dateUtils'
 import DetailLabelList from '../common/DetailLabelList/DetailLabelList'
-import { useLoggedInUser } from '../../hooks/useLoggedInUser'
-import { isAtLeastEditor } from '../../utils/roleUtils'
 import ActionButton from '../common/ActionButton/ActionButton'
+import { useRoutes } from '../../hooks/useRoutes'
+import ConfirmationModal from '../common/ConfirmationModal/ConfirmationModal'
+import { canDelete, canEdit } from '../../utils/graphqlUtils'
 
 const loadEventGql = require('./graphql/loadEvent.graphql')
+const deleteEventGql = require('./graphql/deleteEvent.graphql')
 
 interface Props {
     readonly eventId: string
@@ -62,21 +69,39 @@ const useStyles = createUseStyles({
 
 const EventDetailPanel = ({ eventId }: Props) => {
     const classes = useStyles()
+    const routes = useRoutes()
+    const [deleteConfirmShown, setDeleteConfirmShown] = useState(false)
     const { t } = useTranslation('common')
     const { data } = useQuery<LoadEventQuery, LoadEventQueryVariables>(loadEventGql, {
         ssr: false,
         fetchPolicy: 'network-only',
         variables: { eventId },
     })
-    const loggedInUser = useLoggedInUser()
-
+    const [deleteEvent, { loading: deleteLoading }] = useMutation<DeleteEventMutation, DeleteEventMutationVariables>(
+        deleteEventGql,
+    )
     const event = data?.eventById
     const games = event?.games || []
     const labels = event?.labels || []
     const { fromFormatted, toFormatted, justOneDate } = formatTimeRange(event?.from, event?.to)
+    const editVisible = canEdit(event?.allowedActions)
+    const deleteVisible = canDelete(event?.allowedActions)
 
-    const handleEdit = () => {}
-    const handleDelete = () => {}
+    const handleEditEvent = () => {
+        routes.push(routes.eventEdit(eventId))
+    }
+    const handleDeleteEvent = () => {
+        setDeleteConfirmShown(true)
+    }
+
+    const handleHideDeleteModal = () => setDeleteConfirmShown(false)
+
+    const handleDoDeleteEvent = () => {
+        deleteEvent({ variables: { eventId } }).then(() => {
+            setDeleteConfirmShown(false)
+            routes.push(routes.homepage())
+        })
+    }
 
     return (
         <>
@@ -137,17 +162,25 @@ const EventDetailPanel = ({ eventId }: Props) => {
                                 </WidthFixer>
                             </Col>
                             <Col md={3}>
-                                {isAtLeastEditor(loggedInUser?.role) && (
-                                    <>
-                                        <ActionButton onClick={handleEdit}>{t('EventDetail.edit')}</ActionButton>
-                                        <ActionButton onClick={handleDelete}>{t('EventDetail.delete')}</ActionButton>
-                                    </>
+                                {editVisible && (
+                                    <ActionButton onClick={handleEditEvent}>{t('EventDetail.edit')}</ActionButton>
+                                )}
+                                {deleteVisible && (
+                                    <ActionButton onClick={handleDeleteEvent}>{t('EventDetail.delete')}</ActionButton>
                                 )}
                             </Col>
                         </Row>
                     )}
                 </WidthFixer>
             </div>
+            <ConfirmationModal
+                show={deleteConfirmShown}
+                content={t('EventDetail.deleteEventConfirmation')}
+                loading={deleteLoading}
+                onHide={handleHideDeleteModal}
+                onCancel={handleHideDeleteModal}
+                onConfirm={handleDoDeleteEvent}
+            />
         </>
     )
 }

@@ -1,3 +1,5 @@
+import { Maybe, AllowedAction } from 'src/graphql/__generated__/typescript-operations'
+
 /**
  * Convert file input value from the format stored by FormFileInput to graphql UploadedFileInput
  */
@@ -41,3 +43,9 @@ export const convertDateFromGraphql = (date: string | null | undefined) => {
     const d = date.split('-')
     return `${d[2]}.${d[1]}.${d[0]}`
 }
+
+export const canDelete = (allowedActions?: Maybe<AllowedAction[]>) =>
+    allowedActions && allowedActions.includes(AllowedAction.Delete)
+
+export const canEdit = (allowedActions?: Maybe<AllowedAction[]>) =>
+    allowedActions && allowedActions.includes(AllowedAction.Edit)

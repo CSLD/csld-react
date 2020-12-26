@@ -1,9 +1,8 @@
 import React, { useMemo } from 'react'
 import { createUseStyles } from 'react-jss'
 import { useQuery } from '@apollo/client'
-import { labelMapper } from 'src/hooks/usePredefinedLabels'
 import { useRoutes } from 'src/hooks/useRoutes'
-import GameEditPanel, { FormValues } from './GameEditPanel'
+import GameEditForm, { FormValues } from './GameEditForm'
 import { darkTheme } from '../../theme/darkTheme'
 import { WidthFixer } from '../common/WidthFixer/WidthFixer'
 import {
@@ -102,17 +101,7 @@ const GameEditPage = ({ gameId }: Props) => {
     })
 
     const gameById = data?.gameById
-    const authorizedOptionalLabels = data?.authorizedOptionalLabels
-    const authorizedRequiredLabels = data?.authorizedRequiredLabels
     const initialValues = useMemo(() => (gameById ? toInitialValues(gameById) : undefined), [gameById])
-    const existingOptionalLabels = useMemo(
-        () => (authorizedOptionalLabels ? authorizedOptionalLabels.map(labelMapper) : undefined),
-        [authorizedOptionalLabels],
-    )
-    const existingRequiredLabels = useMemo(
-        () => (authorizedRequiredLabels ? authorizedRequiredLabels.map(labelMapper) : undefined),
-        [authorizedRequiredLabels],
-    )
     const ready = !gameId || !!initialValues
 
     const handleGameSaved = (game: Pick<Game, 'id' | 'name'>) => {
@@ -123,12 +112,12 @@ const GameEditPage = ({ gameId }: Props) => {
         <div className={classes.row}>
             <WidthFixer className={classes.body}>
                 {ready && (
-                    <GameEditPanel
+                    <GameEditForm
                         gameId={gameId}
                         onGameSaved={handleGameSaved}
                         initialValues={initialValues}
-                        existingOptionalLabels={existingOptionalLabels}
-                        existingRequiredLabels={existingRequiredLabels}
+                        authorizedOptionalLabels={data?.authorizedOptionalLabels}
+                        authorizedRequiredLabels={data?.authorizedRequiredLabels}
                     />
                 )}
             </WidthFixer>

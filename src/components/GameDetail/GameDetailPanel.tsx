@@ -24,6 +24,7 @@ import { useLoggedInUser } from '../../hooks/useLoggedInUser'
 import ActionButton from '../common/ActionButton/ActionButton'
 import ConfirmationModal from '../common/ConfirmationModal/ConfirmationModal'
 import { useRoutes } from '../../hooks/useRoutes'
+import { canDelete, canEdit } from '../../utils/graphqlUtils'
 
 const cachedGameDataGql = require('./graphql/cachedGameData.graphql')
 const gameDetailGql = require('./graphql/gameDetail.graphql')
@@ -104,6 +105,10 @@ const emptyGame = {
     events: [],
     photos: [],
     video: undefined,
+    allowedActions: [],
+    ratings: [],
+    currentUsersComment: undefined,
+    coverImage: undefined,
     commentsPaged: {
         comments: [],
         totalAmount: -1,
@@ -149,9 +154,6 @@ export const GameDetailPanel = ({ gameId }: Props) => {
     const game = gameQuery.data?.gameById || {
         ...emptyGame,
         ...gameFragment,
-        ratings: [],
-        currentUsersComment: undefined,
-        coverImage: undefined,
         id: `${gameId}`,
     }
 
@@ -168,7 +170,7 @@ export const GameDetailPanel = ({ gameId }: Props) => {
 
     const handleDeleteGame = () => setDeleteConfirmShown(true)
 
-    const handleHideDeleteModel = () => setDeleteConfirmShown(false)
+    const handleHideDeleteModal = () => setDeleteConfirmShown(false)
 
     const handleDoDeleteGame = () => {
         deleteGame().then(() => {
@@ -177,7 +179,8 @@ export const GameDetailPanel = ({ gameId }: Props) => {
         })
     }
 
-    const atLeastEditor = isAtLeastEditor(loggedInUser?.role)
+    const editVisible = canEdit(game?.allowedActions)
+    const deleteVisible = canDelete(game?.allowedActions)
 
     return (
         <div className={classes.details}>
@@ -204,16 +207,16 @@ export const GameDetailPanel = ({ gameId }: Props) => {
                         )}
                     </div>
                     <div className={classes.extrasRight}>
-                        {atLeastEditor && (
-                            <>
-                                <ActionButton onClick={handleEditGame}>{t('GameDetail.editGame')}</ActionButton>
-                                <ActionButton onClick={handleDeleteGame}>{t('GameDetail.deleteGame')}</ActionButton>
-                            </>
+                        {editVisible && (
+                            <ActionButton onClick={handleEditGame}>{t('GameDetail.editGame')}</ActionButton>
+                        )}
+                        {deleteVisible && (
+                            <ActionButton onClick={handleDeleteGame}>{t('GameDetail.deleteGame')}</ActionButton>
                         )}
                         <GameListPanel games={game.similarGames} titleKey="GameDetail.similarGames" />
                         <EventListPanel events={game.events} titleKey="GameDetail.events" />
                         <GameListPanel games={game.gamesOfAuthors} titleKey="GameDetail.gamesOfAuthors" />
-                        {atLeastEditor && (
+                        {isAtLeastEditor(loggedInUser?.role) && (
                             <RatingsListPanel gameId={game.id} ratings={game.ratings} onRatingDeleted={handleRefetch} />
                         )}
                     </div>
@@ -223,8 +226,8 @@ export const GameDetailPanel = ({ gameId }: Props) => {
                 show={deleteConfirmShown}
                 content={t('GameDetail.deleteGameConfirmation')}
                 loading={deleteLoading}
-                onHide={handleHideDeleteModel}
-                onCancel={handleHideDeleteModel}
+                onHide={handleHideDeleteModal}
+                onCancel={handleHideDeleteModal}
                 onConfirm={handleDoDeleteGame}
             />
         </div>

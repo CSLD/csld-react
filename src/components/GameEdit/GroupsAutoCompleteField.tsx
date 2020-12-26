@@ -6,6 +6,7 @@ import { useField } from 'react-final-form'
 import { SearchGroupsQuery, SearchGroupsQueryVariables } from '../../graphql/__generated__/typescript-operations'
 import FormAutoCompleteField from '../common/form/FormAutoCompleteField'
 import NewGroupModal, { GroupAuthor } from './NewGroupModal'
+import { useRoutes } from '../../hooks/useRoutes'
 
 const searchGroupsGql = require('./graphql/searchGroups.graphql')
 
@@ -20,6 +21,7 @@ const GroupsAutoCompleteField = ({ name, placeholder, hint, validate }: Props) =
     const { t } = useTranslation('common')
     const [showModal, setShowModal] = useState(false)
     const { input } = useField(name)
+    const routes = useRoutes()
     const { loading, refetch } = useQuery<SearchGroupsQuery, SearchGroupsQueryVariables>(searchGroupsGql, {
         skip: true,
     })
@@ -58,7 +60,7 @@ const GroupsAutoCompleteField = ({ name, placeholder, hint, validate }: Props) =
                 onSearch={handleSearch}
                 placeholder={placeholder}
                 hint={hint}
-                entityBaseUrl="/groupDetail/"
+                createUrl={(item: GroupAuthor) => routes.groupDetail(item.id || '').as}
                 createNewText={t('GameEdit.createGroup')}
                 validate={validate}
                 loading={loading}

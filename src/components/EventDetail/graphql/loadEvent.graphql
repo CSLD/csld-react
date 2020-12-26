@@ -18,5 +18,6 @@ query LoadEvent($eventId: ID!) {
         games {
             ...baseGameData
         }
+        allowedActions
     }
 }

@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 /**
  * Since dialog shows by animation, inputs are not visible initially and so classic autoFocus attribute does not work.
@@ -10,7 +10,7 @@ import { useLayoutEffect, useRef } from 'react'
  */
 export const useFocusInput = <T extends Element>(name: string) => {
     const wrapperRef = useRef<T | null>(null)
-    useLayoutEffect(() => {
+    useEffect(() => {
         setTimeout(() => {
             if (wrapperRef.current) {
                 const element = wrapperRef.current.getElementsByTagName('input').namedItem(name)
