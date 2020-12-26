@@ -2,19 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { useApolloClient } from '@apollo/client'
 import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
+import { useTranslation } from 'react-i18next'
 import {
-    RefetchGameRatingQuery,
-    RefetchGameRatingQueryVariables,
     UpdateGameRatingMutation,
     UpdateGameRatingMutationVariables,
 } from '../../graphql/__generated__/typescript-operations'
 import { darkTheme } from '../../theme/darkTheme'
 import { IconStar } from '../common/Icons/Icons'
 import { getRatingGrade } from '../../utils/ratingUtils'
-import { useTranslation } from 'react-i18next'
 
 const updateGameRatingGql = require('./graphql/updateGameRating.graphql')
-const refetchGameRatingGql = require('./graphql/refetchGameRating.graphql')
 
 interface Props {
     readonly gameId: string
@@ -104,18 +101,10 @@ const RatingStars = ({ gameId, rating }: Props) => {
     const handleChange = (newRating: number) => {
         if (newRating !== rating) {
             setTmpValue(newRating)
-            client
-                .mutate<UpdateGameRatingMutation, UpdateGameRatingMutationVariables>({
-                    mutation: updateGameRatingGql,
-                    variables: { gameId, rating: newRating },
-                })
-                .then(() => {
-                    return client.query<RefetchGameRatingQuery, RefetchGameRatingQueryVariables>({
-                        query: refetchGameRatingGql,
-                        fetchPolicy: 'network-only',
-                        variables: { gameId },
-                    })
-                })
+            client.mutate<UpdateGameRatingMutation, UpdateGameRatingMutationVariables>({
+                mutation: updateGameRatingGql,
+                variables: { gameId, rating: newRating },
+            })
         }
     }
     const currentRating = tmpValue !== undefined ? tmpValue : rating

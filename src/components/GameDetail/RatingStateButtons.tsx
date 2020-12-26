@@ -6,13 +6,10 @@ import classNames from 'classnames'
 import {
     UpdateGameStateMutation,
     UpdateGameStateMutationVariables,
-    RefetchGameRatingQuery,
-    RefetchGameRatingQueryVariables,
 } from '../../graphql/__generated__/typescript-operations'
 import { darkTheme } from '../../theme/darkTheme'
 
 const updateGameStateGql = require('./graphql/updateGameState.graphql')
-const refetchGameRatingGql = require('./graphql/refetchGameRating.graphql')
 
 interface Props {
     readonly gameId: string
@@ -82,18 +79,10 @@ const RatingStateButtons = ({ gameId, state }: Props) => {
     const handleChange = (newState: number) => {
         if (newState !== state) {
             setTmpValue(newState)
-            client
-                .mutate<UpdateGameStateMutation, UpdateGameStateMutationVariables>({
-                    mutation: updateGameStateGql,
-                    variables: { gameId, state: newState },
-                })
-                .then(() => {
-                    return client.query<RefetchGameRatingQuery, RefetchGameRatingQueryVariables>({
-                        query: refetchGameRatingGql,
-                        fetchPolicy: 'network-only',
-                        variables: { gameId },
-                    })
-                })
+            client.mutate<UpdateGameStateMutation, UpdateGameStateMutationVariables>({
+                mutation: updateGameStateGql,
+                variables: { gameId, state: newState },
+            })
         }
     }
 
