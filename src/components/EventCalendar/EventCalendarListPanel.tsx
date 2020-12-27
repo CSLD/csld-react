@@ -15,7 +15,7 @@ import {
 } from '../../graphql/__generated__/typescript-operations'
 import { LabelFromGql } from '../common/LabelsEditColumn/LabelsEditColumn'
 import { labelMapper } from '../../hooks/usePredefinedLabels'
-import { Tabs } from '../common/Tabs/Tabs'
+import { TabDefinition, Tabs } from '../common/Tabs/Tabs'
 import { WidthFixer } from '../common/WidthFixer/WidthFixer'
 import Pager from '../common/Pager/Pager'
 import LabelFilterFields from '../common/LabelFilterFields/LabelFilterFields'
@@ -60,6 +60,13 @@ type Page = Partial<{
 
 const format2 = (num: number) => (num < 10 ? `0${num}` : `${num}`)
 
+const tabs: Array<TabDefinition<number>> = [
+    {
+        key: 0,
+        title: { key: 'EventCalendar.events' },
+    },
+]
+
 const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelIds }: Props) => {
     const { t } = useTranslation('common')
     const classes = useStyles()
@@ -94,16 +101,6 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
             setOptionalLabels(response.authorizedOptionalLabels?.map(labelMapper))
         },
     })
-
-    const tabs = useMemo(
-        () => [
-            {
-                key: 0,
-                title: t('EventCalendar.events'),
-            },
-        ],
-        [t],
-    )
 
     const { events } = page
 

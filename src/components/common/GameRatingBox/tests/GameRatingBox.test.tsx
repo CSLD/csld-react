@@ -8,7 +8,7 @@ describe('GameRatingBox', () => {
         const tree = render(<GameRatingBox rating={0} amountOfRatings={5} />)
 
         const wrapper = await tree.findByTestId(componentTestIds.gameRatingBox.wrapper)
-        expect(wrapper.className).toEqual(expect.stringContaining('notRated'))
+        expect(wrapper.className).toEqual(expect.stringContaining('ratingNotRated'))
         expect(wrapper.textContent).toBe('-')
     })
 
@@ -16,7 +16,7 @@ describe('GameRatingBox', () => {
         const tree = render(<GameRatingBox rating={37.6} amountOfRatings={5} />)
 
         const wrapper = await tree.findByTestId(componentTestIds.gameRatingBox.wrapper)
-        expect(wrapper.className).toEqual(expect.stringContaining('mediocre'))
+        expect(wrapper.className).toEqual(expect.stringContaining('ratingMediocre'))
         expect(wrapper.textContent).toBe('3.8')
     })
 
@@ -24,7 +24,7 @@ describe('GameRatingBox', () => {
         const tree = render(<GameRatingBox rating={59.3} amountOfRatings={5} />)
 
         const wrapper = await tree.findByTestId(componentTestIds.gameRatingBox.wrapper)
-        expect(wrapper.className).toEqual(expect.stringContaining('average'))
+        expect(wrapper.className).toEqual(expect.stringContaining('ratingAverage'))
         expect(wrapper.textContent).toBe('5.9')
     })
 
@@ -32,7 +32,7 @@ describe('GameRatingBox', () => {
         const tree = render(<GameRatingBox rating={100} amountOfRatings={5} />)
 
         const wrapper = await tree.findByTestId(componentTestIds.gameRatingBox.wrapper)
-        expect(wrapper.className).toEqual(expect.stringContaining('great'))
+        expect(wrapper.className).toEqual(expect.stringContaining('ratingGreat'))
         expect(wrapper.textContent).toBe('10.0')
     })
 })

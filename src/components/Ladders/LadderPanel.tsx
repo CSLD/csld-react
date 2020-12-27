@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react'
 import { Col, Row } from 'react-bootstrap'
-import { useTranslation } from 'react-i18next'
 import { useApolloClient, useQuery } from '@apollo/client'
 import { createUseStyles } from 'react-jss'
 import { Form as FinalForm } from 'react-final-form'
@@ -56,8 +55,30 @@ type Page = Partial<{
     totalAmount: number
 }>
 
+const tabs: Array<TabDefinition<LadderType>> = [
+    {
+        key: LadderType.RecentAndMostPlayed,
+        title: { key: 'Ladder.recentAndMostPlayedTab' },
+    },
+    {
+        key: LadderType.Recent,
+        title: { key: 'Ladder.recent' },
+    },
+    {
+        key: LadderType.Best,
+        title: { key: 'Ladder.best' },
+    },
+    {
+        key: LadderType.MostPlayed,
+        title: { key: 'Ladder.mostPlayed' },
+    },
+    {
+        key: LadderType.MostCommented,
+        title: { key: 'Ladder.mostCommented' },
+    },
+]
+
 const LadderPanel = ({ ladderType, initialRequiredLabelIds, initialOptionalLabelIds }: Props) => {
-    const { t } = useTranslation('common')
     const [offset, setOffset] = useState(0)
     const [loading, setLoading] = useState(false)
     const [page, setPage] = useState<Page>({})
@@ -91,33 +112,6 @@ const LadderPanel = ({ ladderType, initialRequiredLabelIds, initialOptionalLabel
             setOptionalLabels(response.authorizedOptionalLabels?.map(labelMapper))
         },
     })
-
-    const tabs = useMemo(
-        () =>
-            [
-                {
-                    key: LadderType.RecentAndMostPlayed,
-                    title: t('Ladder.recentAndMostPlayedTab'),
-                },
-                {
-                    key: LadderType.Recent,
-                    title: t('Ladder.recent'),
-                },
-                {
-                    key: LadderType.Best,
-                    title: t('Ladder.best'),
-                },
-                {
-                    key: LadderType.MostPlayed,
-                    title: t('Ladder.mostPlayed'),
-                },
-                {
-                    key: LadderType.MostCommented,
-                    title: t('Ladder.mostCommented'),
-                },
-            ] as TabDefinition<LadderType>[],
-        [t],
-    )
 
     const { games } = page
 

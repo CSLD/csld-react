@@ -348,5 +348,14 @@
     "link": "Web akce",
     "eventFrom": "Od",
     "eventTo": "Do"
+  },
+  "Admin": {
+    "tabIntro": "Úvod",
+    "tabUsers": "Uživatelé",
+    "tabLabels": "Štítky",
+    "tabRatingStats": "Statistiky hodnocení",
+    "tabCommentState": "Statistiky komentářů",
+    "tabSelfRating": "Sebehodnocení",
+    "intro": "Admin sekce ještě není"
   }
 }

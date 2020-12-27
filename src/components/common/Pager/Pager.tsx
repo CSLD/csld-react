@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import { createUseStyles } from 'react-jss'
-import { darkTheme } from '../../../theme/darkTheme'
 import classNames from 'classnames'
+import { darkTheme } from '../../../theme/darkTheme'
 import { generatePageOffsets } from './pagerUtils'
 
 interface Props {
