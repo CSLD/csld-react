@@ -110,9 +110,9 @@ export const BaseCommentPanel = ({ comment }: Props) => {
                 <div className={classes.textInner}>
                     {comment?.commentAsText}
                     {comment && (
-                        <a href="/" className={classNames(classes.more, classes.link)}>
+                        <GameLink game={comment.game} className={classNames(classes.more, classes.link)}>
                             {t('HomePage.commentMore')}
-                        </a>
+                        </GameLink>
                     )}
                 </div>
             </div>
