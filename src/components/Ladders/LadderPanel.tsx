@@ -85,6 +85,7 @@ const LadderPanel = ({ ladderType, initialRequiredLabelIds, initialOptionalLabel
         },
         ssr: false,
         onCompleted: response => {
+            setLoading(false)
             setPage(response.games.ladder)
             setRequiredLabels(response.authorizedRequiredLabels?.map(labelMapper))
             setOptionalLabels(response.authorizedOptionalLabels?.map(labelMapper))
@@ -151,6 +152,7 @@ const LadderPanel = ({ ladderType, initialRequiredLabelIds, initialOptionalLabel
                 }
 
                 const handleTabSwitch = (newLadderType: LadderType) => {
+                    setLoading(true)
                     routes.push(routes.games(newLadderType, values.requiredLabels, values.optionalLabels))
                 }
 
