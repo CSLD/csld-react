@@ -49,7 +49,10 @@ const DetailLabelList = ({ labels, linkType }: Props) => {
                               label.isRequired ? [label.id] : undefined,
                               !label.isRequired ? [label.id] : undefined,
                           )
-                        : routes.events()
+                        : routes.calendar(
+                              label.isRequired ? [label.id] : undefined,
+                              !label.isRequired ? [label.id] : undefined,
+                          )
                 return (
                     <Link href={route.href} as={route.as} passHref key={label.id}>
                         <a href="/" className={classes.label} title={label.description ?? undefined}>

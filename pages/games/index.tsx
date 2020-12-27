@@ -5,6 +5,7 @@ import { PageHeader } from '../../src/components/common/PageHeader/PageHeader'
 import { PageFooter } from '../../src/components/common/PageFooter/PageFooter'
 import { LadderType } from '../../src/graphql/__generated__/typescript-operations'
 import LadderPanel from '../../src/components/Ladders/LadderPanel'
+import { getLabelIds } from '../../src/utils/roleUtils'
 
 interface Props {}
 interface InitialProps {}
@@ -31,18 +32,6 @@ const resolveLadderType = (ladderType?: string | string[]): LadderType => {
         default:
             return LadderType.RecentAndMostPlayed
     }
-}
-
-const getLabelIds = (labelIds?: string | string[]) => {
-    if (!labelIds) {
-        return undefined
-    }
-
-    if (Array.isArray(labelIds)) {
-        return labelIds
-    }
-
-    return labelIds.split(',')
 }
 
 const GamesPage: NextPage<Props, InitialProps> = () => {

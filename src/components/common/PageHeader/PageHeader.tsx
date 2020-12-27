@@ -71,7 +71,7 @@ export const PageHeader = () => {
                             </a>
                         </Link>
                         <HeaderNavLink route={routes.games()}>{t('PageHeader.games')}</HeaderNavLink>
-                        <HeaderNavLink route={routes.events()}>{t('PageHeader.events')}</HeaderNavLink>
+                        <HeaderNavLink route={routes.calendar()}>{t('PageHeader.calendar')}</HeaderNavLink>
                         <HeaderNavLink route="https://larpy.cz" target="_blank">
                             {t('PageHeader.blog')}
                         </HeaderNavLink>

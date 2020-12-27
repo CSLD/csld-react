@@ -1,4 +1,4 @@
-import React, { FocusEvent, useState } from 'react'
+import React, { ChangeEvent, FocusEvent, useState } from 'react'
 import { FieldInputProps, FieldMetaState } from 'react-final-form'
 import { Form, InputGroup } from 'react-bootstrap'
 import FieldWithError from './FieldWithError'
@@ -13,12 +13,13 @@ export interface FormTextInputProps {
     readonly hint?: string
     readonly type?: string
     readonly onBlur?: (e: FocusEvent<HTMLInputElement>) => void
+    readonly onChange?: (e: ChangeEvent<HTMLInputElement>) => void
     readonly errorHint?: React.ReactNode
     readonly autoFocus?: boolean
 }
 
 const FormTextInput = ({
-    input: { onBlur: inputOnBlur, ...inputRest },
+    input: { onBlur: inputOnBlur, onChange: inputOnChange, ...inputRest },
     meta,
     showErrorPlaceholder = true,
     placeholder,
@@ -29,6 +30,7 @@ const FormTextInput = ({
     errorHint,
     autoFocus,
     onBlur,
+    onChange,
 }: FormTextInputProps) => {
     const [wasBlurred, setWasBlurred] = useState(false)
 
@@ -36,6 +38,11 @@ const FormTextInput = ({
         setWasBlurred(true)
         inputOnBlur?.(e)
         onBlur?.(e)
+    }
+
+    const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+        inputOnChange?.(e)
+        onChange?.(e)
     }
 
     return (
@@ -55,6 +62,7 @@ const FormTextInput = ({
                                 isInvalid={isInvalid}
                                 type={type}
                                 onBlur={handleOnBlur}
+                                onChange={handleOnChange}
                                 autoFocus={autoFocus}
                                 /* eslint-disable-next-line react/jsx-props-no-spreading */
                                 {...inputRest}
@@ -69,6 +77,7 @@ const FormTextInput = ({
                             isInvalid={isInvalid}
                             type={type}
                             onBlur={handleOnBlur}
+                            onChange={handleOnChange}
                             /* eslint-disable-next-line react/jsx-props-no-spreading */
                             {...inputRest}
                             placeholder={placeholder}

@@ -2,7 +2,7 @@
   "PageHeader": {
     "csld": "Larpová databáze",
     "games": "Hry",
-    "events": "Kalendář akcí",
+    "calendar": "Kalendář akcí",
     "blog": "Články",
     "addEvent": "+ Přidat událost do kalendáře",
     "addGame": "+ Přidat hru",
@@ -342,5 +342,11 @@
   "LabelFilterFields": {
     "required": "Povinné",
     "optional": "Volitelné"
+  },
+  "EventCalendar": {
+    "events": "Události",
+    "link": "Web akce",
+    "eventFrom": "Od",
+    "eventTo": "Do"
   }
 }

@@ -1,5 +1,40 @@
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
+export type CalendarEventDataFragment = { __typename?: 'Event' } & Pick<
+    Event,
+    'id' | 'name' | 'from' | 'to' | 'web' | 'loc'
+> & { labels?: Maybe<Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name'>>> }
+
+export type LoadCalendarEventsQueryVariables = Exact<{
+    from?: Maybe<Scalars['String']>
+    to?: Maybe<Scalars['String']>
+    offset: Scalars['Int']
+    limit: Scalars['Int']
+    requiredLabels?: Maybe<Array<Scalars['ID']>>
+    optionalLabels?: Maybe<Array<Scalars['ID']>>
+}>
+
+export type LoadCalendarEventsQuery = { __typename?: 'Query' } & {
+    eventCalendar: { __typename?: 'EventsPaged' } & Pick<EventsPaged, 'totalAmount'> & {
+            events: Array<{ __typename?: 'Event' } & CalendarEventDataFragment>
+        }
+} & AuthorizedLabelsFragment
+
+export type MoreCalendarEventsQueryVariables = Exact<{
+    from?: Maybe<Scalars['String']>
+    to?: Maybe<Scalars['String']>
+    offset: Scalars['Int']
+    limit: Scalars['Int']
+    requiredLabels?: Maybe<Array<Scalars['ID']>>
+    optionalLabels?: Maybe<Array<Scalars['ID']>>
+}>
+
+export type MoreCalendarEventsQuery = { __typename?: 'Query' } & {
+    eventCalendar: { __typename?: 'EventsPaged' } & Pick<EventsPaged, 'totalAmount'> & {
+            events: Array<{ __typename?: 'Event' } & CalendarEventDataFragment>
+        }
+}
+
 export type DeleteEventMutationVariables = Exact<{
     eventId: Scalars['ID']
 }>
@@ -592,6 +627,7 @@ export type Query = {
     groupById?: Maybe<Group>
     groupsByQuery: Array<Group>
     eventById?: Maybe<Event>
+    eventCalendar: EventsPaged
     userById?: Maybe<User>
     userByEmail?: Maybe<User>
     usersByQuery: Array<User>
@@ -619,6 +655,15 @@ export type QueryGroupsByQueryArgs = {
 
 export type QueryEventByIdArgs = {
     eventId: Scalars['ID']
+}
+
+export type QueryEventCalendarArgs = {
+    offset?: Maybe<Scalars['Int']>
+    limit?: Maybe<Scalars['Int']>
+    from?: Maybe<Scalars['String']>
+    to?: Maybe<Scalars['String']>
+    requiredLabels?: Maybe<Array<Scalars['ID']>>
+    otherLabels?: Maybe<Array<Scalars['ID']>>
 }
 
 export type QueryUserByIdArgs = {
@@ -1229,4 +1274,10 @@ export type UpdateGroupInput = {
 export enum AllowedAction {
     Edit = 'Edit',
     Delete = 'Delete',
+}
+
+export type EventsPaged = {
+    __typename?: 'EventsPaged'
+    events: Array<Event>
+    totalAmount: Scalars['Int']
 }

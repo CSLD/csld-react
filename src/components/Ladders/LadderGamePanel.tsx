@@ -15,7 +15,7 @@ const useStyles = createUseStyles({
         display: 'flex',
         alignItems: 'center',
         padding: '8px 0',
-        margin: '4px 0',
+        margin: '0 0 8px',
         backgroundColor: darkTheme.backgroundRealWhite,
         fontSize: '0.75rem',
         borderRadius: 5,
