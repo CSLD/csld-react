@@ -2,6 +2,7 @@ import React from 'react'
 import { FieldValidator } from 'final-form'
 import { useTranslation } from 'react-i18next'
 import { useQuery } from '@apollo/client'
+import { useField } from 'react-final-form'
 import {
     AutoCompleteGamesQuery,
     AutoCompleteGamesQueryVariables,
@@ -18,18 +19,28 @@ export interface LinkedGame {
     readonly itemLabel: string
 }
 
+export type CreateNewGameCallback = (addGame: (game: LinkedGame) => void) => void
+
 interface Props {
     readonly name: string
     readonly placeholder?: string
     readonly hint?: string
     readonly validate?: FieldValidator<LinkedGame[]>
+    readonly onCreateNew: CreateNewGameCallback
 }
 
 export const createGameLabel = ({ name, year }: Pick<Game, 'name' | 'year'>) => `${name ?? ''} (${year ?? '?'})`
 
-const GamesAutoCompleteField = ({ name, placeholder, hint, validate }: Props) => {
+const GamesAutoCompleteField: React.ForwardRefRenderFunction<HTMLElement, Props> = ({
+    name,
+    placeholder,
+    hint,
+    validate,
+    onCreateNew,
+}: Props) => {
     const { t } = useTranslation('common')
     const routes = useRoutes()
+    const { input } = useField(name)
     const { loading, refetch } = useQuery<AutoCompleteGamesQuery, AutoCompleteGamesQueryVariables>(
         autoCompleteGamesGql,
         {
@@ -50,7 +61,11 @@ const GamesAutoCompleteField = ({ name, placeholder, hint, validate }: Props) =>
             })),
         )
 
-    const handleCreate = () => {}
+    const handleCreate = () => {
+        onCreateNew((newGame: LinkedGame) => {
+            input.onChange([...input.value, newGame])
+        })
+    }
 
     return (
         <>

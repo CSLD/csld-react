@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import { createUseStyles } from 'react-jss'
 import { useQuery } from '@apollo/client'
 import { useRoutes } from 'src/hooks/useRoutes'
+import { useTranslation } from 'react-i18next'
 import GameEditForm, { FormValues } from './GameEditForm'
 import { darkTheme } from '../../theme/darkTheme'
 import { WidthFixer } from '../common/WidthFixer/WidthFixer'
@@ -16,6 +17,7 @@ import {
     Video,
 } from '../../graphql/__generated__/typescript-operations'
 import { formatAuthorLabel } from './NewAuthorModal'
+import { TabDefinition, Tabs } from '../common/Tabs/Tabs'
 
 const loadGameForEditGql = require('./graphql/loadGameForEdit.graphql')
 
@@ -93,6 +95,7 @@ const toInitialValues = (game: LoadedGame): FormValues => ({
 const GameEditPage = ({ gameId }: Props) => {
     const classes = useStyles()
     const routes = useRoutes()
+    const { t } = useTranslation('common')
     const { data } = useQuery<LoadGameForEditQuery, LoadGameForEditQueryVariables>(loadGameForEditGql, {
         variables: {
             gameId: gameId || '',
@@ -108,20 +111,28 @@ const GameEditPage = ({ gameId }: Props) => {
         routes.push(routes.gameDetail(game.id, game.name))
     }
 
+    const tabs = useMemo(
+        () => [{ key: 0, title: t(gameId ? 'GameEdit.editGameTab' : 'GameEdit.addGameTab') } as TabDefinition<number>],
+        [gameId, t],
+    )
+
     return (
-        <div className={classes.row}>
-            <WidthFixer className={classes.body}>
-                {ready && (
-                    <GameEditForm
-                        gameId={gameId}
-                        onGameSaved={handleGameSaved}
-                        initialValues={initialValues}
-                        authorizedOptionalLabels={data?.authorizedOptionalLabels}
-                        authorizedRequiredLabels={data?.authorizedRequiredLabels}
-                    />
-                )}
-            </WidthFixer>
-        </div>
+        <>
+            <Tabs tabs={tabs} selectedTab={0} />
+            <div className={classes.row}>
+                <WidthFixer className={classes.body}>
+                    {ready && (
+                        <GameEditForm
+                            gameId={gameId}
+                            onGameSaved={handleGameSaved}
+                            initialValues={initialValues}
+                            authorizedOptionalLabels={data?.authorizedOptionalLabels}
+                            authorizedRequiredLabels={data?.authorizedRequiredLabels}
+                        />
+                    )}
+                </WidthFixer>
+            </div>
+        </>
     )
 }
 

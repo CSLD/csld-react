@@ -134,7 +134,6 @@ const FormAutoCompleteField = <T extends ModelBase>({
     entityLinkText,
     loading,
     onCreateNew,
-
     onSearch,
 }: Props<T>) => {
     const [options, setOptions] = useState<T[]>([])
@@ -176,6 +175,7 @@ const FormAutoCompleteField = <T extends ModelBase>({
                     placeholder={placeholder}
                     ref={typeaheadRef}
                     id={name}
+                    inputProps={{ id: `${name}-input` }}
                     onSearch={handleSearch}
                     isLoading={!!loading}
                     options={options}

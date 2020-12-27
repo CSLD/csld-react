@@ -227,7 +227,7 @@
     "help2": "Každý larp musí mít alespoň jeden štítek ze sekce povinné.",
     "help3": "Pokud larp nespadá jednoznačně pod jeden štítků, zaškrtněte jich více a upřesněte rozdíl v popisu.",
     "help4": "Každý nový štítek musí být schválen moderátorem.",
-    "addGame": "Přidat hru",
+    "gameFields": "Údaje hry",
     "requiredFields": "Povinné údaje",
     "additionalFields": "Rozšiřující údaje",
     "presentationFields": "Prezentace hry",
@@ -258,7 +258,10 @@
     "profileLink": "Profil",
     "createGroup": "Vytvořit skupinu",
     "groupLink": "Profil",
-    "formError": "Formulář obsahuje chyby"
+    "formError": "Formulář obsahuje chyby",
+    "back": "Zpět",
+    "addGameTab": "Přidat hru",
+    "editGameTab": "Upravit hru"
   },
   "AutoComplete": {
     "startTyping": "Napište alespoň tři znaky pro vyhledání",
@@ -299,7 +302,7 @@
     "cancel": "Storno"
   },
   "EventEdit": {
-    "addEvent": "Přidat událost",
+    "eventFields": "Údaje události",
     "requiredFields": "Povinné údaje",
     "name": "Název",
     "fromDate": "Začátek události (datum)",
@@ -318,7 +321,10 @@
     "gameLink": "Detail",
     "dateMismatch": "Koncové datum nesmí být dřívější, než počáteční datum",
     "timeMismatch": "Koncový čas nesmí být dřívější, než počáteční čas",
-    "fillBothTimes": "Časy musí být oba vyplněny nebo oba prázdné"
+    "fillBothTimes": "Časy musí být oba vyplněny nebo oba prázdné",
+    "editEventTab": "Upravit událost",
+    "addEventTab": "Přidat událost",
+    "addGameTab": "Přidat hru"
   },
   "LabelsEditColumn": {
     "labels": "Štítky",

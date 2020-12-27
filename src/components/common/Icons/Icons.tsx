@@ -14,6 +14,7 @@ import {
     faEye,
     faTrash,
     faExternalLinkSquareAlt,
+    faCaretLeft,
 } from '@fortawesome/free-solid-svg-icons'
 import { faFacebook } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -54,3 +55,5 @@ export const IconEye = (props: IconProps) => <FontAwesomeIcon icon={faEye} {...p
 export const IconTrash = (props: IconProps) => <FontAwesomeIcon icon={faTrash} {...props} />
 
 export const IconExternalLink = (props: IconProps) => <FontAwesomeIcon icon={faExternalLinkSquareAlt} {...props} />
+
+export const IconBack = (props: IconProps) => <FontAwesomeIcon icon={faCaretLeft} {...props} />

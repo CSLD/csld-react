@@ -37,4 +37,7 @@ export const formClasses = {
         marginLeft: 16,
         color: darkTheme.red,
     },
+    cancelButton: {
+        marginRight: 16,
+    },
 }

@@ -34,6 +34,7 @@ import { convertFileInput } from '../../utils/graphqlUtils'
 import { useFocusInput } from '../../hooks/useFocusInput'
 import { formClasses } from '../../utils/formClasses'
 import LabelsEditColumn, { LabelFromGql } from '../common/LabelsEditColumn/LabelsEditColumn'
+import { IconBack } from '../common/Icons/Icons'
 
 const createGameGql = require('./graphql/createGame.graphql')
 const updateGameGql = require('./graphql/updateGame.graphql')
@@ -67,7 +68,8 @@ interface Props {
     readonly initialValues?: FormValues
     readonly authorizedRequiredLabels?: LabelFromGql[]
     readonly authorizedOptionalLabels?: LabelFromGql[]
-    readonly onGameSaved: (game: Pick<Game, 'id' | 'name'>) => void
+    readonly onGameSaved: (game: Pick<Game, 'id' | 'name' | 'year'>) => void
+    readonly onFormCanceled?: () => void
 }
 
 const emptyInitialValues: FormValues = {
@@ -121,6 +123,7 @@ const GameEditForm = ({
     authorizedOptionalLabels,
     authorizedRequiredLabels,
     onGameSaved,
+    onFormCanceled,
 }: Props) => {
     const classes = useStyles()
     const { t } = useTranslation('common')
@@ -157,7 +160,7 @@ const GameEditForm = ({
     const piValidator = fieldValidator(t, validatePositiveInteger)
 
     return (
-        <Form onSubmit={handleOnSubmit} initialValues={initialValues || emptyInitialValues}>
+        <Form onSubmit={handleOnSubmit} initialValues={initialValues || emptyInitialValues} id="gameForm">
             {({ handleSubmit, submitFailed }) => {
                 return (
                     <form onSubmit={handleSubmit} className={classes.form} ref={formRef}>
@@ -170,7 +173,7 @@ const GameEditForm = ({
                                     <p className={classes.helpText}>{t('GameEdit.help3')}</p>
                                     <p className={classes.helpText}>{t('GameEdit.help4')}</p>
                                 </div>
-                                <header className={classes.header}>{t('GameEdit.addGame')}</header>
+                                <header className={classes.header}>{t('GameEdit.gameFields')}</header>
                                 <header className={classes.subHeader}>{t('GameEdit.requiredFields')}</header>
                                 <FormTextInputField
                                     name="name"
@@ -296,6 +299,18 @@ const GameEditForm = ({
                                     label={t('GameEdit.commentsDisabled')}
                                     hint={t('GameEdit.commentsDisabledHint')}
                                 />
+                                {onFormCanceled && (
+                                    <Button
+                                        variant="light"
+                                        disabled={loading}
+                                        onClick={onFormCanceled}
+                                        className={classes.cancelButton}
+                                    >
+                                        <IconBack />
+                                        &nbsp;
+                                        {t('GameEdit.back')}
+                                    </Button>
+                                )}
                                 <Button variant="dark" type="submit" disabled={loading}>
                                     {t('GameEdit.save')}
                                 </Button>

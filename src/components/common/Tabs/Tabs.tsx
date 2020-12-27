@@ -37,9 +37,12 @@ const useStyles = createUseStyles({
         margin: '0 10px',
         background: 'transparent',
         color: darkTheme.textDark,
-        outline: 0,
         border: 0,
         cursor: 'pointer',
+
+        '&:focus': {
+            outline: 0,
+        },
     },
     tabTextHover: {
         '&:hover': {
@@ -59,16 +62,15 @@ export const Tabs = <T extends string | number>({ tabs, selectedTab, onSelectTab
 
     const handleSelectTab = (tab: T) => () => onSelectTab?.(tab)
 
-    const textClassName = classNames({
-        [classes.tabText]: true,
-        [classes.tabTextHover]: tabs.length > 1,
-    })
-
     return (
         <div className={classes.wrapper}>
             <WidthFixer className={classes.widthFixer}>
                 {tabs.map(tab => {
                     const active = tab.key === selectedTab
+                    const textClassName = classNames({
+                        [classes.tabText]: true,
+                        [classes.tabTextHover]: onSelectTab && tabs.length > 1,
+                    })
 
                     return (
                         <div className={classes.tab} key={tab.key}>
