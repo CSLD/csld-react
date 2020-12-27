@@ -1,3 +1,5 @@
+#include "../../../graphql/fragments/authorizedLabels.graphql"
+
 query LoadEventForEdit($eventId: ID!) {
     eventById(eventId: $eventId) {
         id
@@ -20,14 +22,5 @@ query LoadEventForEdit($eventId: ID!) {
             isRequired
         }
     }
-    authorizedRequiredLabels {
-        id
-        name
-        description
-    }
-    authorizedOptionalLabels {
-        id
-        name
-        description
-    }
+    ...authorizedLabels
 }

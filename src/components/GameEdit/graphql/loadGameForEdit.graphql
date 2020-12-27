@@ -1,3 +1,5 @@
+#include "../../../graphql/fragments/authorizedLabels.graphql"
+
 query LoadGameForEdit($gameId: ID!) {
     gameById(gameId: $gameId) {
         id
@@ -33,14 +35,5 @@ query LoadGameForEdit($gameId: ID!) {
             isRequired
         }
     }
-    authorizedRequiredLabels {
-        id
-        name
-        description
-    }
-    authorizedOptionalLabels {
-        id
-        name
-        description
-    }
+    ...authorizedLabels
 }

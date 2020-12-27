@@ -66,7 +66,7 @@ const useStyles = createUseStyles({
 export const GameRatingBox = ({ rating, averageRating, amountOfRatings, size = 'small', className }: Props) => {
     const classes = useStyles()
 
-    const ratingGrade = getRatingForGame(amountOfRatings, rating)
+    const ratingGrade = getRatingForGame(amountOfRatings, averageRating || rating)
     const classNames = {
         [classes.rating]: true,
         [classes.ratingTiny]: size === 'tiny',

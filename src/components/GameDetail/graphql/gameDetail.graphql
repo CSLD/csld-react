@@ -28,6 +28,7 @@ query GameDetail($gameId: ID!) {
             id
             name
             description
+            isRequired
         }
         ratingStats {
             count

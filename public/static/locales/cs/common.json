@@ -331,5 +331,16 @@
     "requiredLabels": "Povinné",
     "optionalLabels": "Volitelné",
     "labelsHint": "Označte štítky, které vystihují váš larp. Pokud nespadá jednoznačně pod jednu kategorii, vyberte jich více."
+  },
+  "Ladder": {
+    "recentAndMostPlayedTab": "Nejhranější nové",
+    "recent": "Nové",
+    "best": "Nejlepší",
+    "mostPlayed": "Nejhranější",
+    "mostCommented": "Nejkomentovanější"
+  },
+  "LabelFilterFields": {
+    "required": "Povinné",
+    "optional": "Volitelné"
   }
 }

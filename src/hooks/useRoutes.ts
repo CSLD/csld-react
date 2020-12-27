@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import { UrlObject } from 'url'
-import { Game, Event } from '../graphql/__generated__/typescript-operations'
+import { Event, Game, LadderType } from '../graphql/__generated__/typescript-operations'
 
 const stripName = (name: string | null | undefined) =>
     (name ?? '')
@@ -80,7 +80,14 @@ export const useRoutes = () => {
             /**
              * Route to games lists
              */
-            games: (): Route => ({ href: { pathname: '/games' }, as: '/games' }),
+            games: (
+                ladderType: LadderType = LadderType.RecentAndMostPlayed,
+                initialRequiredLabelIds?: string[],
+                initialOptionalLabelIds?: string[],
+            ): Route => ({
+                href: { pathname: '/games', query: { ladderType, initialRequiredLabelIds, initialOptionalLabelIds } },
+                as: `/games/${ladderType[0].toLowerCase()}${ladderType.substr(1)}`,
+            }),
 
             /**
              * Route to event list

@@ -1,0 +1,66 @@
+import React from 'react'
+import { NextPage } from 'next'
+import { useRouter } from 'next/router'
+import { PageHeader } from '../../src/components/common/PageHeader/PageHeader'
+import { PageFooter } from '../../src/components/common/PageFooter/PageFooter'
+import { LadderType } from '../../src/graphql/__generated__/typescript-operations'
+import LadderPanel from '../../src/components/Ladders/LadderPanel'
+
+interface Props {}
+interface InitialProps {}
+
+const resolveLadderType = (ladderType?: string | string[]): LadderType => {
+    if (!ladderType || Array.isArray(ladderType)) {
+        return LadderType.RecentAndMostPlayed
+    }
+
+    // Uppercase first letter, because in path they are lowercased
+    const fixedLadderType = `${ladderType[0].toUpperCase()}${ladderType.substr(1)}`
+
+    switch (fixedLadderType) {
+        case LadderType.RecentAndMostPlayed:
+            return LadderType.RecentAndMostPlayed
+        case LadderType.Recent:
+            return LadderType.Recent
+        case LadderType.Best:
+            return LadderType.Best
+        case LadderType.MostPlayed:
+            return LadderType.MostPlayed
+        case LadderType.MostCommented:
+            return LadderType.MostCommented
+        default:
+            return LadderType.RecentAndMostPlayed
+    }
+}
+
+const getLabelIds = (labelIds?: string | string[]) => {
+    if (!labelIds) {
+        return undefined
+    }
+
+    if (Array.isArray(labelIds)) {
+        return labelIds
+    }
+
+    return labelIds.split(',')
+}
+
+const GamesPage: NextPage<Props, InitialProps> = () => {
+    const router = useRouter()
+
+    return (
+        <>
+            <PageHeader />
+            <LadderPanel
+                ladderType={resolveLadderType(router.query.ladderType)}
+                initialRequiredLabelIds={getLabelIds(router.query.initialRequiredLabelIds)}
+                initialOptionalLabelIds={getLabelIds(router.query.initialOptionalLabelIds)}
+            />
+            <PageFooter />
+        </>
+    )
+}
+
+GamesPage.getInitialProps = async () => ({ namespacesRequired: ['common'] })
+
+export default GamesPage

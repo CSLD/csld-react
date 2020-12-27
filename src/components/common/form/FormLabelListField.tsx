@@ -5,15 +5,18 @@ import { FieldValidator } from 'final-form'
 import { Label } from '../../../graphql/__generated__/typescript-operations'
 import FormCheckLabelWithTooltip from './FormCheckLabelWithTooltip'
 
+export type LabelInList = Pick<Label, 'id' | 'name' | 'description'>
+
 interface Props {
     readonly name: string
-    readonly labels: Array<Pick<Label, 'id' | 'name' | 'description'>>
+    readonly labels: Array<LabelInList>
     readonly validate?: FieldValidator<string[]>
+    readonly onChange?: (newValue: string[]) => void
 }
 
-const FormLabelListField = ({ name, labels, validate }: Props) => {
+const FormLabelListField = ({ name, labels, validate, onChange }: Props) => {
     const {
-        input: { value, onChange },
+        input: { value, onChange: inputOnChange },
         meta: { error, submitFailed },
     } = useField<string[]>(name, { validate })
 
@@ -27,7 +30,8 @@ const FormLabelListField = ({ name, labels, validate }: Props) => {
         } else {
             newValue = [...value, id]
         }
-        onChange({ target: { value: newValue } })
+        inputOnChange({ target: { value: newValue } })
+        onChange?.(newValue)
     }
 
     const lastIndex = labels.length - 1

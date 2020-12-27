@@ -10,5 +10,6 @@ routes.add('/event/:name/:id', 'eventDetail')
 routes.add('/recoverPassword/:token', 'recoverPassword')
 routes.add('/gameEdit/:id', 'gameEdit')
 routes.add('/eventEdit/:id', 'eventEdit')
+routes.add('/games/:ladderType', 'games')
 
 export default routes

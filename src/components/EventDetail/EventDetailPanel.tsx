@@ -146,7 +146,7 @@ const EventDetailPanel = ({ eventId }: Props) => {
                                 />
                             )}
                             <div className={classes.labelsWrapper}>
-                                <DetailLabelList labels={labels} />
+                                <DetailLabelList labels={labels} linkType="events" />
                             </div>
                         </>
                     )}

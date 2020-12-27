@@ -18,7 +18,9 @@ export type LoadEventQuery = { __typename?: 'Query' } & {
             Event,
             'id' | 'name' | 'amountOfPlayers' | 'web' | 'loc' | 'from' | 'to' | 'description' | 'allowedActions'
         > & {
-                labels?: Maybe<Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name' | 'description'>>>
+                labels?: Maybe<
+                    Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name' | 'description' | 'isRequired'>>
+                >
                 games?: Maybe<Array<{ __typename?: 'Game' } & BaseGameDataFragment>>
             }
     >
@@ -60,9 +62,7 @@ export type LoadEventForEditQuery = { __typename?: 'Query' } & {
                 >
             }
     >
-    authorizedRequiredLabels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name' | 'description'>>
-    authorizedOptionalLabels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name' | 'description'>>
-}
+} & AuthorizedLabelsFragment
 
 export type UpdateEventMutationVariables = Exact<{
     input: UpdateEventInput
@@ -135,7 +135,7 @@ export type GameDetailQuery = { __typename?: 'Query' } & {
         > & {
                 coverImage?: Maybe<{ __typename?: 'Image' } & Pick<Image, 'id'>>
                 currentUsersRating?: Maybe<{ __typename?: 'Rating' } & Pick<Rating, 'id' | 'rating' | 'state'>>
-                labels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name' | 'description'>>
+                labels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name' | 'description' | 'isRequired'>>
                 ratingStats: Array<{ __typename?: 'RatingCount' } & Pick<RatingCount, 'count' | 'rating'>>
                 video?: Maybe<{ __typename?: 'Video' } & Pick<Video, 'id' | 'path'>>
                 authors: Array<{ __typename?: 'User' } & Pick<User, 'id' | 'name' | 'nickname'>>
@@ -238,9 +238,7 @@ export type LoadGameForEditQuery = { __typename?: 'Query' } & {
                 labels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'isRequired'>>
             }
     >
-    authorizedRequiredLabels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name' | 'description'>>
-    authorizedOptionalLabels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name' | 'description'>>
-}
+} & AuthorizedLabelsFragment
 
 export type SearchAuthorsQueryVariables = Exact<{
     query: Scalars['String']
@@ -326,6 +324,43 @@ export type GetMoreLastCommentsQueryVariables = Exact<{
 export type GetMoreLastCommentsQuery = { __typename?: 'Query' } & {
     homepage: { __typename?: 'HomepageQuery' } & {
         lastComments: Array<{ __typename?: 'Comment' } & BaseCommentDataFragment>
+    }
+}
+
+export type LadderGameDataFragment = { __typename?: 'Game' } & Pick<
+    Game,
+    'id' | 'name' | 'year' | 'amountOfComments' | 'amountOfRatings' | 'averageRating' | 'totalRating'
+> & { labels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name'>> }
+
+export type LadderInitialGamesQueryVariables = Exact<{
+    ladderType: LadderType
+    offset: Scalars['Int']
+    limit: Scalars['Int']
+    requiredLabels?: Maybe<Array<Scalars['ID']>>
+    optionalLabels?: Maybe<Array<Scalars['ID']>>
+}>
+
+export type LadderInitialGamesQuery = { __typename?: 'Query' } & {
+    games: { __typename?: 'GamesQuery' } & {
+        ladder: { __typename?: 'GamesPaged' } & Pick<GamesPaged, 'totalAmount'> & {
+                games: Array<{ __typename?: 'Game' } & LadderGameDataFragment>
+            }
+    }
+} & AuthorizedLabelsFragment
+
+export type LadderMoreGamesQueryVariables = Exact<{
+    ladderType: LadderType
+    offset: Scalars['Int']
+    limit: Scalars['Int']
+    requiredLabels?: Maybe<Array<Scalars['ID']>>
+    optionalLabels?: Maybe<Array<Scalars['ID']>>
+}>
+
+export type LadderMoreGamesQuery = { __typename?: 'Query' } & {
+    games: { __typename?: 'GamesQuery' } & {
+        ladder: { __typename?: 'GamesPaged' } & Pick<GamesPaged, 'totalAmount'> & {
+                games: Array<{ __typename?: 'Game' } & LadderGameDataFragment>
+            }
     }
 }
 
@@ -506,6 +541,11 @@ export type LoggedInUserQuery = { __typename?: 'Query' } & {
     >
 }
 
+export type AuthorizedLabelsFragment = { __typename?: 'Query' } & {
+    authorizedRequiredLabels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name' | 'description'>>
+    authorizedOptionalLabels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name' | 'description'>>
+}
+
 export type BaseGameDataFragment = { __typename?: 'Game' } & Pick<
     Game,
     'id' | 'name' | 'players' | 'averageRating' | 'amountOfComments' | 'amountOfRatings'
@@ -620,11 +660,7 @@ export type HomepageQueryLastCommentsArgs = {
 export type GamesQuery = {
     __typename?: 'GamesQuery'
     byQuery: Array<Game>
-    recentAndMostPlayed: GamesPaged
-    mostPlayed: GamesPaged
-    recent: GamesPaged
-    best: GamesPaged
-    mostCommented: GamesPaged
+    ladder: GamesPaged
 }
 
 export type GamesQueryByQueryArgs = {
@@ -633,39 +669,20 @@ export type GamesQueryByQueryArgs = {
     limit?: Maybe<Scalars['Int']>
 }
 
-export type GamesQueryRecentAndMostPlayedArgs = {
+export type GamesQueryLadderArgs = {
+    ladderType: LadderType
     offset?: Maybe<Scalars['Int']>
     limit?: Maybe<Scalars['Int']>
     requiredLabels?: Maybe<Array<Scalars['ID']>>
     otherLabels?: Maybe<Array<Scalars['ID']>>
 }
 
-export type GamesQueryMostPlayedArgs = {
-    offset?: Maybe<Scalars['Int']>
-    limit?: Maybe<Scalars['Int']>
-    requiredLabels?: Maybe<Array<Scalars['ID']>>
-    otherLabels?: Maybe<Array<Scalars['ID']>>
-}
-
-export type GamesQueryRecentArgs = {
-    offset?: Maybe<Scalars['Int']>
-    limit?: Maybe<Scalars['Int']>
-    requiredLabels?: Maybe<Array<Scalars['ID']>>
-    otherLabels?: Maybe<Array<Scalars['ID']>>
-}
-
-export type GamesQueryBestArgs = {
-    offset?: Maybe<Scalars['Int']>
-    limit?: Maybe<Scalars['Int']>
-    requiredLabels?: Maybe<Array<Scalars['ID']>>
-    otherLabels?: Maybe<Array<Scalars['ID']>>
-}
-
-export type GamesQueryMostCommentedArgs = {
-    offset?: Maybe<Scalars['Int']>
-    limit?: Maybe<Scalars['Int']>
-    requiredLabels?: Maybe<Array<Scalars['ID']>>
-    otherLabels?: Maybe<Array<Scalars['ID']>>
+export enum LadderType {
+    RecentAndMostPlayed = 'RecentAndMostPlayed',
+    MostPlayed = 'MostPlayed',
+    Recent = 'Recent',
+    Best = 'Best',
+    MostCommented = 'MostCommented',
 }
 
 export type Game = {
@@ -1210,6 +1227,6 @@ export type UpdateGroupInput = {
 }
 
 export enum AllowedAction {
-    Edit = 'EDIT',
-    Delete = 'DELETE',
+    Edit = 'Edit',
+    Delete = 'Delete',
 }
