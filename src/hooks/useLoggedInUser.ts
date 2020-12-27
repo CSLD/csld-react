@@ -4,7 +4,7 @@
  * @returns Logged in user data, undefined when not logged in, Empty object when loading
  */
 import { useContext } from 'react'
-import { UserContext } from '../components/common/UserContext/UserContext'
+import { UserContext } from '../context/UserContext/UserContext'
 
 export const useLoggedInUser = () => {
     const context = useContext(UserContext)

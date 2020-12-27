@@ -7,6 +7,7 @@ import { TFunction } from 'i18next'
 import { Button, Col, Row, Form } from 'react-bootstrap'
 import { useRoutes } from 'src/hooks/useRoutes'
 import { UrlObject } from 'url'
+import { UserContext } from 'src/context/UserContext/UserContext'
 import FormPageRow from '../common/FormPageRow/FormPageRow'
 import FormTextInputField from '../common/form/FormTextInputField'
 import { darkTheme } from '../../theme/darkTheme'
@@ -17,7 +18,6 @@ import { TextLink } from '../common/TextLink/TextLink'
 import ReCaptchaField from './ReCaptchaField'
 import { convertDateInput, convertFileInput } from '../../utils/graphqlUtils'
 import { useIsEmailAvailable } from '../../hooks/useIsEmailAvailable'
-import { UserContext } from '../common/UserContext/UserContext'
 
 const createUserlGql = require(`./graphql/createUserMutation.graphql`)
 

@@ -199,7 +199,9 @@
     "editGroup": "Upravit skupinu",
     "authorsOf_0": "Tvůrci jednoho larpu",
     "authorsOf_1": "Tvůrci {{count}} larpů",
-    "authorsOf_2": "Tvůrci {{count}} larpů"
+    "authorsOf_2": "Tvůrci {{count}} larpů",
+    "groupCreated": "Skupina byla vytvořena",
+    "groupUpdated": "Skupina byla aktualizována"
   },
   "GroupEditModal": {
     "titleCreate": "Přidat skupinu",

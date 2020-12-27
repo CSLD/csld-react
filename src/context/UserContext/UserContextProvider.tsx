@@ -5,7 +5,7 @@ import {
     LoggedInUserQuery,
     LoggedInUserQueryVariables,
     UserRole,
-} from '../../../graphql/__generated__/typescript-operations'
+} from '../../graphql/__generated__/typescript-operations'
 
 const loggedInUserGql = require('./graphql/loggedInUserQuery.graphql')
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { UserRole } from '../../../graphql/__generated__/typescript-operations'
+import { UserRole } from '../../graphql/__generated__/typescript-operations'
 
 export interface UserContextValue {
     readonly id?: string

@@ -12,6 +12,7 @@ import ActionButton from '../common/ActionButton/ActionButton'
 import GroupEditModal from './GroupEditModal'
 import { IconPlus } from '../common/Icons/Icons'
 import DetailGameList from '../common/DetailGameList/DetailGameList'
+import { useShowToast } from '../../hooks/useShowToast'
 
 const loadGroupGql = require('./graphql/loadGroup.graphql')
 
@@ -64,6 +65,7 @@ const GroupDetailPanel = ({ groupId }: Props) => {
     const classes = useStyles()
     const { t } = useTranslation('common')
     const loggedInUser = useLoggedInUser()
+    const showToast = useShowToast()
 
     const name = data?.groupById?.name || ' '
     const authorsOf = data?.groupById?.authorsOf || []
@@ -77,9 +79,14 @@ const GroupDetailPanel = ({ groupId }: Props) => {
     }
 
     const handleHideModal = (saved?: boolean) => {
+        const dialogShownSave = dialogShown
         setDialogShown(false)
         if (saved) {
             refetch()
+            showToast(
+                t(dialogShownSave === 'edit' ? 'GroupDetail.groupUpdated' : 'GroupDetail.groupCreated'),
+                'success',
+            )
         }
     }
 

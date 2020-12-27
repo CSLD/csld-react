@@ -5,6 +5,7 @@ import { Form as FinalForm } from 'react-final-form'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { useRoutes } from 'src/hooks/useRoutes'
+import { UserContext } from 'src/context/UserContext/UserContext'
 import FormPageRow from '../common/FormPageRow/FormPageRow'
 import FormTextInputField from '../common/form/FormTextInputField'
 import { fieldValidator, validateDate, validateEmail, validateRequired } from '../../utils/validationUtils'
@@ -19,7 +20,6 @@ import { useIsEmailAvailable } from '../../hooks/useIsEmailAvailable'
 import { convertDateFromGraphql, convertDateInput, convertFileInput } from '../../utils/graphqlUtils'
 import UserDetailPanel from './UserDetailPanel'
 import UserProfileTabs from './UserProfileTabs'
-import { UserContext } from '../common/UserContext/UserContext'
 
 const loadUserSettingsGql = require('./graphql/loadCurrentUserSettings.graphql')
 const updateUserSettingsGql = require('./graphql/updateUserSettings.graphql')

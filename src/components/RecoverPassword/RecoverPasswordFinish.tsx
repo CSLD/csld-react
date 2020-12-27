@@ -6,6 +6,7 @@ import { Button } from 'react-bootstrap'
 import { useApolloClient } from '@apollo/client'
 import { TFunction } from 'i18next'
 import { useRoutes } from 'src/hooks/useRoutes'
+import { UserContext } from 'src/context/UserContext/UserContext'
 import FormPageRow from '../common/FormPageRow/FormPageRow'
 import { darkTheme } from '../../theme/darkTheme'
 import FormTextInputField from '../common/form/FormTextInputField'
@@ -14,7 +15,6 @@ import {
     FinishRecoverPasswordMutation,
     FinishRecoverPasswordMutationVariables,
 } from '../../graphql/__generated__/typescript-operations'
-import { UserContext } from '../common/UserContext/UserContext'
 
 interface Props {
     readonly token: string
