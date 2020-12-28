@@ -7,6 +7,7 @@ import UserSettingsPanel from '../../src/components/Profile/UserSettingsPanel'
 import CurrentUserProfileContainer from '../../src/components/Profile/CurrentUserProfileContainer'
 import OtherUserProfileContainer from '../../src/components/Profile/OtherUserProfileContainer'
 import ChangePasswordPanel from '../../src/components/Profile/ChangePasswordPanel'
+import SignInRequiredWrapper from '../../src/components/common/SignInRequiredWrapper/SignInRequiredWrapper'
 
 interface Props {}
 interface InitialProps {}
@@ -20,10 +21,12 @@ const Profile: NextPage<Props, InitialProps> = () => {
     return (
         <>
             <PageHeader />
-            {id === 'settings' && <UserSettingsPanel />}
-            {id === 'current' && <CurrentUserProfileContainer />}
-            {id === 'changePassword' && <ChangePasswordPanel />}
-            {idNum && <OtherUserProfileContainer userId={id} />}
+            <SignInRequiredWrapper>
+                {id === 'settings' && <UserSettingsPanel />}
+                {id === 'current' && <CurrentUserProfileContainer />}
+                {id === 'changePassword' && <ChangePasswordPanel />}
+                {idNum > 0 && <OtherUserProfileContainer userId={id} />}
+            </SignInRequiredWrapper>
             <PageFooter />
         </>
     )
