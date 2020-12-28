@@ -8,6 +8,7 @@ import { HeaderNavLink } from './HeaderNavLink'
 import { darkTheme } from '../../../theme/darkTheme'
 import { isAtLeastEditor } from '../../../utils/roleUtils'
 import { useRoutes } from '../../../hooks/useRoutes'
+import isInBrowser from 'is-in-browser'
 
 const signOutMutation = require('./graphql/signOutMutation.graphql')
 
@@ -97,6 +98,13 @@ const HeaderUser = () => {
         }
     }
 
+    const loading = !isInBrowser || (user && !user.id)
+
+    if (loading) {
+        // Loading
+        return null
+    }
+
     if (user?.id) {
         return (
             <Dropdown onSelect={handleSelect}>
@@ -113,11 +121,6 @@ const HeaderUser = () => {
                 </Dropdown.Menu>
             </Dropdown>
         )
-    }
-
-    if (user) {
-        // Loading
-        return null
     }
 
     return (

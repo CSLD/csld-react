@@ -7,6 +7,7 @@ import FormPageRow from '../FormPageRow/FormPageRow'
 import { useRoutes } from '../../../hooks/useRoutes'
 import { TextLink } from '../TextLink/TextLink'
 import { IconBack } from '../Icons/Icons'
+import isInBrowser from 'is-in-browser'
 
 type RequiredRole = 'USER' | 'EDITOR' | 'ADMIN'
 
@@ -35,7 +36,7 @@ const SignInRequiredWrapper: React.FC<Props> = ({ requiredRole = 'USER', childre
     const loggedIn = useLoggedInUser()
     const { t } = useTranslation('common')
 
-    if (!loggedIn) {
+    if (!loggedIn && isInBrowser) {
         return <SignInPanel infoMessage={t('SignInRequired.signInRequired')} stayOnPage />
     }
 
