@@ -3,7 +3,7 @@ import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/do
 import { createGenerateId, JssProvider, SheetsRegistry } from 'react-jss'
 import { darkTheme } from '../../src/theme/darkTheme'
 
-const style = `
+const globalStyle = `
     body {
       margin: 0;
       font-family: Open Sans, sans-serif;
@@ -63,6 +63,7 @@ class WebAppDocument extends Document {
                         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
                         crossOrigin="anonymous"
                     />
+                    <style type="text/css">{globalStyle}</style>
                 </Head>
                 <body>
                     <Main />
