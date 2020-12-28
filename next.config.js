@@ -1,5 +1,7 @@
 const withPlugins = require('next-compose-plugins')
-const withBundleAnalyzer = require('@next/bundle-analyzer')
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+    enabled: ['client', 'server', 'both'].includes(process.env.BUNDLE_ANALYZE),
+})
 const nextRuntimeDotenv = require('next-runtime-dotenv')
 const graphql = require('next-plugin-graphql')
 
