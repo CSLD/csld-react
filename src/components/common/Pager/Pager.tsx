@@ -41,7 +41,7 @@ const useStyles = createUseStyles({
 const Pager = ({ currentOffset, totalAmount, pageSize, maxPages = 10, onOffsetChanged }: Props) => {
     const classes = useStyles()
 
-    const lastPageOffset = totalAmount - (totalAmount % pageSize)
+    const lastPageOffset = totalAmount - 1 - ((totalAmount - 1) % pageSize)
     const prevPageOffset = Math.max(currentOffset - pageSize, 0)
     const nextPageOffset = Math.min(currentOffset + pageSize, lastPageOffset)
     const pageOffsets = useMemo(() => generatePageOffsets(currentOffset, lastPageOffset, pageSize, maxPages), [

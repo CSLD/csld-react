@@ -29,7 +29,9 @@ const UserPagedCommentsPanel = ({ userId, firstPage }: Props) => {
         ssr: false,
     })
 
-    lastPageRef.current = (query.data && (query.data.userById?.commentsPaged as CommentsPaged)) || lastPageRef.current
+    lastPageRef.current =
+        (query.data && (query.data.userById?.commentsPaged as CommentsPaged)) ||
+        (offset === 0 ? firstPage : lastPageRef.current)
     const page = lastPageRef.current
 
     return <PagedCommentsPanel page={page} pageSize={PAGE_SIZE} offset={offset} onOffsetChanged={setOffset} />
