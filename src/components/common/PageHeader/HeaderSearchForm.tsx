@@ -92,6 +92,7 @@ export const HeaderSearchForm = () => {
     const [focused, setFocused] = useState(false)
     const hideTimeoutRef = useRef(0)
     const changeTimeoutRef = useRef(0)
+    const inputRef = useRef<HTMLInputElement | null>(null)
     const lastGames = useRef<BaseGameDataFragment[]>([])
     const searchActive = query.length >= 3
     const searchResult = useQuery<SearchGamesQuery, SearchGamesQueryVariables>(searchGamesQuery, {
@@ -113,6 +114,7 @@ export const HeaderSearchForm = () => {
             window.clearTimeout(hideTimeoutRef.current)
         }
         hideTimeoutRef.current = 0
+        inputRef.current?.focus() // Re-focus because we are called on menu focus too
         setFocused(true)
     }
 
@@ -146,12 +148,13 @@ export const HeaderSearchForm = () => {
                 onChange={handleChange}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
+                ref={inputRef}
             />
             <button type="button" className={classes.searchButton}>
                 <IconSearch />
             </button>
             {searchActive && focused && (
-                <div className={classes.results}>
+                <div className={classes.results} onFocus={handleFocus}>
                     {!haveGames && (
                         <div className={classes.resultsText}>
                             {searchResult.loading ? (
