@@ -6,7 +6,7 @@ import { createGameLabel, LinkedGame } from './GamesAutoCompleteField'
 import { NewLabel } from '../common/form/NewLabelsField/NewLabelsField'
 import { fieldValidator, validateRequired, validateTime } from '../../utils/validationUtils'
 
-const buildDateTime = (date: string, time?: string) => (time ? `${date} ${time}:00` : `${date} 00:00:00`)
+const buildDateTime = (date: string, time?: string) => (time ? `${date}T${time}:00` : `${date}T00:00:00`)
 
 export interface FormValues {
     name: string
@@ -81,7 +81,7 @@ export const createInputFromValues = (data: FormValues): CreateEventInput => ({
     newLabels: data.newLabels,
 })
 
-const dateTimeRe = /^([-0-9]+) ([0-9]+:[0-9]+):/
+const dateTimeRe = /^([-0-9]+)T([0-9]+:[0-9]+):/
 const parseDateTime = (dateTime: string | undefined | null) => {
     if (!dateTime) {
         return undefined
