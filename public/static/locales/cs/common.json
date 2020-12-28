@@ -87,7 +87,7 @@
     "deleteGameConfirmation": "Opravdu smazat hru?",
     "commentAdded": "Váš komentář byl přidán",
     "commentUpdated": "Váš komentář byl aktualizován",
-    "gameDeleted": "Hra byla smazána",
+    "gameDeleted": "Hra byla vymazána",
     "ratingDeleted": "Hodnocení bylo odstraněno"
   },
 
@@ -228,7 +228,7 @@
     "date": "Datum",
     "edit": "Upravit událost",
     "delete": "Smazat událost",
-    "eventDeleted": "Událost byla smazána",
+    "eventDeleted": "Událost byla vymazána",
     "deleteEventConfirmation": "Opravdu smazat událost?"
   },
   "GameEdit": {
@@ -371,5 +371,14 @@
     "tabCommentState": "Statistiky komentářů",
     "tabSelfRating": "Sebehodnocení",
     "intro": "Admin sekce ještě není"
+  },
+  "GraphQLError": {
+    "NETWORK": "Chyba spojení se serverem. Zkuste znovu načíst stránku.",
+    "NOT_FOUND": "Chyba serveru: Objekt nenalezen",
+    "INVALID_VALUE": "Chyba serveru: Neplatná hodnota na cestě {{valuePath}}",
+    "INVALID_STATE": "Chyba serveru: Objekt v není ve správném stavu pro danou operaci",
+    "ACCESS_DENIED": "Chyba serveru: Přístup zamítnut",
+    "DUPLICATE_VALUE": "Chyba serveru: Hodnota již existuje",
+    "UNKNOWN": "Neznámá chyba serveru"
   }
 }

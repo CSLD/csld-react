@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import { useQuery } from '@apollo/client'
+import isInBrowser from 'is-in-browser'
 import { darkTheme } from '../../theme/darkTheme'
 import { WidthFixer } from '../common/WidthFixer/WidthFixer'
 import { HomePageGamesPanel } from './HomePageGamesPanel'
@@ -85,7 +86,7 @@ export const HomePagePanel = () => {
     const handleToggleExpanded = () => setExpanded(old => !old)
     const homePageQuery = useQuery<GetHomePageDataQuery, GetHomePageDataQueryVariables>(getHomePageDataQuery, {
         fetchPolicy: 'cache-and-network',
-        ssr: false,
+        skip: !isInBrowser,
     })
     const moreCommentsQuery = useQuery<GetMoreLastCommentsQuery, GetMoreLastCommentsQueryVariables>(
         getMoreLastCommentsQuery,

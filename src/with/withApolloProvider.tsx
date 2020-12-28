@@ -1,6 +1,10 @@
+import React from 'react'
 import fetch from 'isomorphic-unfetch'
-import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/react-hooks'
+import { ApolloClient, createHttpLink, InMemoryCache, from } from '@apollo/react-hooks'
 import withApollo from 'next-with-apollo'
+import { onError } from '@apollo/client/link/error'
+import { toastContextValue } from '../context/ToastContext/ToastContext'
+import GraphQLErrorContent from '../components/common/GraphQLErrorContent/GraphQLErrorContent'
 
 // Polyfill fetch() on the server (used by apollo-client)
 if (!process.browser) {
@@ -9,6 +13,33 @@ if (!process.browser) {
 
 const simpleMerge = { merge: (existing: any, incoming: any) => ({ ...existing, ...incoming }) }
 const overwriteMerge = { merge: (existing: any, incoming: any) => incoming }
+
+export type GraphQLExceptionType =
+    | 'NETWORK'
+    | 'NOT_FOUND'
+    | 'INVALID_VALUE'
+    | 'INVALID_STATE'
+    | 'ACCESS_DENIED'
+    | 'DUPLICATE_VALUE'
+    | 'UNKNOWN'
+
+const errorLink = onError(({ graphQLErrors, networkError, response }) => {
+    if (networkError) {
+        if (response) {
+            response.errors = undefined
+        }
+        toastContextValue.actions.showToast(<GraphQLErrorContent errorClass="NETWORK" />, 'alert')
+    }
+
+    if (graphQLErrors && graphQLErrors.length > 0 && graphQLErrors[0].extensions?.code) {
+        const code = graphQLErrors[0].extensions?.code || 'UNKNOWN'
+        const path = graphQLErrors[0].extensions?.path
+        if (response) {
+            response.errors = undefined
+        }
+        toastContextValue.actions.showToast(<GraphQLErrorContent errorClass={code} valuePath={path} />, 'alert')
+    }
+})
 
 export const withApolloWrapper = withApollo(props => {
     const { initialState } = props
@@ -26,10 +57,13 @@ export const withApolloWrapper = withApollo(props => {
     }
 
     return new ApolloClient({
-        link: createHttpLink({
-            uri,
-            credentials: 'same-origin',
-        }),
+        link: from([
+            errorLink,
+            createHttpLink({
+                uri,
+                credentials: 'same-origin',
+            }),
+        ]),
         cache: new InMemoryCache({
             typePolicies: {
                 Query: {

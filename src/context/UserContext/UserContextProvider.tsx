@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { useQuery } from '@apollo/client'
+import isInBrowser from 'is-in-browser'
 import { UserContext, UserContextShape, UserContextValue } from './UserContext'
 import {
     LoggedInUserQuery,
@@ -13,7 +14,7 @@ const UserContextProvider: React.FC = ({ children }) => {
     const [value, setValue] = useState<UserContextValue | undefined>(undefined)
 
     const query = useQuery<LoggedInUserQuery, LoggedInUserQueryVariables>(loggedInUserGql, {
-        ssr: false,
+        skip: !isInBrowser,
         fetchPolicy: 'network-only',
         onCompleted: (data: LoggedInUserQuery) => {
             const { loggedInUser } = data

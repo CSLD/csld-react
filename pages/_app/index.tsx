@@ -42,14 +42,14 @@ class WebApp extends App<AppInitialProps & WithApolloProps<any>> {
 
         return (
             <ErrorBoundary>
-                <ApolloProvider client={apollo}>
-                    <ToastContextProvider>
+                <ToastContextProvider>
+                    <ApolloProvider client={apollo}>
                         <UserContextProvider>
                             {/* eslint-disable-next-line react/jsx-props-no-spreading */}
                             <Component {...pageProps} />
                         </UserContextProvider>
-                    </ToastContextProvider>
-                </ApolloProvider>
+                    </ApolloProvider>
+                </ToastContextProvider>
             </ErrorBoundary>
         )
     }

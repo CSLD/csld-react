@@ -17,6 +17,7 @@ import {
     faCaretLeft,
     faStarHalfAlt,
     faComments,
+    faTimesCircle,
 } from '@fortawesome/free-solid-svg-icons'
 import { faFacebook } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -63,3 +64,5 @@ export const IconBack = (props: IconProps) => <FontAwesomeIcon icon={faCaretLeft
 export const IconNumRatings = (props: IconProps) => <FontAwesomeIcon icon={faStarHalfAlt} {...props} />
 
 export const IconNumComments = (props: IconProps) => <FontAwesomeIcon icon={faComments} {...props} />
+
+export const IconClose = (props: IconProps) => <FontAwesomeIcon icon={faTimesCircle} {...props} />
