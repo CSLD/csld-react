@@ -15,6 +15,7 @@ import {
     FinishRecoverPasswordMutationVariables,
 } from '../../graphql/__generated__/typescript-operations'
 import { useShowToast } from '../../hooks/useShowToast'
+import { useFocusInput } from '../../hooks/useFocusInput'
 
 interface Props {
     readonly token: string
@@ -59,6 +60,7 @@ const RecoverPasswordFinish = ({ token }: Props) => {
     const client = useApolloClient()
     const routes = useRoutes()
     const showToast = useShowToast()
+    const formRef = useFocusInput<HTMLFormElement>('password')
 
     const onSubmit = ({ password }: FormData) => {
         setState('loading')
@@ -88,7 +90,7 @@ const RecoverPasswordFinish = ({ token }: Props) => {
                 onSubmit={onSubmit}
                 validate={validate(t)}
                 render={({ handleSubmit }) => (
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} ref={formRef}>
                         <FormTextInputField
                             name="password"
                             type="password"

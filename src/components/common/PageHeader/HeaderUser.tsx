@@ -4,11 +4,11 @@ import { useApolloClient } from '@apollo/client'
 import { Dropdown } from 'react-bootstrap'
 import { createUseStyles } from 'react-jss'
 import { UserContext } from 'src/context/UserContext/UserContext'
+import isInBrowser from 'is-in-browser'
 import { HeaderNavLink } from './HeaderNavLink'
 import { darkTheme } from '../../../theme/darkTheme'
 import { isAtLeastEditor } from '../../../utils/roleUtils'
 import { useRoutes } from '../../../hooks/useRoutes'
-import isInBrowser from 'is-in-browser'
 
 const signOutMutation = require('./graphql/signOutMutation.graphql')
 

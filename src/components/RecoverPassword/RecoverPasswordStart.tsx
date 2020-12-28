@@ -13,6 +13,7 @@ import {
     StartRecoverPasswordMutationVariables,
 } from '../../graphql/__generated__/typescript-operations'
 import FormPageRow from '../common/FormPageRow/FormPageRow'
+import { useFocusInput } from '../../hooks/useFocusInput'
 
 const startRecoverPasswordGQL = require('./graphql/startRecoverPasswordMutation.graphql')
 
@@ -45,6 +46,7 @@ const RecoverPasswordStart = () => {
     const { t } = useTranslation('common')
     const classes = useStyles()
     const client = useApolloClient()
+    const formRef = useFocusInput<HTMLFormElement>('email')
     const [state, setState] = useState<TState>('initial')
 
     const onSubmit = async ({ email }: FormData) => {
@@ -67,8 +69,8 @@ const RecoverPasswordStart = () => {
                 onSubmit={onSubmit}
                 validate={validate(t)}
                 render={({ handleSubmit }) => (
-                    <form onSubmit={handleSubmit}>
-                        <FormTextInputField name="email" placeholder={t('RecoverPassword.email')} />
+                    <form onSubmit={handleSubmit} ref={formRef}>
+                        <FormTextInputField name="email" placeholder={t('RecoverPassword.email')} autoFocus />
 
                         <Button variant="dark" type="submit" disabled={state === 'loading'}>
                             {t('RecoverPassword.submit')}

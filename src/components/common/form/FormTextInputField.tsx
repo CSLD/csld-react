@@ -32,7 +32,6 @@ const FormTextInputField = ({
     type,
     appendIcon,
     errorHint,
-    autoFocus,
     onBlur,
     onChange,
 }: FormTextInputFieldProps) => {
@@ -71,7 +70,6 @@ const FormTextInputField = ({
                                 type={type}
                                 onBlur={handleOnBlur}
                                 onChange={handleOnChange}
-                                autoFocus={autoFocus}
                                 /* eslint-disable-next-line react/jsx-props-no-spreading */
                                 {...inputRest}
                                 placeholder={placeholder}

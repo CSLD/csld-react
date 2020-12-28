@@ -1,5 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import isInBrowser from 'is-in-browser'
 import { useLoggedInUser } from '../../../hooks/useLoggedInUser'
 import SignInPanel from '../../SignIn/SignInPanel'
 import { UserRole } from '../../../graphql/__generated__/typescript-operations'
@@ -7,7 +8,6 @@ import FormPageRow from '../FormPageRow/FormPageRow'
 import { useRoutes } from '../../../hooks/useRoutes'
 import { TextLink } from '../TextLink/TextLink'
 import { IconBack } from '../Icons/Icons'
-import isInBrowser from 'is-in-browser'
 
 type RequiredRole = 'USER' | 'EDITOR' | 'ADMIN'
 

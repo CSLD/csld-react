@@ -17,6 +17,7 @@ import { TextLink } from '../common/TextLink/TextLink'
 import ReCaptchaField from './ReCaptchaField'
 import { convertDateInput, convertFileInput } from '../../utils/graphqlUtils'
 import { useIsEmailAvailable } from '../../hooks/useIsEmailAvailable'
+import { useFocusInput } from '../../hooks/useFocusInput'
 
 const createUserlGql = require(`./graphql/createUserMutation.graphql`)
 
@@ -68,6 +69,7 @@ const SignUpPanel = () => {
     const classes = useStyles()
     const client = useApolloClient()
     const routes = useRoutes()
+    const formRef = useFocusInput<HTMLFormElement>('password')
     const [state, setState] = useState<TState>('idle')
     const { usedByUser, isEmailAvailable } = useIsEmailAvailable()
     const { href: recoverHref, as: recoverAs } = routes.recoverPasswordStart()
@@ -119,7 +121,7 @@ const SignUpPanel = () => {
                     }
 
                     return (
-                        <form onSubmit={handleSubmit}>
+                        <form onSubmit={handleSubmit} ref={formRef}>
                             <FormTextInputField
                                 name="email"
                                 placeholder={t('UserFields.email')}
