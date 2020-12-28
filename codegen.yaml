@@ -2,6 +2,7 @@ schema: 'src/graphql/schema.graphql'
 documents:
   - 'src/components/**/*.graphql'
   - 'src/hooks/**/*.graphql'
+  - 'src/context/**/*.graphql'
   - 'src/graphql/fragments/*.graphql'
 generates:
   src/graphql/__generated__/typescript-operations.ts:

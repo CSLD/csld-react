@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
 import { createUseStyles } from 'react-jss'
 import { useTranslation } from 'react-i18next'
+import isInBrowser from 'is-in-browser'
 import {
     CachedGameDataFragment,
     CommentsPaged,
@@ -26,7 +27,6 @@ import ConfirmationModal from '../common/ConfirmationModal/ConfirmationModal'
 import { useRoutes } from '../../hooks/useRoutes'
 import { canDelete, canEdit } from '../../utils/graphqlUtils'
 import { useShowToast } from '../../hooks/useShowToast'
-import isInBrowser from 'is-in-browser'
 
 const cachedGameDataGql = require('./graphql/cachedGameData.graphql')
 const gameDetailGql = require('./graphql/gameDetail.graphql')

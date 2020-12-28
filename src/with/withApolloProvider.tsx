@@ -14,17 +14,7 @@ if (!process.browser) {
 const simpleMerge = { merge: (existing: any, incoming: any) => ({ ...existing, ...incoming }) }
 const overwriteMerge = { merge: (existing: any, incoming: any) => incoming }
 
-export type GraphQLExceptionType =
-    | 'NETWORK'
-    | 'NOT_FOUND'
-    | 'INVALID_VALUE'
-    | 'INVALID_STATE'
-    | 'ACCESS_DENIED'
-    | 'DUPLICATE_VALUE'
-    | 'UNKNOWN'
-
-const errorLink = onError(({ graphQLErrors, networkError, operation, response }) => {
-    console.log({ operation })
+const errorLink = onError(({ graphQLErrors, networkError, response }) => {
     if (networkError) {
         if (response) {
             response.errors = undefined

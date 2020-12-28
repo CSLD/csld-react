@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import { useTranslation } from 'react-i18next'
 import { useApolloClient } from '@apollo/client'
@@ -7,7 +7,6 @@ import { TFunction } from 'i18next'
 import { Button, Col, Row, Form } from 'react-bootstrap'
 import { useRoutes } from 'src/hooks/useRoutes'
 import { UrlObject } from 'url'
-import { UserContext } from 'src/context/UserContext/UserContext'
 import FormPageRow from '../common/FormPageRow/FormPageRow'
 import FormTextInputField from '../common/form/FormTextInputField'
 import { darkTheme } from '../../theme/darkTheme'
@@ -71,7 +70,6 @@ const SignUpPanel = () => {
     const routes = useRoutes()
     const [state, setState] = useState<TState>('idle')
     const { usedByUser, isEmailAvailable } = useIsEmailAvailable()
-    const userContext = useContext(UserContext)
     const { href: recoverHref, as: recoverAs } = routes.recoverPasswordStart()
 
     const onSubmit = async (data: FormData) => {

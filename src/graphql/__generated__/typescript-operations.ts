@@ -568,6 +568,16 @@ export type SetCommentVisibleMutation = { __typename?: 'Mutation' } & {
     game: { __typename?: 'GameMutation' } & { setCommentVisible: { __typename?: 'Game' } & Pick<Game, 'id'> }
 }
 
+export type LoggedInUserQueryVariables = Exact<{ [key: string]: never }>
+
+export type LoggedInUserQuery = { __typename?: 'Query' } & {
+    loggedInUser?: Maybe<
+        { __typename?: 'User' } & Pick<User, 'id' | 'role' | 'name' | 'nickname'> & {
+                image?: Maybe<{ __typename?: 'Image' } & Pick<Image, 'id'>>
+            }
+    >
+}
+
 export type AuthorizedLabelsFragment = { __typename?: 'Query' } & {
     authorizedRequiredLabels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name' | 'description'>>
     authorizedOptionalLabels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name' | 'description'>>
