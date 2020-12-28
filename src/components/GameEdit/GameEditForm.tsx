@@ -35,6 +35,7 @@ import { useFocusInput } from '../../hooks/useFocusInput'
 import { formClasses } from '../../utils/formClasses'
 import LabelsEditColumn, { LabelFromGql } from '../common/LabelsEditColumn/LabelsEditColumn'
 import { IconBack } from '../common/Icons/Icons'
+import { useShowToast } from '../../hooks/useShowToast'
 
 const createGameGql = require('./graphql/createGame.graphql')
 const updateGameGql = require('./graphql/updateGame.graphql')
@@ -134,6 +135,7 @@ const GameEditForm = ({
     const [updateGame, { loading: updateGameLoading }] = useMutation<UpdateGameMutation, UpdateGameMutationVariables>(
         updateGameGql,
     )
+    const showToast = useShowToast()
 
     const handleOnSubmit = (data: FormValues) => {
         if (gameId) {
@@ -141,6 +143,7 @@ const GameEditForm = ({
             updateGame({ variables: { input } }).then(response => {
                 const updatedGame = response.data?.game.updateGame
                 if (updatedGame) {
+                    showToast(t('GameEdit.gameUpdated'), 'success')
                     onGameSaved(updatedGame)
                 }
             })
@@ -149,6 +152,7 @@ const GameEditForm = ({
             createGame({ variables: { input } }).then(response => {
                 const createdGame = response.data?.game.createGame
                 if (createdGame) {
+                    showToast(t('GameEdit.gameCreated'), 'success')
                     onGameSaved(createdGame)
                 }
             })

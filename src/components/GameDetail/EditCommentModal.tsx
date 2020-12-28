@@ -23,7 +23,7 @@ const EditCommentModal = ({ oldText, onHide, onSubmit }: Props) => {
     const handleSave = ({ comment }: FormValues) => {
         setLoading(true)
         const markup = editorStateToHtml(comment)
-        onSubmit(markup || '').finally(() => {
+        onSubmit(markup || '').catch(() => {
             setLoading(false)
         })
     }
@@ -33,8 +33,8 @@ const EditCommentModal = ({ oldText, onHide, onSubmit }: Props) => {
     return (
         <Form<FormValues> onSubmit={handleSave} initialValues={initialValues}>
             {({ handleSubmit }) => (
-                <form onSubmit={handleSubmit}>
-                    <Modal show onHide={onHide} size="lg">
+                <Modal show onHide={onHide} size="lg">
+                    <form onSubmit={handleSubmit}>
                         <Modal.Header closeButton>
                             <Modal.Title>{t('EditCommentModal.title')}</Modal.Title>
                         </Modal.Header>
@@ -49,8 +49,8 @@ const EditCommentModal = ({ oldText, onHide, onSubmit }: Props) => {
                                 {t('EditCommentModal.save')}
                             </Button>
                         </Modal.Footer>
-                    </Modal>
-                </form>
+                    </form>
+                </Modal>
             )}
         </Form>
     )

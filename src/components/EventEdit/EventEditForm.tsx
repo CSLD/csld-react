@@ -19,6 +19,7 @@ import { formClasses } from '../../utils/formClasses'
 import FormTextInputField from '../common/form/FormTextInputField'
 import FormRichTextInputField from '../common/form/FormRichTextInputField'
 import { createInputFromValues, FormValues, validate } from './formUtils'
+import { useShowToast } from '../../hooks/useShowToast'
 
 const createEventGql = require('./graphql/createEvent.graphql')
 const updateEventGql = require('./graphql/updateEvent.graphql')
@@ -46,6 +47,7 @@ const EventEditForm = ({
     const routes = useRoutes()
     const formRef = useFocusInput<HTMLFormElement>('name')
     const classes = useStyles()
+    const showToast = useShowToast()
     const [createEvent, { loading: createLoading }] = useMutation<CreateEventMutation, CreateEventMutationVariables>(
         createEventGql,
     )
@@ -62,6 +64,7 @@ const EventEditForm = ({
             }).then(response => {
                 const updatedEvent = response?.data?.event.updateEvent
                 if (updatedEvent) {
+                    showToast(t('EventEdit.eventUpdated'), 'success')
                     routes.push(routes.eventDetail(updatedEvent.id, updatedEvent.name ?? ''))
                 }
             })
@@ -71,6 +74,7 @@ const EventEditForm = ({
             }).then(response => {
                 const createdEvent = response?.data?.event.createEvent
                 if (createdEvent) {
+                    showToast(t('EventEdit.eventCreated'), 'success')
                     routes.push(routes.eventDetail(createdEvent.id, createdEvent.name ?? ''))
                 }
             })

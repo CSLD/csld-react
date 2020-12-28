@@ -17,6 +17,7 @@ import {
 } from '../../graphql/__generated__/typescript-operations'
 import UserDetailPanel from './UserDetailPanel'
 import UserProfileTabs from './UserProfileTabs'
+import { useShowToast } from '../../hooks/useShowToast'
 
 const loadUserSettingsGql = require('./graphql/loadCurrentUserSettings.graphql')
 const changePasswordGql = require('./graphql/changePassword.graphql')
@@ -51,6 +52,7 @@ const ChangePasswordPanel = () => {
     const [state, setState] = useState<TState>('idle')
     const loggedInUser = loadQuery.data?.loggedInUser
     const classes = useStyles()
+    const showToast = useShowToast()
 
     const onSubmit = async (data: FormData) => {
         setState('loading')
@@ -66,6 +68,7 @@ const ChangePasswordPanel = () => {
             })
             .then(() => {
                 // Success - go to profile
+                showToast(t('ChangePassword.changed'), 'success')
                 routes.push(routes.currentProfile())
             })
             .catch(e => {

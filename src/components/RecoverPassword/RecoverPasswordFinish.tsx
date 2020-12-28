@@ -15,6 +15,7 @@ import {
     FinishRecoverPasswordMutation,
     FinishRecoverPasswordMutationVariables,
 } from '../../graphql/__generated__/typescript-operations'
+import { useShowToast } from '../../hooks/useShowToast'
 
 interface Props {
     readonly token: string
@@ -59,6 +60,7 @@ const RecoverPasswordFinish = ({ token }: Props) => {
     const client = useApolloClient()
     const routes = useRoutes()
     const userContext = useContext(UserContext)
+    const showToast = useShowToast()
 
     const onSubmit = ({ password }: FormData) => {
         setState('loading')
@@ -76,6 +78,7 @@ const RecoverPasswordFinish = ({ token }: Props) => {
             })
             .then(() => {
                 // Success
+                showToast('RecoverPassword.changed', 'success')
                 userContext?.actions?.reload()
                 routes.push(routes.homepage())
             })

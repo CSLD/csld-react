@@ -19,6 +19,7 @@ import ActionButton from '../common/ActionButton/ActionButton'
 import { useRoutes } from '../../hooks/useRoutes'
 import ConfirmationModal from '../common/ConfirmationModal/ConfirmationModal'
 import { canDelete, canEdit } from '../../utils/graphqlUtils'
+import { useShowToast } from '../../hooks/useShowToast'
 
 const loadEventGql = require('./graphql/loadEvent.graphql')
 const deleteEventGql = require('./graphql/deleteEvent.graphql')
@@ -80,6 +81,7 @@ const EventDetailPanel = ({ eventId }: Props) => {
     const [deleteEvent, { loading: deleteLoading }] = useMutation<DeleteEventMutation, DeleteEventMutationVariables>(
         deleteEventGql,
     )
+    const showToast = useShowToast()
     const event = data?.eventById
     const games = event?.games || []
     const labels = event?.labels || []
@@ -99,6 +101,7 @@ const EventDetailPanel = ({ eventId }: Props) => {
     const handleDoDeleteEvent = () => {
         deleteEvent({ variables: { eventId } }).then(() => {
             setDeleteConfirmShown(false)
+            showToast(t('EventDetail.eventDeleted'), 'success')
             routes.push(routes.homepage())
         })
     }

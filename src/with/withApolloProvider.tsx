@@ -8,6 +8,7 @@ if (!process.browser) {
 }
 
 const simpleMerge = { merge: (existing: any, incoming: any) => ({ ...existing, ...incoming }) }
+const overwriteMerge = { merge: (existing: any, incoming: any) => incoming }
 
 export const withApolloWrapper = withApollo(props => {
     const { initialState } = props
@@ -45,6 +46,12 @@ export const withApolloWrapper = withApollo(props => {
                         group: simpleMerge,
                         event: simpleMerge,
                         admin: simpleMerge,
+                    },
+                },
+                Game: {
+                    fields: {
+                        ratingStats: overwriteMerge,
+                        ratings: overwriteMerge,
                     },
                 },
             },

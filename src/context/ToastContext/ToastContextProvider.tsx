@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { ToastContextShape, ToastContext, ToastKind } from './ToastContext'
 import { darkTheme } from '../../theme/darkTheme'
 
-const HIDE_DELAY = 3000
+const HIDE_DELAY = 5000
 
 interface State {
     readonly content?: React.ReactNode
@@ -19,16 +19,14 @@ const useStyles = createUseStyles({
         transform: 'translateX(-50%)',
         bottom: 32,
         opacity: 0.8,
-        fontSize: '0.75rem',
-        border: `1px solid ${darkTheme.textOnLightDark}`,
     },
     success: {
         backgroundColor: darkTheme.textGreen,
-        color: darkTheme.textOnLightDark,
+        color: darkTheme.backgroundRealWhite,
     },
     error: {
         backgroundColor: darkTheme.red,
-        color: darkTheme.textLight,
+        color: darkTheme.backgroundRealWhite,
     },
 })
 

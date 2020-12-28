@@ -84,7 +84,11 @@
     "ratings": "Hodnocení",
     "editGame": "Upravit hru",
     "deleteGame": "Smazat hru",
-    "deleteGameConfirmation": "Opravdu smazat hru?"
+    "deleteGameConfirmation": "Opravdu smazat hru?",
+    "commentAdded": "Váš komentář byl přidán",
+    "commentUpdated": "Váš komentář byl aktualizován",
+    "gameDeleted": "Hra byla smazána",
+    "ratingDeleted": "Hodnocení bylo odstraněno"
   },
 
   "SignIn": {
@@ -115,7 +119,8 @@
     "password": "Heslo",
     "passwordConfirmation": "Heslo znovu",
     "passwordConfirmationError": "Hesla jsou různá",
-    "changeError": "Nastavení hesla nebylo úspěšné, odkaz nejspíš již není platný. Zkuste si nechat poslat nový."
+    "changeError": "Nastavení hesla nebylo úspěšné, odkaz nejspíš již není platný. Zkuste si nechat poslat nový.",
+    "changed": "Vaše heslo bylo změněno"
   },
 
   "UserFields": {
@@ -158,7 +163,8 @@
     "header": "Úprava informací o vás",
     "profilePictureHint": "Vyberte svoji profilovou fotografii o rozměrech 120x120px. Maximální velikost fotografie jsou 2MB.",
     "emailAlreadyUsed": "Tento e-mail je již používán uživatelem {{name}}.",
-    "submit": "Uložit"
+    "submit": "Uložit",
+    "settingsUpdated": "Vaše nastavení bylo aktualizováno"
   },
 
   "UserDetail": {
@@ -185,7 +191,8 @@
     "passwordConfirmationError": "Hesla jsou různá",
     "submit": "Nastavit heslo",
     "error": "Chyba při nastavování hesla",
-    "oldPasswordError": "Staré heslo nesouhlasí"
+    "oldPasswordError": "Staré heslo nesouhlasí",
+    "changed": "Vaše heslo bylo změněno"
   },
 
   "EditCommentModal": {
@@ -221,6 +228,7 @@
     "date": "Datum",
     "edit": "Upravit událost",
     "delete": "Smazat událost",
+    "eventDeleted": "Událost byla smazána",
     "deleteEventConfirmation": "Opravdu smazat událost?"
   },
   "GameEdit": {
@@ -263,7 +271,9 @@
     "formError": "Formulář obsahuje chyby",
     "back": "Zpět",
     "addGameTab": "Přidat hru",
-    "editGameTab": "Upravit hru"
+    "editGameTab": "Upravit hru",
+    "gameCreated": "Hra byla vytvořena",
+    "gameUpdated": "Hra byla aktualizována"
   },
   "AutoComplete": {
     "startTyping": "Napište alespoň tři znaky pro vyhledání",
@@ -326,7 +336,9 @@
     "fillBothTimes": "Časy musí být oba vyplněny nebo oba prázdné",
     "editEventTab": "Upravit událost",
     "addEventTab": "Přidat událost",
-    "addGameTab": "Přidat hru"
+    "addGameTab": "Přidat hru",
+    "eventCreated": "Událost byla vytvořena",
+    "eventUpdated": "Událost byla aktualizována"
   },
   "LabelsEditColumn": {
     "labels": "Štítky",

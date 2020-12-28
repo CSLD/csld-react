@@ -25,6 +25,7 @@ import ActionButton from '../common/ActionButton/ActionButton'
 import ConfirmationModal from '../common/ConfirmationModal/ConfirmationModal'
 import { useRoutes } from '../../hooks/useRoutes'
 import { canDelete, canEdit } from '../../utils/graphqlUtils'
+import { useShowToast } from '../../hooks/useShowToast'
 
 const cachedGameDataGql = require('./graphql/cachedGameData.graphql')
 const gameDetailGql = require('./graphql/gameDetail.graphql')
@@ -122,6 +123,7 @@ export const GameDetailPanel = ({ gameId }: Props) => {
     const { t } = useTranslation('common')
     const classes = useStyles()
     const routes = useRoutes()
+    const showToast = useShowToast()
     const [deleteGame, { loading: deleteLoading }] = useMutation<DeleteGameMutation, DeleteGameMutationVariables>(
         deleteGameGql,
         {
@@ -175,6 +177,7 @@ export const GameDetailPanel = ({ gameId }: Props) => {
     const handleDoDeleteGame = () => {
         deleteGame().then(() => {
             setDeleteConfirmShown(false)
+            showToast(t('GameDetail.gameDeleted'), 'success')
             routes.push(routes.homepage())
         })
     }

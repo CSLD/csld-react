@@ -20,6 +20,7 @@ import { useIsEmailAvailable } from '../../hooks/useIsEmailAvailable'
 import { convertDateFromGraphql, convertDateInput, convertFileInput } from '../../utils/graphqlUtils'
 import UserDetailPanel from './UserDetailPanel'
 import UserProfileTabs from './UserProfileTabs'
+import { useShowToast } from '../../hooks/useShowToast'
 
 const loadUserSettingsGql = require('./graphql/loadCurrentUserSettings.graphql')
 const updateUserSettingsGql = require('./graphql/updateUserSettings.graphql')
@@ -52,6 +53,7 @@ const UserSettingsPanel = () => {
     const { usedByUser, isEmailAvailable } = useIsEmailAvailable()
     const loggedInUser = loadQuery.data?.loggedInUser
     const userContext = useContext(UserContext)
+    const showToast = useShowToast()
 
     const onSubmit = async (data: FormData) => {
         setState('loading')
@@ -79,6 +81,7 @@ const UserSettingsPanel = () => {
 
         // Success - go to profile
         userContext?.actions?.reload()
+        showToast(t('UserSettings.settingsUpdated'), 'success')
         routes.push(routes.currentProfile())
         return undefined
     }

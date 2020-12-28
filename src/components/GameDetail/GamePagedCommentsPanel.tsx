@@ -14,6 +14,7 @@ import PagedCommentsPanel from '../common/PagedCommentsPanel/PagedCommentsPanel'
 import EditCommentModal from './EditCommentModal'
 import { useLoggedInUser } from '../../hooks/useLoggedInUser'
 import { IconEdit, IconPlus } from '../common/Icons/Icons'
+import { useShowToast } from '../../hooks/useShowToast'
 
 const moreCommentsGql = require('./graphql/moreComments.graphql')
 const updateCommentGql = require('./graphql/updateComment.graphql')
@@ -37,6 +38,7 @@ export const GamePagedCommentsPanel = ({ gameId }: Props) => {
     const [editModalShown, setEditModalShown] = useState(false)
     const lastPageRef = useRef<CommentsPaged | undefined>(undefined)
     const classes = useStyles()
+    const showToast = useShowToast()
     const { t } = useTranslation('common')
     const loggedInUser = useLoggedInUser()
     const client = useApolloClient()
@@ -57,6 +59,8 @@ export const GamePagedCommentsPanel = ({ gameId }: Props) => {
     lastPageRef.current = (query.data && (query.data.gameById?.commentsPaged as CommentsPaged)) || lastPageRef.current
     const page = lastPageRef.current
 
+    const currentUsersComment = query.data?.gameById?.currentUsersComment?.comment
+
     const handleSaveComment = async (newText: string) => {
         await client.mutate<UpdateCommentMutation, UpdateCommentMutationVariables>({
             mutation: updateCommentGql,
@@ -65,11 +69,10 @@ export const GamePagedCommentsPanel = ({ gameId }: Props) => {
                 comment: newText,
             },
         })
+        showToast(t(currentUsersComment ? 'GameDetail.commentUpdated' : 'GameDetail.commentAdded'), 'success')
         await query.refetch()
         setEditModalShown(false)
     }
-
-    const currentUsersComment = query.data?.gameById?.currentUsersComment?.comment
 
     return (
         <>
