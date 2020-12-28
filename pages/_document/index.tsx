@@ -1,11 +1,9 @@
 import * as React from 'react'
 import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/document'
-import { JssProvider, SheetsRegistry } from 'react-jss'
+import { createGenerateId, JssProvider, SheetsRegistry } from 'react-jss'
 import { darkTheme } from '../../src/theme/darkTheme'
 
 const style = `
-    @import url(https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&subset=latin,latin-ext,cyrillic-ext,cyrillic);
-
     body {
       margin: 0;
       font-family: Open Sans, sans-serif;
@@ -26,29 +24,33 @@ const style = `
     `
 
 class WebAppDocument extends Document {
-    static async getInitialProps({ renderPage }: DocumentContext) {
+    static async getInitialProps(ctx: DocumentContext) {
         /**
          * Decorate first render with SheetsRegistry and then put generated CSS into output
          */
-        const sheets = new SheetsRegistry()
+        const registry = new SheetsRegistry()
+        const generateId = createGenerateId()
+        const originalRenderPage = ctx.renderPage
+        ctx.renderPage = () =>
+            originalRenderPage({
+                enhanceApp: App => props => (
+                    <JssProvider registry={registry} generateId={generateId}>
+                        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+                        <App {...props} />
+                    </JssProvider>
+                ),
+            })
 
-        const decoratePage = (Page: any) => (props: any) => (
-            <JssProvider registry={sheets}>
-                {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-                <Page {...props} />
-            </JssProvider>
-        )
-
-        const renderedPage = renderPage(decoratePage)
-
-        // eslint-disable-next-line react/no-danger
-        const styles = <style type="text/css" id="jss-ssr" dangerouslySetInnerHTML={{ __html: sheets.toString() }} />
-
-        const props = {
-            ...renderedPage,
-            styles,
+        const initialProps = await Document.getInitialProps(ctx)
+        return {
+            ...initialProps,
+            styles: (
+                <>
+                    {initialProps.styles}
+                    <style id="server-side-styles">{registry.toString()}</style>
+                </>
+            ),
         }
-        return props
     }
 
     render() {
@@ -61,7 +63,6 @@ class WebAppDocument extends Document {
                         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
                         crossOrigin="anonymous"
                     />
-                    <style type="text/css">{style}</style>
                 </Head>
                 <body>
                     <Main />

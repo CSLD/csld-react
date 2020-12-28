@@ -25,6 +25,8 @@ class WebApp extends App<AppInitialProps & WithApolloProps<any>> {
     }
 
     componentDidMount() {
+        document.getElementById('server-side-styles')?.remove()
+
         Router.events.on('routeChangeComplete', () => {
             // Reset window scroll on route change (= when we went to another page)
             window.scroll({
