@@ -1,8 +1,8 @@
 import React from 'react'
 import { createUseStyles } from 'react-jss'
-import { darkTheme } from '../../theme/darkTheme'
 import { useTranslation } from 'react-i18next'
 import { Button } from 'react-bootstrap'
+import { darkTheme } from '../../theme/darkTheme'
 
 interface Props {
     readonly onDismiss: () => void
