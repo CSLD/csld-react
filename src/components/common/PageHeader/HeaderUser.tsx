@@ -92,7 +92,7 @@ const HeaderUser = () => {
                 mutation: signOutMutation,
             })
 
-            userContext?.actions?.reload()
+            client.resetStore()
             routes.push(routes.homepage())
         }
     }

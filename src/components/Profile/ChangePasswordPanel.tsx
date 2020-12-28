@@ -67,7 +67,7 @@ const ChangePasswordPanel = () => {
                 variables,
             })
             .then(() => {
-                // Success - go to profile
+                // Success - show message and go to profile
                 showToast(t('ChangePassword.changed'), 'success')
                 routes.push(routes.currentProfile())
             })

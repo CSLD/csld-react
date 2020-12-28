@@ -59,7 +59,6 @@ const RecoverPasswordFinish = ({ token }: Props) => {
     const classes = useStyles()
     const client = useApolloClient()
     const routes = useRoutes()
-    const userContext = useContext(UserContext)
     const showToast = useShowToast()
 
     const onSubmit = ({ password }: FormData) => {
@@ -79,8 +78,7 @@ const RecoverPasswordFinish = ({ token }: Props) => {
             .then(() => {
                 // Success
                 showToast('RecoverPassword.changed', 'success')
-                userContext?.actions?.reload()
-                routes.push(routes.homepage())
+                client.resetStore().then(() => routes.push(routes.homepage()))
             })
     }
 

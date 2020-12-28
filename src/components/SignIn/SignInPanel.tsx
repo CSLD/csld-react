@@ -1,11 +1,10 @@
-import React, { useContext, useState } from 'react'
+import React from 'react'
 import { Form as FinalForm } from 'react-final-form'
 import { useTranslation } from 'react-i18next'
 import { Button } from 'react-bootstrap'
 import { createUseStyles } from 'react-jss'
 import { TFunction } from 'i18next'
-import { useApolloClient } from '@apollo/client'
-import { UserContext } from 'src/context/UserContext/UserContext'
+import { useApolloClient, useMutation } from '@apollo/client'
 import FormTextInputField from '../common/form/FormTextInputField'
 import { darkTheme } from '../../theme/darkTheme'
 import { validateEmail, validateRequired, validateWithValidators } from '../../utils/validationUtils'
@@ -15,7 +14,7 @@ import FormPageRow from '../common/FormPageRow/FormPageRow'
 import { useRoutes } from '../../hooks/useRoutes'
 import { useFocusInput } from '../../hooks/useFocusInput'
 
-const logInMutation = require('./graphql/logInMutation.graphql')
+const logInMutationGql = require('./graphql/logInMutation.graphql')
 
 interface FormData {
     email: string
@@ -43,21 +42,21 @@ const validate = (t: TFunction) => (data: FormData) =>
         t,
     )
 
-type TState = 'idle' | 'loading' | 'error'
+interface Props {
+    readonly infoMessage?: string
+    readonly stayOnPage?: boolean
+}
 
-const SignInPanel = () => {
+const SignInPanel = ({ infoMessage, stayOnPage }: Props) => {
     const { t } = useTranslation('common')
     const classes = useStyles()
     const client = useApolloClient()
+    const [logInMutation, { loading }] = useMutation<LogInMutation, LogInMutationVariables>(logInMutationGql)
     const routes = useRoutes()
     const formRef = useFocusInput<HTMLFormElement>('email')
-    const [state, setState] = useState<TState>('idle')
-    const userContext = useContext(UserContext)
 
     const onSubmit = async (data: FormData) => {
-        setState('loading')
-        const res = await client.mutate<LogInMutation, LogInMutationVariables>({
-            mutation: logInMutation,
+        const res = await logInMutation({
             variables: {
                 userName: data.email,
                 password: data.password,
@@ -68,18 +67,16 @@ const SignInPanel = () => {
             // Success
 
             // Go to homepage
-            userContext?.actions?.reload()
-            routes.push(routes.homepage())
-            return
+            await client.resetStore()
+            if (!stayOnPage) {
+                routes.push(routes.homepage())
+            }
         }
-
-        setState('error')
     }
     const { href: recoverHref, as: recoverAs } = routes.recoverPasswordStart()
 
     return (
-        <FormPageRow headerText={t('SignIn.header')}>
-            {state === 'error' && <div className={classes.error}>{t('SignIn.error')}</div>}
+        <FormPageRow headerText={infoMessage || t('SignIn.header')}>
             <FinalForm<FormData>
                 onSubmit={onSubmit}
                 validate={validate(t)}
@@ -97,7 +94,7 @@ const SignInPanel = () => {
                                 {t('SignIn.forgotPassword')}
                             </TextLink>
                         </div>
-                        <Button variant="dark" type="submit" disabled={state === 'loading'}>
+                        <Button variant="dark" type="submit" disabled={loading}>
                             {t('SignIn.submit')}
                         </Button>
                     </form>

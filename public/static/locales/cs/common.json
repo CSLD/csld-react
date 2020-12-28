@@ -380,5 +380,10 @@
     "ACCESS_DENIED": "Chyba serveru: Přístup zamítnut",
     "DUPLICATE_VALUE": "Chyba serveru: Hodnota již existuje",
     "UNKNOWN": "Neznámá chyba serveru"
+  },
+  "SignInRequired": {
+    "signInRequired": "Prosíme, nejprve se přihlaste",
+    "accessDenied": "Pro přístup na tuto stránku nemáte dostatečná oprávnění",
+    "backToHomepage": "Zpět na hlavní stránku"
   }
 }

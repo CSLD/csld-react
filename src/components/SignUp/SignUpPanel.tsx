@@ -100,7 +100,7 @@ const SignUpPanel = () => {
 
         if (res.data?.user?.createUser?.id) {
             // Success - go to homepage
-            userContext?.actions?.reload()
+            await client.resetStore()
             routes.push(routes.homepage())
             return undefined
         }
