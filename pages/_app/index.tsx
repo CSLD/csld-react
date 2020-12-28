@@ -25,6 +25,7 @@ class WebApp extends App<AppInitialProps & WithApolloProps<any>> {
     }
 
     componentDidMount() {
+        // Remove styles sent from server - we have generated out own
         document.getElementById('server-side-styles')?.remove()
 
         Router.events.on('routeChangeComplete', () => {
