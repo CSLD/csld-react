@@ -20,6 +20,7 @@ const useStyles = createUseStyles({
         transform: 'translateX(-50%)',
         bottom: 32,
         opacity: 0.8,
+        zIndex: '1111', // Show above modal overlay
     },
     body: {
         display: 'flex',

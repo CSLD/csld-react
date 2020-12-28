@@ -23,7 +23,8 @@ export type GraphQLExceptionType =
     | 'DUPLICATE_VALUE'
     | 'UNKNOWN'
 
-const errorLink = onError(({ graphQLErrors, networkError, response }) => {
+const errorLink = onError(({ graphQLErrors, networkError, operation, response }) => {
+    console.log({ operation })
     if (networkError) {
         if (response) {
             response.errors = undefined

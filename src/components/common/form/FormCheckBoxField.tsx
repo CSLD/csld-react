@@ -17,7 +17,9 @@ const FormCheckBoxField = ({ name, label, hint, showErrorPlaceholder }: FormChec
     const {
         input: { value, ...inputRest },
         meta,
-    } = useField<boolean>(name)
+    } = useField<boolean>(name, {
+        type: 'checkbox',
+    })
 
     return (
         <FieldWithError meta={meta} hint={hint} showErrorPlaceholder={showErrorPlaceholder}>

@@ -16,6 +16,8 @@ query GameDetail($gameId: ID!) {
         averageRating
         amountOfRatings
         amountOfPlayed
+        commentsDisabled
+        ratingsDisabled
         coverImage {
             id
         }

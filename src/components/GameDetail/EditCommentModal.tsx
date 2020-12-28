@@ -23,9 +23,8 @@ const EditCommentModal = ({ oldText, onHide, onSubmit }: Props) => {
     const handleSave = ({ comment }: FormValues) => {
         setLoading(true)
         const markup = editorStateToHtml(comment)
-        onSubmit(markup || '').catch(() => {
-            setLoading(false)
-        })
+        onSubmit(markup || '').catch(() => {})
+        setLoading(false)
     }
 
     const initialValues = useMemo(() => ({ comment: htmlToEditorState(oldText) }), [oldText])

@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-import { Game, Rating } from 'src/graphql/__generated__/typescript-operations'
+import { Game, Rating, User } from 'src/graphql/__generated__/typescript-operations'
 import { createUseStyles } from 'react-jss'
 import { useTranslation } from 'react-i18next'
 import classNames from 'classnames'
@@ -12,10 +12,12 @@ import { getRatingForGame, MIN_NUM_RATINGS } from '../../utils/ratingUtils'
 import { useLoggedInUser } from '../../hooks/useLoggedInUser'
 import RatingStateButtons from './RatingStateButtons'
 import RatingStars from './RatingStars'
+import AuthorWarningPanel from './AuthorWarningPanel'
 
 interface Props {
-    readonly game: Pick<Game, 'id' | 'averageRating' | 'amountOfRatings' | 'ratingStats'> & {
+    readonly game: Pick<Game, 'id' | 'averageRating' | 'amountOfRatings' | 'ratingStats' | 'ratingsDisabled'> & {
         currentUsersRating?: Maybe<Pick<Rating, 'rating' | 'state'>>
+        authors: Array<Pick<User, 'id'>>
     }
 }
 
@@ -73,15 +75,20 @@ const useStyles = createUseStyles({
     yourRating: {
         marginBottom: 25,
     },
+    ratingsDisabled: {
+        fontSize: '0.75rem',
+        color: darkTheme.text,
+    },
     ...ratingStyles,
 })
 
 export const GameRatingPanel = ({
-    game: { id: gameId, averageRating, amountOfRatings, ratingStats, currentUsersRating },
+    game: { id: gameId, averageRating, amountOfRatings, ratingStats, currentUsersRating, authors, ratingsDisabled },
 }: Props) => {
     const classes = useStyles()
     const { t } = useTranslation('common')
     const loggedInUser = useLoggedInUser()
+    const [selfRatingDismissed, setSelfRatingDismissed] = useState(false)
 
     const max = ratingStats.reduce((currentMax, rating) => Math.max(currentMax, rating.count), 0)
     let statsMap = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -97,6 +104,9 @@ export const GameRatingPanel = ({
     const ratingNum = currentUsersRating?.rating ?? 0
     const rating = ratingNum || '-'
     const ratingState = currentUsersRating?.state ?? 0
+    const currentUserId = loggedInUser?.id
+    const isAuthorWarningShown =
+        !!currentUserId && authors.map(({ id }) => id).includes(currentUserId) && !selfRatingDismissed
 
     return (
         <div className={classes.wrapper}>
@@ -137,7 +147,15 @@ export const GameRatingPanel = ({
                 </div>
             </div>
             {!loggedInUser && <div className={classes.login}>{t('GameDetail.logInToRate')}</div>}
-            {loggedInUser?.id && <RatingStars gameId={gameId} rating={ratingNum} />}
+            {currentUserId && ratingsDisabled && (
+                <div className={classes.ratingsDisabled}>{t('GameDetail.ratingsDisabled')}</div>
+            )}
+            {currentUserId && !ratingsDisabled && isAuthorWarningShown && (
+                <AuthorWarningPanel onDismiss={() => setSelfRatingDismissed(true)} />
+            )}
+            {currentUserId && !ratingsDisabled && !isAuthorWarningShown && (
+                <RatingStars gameId={gameId} rating={ratingNum} />
+            )}
         </div>
     )
 }

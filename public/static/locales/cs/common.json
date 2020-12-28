@@ -88,7 +88,11 @@
     "commentAdded": "Váš komentář byl přidán",
     "commentUpdated": "Váš komentář byl aktualizován",
     "gameDeleted": "Hra byla vymazána",
-    "ratingDeleted": "Hodnocení bylo odstraněno"
+    "ratingDeleted": "Hodnocení bylo odstraněno",
+    "ownRatingWarning": "Jste uveden(a) jako autor(ka) této hry. Silně nedoporučujeme autorům hodnotit vlastní hry. Nezakazujeme to pouze proto, že existují některé výjimečné případy, kde to smysl má, například freeformové hry, překlad zahraniční hry, uváděný někým jiným, atp.",
+    "ownRatingWarningDismiss": "Rozumím, přesto chci hodnotit svojit hru",
+    "ratingsDisabled": "Autoři hry si nepřejí, aby byla hodnocena",
+    "commentsDisabled": "Autoři hry si nepřejí, aby byla komentována"
   },
 
   "SignIn": {

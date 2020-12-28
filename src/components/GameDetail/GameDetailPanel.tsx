@@ -110,6 +110,8 @@ const emptyGame = {
     ratings: [],
     currentUsersComment: undefined,
     coverImage: undefined,
+    commentsDisabled: true,
+    ratingsDisabled: true,
     commentsPaged: {
         comments: [],
         totalAmount: -1,
@@ -204,7 +206,9 @@ export const GameDetailPanel = ({ gameId }: Props) => {
             <div className={classes.extras}>
                 <WidthFixer className={classes.extrasWidthFixer}>
                     <div className={classes.extrasLeft}>
-                        {selectedTab === 'comments' && <GamePagedCommentsPanel gameId={gameId} />}
+                        {selectedTab === 'comments' && (
+                            <GamePagedCommentsPanel gameId={gameId} commentsDisabled={!!game.commentsDisabled} />
+                        )}
                         {selectedTab === 'video' && (
                             <iframe title="video" src={game.video?.path || ''} width="800" height="450" />
                         )}
