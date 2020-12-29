@@ -2,9 +2,9 @@ import React from 'react'
 import { useField } from 'react-final-form'
 import { Form } from 'react-bootstrap'
 import { FieldValidator } from 'final-form'
+import { createUseStyles } from 'react-jss'
 import { Label } from '../../../graphql/__generated__/typescript-operations'
 import FormCheckLabelWithTooltip from './FormCheckLabelWithTooltip'
-import { createUseStyles } from 'react-jss'
 
 export type LabelInList = Pick<Label, 'id' | 'name' | 'description'>
 

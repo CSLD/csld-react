@@ -59,7 +59,7 @@ export const PageHeader = () => {
     // Set document title
     useEffect(() => {
         document.title = t('PageHeader.csld')
-    }, [routes])
+    }, [t])
 
     // When link is clicked, we need to hide in-place login, so user sees page content
     const hideInPlaceLogin = useHideInPlaceLogin()

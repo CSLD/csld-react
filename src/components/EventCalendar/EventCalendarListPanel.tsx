@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next'
 import { createUseStyles } from 'react-jss'
 import { useApolloClient, useQuery } from '@apollo/client'
 import { Form as FinalForm } from 'react-final-form'
-import classNames from 'classnames'
 import { Col, Row } from 'react-bootstrap'
 import { darkTheme } from '../../theme/darkTheme'
 import {

@@ -152,11 +152,11 @@ export const GameDetailPanel = ({ gameId }: Props) => {
     })
     let gameFragment: CachedGameDataFragment | undefined | null
 
-    // Defocus header search input on first render hiding the menu
+    // Defocus header search input on first render of the game, hiding the menu
     // Not a very React-ish way, but it is the most simple
     useEffect(() => {
         document.getElementById(searchInputId)?.blur()
-    }, [])
+    }, [gameId])
 
     try {
         // Throws exception on server, so we guard it

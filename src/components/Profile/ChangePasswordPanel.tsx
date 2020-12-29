@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useApolloClient, useQuery } from '@apollo/client'
 import { Form as FinalForm } from 'react-final-form'
-import { Button } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { TFunction } from 'i18next'
 import { useRoutes } from 'src/hooks/useRoutes'

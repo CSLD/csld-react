@@ -19,7 +19,6 @@ import {
 import { formatAuthorLabel } from './NewAuthorModal'
 import { TabDefinition, Tabs } from '../common/Tabs/Tabs'
 import BigLoading from '../common/BigLoading/BigLoading'
-import isInBrowser from 'is-in-browser'
 
 const GameEditForm = React.lazy(() => import('./GameEditForm'))
 

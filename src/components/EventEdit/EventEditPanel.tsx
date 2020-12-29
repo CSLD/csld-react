@@ -13,7 +13,6 @@ import { WidthFixer } from '../common/WidthFixer/WidthFixer'
 import { emptyInitialValues, toInitialValues } from './formUtils'
 import { TabDefinition, Tabs } from '../common/Tabs/Tabs'
 import BigLoading from '../common/BigLoading/BigLoading'
-import isInBrowser from 'is-in-browser'
 
 const GameEditForm = React.lazy(() => import('../GameEdit/GameEditForm'))
 const EventEditForm = React.lazy(() => import('./EventEditForm'))
