@@ -2,8 +2,8 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMutation } from '@apollo/client'
 import { createUseStyles } from 'react-jss'
-import { Form } from 'react-final-form'
-import { Button, Col, Row } from 'react-bootstrap'
+import { Form as FinalForm } from 'react-final-form'
+import { Col, Row } from 'react-bootstrap'
 import GamesAutoCompleteField, { CreateNewGameCallback } from './GamesAutoCompleteField'
 import LabelsEditColumn, { LabelFromGql } from '../common/LabelsEditColumn/LabelsEditColumn'
 import { fieldValidator, validatePositiveInteger, validateRequired } from '../../utils/validationUtils'
@@ -91,7 +91,7 @@ const EventEditForm = ({
     }
 
     return (
-        <Form id="eventForm" onSubmit={handleOnSubmit} initialValues={initialValues} validate={validate(t)}>
+        <FinalForm id="eventForm" onSubmit={handleOnSubmit} initialValues={initialValues} validate={validate(t)}>
             {({ handleSubmit, submitFailed }) => {
                 if (hideForm) {
                     // Hide form
@@ -168,7 +168,7 @@ const EventEditForm = ({
                     </form>
                 )
             }}
-        </Form>
+        </FinalForm>
     )
 }
 

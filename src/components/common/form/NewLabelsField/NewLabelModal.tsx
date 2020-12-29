@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, Modal } from 'react-bootstrap'
-import { Form } from 'react-final-form'
+import { Form as FinalForm } from 'react-final-form'
 import { useTranslation } from 'react-i18next'
 import { useFocusInput } from '../../../../hooks/useFocusInput'
 import FormTextInputField from '../FormTextInputField'
@@ -41,7 +41,7 @@ const NewLabelModal = ({ existingNewLabels, existingLabelNames, onHide, onCreate
 
     return (
         <Modal show onHide={onHide}>
-            <Form<FormValues> onSubmit={onCreateLabel} validate={validate}>
+            <FinalForm<FormValues> onSubmit={onCreateLabel} validate={validate}>
                 {({ handleSubmit }) => (
                     <form onSubmit={handleSubmit} ref={formRef}>
                         <Modal.Header closeButton>
@@ -65,7 +65,7 @@ const NewLabelModal = ({ existingNewLabels, existingLabelNames, onHide, onCreate
                         </Modal.Footer>
                     </form>
                 )}
-            </Form>
+            </FinalForm>
         </Modal>
     )
 }

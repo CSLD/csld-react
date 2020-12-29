@@ -1,6 +1,6 @@
 import React from 'react'
 import { createUseStyles } from 'react-jss'
-import { Form } from 'react-final-form'
+import { Form as FinalForm } from 'react-final-form'
 import { Button, Col, Row } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { useMutation } from '@apollo/client'
@@ -173,7 +173,7 @@ const GameEditForm = ({
     }
 
     return (
-        <Form onSubmit={handleOnSubmit} initialValues={initialValues || emptyInitialValues} id="gameForm">
+        <FinalForm onSubmit={handleOnSubmit} initialValues={initialValues || emptyInitialValues} id="gameForm">
             {({ handleSubmit, submitFailed }) => {
                 return (
                     <form onSubmit={handleSubmit} className={classes.form} ref={formRef}>
@@ -336,7 +336,7 @@ const GameEditForm = ({
                     </form>
                 )
             }}
-        </Form>
+        </FinalForm>
     )
 }
 

@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button, Modal } from 'react-bootstrap'
 import { EditorState } from 'draft-js'
-import { Form } from 'react-final-form'
+import { Form as FinalForm } from 'react-final-form'
 import { editorStateToHtml } from '../common/form/richTextInputUtils'
 import FormRichTextInputField from '../common/form/FormRichTextInputField'
 import SubmitButton from '../common/SubmitButton/SubmitButton'
@@ -36,7 +36,7 @@ const EditCommentModal = ({ oldText, onHide, onLoad, onSubmit }: Props) => {
     const initialValues = useMemo(() => ({ comment: oldText }), [oldText])
 
     return (
-        <Form<FormValues> onSubmit={handleSave} initialValues={initialValues}>
+        <FinalForm<FormValues> onSubmit={handleSave} initialValues={initialValues}>
             {({ handleSubmit }) => (
                 <Modal show onHide={onHide} size="lg">
                     <form onSubmit={handleSubmit}>
@@ -55,7 +55,7 @@ const EditCommentModal = ({ oldText, onHide, onLoad, onSubmit }: Props) => {
                     </form>
                 </Modal>
             )}
-        </Form>
+        </FinalForm>
     )
 }
 

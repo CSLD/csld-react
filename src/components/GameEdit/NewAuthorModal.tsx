@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button, Modal, Form as BSForm } from 'react-bootstrap'
-import { Form } from 'react-final-form'
+import { Form as FinalForm } from 'react-final-form'
 import { createUseStyles } from 'react-jss'
 import { useFocusInput } from '../../hooks/useFocusInput'
 import FormTextInputField from '../common/form/FormTextInputField'
@@ -91,7 +91,7 @@ const NewAuthorModal = ({ onHide, onAddAuthor }: Props) => {
 
     return (
         <Modal show onHide={onHide}>
-            <Form<FormValues> onSubmit={handleOnSubmit}>
+            <FinalForm<FormValues> onSubmit={handleOnSubmit}>
                 {({ handleSubmit, values }) => {
                     const handleEmailOnBlur = () => {
                         isEmailAvailable(values.email)
@@ -131,7 +131,7 @@ const NewAuthorModal = ({ onHide, onAddAuthor }: Props) => {
                         </form>
                     )
                 }}
-            </Form>
+            </FinalForm>
         </Modal>
     )
 }

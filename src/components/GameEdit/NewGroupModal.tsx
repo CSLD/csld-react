@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form } from 'react-final-form'
+import { Form as FinalForm } from 'react-final-form'
 import { Button, Modal } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import FormTextInputField from '../common/form/FormTextInputField'
@@ -28,7 +28,7 @@ const NewGroupModal = ({ onHide, onAddGroup }: Props) => {
 
     return (
         <Modal show onHide={onHide}>
-            <Form<FormValues> onSubmit={handleOnSubmit}>
+            <FinalForm<FormValues> onSubmit={handleOnSubmit}>
                 {({ handleSubmit }) => (
                     <form onSubmit={handleSubmit} ref={formRef}>
                         <Modal.Header closeButton>
@@ -51,7 +51,7 @@ const NewGroupModal = ({ onHide, onAddGroup }: Props) => {
                         </Modal.Footer>
                     </form>
                 )}
-            </Form>
+            </FinalForm>
         </Modal>
     )
 }

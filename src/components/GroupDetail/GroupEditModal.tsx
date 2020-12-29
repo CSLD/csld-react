@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Modal } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { useMutation } from '@apollo/client'
-import { Form } from 'react-final-form'
+import { Form as FinalForm } from 'react-final-form'
 import { useFocusInput } from 'src/hooks/useFocusInput'
 import { useRoutes } from 'src/hooks/useRoutes'
 import {
@@ -57,7 +57,7 @@ const GroupEditModal = ({ id, initialName, onHide }: Props) => {
     }
 
     return (
-        <Form onSubmit={handleSave} initialValues={{ name: initialName }}>
+        <FinalForm onSubmit={handleSave} initialValues={{ name: initialName }}>
             {({ handleSubmit }) => (
                 <Modal show onHide={onHide}>
                     <form ref={formRef} onSubmit={handleSubmit}>
@@ -82,7 +82,7 @@ const GroupEditModal = ({ id, initialName, onHide }: Props) => {
                     </form>
                 </Modal>
             )}
-        </Form>
+        </FinalForm>
     )
 }
 
