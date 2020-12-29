@@ -4,7 +4,9 @@ import { ApolloClient, createHttpLink, InMemoryCache, from } from '@apollo/react
 import withApollo from 'next-with-apollo'
 import { onError } from '@apollo/client/link/error'
 import { toastContextValue } from '../context/ToastContext/ToastContext'
-import GraphQLErrorContent from '../components/common/GraphQLErrorContent/GraphQLErrorContent'
+import GraphQLErrorContent, {
+    PropsFromGraphQLError,
+} from '../components/common/GraphQLErrorContent/GraphQLErrorContent'
 
 // Polyfill fetch() on the server (used by apollo-client)
 if (!process.browser) {
@@ -14,21 +16,30 @@ if (!process.browser) {
 const simpleMerge = { merge: (existing: any, incoming: any) => ({ ...existing, ...incoming }) }
 const overwriteMerge = { merge: (existing: any, incoming: any) => incoming }
 
-const errorLink = onError(({ graphQLErrors, networkError, response }) => {
+// Operations that do their own error handling
+const errorHandlingOperations = ['ChangePassword']
+
+const errorLink = onError(({ graphQLErrors, networkError, operation, response }) => {
+    const hasCustomErrorHandling = errorHandlingOperations.includes(operation.operationName)
+
     if (networkError) {
-        if (response) {
+        if (response && !hasCustomErrorHandling) {
             response.errors = undefined
         }
         toastContextValue.actions.showToast(<GraphQLErrorContent errorClass="NETWORK" />, 'alert')
     }
 
-    if (graphQLErrors && graphQLErrors.length > 0 && graphQLErrors[0].extensions?.code) {
-        const code = graphQLErrors[0].extensions?.code || 'UNKNOWN'
-        const path = graphQLErrors[0].extensions?.path
-        if (response) {
-            response.errors = undefined
+    if (!hasCustomErrorHandling) {
+        if (graphQLErrors && graphQLErrors.length > 0 && graphQLErrors[0].extensions?.code) {
+            const { errorClass, valuePath } = PropsFromGraphQLError(graphQLErrors[0])
+            if (response) {
+                response.errors = undefined
+            }
+            toastContextValue.actions.showToast(
+                <GraphQLErrorContent errorClass={errorClass} valuePath={valuePath} />,
+                'alert',
+            )
         }
-        toastContextValue.actions.showToast(<GraphQLErrorContent errorClass={code} valuePath={path} />, 'alert')
     }
 })
 

@@ -21,7 +21,8 @@ const EditCommentModal = ({ oldText, onHide, onLoad, onSubmit }: Props) => {
     const { t } = useTranslation('common')
     const [loading, setLoading] = useState(false)
 
-    // Since we are lazy-load, call back when we are ready
+    // Since we are lazy-load, call back (only!) when we are ready
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(onLoad, [])
 
     const handleSave = ({ comment }: FormValues) => {

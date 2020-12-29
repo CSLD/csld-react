@@ -69,7 +69,7 @@ const SignUpPanel = () => {
     const classes = useStyles()
     const client = useApolloClient()
     const routes = useRoutes()
-    const formRef = useFocusInput<HTMLFormElement>('password')
+    const formRef = useFocusInput<HTMLFormElement>('email')
     const [state, setState] = useState<TState>('idle')
     const { usedByUser, isEmailAvailable } = useIsEmailAvailable()
     const { href: recoverHref, as: recoverAs } = routes.recoverPasswordStart()

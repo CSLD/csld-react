@@ -103,6 +103,7 @@
     "password": "Heslo",
     "keepLoggedIn": "Trvalé přihlášení",
     "forgotPassword":  "Zapomenuté heslo",
+    "signUp":  "Registrace",
     "submit": "Přihlásit",
     "error": "Přihlašovací údaje nesouhlasí. Zkuste to znovu, nebo použijte odkaz pro zapomenuté heslo pod formulářem."
   },
@@ -194,7 +195,7 @@
     "oldPassword": "Staré heslo",
     "newPassword": "Nové heslo",
     "newPasswordAgain": "Nové heslo znovu",
-    "passwordConfirmationError": "Hesla jsou různá",
+    "passwordAgainError": "Hesla jsou různá",
     "submit": "Nastavit heslo",
     "error": "Chyba při nastavování hesla",
     "oldPasswordError": "Staré heslo nesouhlasí",

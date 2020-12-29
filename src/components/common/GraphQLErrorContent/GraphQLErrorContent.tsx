@@ -1,10 +1,16 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { GraphQLError } from 'graphql'
 
 interface Props {
     readonly errorClass: string
     readonly valuePath?: string
 }
+
+export const PropsFromGraphQLError = (error?: GraphQLError): Props => ({
+    errorClass: error?.extensions?.code || 'UNKNOWN',
+    valuePath: error?.extensions?.path,
+})
 
 const resolveSubKey = (errorClass: string) => {
     switch (errorClass) {

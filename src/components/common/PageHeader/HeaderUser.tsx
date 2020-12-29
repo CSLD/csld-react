@@ -5,12 +5,12 @@ import { Dropdown } from 'react-bootstrap'
 import { createUseStyles } from 'react-jss'
 import { UserContext } from 'src/context/UserContext/UserContext'
 import isInBrowser from 'is-in-browser'
+import { useRouter } from 'next/router'
 import { headerLinkStyle, HeaderNavLink } from './HeaderNavLink'
 import { darkTheme } from '../../../theme/darkTheme'
 import { isAtLeastEditor } from '../../../utils/roleUtils'
 import { useRoutes } from '../../../hooks/useRoutes'
 import { InPlaceSignInContext } from '../../../context/InPlaceSignInContext/InPlaceSignInContext'
-import { useRouter } from 'next/router'
 
 const signOutMutation = require('./graphql/signOutMutation.graphql')
 

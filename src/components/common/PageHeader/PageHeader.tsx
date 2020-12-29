@@ -8,6 +8,7 @@ import { WidthFixer } from '../WidthFixer/WidthFixer'
 import { HeaderSearchForm } from './HeaderSearchForm'
 import HeaderUser from './HeaderUser'
 import { useRoutes } from '../../../hooks/useRoutes'
+import { useHideInPlaceLogin } from '../../../hooks/useHideInPlaceLogin'
 
 const useStyles = createUseStyles({
     placeholder: {
@@ -55,6 +56,9 @@ export const PageHeader = () => {
     const { t } = useTranslation('common')
     const routes = useRoutes()
 
+    // When link is clicked, we need to hide in-place login, so user sees page content
+    const hideInPlaceLogin = useHideInPlaceLogin()
+
     return (
         <>
             <nav className={classes.container}>
@@ -62,7 +66,7 @@ export const PageHeader = () => {
                     <div className={classes.part}>
                         <Link href={{ pathname: '/homepage' }} as="/">
                             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                            <a className={classes.rightSpacer}>
+                            <a role="button" tabIndex={0} className={classes.rightSpacer} onClick={hideInPlaceLogin}>
                                 <img
                                     src="/images/ld-logo-ver-091EA8500E0CBCBECE1FACC3A785855B.png"
                                     height="25"

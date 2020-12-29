@@ -9,6 +9,7 @@ interface Props {
     readonly href: string | UrlObject
     readonly as: string
     readonly className?: string
+    readonly onClick?: () => void
 }
 
 const useStyles = createUseStyles({
@@ -22,12 +23,12 @@ const useStyles = createUseStyles({
     },
 })
 
-export const TextLink: React.FC<Props> = ({ href, as, className, children }) => {
+export const TextLink: React.FC<Props> = ({ href, as, className, onClick, children }) => {
     const classes = useStyles()
 
     return (
         <Link href={href} as={as}>
-            <a href="/" className={classNames(classes.link, className)}>
+            <a href="/" className={classNames(classes.link, className)} onClick={onClick}>
                 {children}
             </a>
         </Link>

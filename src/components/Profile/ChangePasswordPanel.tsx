@@ -4,8 +4,6 @@ import { Form as FinalForm } from 'react-final-form'
 import { Button } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { TFunction } from 'i18next'
-import { createUseStyles } from 'react-jss'
-import { darkTheme } from 'src/theme/darkTheme'
 import { useRoutes } from 'src/hooks/useRoutes'
 import FormPageRow from '../common/FormPageRow/FormPageRow'
 import FormTextInputField from '../common/form/FormTextInputField'
@@ -18,6 +16,7 @@ import {
 import UserDetailPanel from './UserDetailPanel'
 import UserProfileTabs from './UserProfileTabs'
 import { useShowToast } from '../../hooks/useShowToast'
+import GraphQLErrorContent, { PropsFromGraphQLError } from '../common/GraphQLErrorContent/GraphQLErrorContent'
 
 const loadUserSettingsGql = require('./graphql/loadCurrentUserSettings.graphql')
 const changePasswordGql = require('./graphql/changePassword.graphql')
@@ -28,21 +27,15 @@ interface FormData {
     newPasswordAgain: string
 }
 
-type TState = 'idle' | 'loading' | 'oldPasswordError' | 'otherError'
+type TState = 'idle' | 'loading' | 'oldPasswordError'
 
-const validate = (t: TFunction) => (data: FormData) => {
+const validate = (t: TFunction, hasOldPasswordError: boolean) => (data: FormData) => {
     return {
+        oldPassword: hasOldPasswordError ? t('ChangePassword.oldPasswordError') : undefined,
         newPasswordAgain:
             data.newPassword !== data.newPasswordAgain ? t('ChangePassword.passwordAgainError') : undefined,
     }
 }
-
-const useStyles = createUseStyles({
-    error: {
-        color: darkTheme.red,
-        marginBottom: 16,
-    },
-})
 
 const ChangePasswordPanel = () => {
     const loadQuery = useQuery<LoadCurrentUserSettingsQuery>(loadUserSettingsGql)
@@ -51,7 +44,6 @@ const ChangePasswordPanel = () => {
     const routes = useRoutes()
     const [state, setState] = useState<TState>('idle')
     const loggedInUser = loadQuery.data?.loggedInUser
-    const classes = useStyles()
     const showToast = useShowToast()
 
     const onSubmit = async (data: FormData) => {
@@ -72,10 +64,15 @@ const ChangePasswordPanel = () => {
                 routes.push(routes.currentProfile())
             })
             .catch(e => {
-                if (e?.graphQLErrors?.[0]?.extensions?.path) {
+                const firstError = e?.graphQLErrors?.[0]
+                if (firstError?.extensions?.path === 'oldPassword') {
                     setState('oldPasswordError')
                 } else {
-                    setState('otherError')
+                    if (firstError) {
+                        const { errorClass, valuePath } = PropsFromGraphQLError(firstError)
+                        showToast(<GraphQLErrorContent errorClass={errorClass} valuePath={valuePath} />, 'alert')
+                    }
+                    setState('idle')
                 }
             })
     }
@@ -85,13 +82,9 @@ const ChangePasswordPanel = () => {
             <UserDetailPanel userData={loggedInUser ?? undefined} />
             <UserProfileTabs selectedTab="changePassword" />
             <FormPageRow headerText={t('ChangePassword.header')}>
-                {state === 'oldPasswordError' && (
-                    <div className={classes.error}>{t('ChangePassword.oldPasswordError')}</div>
-                )}
-                {state === 'otherError' && <div className={classes.error}>{t('ChangePassword.error')}</div>}
                 <FinalForm<FormData>
                     onSubmit={onSubmit}
-                    validate={validate(t)}
+                    validate={validate(t, state === 'oldPasswordError')}
                     render={({ handleSubmit }) => (
                         <form onSubmit={handleSubmit}>
                             <input
@@ -106,6 +99,7 @@ const ChangePasswordPanel = () => {
                                 autoComplete="current-password"
                                 placeholder={t('ChangePassword.oldPassword')}
                                 validate={fieldValidator(t, validateRequired)}
+                                onChange={() => setState('idle')}
                             />
                             <FormTextInputField
                                 name="newPassword"

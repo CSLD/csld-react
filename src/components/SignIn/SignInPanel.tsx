@@ -5,6 +5,7 @@ import { Button } from 'react-bootstrap'
 import { createUseStyles } from 'react-jss'
 import { TFunction } from 'i18next'
 import { useApolloClient, useMutation } from '@apollo/client'
+import { useRouter } from 'next/router'
 import FormTextInputField from '../common/form/FormTextInputField'
 import { darkTheme } from '../../theme/darkTheme'
 import { validateEmail, validateRequired, validateWithValidators } from '../../utils/validationUtils'
@@ -13,7 +14,7 @@ import { TextLink } from '../common/TextLink/TextLink'
 import FormPageRow from '../common/FormPageRow/FormPageRow'
 import { useRoutes } from '../../hooks/useRoutes'
 import { useFocusInput } from '../../hooks/useFocusInput'
-import { useRouter } from 'next/router'
+import { useHideInPlaceLogin } from '../../hooks/useHideInPlaceLogin'
 
 const logInMutationGql = require('./graphql/logInMutation.graphql')
 
@@ -58,6 +59,9 @@ const SignInPanel = ({ infoMessage, stayOnPage, onSuccess }: Props) => {
     const router = useRouter()
     const formRef = useFocusInput<HTMLFormElement>('email')
 
+    // When link is clicked, we need to hide in-place login, so user sees page content
+    const hideInPlaceLogin = useHideInPlaceLogin()
+
     const onSubmit = async (data: FormData) => {
         const res = await logInMutation({
             variables: {
@@ -86,6 +90,7 @@ const SignInPanel = ({ infoMessage, stayOnPage, onSuccess }: Props) => {
         }
     }
     const { href: recoverHref, as: recoverAs } = routes.recoverPasswordStart()
+    const { href: signUpHref, as: signUpAs } = routes.signUp()
 
     return (
         <FormPageRow headerText={infoMessage || t('SignIn.header')}>
@@ -107,8 +112,12 @@ const SignInPanel = ({ infoMessage, stayOnPage, onSuccess }: Props) => {
                                 showErrorPlaceholder={false}
                             /> */}
                         <div className={classes.recoverPassword}>
-                            <TextLink href={recoverHref} as={recoverAs}>
+                            <TextLink href={recoverHref} as={recoverAs} onClick={hideInPlaceLogin}>
                                 {t('SignIn.forgotPassword')}
+                            </TextLink>
+                            &nbsp;|&nbsp;
+                            <TextLink href={signUpHref} as={signUpAs} onClick={hideInPlaceLogin}>
+                                {t('SignIn.signUp')}
                             </TextLink>
                         </div>
                         <Button variant="dark" type="submit" disabled={loading}>
