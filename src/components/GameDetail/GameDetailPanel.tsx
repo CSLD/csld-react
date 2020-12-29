@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
 import { createUseStyles } from 'react-jss'
 import { useTranslation } from 'react-i18next'
@@ -27,6 +27,7 @@ import ConfirmationModal from '../common/ConfirmationModal/ConfirmationModal'
 import { useRoutes } from '../../hooks/useRoutes'
 import { canDelete, canEdit } from '../../utils/graphqlUtils'
 import { useShowToast } from '../../hooks/useShowToast'
+import { searchInputId } from '../common/PageHeader/HeaderSearchForm'
 
 const cachedGameDataGql = require('./graphql/cachedGameData.graphql')
 const gameDetailGql = require('./graphql/gameDetail.graphql')
@@ -144,6 +145,12 @@ export const GameDetailPanel = ({ gameId }: Props) => {
         ssr: false,
     })
     let gameFragment: CachedGameDataFragment | undefined | null
+
+    // Defocus header search input on first render hiding the menu
+    // Not a very React-ish way, but it is the most simple
+    useEffect(() => {
+        document.getElementById(searchInputId)?.blur()
+    }, [])
 
     try {
         // Throws exception on server, so we guard it

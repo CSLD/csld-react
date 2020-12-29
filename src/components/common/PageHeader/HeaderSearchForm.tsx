@@ -12,6 +12,8 @@ import {
 } from '../../../graphql/__generated__/typescript-operations'
 import { GameBaseDataPanel } from '../GameBaseDataPanel/GameBaseDataPanel'
 
+export const searchInputId = 'headerSearchInput'
+
 const searchGamesQuery = require('./graphql/searchGamesQuery.graphql')
 
 const useStyles = createUseStyles({
@@ -143,6 +145,7 @@ export const HeaderSearchForm = () => {
     return (
         <div className={classes.wrapper}>
             <input
+                id={searchInputId}
                 placeholder={t('PageHeader.search.placeholder')}
                 className={classes.searchInput}
                 onChange={handleChange}
