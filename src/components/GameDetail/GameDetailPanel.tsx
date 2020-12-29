@@ -140,7 +140,12 @@ export const GameDetailPanel = ({ gameId }: Props) => {
         variables: {
             gameId,
         },
+        // We set fetchPolicy to 'cache-and-network' so that game data are re-fetched from server on the first render
+        // even when they are in the cache. We set nextFetchPolicy to 'cache-first' so when we mutate game, returned
+        // data are just updated in the cache, but this query returns just those cached data, they are not re-fetched
+        // completely from the server as 'cache-and-network' does.
         fetchPolicy: 'cache-and-network',
+        nextFetchPolicy: 'cache-first',
         skip: !isInBrowser,
         ssr: false,
         returnPartialData: true,

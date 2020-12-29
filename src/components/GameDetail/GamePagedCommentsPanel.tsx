@@ -1,24 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useApolloClient, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { Button } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { createUseStyles } from 'react-jss'
+import isInBrowser from 'is-in-browser'
 import {
     CommentsPaged,
     MoreCommentsQuery,
     MoreCommentsQueryVariables,
-    UpdateCommentMutation,
-    UpdateCommentMutationVariables,
 } from '../../graphql/__generated__/typescript-operations'
 import PagedCommentsPanel from '../common/PagedCommentsPanel/PagedCommentsPanel'
 import { useLoggedInUser } from '../../hooks/useLoggedInUser'
 import { IconDisabled, IconEdit, IconLoading, IconPlus } from '../common/Icons/Icons'
-import { useShowToast } from '../../hooks/useShowToast'
 
 const EditCommentModal = React.lazy(() => import('./EditCommentModal'))
 
 const moreCommentsGql = require('./graphql/moreComments.graphql')
-const updateCommentGql = require('./graphql/updateComment.graphql')
 
 interface Props {
     readonly gameId: string
@@ -41,10 +38,9 @@ export const GamePagedCommentsPanel = ({ gameId, commentsDisabled }: Props) => {
     const [editModalLoaded, setEditModalLoaded] = useState(false)
     const lastPageRef = useRef<CommentsPaged | undefined>(undefined)
     const classes = useStyles()
-    const showToast = useShowToast()
     const { t } = useTranslation('common')
     const loggedInUser = useLoggedInUser()
-    const client = useApolloClient()
+
     // Clear cached page when gameId changes
     useEffect(() => {
         lastPageRef.current = undefined
@@ -56,6 +52,8 @@ export const GamePagedCommentsPanel = ({ gameId, commentsDisabled }: Props) => {
             commentsOffset: offset,
             commentsLimit: PAGE_SIZE,
         },
+        fetchPolicy: 'cache-and-network',
+        skip: !isInBrowser,
         ssr: false,
     })
 
@@ -64,19 +62,10 @@ export const GamePagedCommentsPanel = ({ gameId, commentsDisabled }: Props) => {
 
     const currentUsersComment = query.data?.gameById?.currentUsersComment?.comment
 
-    const handleSaveComment = async (newText: string) => {
-        const res = await client.mutate<UpdateCommentMutation, UpdateCommentMutationVariables>({
-            mutation: updateCommentGql,
-            variables: {
-                gameId,
-                comment: newText,
-            },
-        })
-        if (res.data) {
-            showToast(t(currentUsersComment ? 'GameDetail.commentUpdated' : 'GameDetail.commentAdded'), 'success')
-            query.refetch()
-            setEditModalShown(false)
-        }
+    const handleCommentSaved = () => {
+        // We must refetch comments manually, since there might be comment added
+        query.refetch()
+        setEditModalShown(false)
     }
 
     const editModalLoading = editModalShown && !editModalLoaded
@@ -118,10 +107,11 @@ export const GamePagedCommentsPanel = ({ gameId, commentsDisabled }: Props) => {
             {editModalShown && (
                 <React.Suspense fallback={<span />}>
                     <EditCommentModal
+                        gameId={gameId}
                         oldText={currentUsersComment || ''}
                         onHide={() => setEditModalShown(false)}
                         onLoad={() => setEditModalLoaded(true)}
-                        onSubmit={handleSaveComment}
+                        onCommentSaved={handleCommentSaved}
                     />
                 </React.Suspense>
             )}
