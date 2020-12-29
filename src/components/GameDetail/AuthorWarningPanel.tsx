@@ -10,9 +10,9 @@ interface Props {
 
 const useStyles = createUseStyles({
     text: {
-        fontSize: '0.70rem',
+        fontSize: '0.75rem',
         color: darkTheme.text,
-        width: 350,
+        width: 355,
         textAlign: 'left',
         marginBottom: 16,
     },

@@ -25,6 +25,7 @@ export const formClasses = {
     form: {
         backgroundColor: darkTheme.backgroundWhite,
         color: darkTheme.textOnLight,
+        padding: '0 15px',
     },
     helpText: {
         fontSize: '0.75rem',

@@ -13,6 +13,7 @@ import {
 } from '../../graphql/__generated__/typescript-operations'
 import FormTextInputField from '../common/form/FormTextInputField'
 import { fieldValidator, validateRequired } from '../../utils/validationUtils'
+import SubmitButton from '../common/SubmitButton/SubmitButton'
 
 const createGroupGql = require('./graphql/createGroup.graphql')
 const updateGroupGql = require('./graphql/updateGroup.graphql')
@@ -59,26 +60,26 @@ const GroupEditModal = ({ id, initialName, onHide }: Props) => {
         <Form onSubmit={handleSave} initialValues={{ name: initialName }}>
             {({ handleSubmit }) => (
                 <Modal show onHide={onHide}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>{t(id ? 'GroupEditModal.titleEdit' : 'GroupEditModal.titleCreate')}</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <form ref={formRef}>
+                    <form ref={formRef} onSubmit={handleSubmit}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>
+                                {t(id ? 'GroupEditModal.titleEdit' : 'GroupEditModal.titleCreate')}
+                            </Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
                             <FormTextInputField
                                 name="name"
                                 placeholder={t('GroupEditModal.name')}
                                 validate={fieldValidator(t, validateRequired)}
                             />
-                        </form>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="light" onClick={() => onHide()} disabled={loading}>
-                            {t('GroupEditModal.cancel')}
-                        </Button>
-                        <Button variant="dark" onClick={handleSubmit} disabled={loading}>
-                            {t('GroupEditModal.save')}
-                        </Button>
-                    </Modal.Footer>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="light" onClick={() => onHide()} disabled={loading}>
+                                {t('GroupEditModal.cancel')}
+                            </Button>
+                            <SubmitButton submitting={loading}>{t('GroupEditModal.save')}</SubmitButton>
+                        </Modal.Footer>
+                    </form>
                 </Modal>
             )}
         </Form>

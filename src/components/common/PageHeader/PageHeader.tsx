@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { createUseStyles } from 'react-jss'
 import { useTranslation } from 'react-i18next'
 import Link from 'next/link'
@@ -55,6 +55,11 @@ export const PageHeader = () => {
     const classes = useStyles()
     const { t } = useTranslation('common')
     const routes = useRoutes()
+
+    // Set document title
+    useEffect(() => {
+        document.title = t('PageHeader.csld')
+    }, [])
 
     // When link is clicked, we need to hide in-place login, so user sees page content
     const hideInPlaceLogin = useHideInPlaceLogin()
