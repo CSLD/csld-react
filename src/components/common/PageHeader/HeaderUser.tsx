@@ -5,10 +5,11 @@ import { Dropdown } from 'react-bootstrap'
 import { createUseStyles } from 'react-jss'
 import { UserContext } from 'src/context/UserContext/UserContext'
 import isInBrowser from 'is-in-browser'
-import { HeaderNavLink } from './HeaderNavLink'
+import { headerLinkStyle, HeaderNavLink } from './HeaderNavLink'
 import { darkTheme } from '../../../theme/darkTheme'
 import { isAtLeastEditor } from '../../../utils/roleUtils'
 import { useRoutes } from '../../../hooks/useRoutes'
+import { InPlaceSignInContext } from '../../../context/InPlaceSignInContext/InPlaceSignInContext'
 
 const signOutMutation = require('./graphql/signOutMutation.graphql')
 
@@ -42,6 +43,7 @@ const useStyles = createUseStyles({
         marginRight: 2,
         borderRadius: 2,
     },
+    signInLink: headerLinkStyle,
 })
 
 const CustomToggle = React.forwardRef<HTMLButtonElement, CustomToggleProps>(
@@ -72,6 +74,8 @@ const HeaderUser = () => {
     const routes = useRoutes()
     const client = useApolloClient()
     const userContext = useContext(UserContext)
+    const signInContext = useContext(InPlaceSignInContext)
+    const classes = useStyles()
 
     const user = userContext?.value
 
@@ -97,6 +101,8 @@ const HeaderUser = () => {
             routes.push(routes.homepage())
         }
     }
+
+    const handleSignIn = () => signInContext.setValue(true)
 
     const loading = !isInBrowser || (user && !user.id)
 
@@ -125,7 +131,9 @@ const HeaderUser = () => {
 
     return (
         <>
-            <HeaderNavLink route={routes.signIn()}>{t('PageHeader.signIn')}</HeaderNavLink>
+            <button type="button" className={classes.signInLink} onClick={handleSignIn}>
+                {t('PageHeader.signIn')}
+            </button>
             <HeaderNavLink route={routes.signUp()}>{t('PageHeader.signUp')}</HeaderNavLink>
         </>
     )

@@ -16,7 +16,8 @@
         "jsx-a11y/click-events-have-key-events": "off",
         "react/require-default-props": [1, {
             "ignoreFunctionalComponents": true
-        }]
+        }],
+        "react/destructuring-assignment": "off"
     },
     "settings": {
         "import/parsers": {

@@ -8,11 +8,15 @@ import { config } from '@fortawesome/fontawesome-svg-core'
 import { WithApolloProps } from 'next-with-apollo'
 import UserContextProvider from 'src/context/UserContext/UserContextProvider'
 import { Router } from 'next/router'
-import { withApolloWrapper } from '../../src/with/withApolloProvider'
+import { withApolloWrapper } from 'src/with/withApolloProvider'
+import ToastContextProvider from 'src/context/ToastContext/ToastContextProvider'
+import { PageHeader } from 'src/components/common/PageHeader/PageHeader'
+import { PageFooter } from 'src/components/common/PageFooter/PageFooter'
+import { InPlaceSignInContextProvider } from 'src/context/InPlaceSignInContext/InPlaceSignInContextProvider'
 
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import 'react-bootstrap-typeahead/css/Typeahead.css'
-import ToastContextProvider from '../../src/context/ToastContext/ToastContextProvider'
+import InPlaceSignInWrapper from 'src/components/common/InPlaceSignInWrapper/InPlaceSignInWrapper'
 
 // Import the CSS
 config.autoAddCss = false // Tell Font Awesome to skip adding the CSS automatically since it's being imported above
@@ -45,8 +49,14 @@ class WebApp extends App<AppInitialProps & WithApolloProps<any>> {
                 <ToastContextProvider>
                     <ApolloProvider client={apollo}>
                         <UserContextProvider>
-                            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-                            <Component {...pageProps} />
+                            <InPlaceSignInContextProvider>
+                                <PageHeader />
+                                <InPlaceSignInWrapper>
+                                    {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+                                    <Component {...pageProps} />
+                                </InPlaceSignInWrapper>
+                                <PageFooter />
+                            </InPlaceSignInContextProvider>
                         </UserContextProvider>
                     </ApolloProvider>
                 </ToastContextProvider>

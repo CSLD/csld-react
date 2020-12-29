@@ -45,9 +45,10 @@ const validate = (t: TFunction) => (data: FormData) =>
 interface Props {
     readonly infoMessage?: string
     readonly stayOnPage?: boolean
+    readonly onSuccess?: () => void
 }
 
-const SignInPanel = ({ infoMessage, stayOnPage }: Props) => {
+const SignInPanel = ({ infoMessage, stayOnPage, onSuccess }: Props) => {
     const { t } = useTranslation('common')
     const classes = useStyles()
     const client = useApolloClient()
@@ -66,9 +67,14 @@ const SignInPanel = ({ infoMessage, stayOnPage }: Props) => {
         if (res.data?.user?.logIn) {
             // Success
 
-            // Go to homepage
+            // Clear GraphQL cache
             await client.resetStore()
+
+            // Call callback
+            onSuccess?.()
+
             if (!stayOnPage) {
+                // Ho to homepage
                 routes.push(routes.homepage())
             }
         }

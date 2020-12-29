@@ -65,7 +65,9 @@
   },
 
   "GameDetail": {
-    "logInToRate": "Pro hodnocení se musíte přihlásit.",
+    "logInToRateBefore": "Pro hodnocení se musíte ",
+    "logInToRateButton": "přihlásit",
+    "logInToRateAfter": ".",
     "totalPlayed": "{{amountOfRatings}} celkem",
     "similarGames": "Podobné larpy",
     "comments": "Komentáře",

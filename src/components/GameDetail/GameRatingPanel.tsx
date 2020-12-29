@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 
 import { Game, Rating, User } from 'src/graphql/__generated__/typescript-operations'
 import { createUseStyles } from 'react-jss'
@@ -13,6 +13,7 @@ import { useLoggedInUser } from '../../hooks/useLoggedInUser'
 import RatingStateButtons from './RatingStateButtons'
 import RatingStars from './RatingStars'
 import AuthorWarningPanel from './AuthorWarningPanel'
+import { InPlaceSignInContext } from '../../context/InPlaceSignInContext/InPlaceSignInContext'
 
 interface Props {
     readonly game: Pick<Game, 'id' | 'averageRating' | 'amountOfRatings' | 'ratingStats' | 'ratingsDisabled'> & {
@@ -79,6 +80,16 @@ const useStyles = createUseStyles({
         fontSize: '0.75rem',
         color: darkTheme.text,
     },
+    signInButton: {
+        border: 0,
+        background: 'transparent',
+        color: darkTheme.textGreen,
+        padding: '4px 0',
+
+        '&:hover': {
+            color: darkTheme.text,
+        },
+    },
     ...ratingStyles,
 })
 
@@ -89,6 +100,7 @@ export const GameRatingPanel = ({
     const { t } = useTranslation('common')
     const loggedInUser = useLoggedInUser()
     const [selfRatingDismissed, setSelfRatingDismissed] = useState(false)
+    const signInContext = useContext(InPlaceSignInContext)
 
     const max = ratingStats.reduce((currentMax, rating) => Math.max(currentMax, rating.count), 0)
     let statsMap = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -146,7 +158,15 @@ export const GameRatingPanel = ({
                     })}
                 </div>
             </div>
-            {!loggedInUser && <div className={classes.login}>{t('GameDetail.logInToRate')}</div>}
+            {!loggedInUser && (
+                <div className={classes.login}>
+                    {t('GameDetail.logInToRateBefore')}
+                    <button type="button" onClick={() => signInContext.setValue(true)} className={classes.signInButton}>
+                        {t('GameDetail.logInToRateButton')}
+                    </button>
+                    {t('GameDetail.logInToRateAfter')}
+                </div>
+            )}
             {currentUserId && ratingsDisabled && (
                 <div className={classes.ratingsDisabled}>{t('GameDetail.ratingsDisabled')}</div>
             )}

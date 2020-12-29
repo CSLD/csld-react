@@ -1,8 +1,6 @@
 import React from 'react'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { PageHeader } from '../../src/components/common/PageHeader/PageHeader'
-import { PageFooter } from '../../src/components/common/PageFooter/PageFooter'
 import { LadderType } from '../../src/graphql/__generated__/typescript-operations'
 import LadderPanel from '../../src/components/Ladders/LadderPanel'
 import { getLabelIds } from '../../src/utils/roleUtils'
@@ -38,15 +36,11 @@ const GamesPage: NextPage<Props, InitialProps> = () => {
     const router = useRouter()
 
     return (
-        <>
-            <PageHeader />
-            <LadderPanel
-                ladderType={resolveLadderType(router.query.ladderType)}
-                initialRequiredLabelIds={getLabelIds(router.query.initialRequiredLabelIds)}
-                initialOptionalLabelIds={getLabelIds(router.query.initialOptionalLabelIds)}
-            />
-            <PageFooter />
-        </>
+        <LadderPanel
+            ladderType={resolveLadderType(router.query.ladderType)}
+            initialRequiredLabelIds={getLabelIds(router.query.initialRequiredLabelIds)}
+            initialOptionalLabelIds={getLabelIds(router.query.initialOptionalLabelIds)}
+        />
     )
 }
 

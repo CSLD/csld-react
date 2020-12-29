@@ -9,20 +9,24 @@ interface Props {
     readonly target?: string
 }
 
-const useStyles = createUseStyles({
-    link: {
-        height: 50,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '0 15px',
-        color: darkTheme.text,
-        fontSize: '0.8rem',
+export const headerLinkStyle = {
+    height: 50,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '0 15px',
+    color: darkTheme.text,
+    fontSize: '0.8rem',
+    border: 0,
+    background: 'transparent',
 
-        '&:hover': {
-            color: darkTheme.textGreen,
-        },
+    '&:hover': {
+        color: darkTheme.textGreen,
     },
+}
+
+const useStyles = createUseStyles({
+    link: headerLinkStyle,
 })
 
 export const HeaderNavLink: React.FC<Props> = ({ route, target, children }) => {
