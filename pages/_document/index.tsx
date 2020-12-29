@@ -10,8 +10,13 @@ const globalStyle = `
       font-size: 16px;
       background-color: ${darkTheme.backgroundLight};
       box-sizing: border-box;
+      overflow-y: scroll;
     }
     
+    body.modal-open #mainNav {
+        right: 16px;
+    }
+        
     a {
       text-decoration: none;
       color: unset;

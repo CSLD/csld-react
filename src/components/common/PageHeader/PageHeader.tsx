@@ -66,7 +66,7 @@ export const PageHeader = () => {
 
     return (
         <>
-            <nav className={classes.container}>
+            <nav className={classes.container} id="mainNav">
                 <WidthFixer className={classes.innerContainer}>
                     <div className={classes.part}>
                         <Link href={{ pathname: '/homepage' }} as="/">
