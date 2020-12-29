@@ -11,10 +11,11 @@ import {
     UpdateCommentMutationVariables,
 } from '../../graphql/__generated__/typescript-operations'
 import PagedCommentsPanel from '../common/PagedCommentsPanel/PagedCommentsPanel'
-import EditCommentModal from './EditCommentModal'
 import { useLoggedInUser } from '../../hooks/useLoggedInUser'
-import { IconDisabled, IconEdit, IconPlus } from '../common/Icons/Icons'
+import { IconDisabled, IconEdit, IconLoading, IconPlus } from '../common/Icons/Icons'
 import { useShowToast } from '../../hooks/useShowToast'
+
+const EditCommentModal = React.lazy(() => import('./EditCommentModal'))
 
 const moreCommentsGql = require('./graphql/moreComments.graphql')
 const updateCommentGql = require('./graphql/updateComment.graphql')
@@ -37,6 +38,7 @@ const useStyles = createUseStyles({
 export const GamePagedCommentsPanel = ({ gameId, commentsDisabled }: Props) => {
     const [offset, setOffset] = useState(0)
     const [editModalShown, setEditModalShown] = useState(false)
+    const [editModalLoaded, setEditModalLoaded] = useState(false)
     const lastPageRef = useRef<CommentsPaged | undefined>(undefined)
     const classes = useStyles()
     const showToast = useShowToast()
@@ -77,13 +79,20 @@ export const GamePagedCommentsPanel = ({ gameId, commentsDisabled }: Props) => {
         }
     }
 
+    const editModalLoading = editModalShown && !editModalLoaded
+
     return (
         <>
             {loggedInUser?.id && page && (
                 <div className={classes.commentButtonWrapper}>
                     {!currentUsersComment && !commentsDisabled && (
-                        <Button size="sm" variant="dark" onClick={() => setEditModalShown(true)}>
-                            <IconPlus />
+                        <Button
+                            size="sm"
+                            variant="dark"
+                            onClick={() => setEditModalShown(true)}
+                            disabled={editModalLoading}
+                        >
+                            {editModalLoading ? <IconLoading /> : <IconPlus />}
                             &nbsp;&nbsp;{t('GameDetail.addComment')}
                         </Button>
                     )}
@@ -94,19 +103,27 @@ export const GamePagedCommentsPanel = ({ gameId, commentsDisabled }: Props) => {
                         </Button>
                     )}
                     {currentUsersComment && (
-                        <Button size="sm" variant="dark" onClick={() => setEditModalShown(true)}>
-                            <IconEdit />
+                        <Button
+                            size="sm"
+                            variant="dark"
+                            onClick={() => setEditModalShown(true)}
+                            disabled={editModalLoading}
+                        >
+                            {editModalLoading ? <IconLoading /> : <IconEdit />}
                             &nbsp;&nbsp;{t('GameDetail.updateComment')}
                         </Button>
                     )}
                 </div>
             )}
             {editModalShown && (
-                <EditCommentModal
-                    oldText={currentUsersComment || ''}
-                    onHide={() => setEditModalShown(false)}
-                    onSubmit={handleSaveComment}
-                />
+                <React.Suspense fallback={<span />}>
+                    <EditCommentModal
+                        oldText={currentUsersComment || ''}
+                        onHide={() => setEditModalShown(false)}
+                        onLoad={() => setEditModalLoaded(true)}
+                        onSubmit={handleSaveComment}
+                    />
+                </React.Suspense>
             )}
             <PagedCommentsPanel page={page} pageSize={PAGE_SIZE} offset={offset} onOffsetChanged={setOffset} />
         </>

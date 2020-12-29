@@ -111,9 +111,7 @@ const NewAuthorModal = ({ onHide, onAddAuthor }: Props) => {
                                     errorHint={
                                         usedByUser ? (
                                             <EmailUsedErrorHint name={usedByUser.name} onAdd={handleAddFoundUser} />
-                                        ) : (
-                                            undefined
-                                        )
+                                        ) : undefined
                                     }
                                 />
                                 <FormTextInputField

@@ -3,7 +3,7 @@ import { createUseStyles } from 'react-jss'
 import { useQuery } from '@apollo/client'
 import { useRoutes } from 'src/hooks/useRoutes'
 import { useTranslation } from 'react-i18next'
-import GameEditForm, { FormValues } from './GameEditForm'
+import type { FormValues } from './GameEditForm'
 import { darkTheme } from '../../theme/darkTheme'
 import { WidthFixer } from '../common/WidthFixer/WidthFixer'
 import {
@@ -18,6 +18,8 @@ import {
 } from '../../graphql/__generated__/typescript-operations'
 import { formatAuthorLabel } from './NewAuthorModal'
 import { TabDefinition, Tabs } from '../common/Tabs/Tabs'
+
+const GameEditForm = React.lazy(() => import('./GameEditForm'))
 
 const loadGameForEditGql = require('./graphql/loadGameForEdit.graphql')
 
@@ -122,13 +124,16 @@ const GameEditPage = ({ gameId }: Props) => {
             <div className={classes.row}>
                 <WidthFixer className={classes.body}>
                     {ready && (
-                        <GameEditForm
-                            gameId={gameId}
-                            onGameSaved={handleGameSaved}
-                            initialValues={initialValues}
-                            authorizedOptionalLabels={data?.authorizedOptionalLabels}
-                            authorizedRequiredLabels={data?.authorizedRequiredLabels}
-                        />
+                        <React.Suspense fallback={<span />}>
+                            {/* TODO: Might start loading GameEditForm even when data are not ready yet (?) */}
+                            <GameEditForm
+                                gameId={gameId}
+                                onGameSaved={handleGameSaved}
+                                initialValues={initialValues}
+                                authorizedOptionalLabels={data?.authorizedOptionalLabels}
+                                authorizedRequiredLabels={data?.authorizedRequiredLabels}
+                            />
+                        </React.Suspense>
                     )}
                 </WidthFixer>
             </div>

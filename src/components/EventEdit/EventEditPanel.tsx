@@ -10,10 +10,11 @@ import {
 import { formClasses } from '../../utils/formClasses'
 import { createGameLabel, LinkedGame } from './GamesAutoCompleteField'
 import { WidthFixer } from '../common/WidthFixer/WidthFixer'
-import GameEditForm from '../GameEdit/GameEditForm'
 import { emptyInitialValues, toInitialValues } from './formUtils'
-import EventEditForm from './EventEditForm'
 import { TabDefinition, Tabs } from '../common/Tabs/Tabs'
+
+const GameEditForm = React.lazy(() => import('../GameEdit/GameEditForm'))
+const EventEditForm = React.lazy(() => import('./EventEditForm'))
 
 const loadEventForEditGql = require('./graphql/loadEventForEdit.graphql')
 
@@ -99,17 +100,22 @@ const EventEditPanel = ({ eventId }: Props) => {
             <div className={classes.row}>
                 <WidthFixer className={classes.body}>
                     {ready && (
-                        <EventEditForm
-                            eventId={eventId}
-                            onCreateNewGame={handleStartCreatingGame}
-                            hideForm={addingGame}
-                            initialValues={initialValues || emptyInitialValues}
-                            authorizedOptionalLabels={data?.authorizedOptionalLabels}
-                            authorizedRequiredLabels={data?.authorizedRequiredLabels}
-                        />
+                        <React.Suspense fallback={<span />}>
+                            {/* TODO: Might start loading EventEditForm even before data are ready? */}
+                            <EventEditForm
+                                eventId={eventId}
+                                onCreateNewGame={handleStartCreatingGame}
+                                hideForm={addingGame}
+                                initialValues={initialValues || emptyInitialValues}
+                                authorizedOptionalLabels={data?.authorizedOptionalLabels}
+                                authorizedRequiredLabels={data?.authorizedRequiredLabels}
+                            />
+                        </React.Suspense>
                     )}
                     {addingGame && (
-                        <GameEditForm onGameSaved={handleGameCreated} onFormCanceled={handleCancelCreatingGame} />
+                        <React.Suspense fallback={<span />}>
+                            <GameEditForm onGameSaved={handleGameCreated} onFormCanceled={handleCancelCreatingGame} />
+                        </React.Suspense>
                     )}
                 </WidthFixer>
             </div>

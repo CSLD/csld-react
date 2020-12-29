@@ -1,5 +1,5 @@
 import { TFunction } from 'i18next'
-import { EditorState } from 'draft-js'
+import type { EditorState } from 'draft-js'
 
 const emailRe = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 

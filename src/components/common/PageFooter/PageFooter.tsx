@@ -5,8 +5,6 @@ import { WidthFixer } from '../WidthFixer/WidthFixer'
 import { darkTheme } from '../../../theme/darkTheme'
 import { IconFacebook } from '../Icons/Icons'
 
-interface Props {}
-
 const useStyles = createUseStyles({
     footerWrapper: {
         borderTop: '1px solid black',

@@ -121,9 +121,7 @@ const UserSettingsPanel = () => {
                                                 <Form.Control.Feedback type="invalid">
                                                     {t('UserSettings.emailAlreadyUsed', { name: usedByUser.name })}
                                                 </Form.Control.Feedback>
-                                            ) : (
-                                                undefined
-                                            )
+                                            ) : undefined
                                         }
                                     />
                                     <hr />

@@ -1,24 +1,28 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button, Modal } from 'react-bootstrap'
 import { EditorState } from 'draft-js'
 import { Form } from 'react-final-form'
-import { editorStateToHtml, htmlToEditorState } from '../common/form/richTextInputUtils'
+import { editorStateToHtml } from '../common/form/richTextInputUtils'
 import FormRichTextInputField from '../common/form/FormRichTextInputField'
 
 interface Props {
     readonly oldText: string
     readonly onHide: () => void
+    readonly onLoad: () => void
     readonly onSubmit: (newText: string) => Promise<void>
 }
 
 interface FormValues {
-    readonly comment: EditorState
+    readonly comment: EditorState | string | undefined
 }
 
-const EditCommentModal = ({ oldText, onHide, onSubmit }: Props) => {
+const EditCommentModal = ({ oldText, onHide, onLoad, onSubmit }: Props) => {
     const { t } = useTranslation('common')
     const [loading, setLoading] = useState(false)
+
+    // Since we are lazy-load, call back when we are ready
+    useEffect(onLoad, [])
 
     const handleSave = ({ comment }: FormValues) => {
         setLoading(true)
@@ -27,7 +31,7 @@ const EditCommentModal = ({ oldText, onHide, onSubmit }: Props) => {
         setLoading(false)
     }
 
-    const initialValues = useMemo(() => ({ comment: htmlToEditorState(oldText) }), [oldText])
+    const initialValues = useMemo(() => ({ comment: oldText }), [oldText])
 
     return (
         <Form<FormValues> onSubmit={handleSave} initialValues={initialValues}>

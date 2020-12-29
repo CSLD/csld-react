@@ -130,9 +130,7 @@ const SignUpPanel = () => {
                                 errorHint={
                                     usedByUser ? (
                                         <EmailUsedErrorHint name={usedByUser.name} href={recoverHref} as={recoverAs} />
-                                    ) : (
-                                        undefined
-                                    )
+                                    ) : undefined
                                 }
                             />
                             <Row className={classes.rowFixer}>
