@@ -4,6 +4,7 @@ import { Form } from 'react-bootstrap'
 import { FieldValidator } from 'final-form'
 import { Label } from '../../../graphql/__generated__/typescript-operations'
 import FormCheckLabelWithTooltip from './FormCheckLabelWithTooltip'
+import { createUseStyles } from 'react-jss'
 
 export type LabelInList = Pick<Label, 'id' | 'name' | 'description'>
 
@@ -14,11 +15,18 @@ interface Props {
     readonly onChange?: (newValue: string[]) => void
 }
 
+const useStyles = createUseStyles({
+    checkBox: {
+        userSelect: 'none',
+    },
+})
+
 const FormLabelListField = ({ name, labels, validate, onChange }: Props) => {
     const {
         input: { value, onChange: inputOnChange },
         meta: { error, submitFailed },
     } = useField<string[]>(name, { validate })
+    const classes = useStyles()
 
     const hasError = !!error && submitFailed
 
@@ -39,7 +47,13 @@ const FormLabelListField = ({ name, labels, validate, onChange }: Props) => {
     return (
         <Form.Group>
             {labels.map((label, index) => (
-                <Form.Check key={label.id} isInvalid={hasError} type={'checkbox' as any}>
+                <Form.Check
+                    key={label.id}
+                    isInvalid={hasError}
+                    type={'checkbox' as any}
+                    id={`${name}_${label.id}`}
+                    className={classes.checkBox}
+                >
                     <Form.Check.Input
                         type={'checkbox' as any}
                         isInvalid={hasError}
