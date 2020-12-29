@@ -99,6 +99,7 @@ const RecoverPasswordFinish = ({ token }: Props) => {
                         <FormTextInputField
                             name="passwordConfirmation"
                             type="password"
+                            autoComplete="new-password"
                             placeholder={t('RecoverPassword.passwordConfirmation')}
                         />
 

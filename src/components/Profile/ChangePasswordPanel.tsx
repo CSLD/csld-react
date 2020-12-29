@@ -94,21 +94,30 @@ const ChangePasswordPanel = () => {
                     validate={validate(t)}
                     render={({ handleSubmit }) => (
                         <form onSubmit={handleSubmit}>
+                            <input
+                                type="hidden"
+                                name="username"
+                                autoComplete="username"
+                                value={loggedInUser?.email || '_'}
+                            />
                             <FormTextInputField
                                 name="oldPassword"
                                 type="password"
+                                autoComplete="current-password"
                                 placeholder={t('ChangePassword.oldPassword')}
                                 validate={fieldValidator(t, validateRequired)}
                             />
                             <FormTextInputField
                                 name="newPassword"
                                 type="password"
+                                autoComplete="new-password"
                                 placeholder={t('ChangePassword.newPassword')}
                                 validate={fieldValidator(t, validateRequired)}
                             />
                             <FormTextInputField
                                 name="newPasswordAgain"
                                 type="password"
+                                autoComplete="new-password"
                                 placeholder={t('ChangePassword.newPasswordAgain')}
                                 validate={fieldValidator(t, validateRequired)}
                             />

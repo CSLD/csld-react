@@ -10,6 +10,7 @@ import { darkTheme } from '../../../theme/darkTheme'
 import { isAtLeastEditor } from '../../../utils/roleUtils'
 import { useRoutes } from '../../../hooks/useRoutes'
 import { InPlaceSignInContext } from '../../../context/InPlaceSignInContext/InPlaceSignInContext'
+import { useRouter } from 'next/router'
 
 const signOutMutation = require('./graphql/signOutMutation.graphql')
 
@@ -72,6 +73,7 @@ const CustomToggle = React.forwardRef<HTMLButtonElement, CustomToggleProps>(
 const HeaderUser = () => {
     const { t } = useTranslation('common')
     const routes = useRoutes()
+    const router = useRouter()
     const client = useApolloClient()
     const userContext = useContext(UserContext)
     const signInContext = useContext(InPlaceSignInContext)
@@ -102,7 +104,15 @@ const HeaderUser = () => {
         }
     }
 
-    const handleSignIn = () => signInContext.setValue(true)
+    const handleSignIn = () => {
+        if (router.route === routes.homepage().href.pathname) {
+            // Sign in on separate page so password managers catch up
+            routes.push(routes.signIn())
+        } else {
+            // Show in-place sign in
+            signInContext.setValue(true)
+        }
+    }
 
     const loading = !isInBrowser || (user && !user.id)
 

@@ -16,7 +16,7 @@ export interface FormTextInputFieldProps {
     readonly onBlur?: (e: FocusEvent<HTMLInputElement>) => void
     readonly onChange?: (e: ChangeEvent<HTMLInputElement>) => void
     readonly errorHint?: React.ReactNode
-    readonly autoFocus?: boolean
+    readonly autoComplete?: string
 }
 
 /**
@@ -32,6 +32,7 @@ const FormTextInputField = ({
     type,
     appendIcon,
     errorHint,
+    autoComplete,
     onBlur,
     onChange,
 }: FormTextInputFieldProps) => {
@@ -70,6 +71,7 @@ const FormTextInputField = ({
                                 type={type}
                                 onBlur={handleOnBlur}
                                 onChange={handleOnChange}
+                                autoComplete={autoComplete}
                                 /* eslint-disable-next-line react/jsx-props-no-spreading */
                                 {...inputRest}
                                 placeholder={placeholder}
@@ -84,6 +86,7 @@ const FormTextInputField = ({
                             type={type}
                             onBlur={handleOnBlur}
                             onChange={handleOnChange}
+                            autoComplete={autoComplete}
                             /* eslint-disable-next-line react/jsx-props-no-spreading */
                             {...inputRest}
                             placeholder={placeholder}

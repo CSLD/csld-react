@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { createUseStyles } from 'react-jss'
 import Link from 'next/link'
 import { darkTheme } from '../../../theme/darkTheme'
 import { Route } from '../../../hooks/useRoutes'
+import { InPlaceSignInContext } from '../../../context/InPlaceSignInContext/InPlaceSignInContext'
 
 interface Props {
     readonly route: string | Route
@@ -31,6 +32,7 @@ const useStyles = createUseStyles({
 
 export const HeaderNavLink: React.FC<Props> = ({ route, target, children }) => {
     const classes = useStyles()
+    const signInContext = useContext(InPlaceSignInContext)
 
     if (typeof route === 'string') {
         // External link
@@ -41,9 +43,12 @@ export const HeaderNavLink: React.FC<Props> = ({ route, target, children }) => {
         )
     }
 
+    // When link is clicked, we need to hide in-place login, so user sees page content
+    const hideInPlaceLogin = () => signInContext.setValue(false)
+
     return (
         <Link href={route.href} as={route.as} passHref>
-            <a href="/" className={classes.link}>
+            <a href="/" className={classes.link} onClick={hideInPlaceLogin}>
                 {children}
             </a>
         </Link>

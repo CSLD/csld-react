@@ -138,6 +138,7 @@ const SignUpPanel = () => {
                                     <FormTextInputField
                                         name="password"
                                         type="password"
+                                        autoComplete="new-password"
                                         placeholder={t('UserFields.password')}
                                         validate={fieldValidator(t, validateRequired)}
                                     />
@@ -146,6 +147,7 @@ const SignUpPanel = () => {
                                     <FormTextInputField
                                         name="passwordAgain"
                                         type="password"
+                                        autoComplete="new-password"
                                         placeholder={t('UserFields.passwordAgain')}
                                         validate={fieldValidator(t, validateRequired)}
                                     />

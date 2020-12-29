@@ -13,6 +13,7 @@ import { TextLink } from '../common/TextLink/TextLink'
 import FormPageRow from '../common/FormPageRow/FormPageRow'
 import { useRoutes } from '../../hooks/useRoutes'
 import { useFocusInput } from '../../hooks/useFocusInput'
+import { useRouter } from 'next/router'
 
 const logInMutationGql = require('./graphql/logInMutation.graphql')
 
@@ -54,6 +55,7 @@ const SignInPanel = ({ infoMessage, stayOnPage, onSuccess }: Props) => {
     const client = useApolloClient()
     const [logInMutation, { loading }] = useMutation<LogInMutation, LogInMutationVariables>(logInMutationGql)
     const routes = useRoutes()
+    const router = useRouter()
     const formRef = useFocusInput<HTMLFormElement>('email')
 
     const onSubmit = async (data: FormData) => {
@@ -73,7 +75,11 @@ const SignInPanel = ({ infoMessage, stayOnPage, onSuccess }: Props) => {
             // Call callback
             onSuccess?.()
 
-            if (!stayOnPage) {
+            // Do not stay on sign up / recover password spage, because it does not make sense
+            const forceHP =
+                router.route === routes.signUp().href.pathname ||
+                router.route.startsWith(routes.recoverPasswordStart().href.pathname!)
+            if (!stayOnPage || forceHP) {
                 // Ho to homepage
                 routes.push(routes.homepage())
             }
@@ -88,8 +94,13 @@ const SignInPanel = ({ infoMessage, stayOnPage, onSuccess }: Props) => {
                 validate={validate(t)}
                 render={({ handleSubmit }) => (
                     <form onSubmit={handleSubmit} ref={formRef}>
-                        <FormTextInputField name="email" placeholder={t('SignIn.email')} />
-                        <FormTextInputField name="password" type="password" placeholder={t('SignIn.password')} />
+                        <FormTextInputField name="email" autoComplete="email" placeholder={t('SignIn.email')} />
+                        <FormTextInputField
+                            name="password"
+                            type="password"
+                            autoComplete="current-password"
+                            placeholder={t('SignIn.password')}
+                        />
                         {/* <FormCheckBoxField
                                 name="keepLoggedIn"
                                 label={t('SignIn.keepLoggedIn')}
