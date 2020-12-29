@@ -16,6 +16,7 @@ import {
 } from '../../graphql/__generated__/typescript-operations'
 import { useShowToast } from '../../hooks/useShowToast'
 import { useFocusInput } from '../../hooks/useFocusInput'
+import SubmitButton from '../common/SubmitButton/SubmitButton'
 
 interface Props {
     readonly token: string
@@ -103,9 +104,7 @@ const RecoverPasswordFinish = ({ token }: Props) => {
                             placeholder={t('RecoverPassword.passwordConfirmation')}
                         />
 
-                        <Button variant="dark" type="submit" disabled={state === 'loading'}>
-                            {t('RecoverPassword.submit')}
-                        </Button>
+                        <SubmitButton submitting={state === 'loading'}>{t('RecoverPassword.submit')}</SubmitButton>
                     </form>
                 )}
             />

@@ -15,6 +15,7 @@ import FormPageRow from '../common/FormPageRow/FormPageRow'
 import { useRoutes } from '../../hooks/useRoutes'
 import { useFocusInput } from '../../hooks/useFocusInput'
 import { useHideInPlaceLogin } from '../../hooks/useHideInPlaceLogin'
+import SubmitButton from '../common/SubmitButton/SubmitButton'
 
 const logInMutationGql = require('./graphql/logInMutation.graphql')
 
@@ -120,9 +121,7 @@ const SignInPanel = ({ infoMessage, stayOnPage, onSuccess }: Props) => {
                                 {t('SignIn.signUp')}
                             </TextLink>
                         </div>
-                        <Button variant="dark" type="submit" disabled={loading}>
-                            {t('SignIn.submit')}
-                        </Button>
+                        <SubmitButton submitting={loading}>{t('SignIn.submit')}</SubmitButton>
                     </form>
                 )}
             />

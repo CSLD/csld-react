@@ -5,6 +5,7 @@ import { EditorState } from 'draft-js'
 import { Form } from 'react-final-form'
 import { editorStateToHtml } from '../common/form/richTextInputUtils'
 import FormRichTextInputField from '../common/form/FormRichTextInputField'
+import SubmitButton from '../common/SubmitButton/SubmitButton'
 
 interface Props {
     readonly oldText: string
@@ -25,10 +26,10 @@ const EditCommentModal = ({ oldText, onHide, onLoad, onSubmit }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(onLoad, [])
 
-    const handleSave = ({ comment }: FormValues) => {
+    const handleSave = async ({ comment }: FormValues) => {
         setLoading(true)
         const markup = editorStateToHtml(comment)
-        onSubmit(markup || '').catch(() => {})
+        await onSubmit(markup || '')
         setLoading(false)
     }
 
@@ -49,9 +50,7 @@ const EditCommentModal = ({ oldText, onHide, onLoad, onSubmit }: Props) => {
                             <Button variant="light" onClick={onHide} disabled={loading}>
                                 {t('EditCommentModal.cancel')}
                             </Button>
-                            <Button variant="dark" type="submit" disabled={loading}>
-                                {t('EditCommentModal.save')}
-                            </Button>
+                            <SubmitButton submitting={loading}>{t('EditCommentModal.save')}</SubmitButton>
                         </Modal.Footer>
                     </form>
                 </Modal>

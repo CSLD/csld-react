@@ -13,6 +13,7 @@ import { WidthFixer } from '../common/WidthFixer/WidthFixer'
 import { emptyInitialValues, toInitialValues } from './formUtils'
 import { TabDefinition, Tabs } from '../common/Tabs/Tabs'
 import BigLoading from '../common/BigLoading/BigLoading'
+import isInBrowser from 'is-in-browser'
 
 const GameEditForm = React.lazy(() => import('../GameEdit/GameEditForm'))
 const EventEditForm = React.lazy(() => import('./EventEditForm'))
@@ -101,24 +102,26 @@ const EventEditPanel = ({ eventId }: Props) => {
         <>
             <Tabs<TabKey> tabs={tabs} selectedTab={addingGame ? 'game' : 'event'} />
             <div className={classes.row}>
-                <WidthFixer className={classes.body}>
-                    {!ready && <BigLoading />}
-                    <React.Suspense fallback={<BigLoading />}>
+                <React.Suspense fallback={<BigLoading />}>
+                    <WidthFixer>
                         <EventEditForm
+                            dataLoading={!ready}
                             eventId={eventId}
                             onCreateNewGame={handleStartCreatingGame}
-                            hideForm={!ready || addingGame}
+                            hideForm={addingGame}
                             initialValues={initialValues || emptyInitialValues}
                             authorizedOptionalLabels={data?.authorizedOptionalLabels}
                             authorizedRequiredLabels={data?.authorizedRequiredLabels}
                         />
-                    </React.Suspense>
-                    {addingGame && (
-                        <React.Suspense fallback={<BigLoading />}>
+                    </WidthFixer>
+                </React.Suspense>
+                {addingGame && (
+                    <React.Suspense fallback={<BigLoading />}>
+                        <WidthFixer>
                             <GameEditForm onGameSaved={handleGameCreated} onFormCanceled={handleCancelCreatingGame} />
-                        </React.Suspense>
-                    )}
-                </WidthFixer>
+                        </WidthFixer>
+                    </React.Suspense>
+                )}
             </div>
         </>
     )

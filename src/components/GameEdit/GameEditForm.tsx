@@ -36,6 +36,8 @@ import { formClasses } from '../../utils/formClasses'
 import LabelsEditColumn, { LabelFromGql } from '../common/LabelsEditColumn/LabelsEditColumn'
 import { IconBack } from '../common/Icons/Icons'
 import { useShowToast } from '../../hooks/useShowToast'
+import BigLoading from '../common/BigLoading/BigLoading'
+import SubmitButton from '../common/SubmitButton/SubmitButton'
 
 const createGameGql = require('./graphql/createGame.graphql')
 const updateGameGql = require('./graphql/updateGame.graphql')
@@ -65,8 +67,8 @@ export interface FormValues {
 }
 
 interface Props {
-    // When called with show = false, nothing is really shown - it is used to trigger lazy load of the component before data are ready
-    readonly show?: boolean
+    // When called with dataLoading = true, shows big loading indicator instead of the form
+    readonly dataLoading?: boolean
     readonly gameId?: string
     readonly initialValues?: FormValues
     readonly authorizedRequiredLabels?: LabelFromGql[]
@@ -121,7 +123,7 @@ const updateInputFromValues = (gameId: string, data: FormValues): UpdateGameInpu
  * Contains inner form, calls callback after game is created (or updated)
  */
 const GameEditForm = ({
-    show = true,
+    dataLoading,
     gameId,
     initialValues,
     authorizedOptionalLabels,
@@ -166,8 +168,8 @@ const GameEditForm = ({
 
     const piValidator = fieldValidator(t, validatePositiveInteger)
 
-    if (!show) {
-        return null
+    if (dataLoading) {
+        return <BigLoading />
     }
 
     return (
@@ -321,9 +323,7 @@ const GameEditForm = ({
                                         {t('GameEdit.back')}
                                     </Button>
                                 )}
-                                <Button variant="dark" type="submit" disabled={loading}>
-                                    {t('GameEdit.save')}
-                                </Button>
+                                <SubmitButton submitting={loading}>{t('GameEdit.save')}</SubmitButton>
                                 {submitFailed && <span className={classes.formError}>{t('GameEdit.formError')}</span>}
                             </Col>
                             <Col md={3}>

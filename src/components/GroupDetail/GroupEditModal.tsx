@@ -66,7 +66,6 @@ const GroupEditModal = ({ id, initialName, onHide }: Props) => {
                         <form ref={formRef}>
                             <FormTextInputField
                                 name="name"
-                                autoFocus
                                 placeholder={t('GroupEditModal.name')}
                                 validate={fieldValidator(t, validateRequired)}
                             />

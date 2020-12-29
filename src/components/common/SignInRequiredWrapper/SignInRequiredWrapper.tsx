@@ -1,6 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import isInBrowser from 'is-in-browser'
+import { createUseStyles } from 'react-jss'
 import { useLoggedInUser } from '../../../hooks/useLoggedInUser'
 import SignInPanel from '../../SignIn/SignInPanel'
 import { UserRole } from '../../../graphql/__generated__/typescript-operations'
@@ -8,12 +9,21 @@ import FormPageRow from '../FormPageRow/FormPageRow'
 import { useRoutes } from '../../../hooks/useRoutes'
 import { TextLink } from '../TextLink/TextLink'
 import { IconBack } from '../Icons/Icons'
+import BigLoading from '../BigLoading/BigLoading'
+import { darkTheme } from '../../../theme/darkTheme'
 
 type RequiredRole = 'USER' | 'EDITOR' | 'ADMIN'
 
 interface Props {
     readonly requiredRole?: RequiredRole
 }
+
+const useStyles = createUseStyles({
+    loadingWrapper: {
+        backgroundColor: darkTheme.backgroundNearWhite,
+        padding: '20px 0',
+    },
+})
 
 const AccessDeniedPanel = () => {
     const { t } = useTranslation('common')
@@ -35,6 +45,7 @@ const AccessDeniedPanel = () => {
 const SignInRequiredWrapper: React.FC<Props> = ({ requiredRole = 'USER', children }) => {
     const loggedIn = useLoggedInUser()
     const { t } = useTranslation('common')
+    const classes = useStyles()
 
     if (!loggedIn && isInBrowser) {
         return <SignInPanel infoMessage={t('SignInRequired.signInRequired')} stayOnPage />
@@ -43,7 +54,11 @@ const SignInRequiredWrapper: React.FC<Props> = ({ requiredRole = 'USER', childre
     const role = loggedIn?.role
     if (!role) {
         // Loading
-        return <span />
+        return (
+            <div className={classes.loadingWrapper}>
+                <BigLoading />
+            </div>
+        )
     }
 
     if (requiredRole === 'EDITOR' && role !== UserRole.Editor && role !== UserRole.Admin) {

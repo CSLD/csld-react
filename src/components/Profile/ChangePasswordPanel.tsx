@@ -17,6 +17,7 @@ import UserDetailPanel from './UserDetailPanel'
 import UserProfileTabs from './UserProfileTabs'
 import { useShowToast } from '../../hooks/useShowToast'
 import GraphQLErrorContent, { PropsFromGraphQLError } from '../common/GraphQLErrorContent/GraphQLErrorContent'
+import SubmitButton from '../common/SubmitButton/SubmitButton'
 
 const loadUserSettingsGql = require('./graphql/loadCurrentUserSettings.graphql')
 const changePasswordGql = require('./graphql/changePassword.graphql')
@@ -115,9 +116,7 @@ const ChangePasswordPanel = () => {
                                 placeholder={t('ChangePassword.newPasswordAgain')}
                                 validate={fieldValidator(t, validateRequired)}
                             />
-                            <Button variant="dark" type="submit" disabled={state === 'loading'}>
-                                {t('ChangePassword.submit')}
-                            </Button>
+                            <SubmitButton submitting={state === 'loading'}>{t('ChangePassword.submit')}</SubmitButton>
                         </form>
                     )}
                 />

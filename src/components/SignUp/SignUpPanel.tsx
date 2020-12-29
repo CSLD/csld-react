@@ -18,6 +18,7 @@ import ReCaptchaField from './ReCaptchaField'
 import { convertDateInput, convertFileInput } from '../../utils/graphqlUtils'
 import { useIsEmailAvailable } from '../../hooks/useIsEmailAvailable'
 import { useFocusInput } from '../../hooks/useFocusInput'
+import SubmitButton from '../common/SubmitButton/SubmitButton'
 
 const createUserlGql = require(`./graphql/createUserMutation.graphql`)
 
@@ -195,9 +196,9 @@ const SignUpPanel = () => {
                                 </Col>
                             </Row>
                             <ReCaptchaField name="recaptcha" />
-                            <Button variant="dark" type="submit" disabled={state === 'loading' || !!usedByUser}>
+                            <SubmitButton submitting={state === 'loading'} disabled={!!usedByUser}>
                                 {t('SignUp.submit')}
-                            </Button>
+                            </SubmitButton>
                         </form>
                     )
                 }}

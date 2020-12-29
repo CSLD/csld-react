@@ -7,6 +7,7 @@ import { useFocusInput } from '../../hooks/useFocusInput'
 import FormTextInputField from '../common/form/FormTextInputField'
 import { fieldValidator, validateEmail, validateRequired } from '../../utils/validationUtils'
 import { useIsEmailAvailable } from '../../hooks/useIsEmailAvailable'
+import SubmitButton from '../common/SubmitButton/SubmitButton'
 
 export interface Author {
     readonly id?: string
@@ -122,12 +123,10 @@ const NewAuthorModal = ({ onHide, onAddAuthor }: Props) => {
                                 <FormTextInputField name="nickname" placeholder={t('NewAuthorModal.nickname')} />
                             </Modal.Body>
                             <Modal.Footer>
-                                <Button variant="light" onClick={onHide}>
+                                <Button variant="light" onClick={onHide} disabled={submitting}>
                                     {t('NewAuthorModal.cancel')}
                                 </Button>
-                                <Button variant="dark" type="submit" disabled={submitting}>
-                                    {t('NewAuthorModal.save')}
-                                </Button>
+                                <SubmitButton submitting={submitting}>{t('NewAuthorModal.save')}</SubmitButton>
                             </Modal.Footer>
                         </form>
                     )

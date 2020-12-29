@@ -19,6 +19,7 @@ import {
 import { formatAuthorLabel } from './NewAuthorModal'
 import { TabDefinition, Tabs } from '../common/Tabs/Tabs'
 import BigLoading from '../common/BigLoading/BigLoading'
+import isInBrowser from 'is-in-browser'
 
 const GameEditForm = React.lazy(() => import('./GameEditForm'))
 
@@ -123,12 +124,11 @@ const GameEditPage = ({ gameId }: Props) => {
         <>
             <Tabs tabs={tabs} selectedTab={0} />
             <div className={classes.row}>
-                {!ready && <BigLoading />}
                 <React.Suspense fallback={<BigLoading />}>
                     <WidthFixer className={classes.body}>
                         <GameEditForm
                             gameId={gameId}
-                            show={ready}
+                            dataLoading={!ready}
                             onGameSaved={handleGameSaved}
                             initialValues={initialValues}
                             authorizedOptionalLabels={data?.authorizedOptionalLabels}

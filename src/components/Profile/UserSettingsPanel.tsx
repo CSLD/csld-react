@@ -21,6 +21,7 @@ import { convertDateFromGraphql, convertDateInput, convertFileInput } from '../.
 import UserDetailPanel from './UserDetailPanel'
 import UserProfileTabs from './UserProfileTabs'
 import { useShowToast } from '../../hooks/useShowToast'
+import SubmitButton from '../common/SubmitButton/SubmitButton'
 
 const loadUserSettingsGql = require('./graphql/loadCurrentUserSettings.graphql')
 const updateUserSettingsGql = require('./graphql/updateUserSettings.graphql')
@@ -165,9 +166,9 @@ const UserSettingsPanel = () => {
                                             />
                                         </Col>
                                     </Row>
-                                    <Button variant="dark" type="submit" disabled={state === 'loading' || !!usedByUser}>
+                                    <SubmitButton submitting={state === 'loading'} disabled={!!usedByUser}>
                                         {t('UserSettings.submit')}
-                                    </Button>
+                                    </SubmitButton>
                                 </form>
                             )
                         }}

@@ -20,11 +20,15 @@ import FormTextInputField from '../common/form/FormTextInputField'
 import FormRichTextInputField from '../common/form/FormRichTextInputField'
 import { createInputFromValues, FormValues, validate } from './formUtils'
 import { useShowToast } from '../../hooks/useShowToast'
+import BigLoading from '../common/BigLoading/BigLoading'
+import SubmitButton from '../common/SubmitButton/SubmitButton'
 
 const createEventGql = require('./graphql/createEvent.graphql')
 const updateEventGql = require('./graphql/updateEvent.graphql')
 
 interface Props {
+    // Data are still loading - show form
+    readonly dataLoading?: boolean
     readonly eventId?: string
     readonly initialValues: FormValues
     readonly hideForm?: boolean
@@ -36,6 +40,7 @@ interface Props {
 const useStyles = createUseStyles(formClasses)
 
 const EventEditForm = ({
+    dataLoading,
     eventId,
     initialValues,
     hideForm,
@@ -79,6 +84,10 @@ const EventEditForm = ({
                 }
             })
         }
+    }
+
+    if (dataLoading) {
+        return <BigLoading />
     }
 
     return (
@@ -146,9 +155,7 @@ const EventEditForm = ({
                                     hint={t('AutoComplete.startTyping')}
                                     onCreateNew={onCreateNewGame}
                                 />
-                                <Button variant="dark" type="submit" disabled={loading}>
-                                    {t('EventEdit.save')}
-                                </Button>
+                                <SubmitButton submitting={loading}>{t('EventEdit.save')}</SubmitButton>
                                 {submitFailed && <span className={classes.formError}>{t('EventEdit.formError')}</span>}
                             </Col>
                             <Col md={3}>

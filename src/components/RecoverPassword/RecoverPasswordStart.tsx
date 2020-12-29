@@ -14,6 +14,7 @@ import {
 } from '../../graphql/__generated__/typescript-operations'
 import FormPageRow from '../common/FormPageRow/FormPageRow'
 import { useFocusInput } from '../../hooks/useFocusInput'
+import SubmitButton from '../common/SubmitButton/SubmitButton'
 
 const startRecoverPasswordGQL = require('./graphql/startRecoverPasswordMutation.graphql')
 
@@ -70,11 +71,9 @@ const RecoverPasswordStart = () => {
                 validate={validate(t)}
                 render={({ handleSubmit }) => (
                     <form onSubmit={handleSubmit} ref={formRef}>
-                        <FormTextInputField name="email" placeholder={t('RecoverPassword.email')} autoFocus />
+                        <FormTextInputField name="email" placeholder={t('RecoverPassword.email')} />
 
-                        <Button variant="dark" type="submit" disabled={state === 'loading'}>
-                            {t('RecoverPassword.submit')}
-                        </Button>
+                        <SubmitButton submitting={state === 'loading'}>{t('RecoverPassword.submit')}</SubmitButton>
                     </form>
                 )}
             />

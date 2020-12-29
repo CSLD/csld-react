@@ -22,10 +22,8 @@ export const formClasses = {
         backgroundColor: darkTheme.backgroundNearWhite,
         padding: '16px 0',
     },
-    body: {
-        backgroundColor: darkTheme.backgroundWhite,
-    },
     form: {
+        backgroundColor: darkTheme.backgroundWhite,
         color: darkTheme.textOnLight,
     },
     helpText: {
