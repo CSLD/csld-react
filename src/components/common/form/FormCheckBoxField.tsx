@@ -1,8 +1,8 @@
 import React from 'react'
 import { useField } from 'react-final-form'
 import { Form } from 'react-bootstrap'
-import FieldWithError from './FieldWithError'
 import { createUseStyles } from 'react-jss'
+import FieldWithError from './FieldWithError'
 
 export interface FormCheckBoxFieldProps {
     readonly name: string
