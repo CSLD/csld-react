@@ -19,12 +19,12 @@ const globalStyle = `
         
     a {
       text-decoration: none;
-      color: unset;
+      color: #6dc8b7;
     }
     
     a:hover {
       text-decoration: none;
-      color: unset;
+      color: #afafaf;
     }
     `
 
