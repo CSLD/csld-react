@@ -141,7 +141,7 @@ export const GameDetailPanel = ({ gameId }: Props) => {
         },
         fetchPolicy: 'cache-and-network',
         skip: !isInBrowser,
-        ssr: false, // Next threw errors about mismatching content while game page was reloaded
+        ssr: false,
     })
     let gameFragment: CachedGameDataFragment | undefined | null
 
@@ -204,39 +204,33 @@ export const GameDetailPanel = ({ gameId }: Props) => {
                     <GameRatingPanel game={game} />
                 </div>
             </WidthFixer>
-            {isInBrowser && <Tabs tabs={tabs} selectedTab={selectedTab} onSelectTab={setSelectedTab} />}
-            {isInBrowser && (
-                <div className={classes.extras}>
-                    <WidthFixer className={classes.extrasWidthFixer}>
-                        <div className={classes.extrasLeft}>
-                            {selectedTab === 'comments' && (
-                                <GamePagedCommentsPanel gameId={gameId} commentsDisabled={!!game.commentsDisabled} />
-                            )}
-                            {selectedTab === 'video' && (
-                                <iframe title="video" src={game.video?.path || ''} width="800" height="450" />
-                            )}
-                        </div>
-                        <div className={classes.extrasRight}>
-                            {editVisible && (
-                                <ActionButton onClick={handleEditGame}>{t('GameDetail.editGame')}</ActionButton>
-                            )}
-                            {deleteVisible && (
-                                <ActionButton onClick={handleDeleteGame}>{t('GameDetail.deleteGame')}</ActionButton>
-                            )}
-                            <GameListPanel games={game.similarGames} titleKey="GameDetail.similarGames" />
-                            <EventListPanel events={game.events} titleKey="GameDetail.events" />
-                            <GameListPanel games={game.gamesOfAuthors} titleKey="GameDetail.gamesOfAuthors" />
-                            {isAtLeastEditor(loggedInUser?.role) && (
-                                <RatingsListPanel
-                                    gameId={game.id}
-                                    ratings={game.ratings}
-                                    onRatingDeleted={handleRefetch}
-                                />
-                            )}
-                        </div>
-                    </WidthFixer>
-                </div>
-            )}
+            <Tabs tabs={tabs} selectedTab={selectedTab} onSelectTab={setSelectedTab} />
+            <div className={classes.extras}>
+                <WidthFixer className={classes.extrasWidthFixer}>
+                    <div className={classes.extrasLeft}>
+                        {selectedTab === 'comments' && (
+                            <GamePagedCommentsPanel gameId={gameId} commentsDisabled={!!game.commentsDisabled} />
+                        )}
+                        {selectedTab === 'video' && (
+                            <iframe title="video" src={game.video?.path || ''} width="800" height="450" />
+                        )}
+                    </div>
+                    <div className={classes.extrasRight}>
+                        {editVisible && (
+                            <ActionButton onClick={handleEditGame}>{t('GameDetail.editGame')}</ActionButton>
+                        )}
+                        {deleteVisible && (
+                            <ActionButton onClick={handleDeleteGame}>{t('GameDetail.deleteGame')}</ActionButton>
+                        )}
+                        <GameListPanel games={game.similarGames} titleKey="GameDetail.similarGames" />
+                        <EventListPanel events={game.events} titleKey="GameDetail.events" />
+                        <GameListPanel games={game.gamesOfAuthors} titleKey="GameDetail.gamesOfAuthors" />
+                        {isAtLeastEditor(loggedInUser?.role) && (
+                            <RatingsListPanel gameId={game.id} ratings={game.ratings} onRatingDeleted={handleRefetch} />
+                        )}
+                    </div>
+                </WidthFixer>
+            </div>
             <ConfirmationModal
                 show={deleteConfirmShown}
                 content={t('GameDetail.deleteGameConfirmation')}
