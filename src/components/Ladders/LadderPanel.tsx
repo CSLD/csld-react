@@ -21,6 +21,7 @@ import LabelFilterFields from '../common/LabelFilterFields/LabelFilterFields'
 import Pager from '../common/Pager/Pager'
 import { useRoutes } from '../../hooks/useRoutes'
 import { LabelFromGql } from '../common/LabelsEditColumn/LabelsEditColumn'
+import BigLoading from '../common/BigLoading/BigLoading'
 
 const ladderInitialGames = require('./graphql/ladderInitialGames.graphql')
 const ladderMoreGames = require('./graphql/ladderMoreGames.graphql')
@@ -162,6 +163,7 @@ const LadderPanel = ({ ladderType, initialRequiredLabelIds, initialOptionalLabel
                             <WidthFixer
                                 className={classNames({ [classes.widthFixer]: true, [classes.loading]: loading })}
                             >
+                                {(!games || !requiredLabels || !optionalLabels) && <BigLoading />}
                                 {games && requiredLabels && optionalLabels && (
                                     <Row>
                                         <Col md={9}>

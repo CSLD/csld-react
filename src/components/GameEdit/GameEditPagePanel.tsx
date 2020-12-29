@@ -18,6 +18,7 @@ import {
 } from '../../graphql/__generated__/typescript-operations'
 import { formatAuthorLabel } from './NewAuthorModal'
 import { TabDefinition, Tabs } from '../common/Tabs/Tabs'
+import BigLoading from '../common/BigLoading/BigLoading'
 
 const GameEditForm = React.lazy(() => import('./GameEditForm'))
 
@@ -122,20 +123,19 @@ const GameEditPage = ({ gameId }: Props) => {
         <>
             <Tabs tabs={tabs} selectedTab={0} />
             <div className={classes.row}>
-                <WidthFixer className={classes.body}>
-                    {ready && (
-                        <React.Suspense fallback={<span />}>
-                            {/* TODO: Might start loading GameEditForm even when data are not ready yet (?) */}
-                            <GameEditForm
-                                gameId={gameId}
-                                onGameSaved={handleGameSaved}
-                                initialValues={initialValues}
-                                authorizedOptionalLabels={data?.authorizedOptionalLabels}
-                                authorizedRequiredLabels={data?.authorizedRequiredLabels}
-                            />
-                        </React.Suspense>
-                    )}
-                </WidthFixer>
+                {!ready && <BigLoading />}
+                <React.Suspense fallback={<BigLoading />}>
+                    <WidthFixer className={classes.body}>
+                        <GameEditForm
+                            gameId={gameId}
+                            show={ready}
+                            onGameSaved={handleGameSaved}
+                            initialValues={initialValues}
+                            authorizedOptionalLabels={data?.authorizedOptionalLabels}
+                            authorizedRequiredLabels={data?.authorizedRequiredLabels}
+                        />
+                    </WidthFixer>
+                </React.Suspense>
             </div>
         </>
     )

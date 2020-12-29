@@ -65,6 +65,8 @@ export interface FormValues {
 }
 
 interface Props {
+    // When called with show = false, nothing is really shown - it is used to trigger lazy load of the component before data are ready
+    readonly show?: boolean
     readonly gameId?: string
     readonly initialValues?: FormValues
     readonly authorizedRequiredLabels?: LabelFromGql[]
@@ -119,6 +121,7 @@ const updateInputFromValues = (gameId: string, data: FormValues): UpdateGameInpu
  * Contains inner form, calls callback after game is created (or updated)
  */
 const GameEditForm = ({
+    show = true,
     gameId,
     initialValues,
     authorizedOptionalLabels,
@@ -163,6 +166,10 @@ const GameEditForm = ({
 
     const piValidator = fieldValidator(t, validatePositiveInteger)
 
+    if (!show) {
+        return null
+    }
+
     return (
         <Form onSubmit={handleOnSubmit} initialValues={initialValues || emptyInitialValues} id="gameForm">
             {({ handleSubmit, submitFailed }) => {
@@ -183,7 +190,6 @@ const GameEditForm = ({
                                     name="name"
                                     placeholder={t('GameEdit.name')}
                                     validate={fieldValidator(t, validateRequired)}
-                                    autoFocus
                                 />
                                 <FormRichTextInputField
                                     name="description"

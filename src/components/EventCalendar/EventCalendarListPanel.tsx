@@ -22,6 +22,7 @@ import LabelFilterFields from '../common/LabelFilterFields/LabelFilterFields'
 import CalendarEventPanel from './CalendarEventPanel'
 import { formSectionHeader } from '../../utils/formClasses'
 import FormTextInputField from '../common/form/FormTextInputField'
+import BigLoading from '../common/BigLoading/BigLoading'
 
 const loadCalendarEventsGql = require('./graphql/loadCalendarEvents.graphql')
 const moreCalendarEventsGql = require('./graphql/moreCalendarEvents.graphql')
@@ -41,8 +42,6 @@ interface FormValues {
 const useStyles = createUseStyles({
     row: {
         backgroundColor: darkTheme.backgroundWhite,
-    },
-    widthFixer: {
         padding: '20px 0',
     },
     loading: {
@@ -156,10 +155,9 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
                     <>
                         <Tabs<number> tabs={tabs} selectedTab={0} />
                         <div className={classes.row}>
-                            <WidthFixer
-                                className={classNames({ [classes.widthFixer]: true, [classes.loading]: loading })}
-                            >
-                                {events && requiredLabels && optionalLabels && (
+                            {(!events || !requiredLabels || !optionalLabels) && <BigLoading />}
+                            {events && requiredLabels && optionalLabels && (
+                                <WidthFixer className={loading ? classes.loading : undefined}>
                                     <Row>
                                         <Col md={9}>
                                             {events.map(event => (
@@ -198,8 +196,8 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
                                             />
                                         </Col>
                                     </Row>
-                                )}
-                            </WidthFixer>
+                                </WidthFixer>
+                            )}
                         </div>
                     </>
                 )

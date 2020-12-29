@@ -10,16 +10,33 @@ import { useEffect, useRef } from 'react'
  */
 export const useFocusInput = <T extends Element>(name: string) => {
     const wrapperRef = useRef<T | null>(null)
+    const timerRef = useRef(0)
+    const retryCountRef = useRef(0)
+
+    // Since inside of the form could be lazy-loaded, we retry several times until we are successful or tries run out
     useEffect(() => {
-        setTimeout(() => {
+        timerRef.current = window.setInterval(() => {
             if (wrapperRef.current) {
                 const element = wrapperRef.current.getElementsByTagName('input').namedItem(name)
                 if (element) {
+                    clearInterval(timerRef.current)
                     element.focus()
+                    return
                 }
             }
-        }, 100)
-    }, [wrapperRef, name])
+
+            // Check if we ran out of retries
+            retryCountRef.current -= 1
+            if (retryCountRef.current <= 0) {
+                window.clearInterval(timerRef.current)
+                timerRef.current = 0
+            }
+        }, 200)
+        retryCountRef.current = 50
+
+        // Clear timeout on effect suspension
+        return () => window.clearInterval(timerRef.current)
+    }, [wrapperRef, timerRef, retryCountRef, name])
 
     return wrapperRef
 }

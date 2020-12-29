@@ -12,6 +12,7 @@ import { createGameLabel, LinkedGame } from './GamesAutoCompleteField'
 import { WidthFixer } from '../common/WidthFixer/WidthFixer'
 import { emptyInitialValues, toInitialValues } from './formUtils'
 import { TabDefinition, Tabs } from '../common/Tabs/Tabs'
+import BigLoading from '../common/BigLoading/BigLoading'
 
 const GameEditForm = React.lazy(() => import('../GameEdit/GameEditForm'))
 const EventEditForm = React.lazy(() => import('./EventEditForm'))
@@ -28,7 +29,9 @@ const useStyles = createUseStyles({
 
 const focusToGames = () => {
     window.setTimeout(() => {
-        document.getElementById('games-input')?.focus()
+        const element = document.getElementById('games-input')
+        element?.focus()
+        element?.scrollIntoView({ behavior: 'smooth', block: 'center' })
     }, 300)
 }
 
@@ -99,21 +102,19 @@ const EventEditPanel = ({ eventId }: Props) => {
             <Tabs<TabKey> tabs={tabs} selectedTab={addingGame ? 'game' : 'event'} />
             <div className={classes.row}>
                 <WidthFixer className={classes.body}>
-                    {ready && (
-                        <React.Suspense fallback={<span />}>
-                            {/* TODO: Might start loading EventEditForm even before data are ready? */}
-                            <EventEditForm
-                                eventId={eventId}
-                                onCreateNewGame={handleStartCreatingGame}
-                                hideForm={addingGame}
-                                initialValues={initialValues || emptyInitialValues}
-                                authorizedOptionalLabels={data?.authorizedOptionalLabels}
-                                authorizedRequiredLabels={data?.authorizedRequiredLabels}
-                            />
-                        </React.Suspense>
-                    )}
+                    {!ready && <BigLoading />}
+                    <React.Suspense fallback={<BigLoading />}>
+                        <EventEditForm
+                            eventId={eventId}
+                            onCreateNewGame={handleStartCreatingGame}
+                            hideForm={!ready || addingGame}
+                            initialValues={initialValues || emptyInitialValues}
+                            authorizedOptionalLabels={data?.authorizedOptionalLabels}
+                            authorizedRequiredLabels={data?.authorizedRequiredLabels}
+                        />
+                    </React.Suspense>
                     {addingGame && (
-                        <React.Suspense fallback={<span />}>
+                        <React.Suspense fallback={<BigLoading />}>
                             <GameEditForm onGameSaved={handleGameCreated} onFormCanceled={handleCancelCreatingGame} />
                         </React.Suspense>
                     )}
