@@ -143,6 +143,7 @@ export const GameDetailPanel = ({ gameId }: Props) => {
         fetchPolicy: 'cache-and-network',
         skip: !isInBrowser,
         ssr: false,
+        returnPartialData: true,
     })
     let gameFragment: CachedGameDataFragment | undefined | null
 
