@@ -4,6 +4,7 @@ import { Form as FinalForm } from 'react-final-form'
 import { useTranslation } from 'react-i18next'
 import { TFunction } from 'i18next'
 import { useRoutes } from 'src/hooks/useRoutes'
+import isInBrowser from 'is-in-browser'
 import FormPageRow from '../common/FormPageRow/FormPageRow'
 import FormTextInputField from '../common/form/FormTextInputField'
 import { fieldValidator, validateRequired } from '../../utils/validationUtils'
@@ -38,7 +39,10 @@ const validate = (t: TFunction, hasOldPasswordError: boolean) => (data: FormData
 }
 
 const ChangePasswordPanel = () => {
-    const loadQuery = useQuery<LoadCurrentUserSettingsQuery>(loadUserSettingsGql)
+    const loadQuery = useQuery<LoadCurrentUserSettingsQuery>(loadUserSettingsGql, {
+        skip: !isInBrowser,
+        fetchPolicy: 'cache-and-network',
+    })
     const client = useApolloClient()
     const { t } = useTranslation('common')
     const routes = useRoutes()

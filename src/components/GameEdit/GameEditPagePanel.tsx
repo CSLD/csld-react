@@ -3,6 +3,7 @@ import { createUseStyles } from 'react-jss'
 import { useQuery } from '@apollo/client'
 import { useRoutes } from 'src/hooks/useRoutes'
 import { useTranslation } from 'react-i18next'
+import isInBrowser from 'is-in-browser'
 import type { FormValues } from './GameEditForm'
 import { darkTheme } from '../../theme/darkTheme'
 import { WidthFixer } from '../common/WidthFixer/WidthFixer'
@@ -103,7 +104,8 @@ const GameEditPage = ({ gameId }: Props) => {
         variables: {
             gameId: gameId || '',
         },
-        skip: !gameId,
+        fetchPolicy: 'network-only',
+        skip: !gameId || !isInBrowser,
     })
 
     const gameById = data?.gameById

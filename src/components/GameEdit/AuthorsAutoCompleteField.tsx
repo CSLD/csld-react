@@ -23,6 +23,7 @@ const AuthorsAutoCompleteField = ({ name, placeholder, hint, validate }: Props) 
     const { input } = useField(name)
     const routes = useRoutes()
     const { loading, refetch } = useQuery<SearchAuthorsQuery, SearchAuthorsQueryVariables>(searchAuthorsGql, {
+        fetchPolicy: 'cache-and-network',
         skip: true,
     })
 

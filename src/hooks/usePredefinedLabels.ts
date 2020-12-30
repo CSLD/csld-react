@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useQuery } from '@apollo/client'
+import isInBrowser from 'is-in-browser'
 import { Label, LoadLabelsQuery, LoadLabelsQueryVariables } from '../graphql/__generated__/typescript-operations'
 
 const loadLabelsGql = require('./graphql/loadLabels.graphql')
@@ -38,11 +39,12 @@ export const useLoadLabels = (existingRequiredLabels?: LabelData[], existingOpti
     }, [requiredLabels, optionalLabels])
 
     useQuery<LoadLabelsQuery, LoadLabelsQueryVariables>(loadLabelsGql, {
+        fetchPolicy: 'network-only',
+        skip: (requiredLabels.length > 0 && optionalLabels.length > 0) || !isInBrowser,
         onCompleted: data => {
             setRequiredLabels(sortLabels(data.authorizedRequiredLabels.map(labelMapper)))
             setOptionalLabels(sortLabels(data.authorizedOptionalLabels.map(labelMapper)))
         },
-        skip: requiredLabels.length > 0 && optionalLabels.length > 0,
     })
 
     return { requiredLabels, optionalLabels, existingLabelNames }

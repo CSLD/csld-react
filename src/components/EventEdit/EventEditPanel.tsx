@@ -2,6 +2,7 @@ import React, { useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useQuery } from '@apollo/client'
 import { createUseStyles } from 'react-jss'
+import isInBrowser from 'is-in-browser'
 import {
     Game,
     LoadEventForEditQuery,
@@ -46,7 +47,8 @@ const EventEditPanel = ({ eventId }: Props) => {
         variables: {
             eventId: eventId || '',
         },
-        skip: !eventId,
+        fetchPolicy: 'network-only',
+        skip: !eventId || !isInBrowser,
     })
 
     const eventById = data?.eventById

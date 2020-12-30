@@ -17,6 +17,7 @@ import UserPagedCommentsPanel from './UserPagedCommentsPanel'
 import { GameListPanel } from '../common/GameListPanel/GameListPanel'
 import { DetailListHeader } from '../common/DetailListHeader/DetailListHeader'
 import DetailGameList from '../common/DetailGameList/DetailGameList'
+import BigLoading from '../common/BigLoading/BigLoading'
 
 export type UserProfileUser = Maybe<
     { __typename?: 'User' } & {
@@ -101,6 +102,7 @@ const UserProfilePanel = ({ userId, user, profileOnly }: Props) => {
             />
             <UserProfileTabs selectedTab="profile" profileOnly={profileOnly} />
             <div className={classes.details}>
+                {!user && <BigLoading />}
                 <WidthFixer>
                     <Row>
                         <Col md={9}>

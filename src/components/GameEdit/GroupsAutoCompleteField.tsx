@@ -23,6 +23,7 @@ const GroupsAutoCompleteField = ({ name, placeholder, hint, validate }: Props) =
     const { input } = useField(name)
     const routes = useRoutes()
     const { loading, refetch } = useQuery<SearchGroupsQuery, SearchGroupsQueryVariables>(searchGroupsGql, {
+        fetchPolicy: 'cache-and-network',
         skip: true,
     })
 

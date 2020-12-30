@@ -6,6 +6,7 @@ import { Col, Form, Row } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { useRoutes } from 'src/hooks/useRoutes'
 import { UserContext } from 'src/context/UserContext/UserContext'
+import isInBrowser from 'is-in-browser'
 import FormPageRow from '../common/FormPageRow/FormPageRow'
 import FormTextInputField from '../common/form/FormTextInputField'
 import { fieldValidator, validateDate, validateEmail, validateRequired } from '../../utils/validationUtils'
@@ -22,6 +23,7 @@ import UserDetailPanel from './UserDetailPanel'
 import UserProfileTabs from './UserProfileTabs'
 import { useShowToast } from '../../hooks/useShowToast'
 import SubmitButton from '../common/SubmitButton/SubmitButton'
+import BigLoading from '../common/BigLoading/BigLoading'
 
 const loadUserSettingsGql = require('./graphql/loadCurrentUserSettings.graphql')
 const updateUserSettingsGql = require('./graphql/updateUserSettings.graphql')
@@ -45,7 +47,10 @@ interface FormData {
 type TState = 'idle' | 'loading' | 'error'
 
 const UserSettingsPanel = () => {
-    const loadQuery = useQuery<LoadCurrentUserSettingsQuery>(loadUserSettingsGql)
+    const loadQuery = useQuery<LoadCurrentUserSettingsQuery>(loadUserSettingsGql, {
+        skip: !isInBrowser,
+        fetchPolicy: 'network-only',
+    })
     const client = useApolloClient()
     const { t } = useTranslation('common')
     const classes = useStyles()
@@ -101,6 +106,7 @@ const UserSettingsPanel = () => {
             <UserProfileTabs selectedTab="settings" />
             <FormPageRow headerText={t('UserSettings.header')}>
                 {state === 'error' && <div className={classes.error}>{t('UserSettings.error')}</div>}
+                {(!initialValues || !loggedInUser) && <BigLoading />}
                 {initialValues && loggedInUser && (
                     <FinalForm<FormData>
                         onSubmit={onSubmit}

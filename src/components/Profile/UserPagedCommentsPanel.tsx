@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { useQuery } from '@apollo/client'
+import isInBrowser from 'is-in-browser'
 import {
     CommentsPaged,
     MoreUserCommentsQuery,
@@ -25,7 +26,8 @@ const UserPagedCommentsPanel = ({ userId, firstPage }: Props) => {
             offset,
             limit: PAGE_SIZE,
         },
-        skip: !!firstPage && offset === 0,
+        fetchPolicy: 'cache-and-network',
+        skip: (!!firstPage && offset === 0) || !isInBrowser,
         ssr: false,
     })
 

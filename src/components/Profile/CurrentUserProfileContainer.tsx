@@ -1,5 +1,6 @@
 import React from 'react'
 import { useQuery } from '@apollo/client'
+import isInBrowser from 'is-in-browser'
 import {
     LoadCurrentUserProfileQuery,
     LoadCurrentUserProfileQueryVariables,
@@ -11,6 +12,8 @@ const userDataGql = require('./graphql/loadCurrentUserProfile.graphql')
 
 const CurrentUserProfileContainer = () => {
     const userDataQuery = useQuery<LoadCurrentUserProfileQuery, LoadCurrentUserProfileQueryVariables>(userDataGql, {
+        skip: !isInBrowser,
+        fetchPolicy: 'cache-and-network',
         variables: {
             commentsLimit: PAGE_SIZE,
         },

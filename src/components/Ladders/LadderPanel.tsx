@@ -4,6 +4,7 @@ import { useApolloClient, useQuery } from '@apollo/client'
 import { createUseStyles } from 'react-jss'
 import { Form as FinalForm } from 'react-final-form'
 import classNames from 'classnames'
+import isInBrowser from 'is-in-browser'
 import { WidthFixer } from '../common/WidthFixer/WidthFixer'
 import { TabDefinition, Tabs } from '../common/Tabs/Tabs'
 import {
@@ -105,6 +106,9 @@ const LadderPanel = ({ ladderType, initialRequiredLabelIds, initialOptionalLabel
             offset: 0,
             limit: PAGE_SIZE,
         },
+        fetchPolicy: 'cache-and-network',
+        nextFetchPolicy: 'cache-first', // Do not reload on page change
+        skip: !isInBrowser,
         ssr: false,
         onCompleted: response => {
             setLoading(false)

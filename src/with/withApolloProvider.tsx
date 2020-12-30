@@ -1,6 +1,6 @@
 import React from 'react'
 import fetch from 'isomorphic-unfetch'
-import { ApolloClient, createHttpLink, InMemoryCache, from } from '@apollo/react-hooks'
+import { ApolloClient, createHttpLink, InMemoryCache, from, InMemoryCacheConfig } from '@apollo/react-hooks'
 import withApollo from 'next-with-apollo'
 import { onError } from '@apollo/client/link/error'
 import { toastContextValue } from '../context/ToastContext/ToastContext'
@@ -12,9 +12,6 @@ import GraphQLErrorContent, {
 if (!process.browser) {
     global.fetch = fetch
 }
-
-const simpleMerge = { merge: (existing: any, incoming: any) => ({ ...existing, ...incoming }) }
-const overwriteMerge = { merge: (existing: any, incoming: any) => incoming }
 
 // Operations that do their own error handling
 const errorHandlingOperations = ['ChangePassword']
@@ -43,6 +40,36 @@ const errorLink = onError(({ graphQLErrors, networkError, operation, response })
     }
 })
 
+const simpleMerge = { merge: (existing: any, incoming: any) => ({ ...existing, ...incoming }) }
+const overwriteMerge = { merge: (existing: any, incoming: any) => incoming }
+
+const cacheConfig: InMemoryCacheConfig = {
+    typePolicies: {
+        Query: {
+            fields: {
+                games: simpleMerge,
+                admin: simpleMerge,
+                homepage: simpleMerge,
+            },
+        },
+        Mutation: {
+            fields: {
+                user: simpleMerge,
+                game: simpleMerge,
+                group: simpleMerge,
+                event: simpleMerge,
+                admin: simpleMerge,
+            },
+        },
+        Game: {
+            fields: {
+                ratingStats: overwriteMerge,
+                ratings: overwriteMerge,
+            },
+        },
+    },
+}
+
 export const withApolloWrapper = withApollo(props => {
     const { initialState } = props
     let uri = 'http://localhost:3000/graphql' // Fallback
@@ -66,31 +93,6 @@ export const withApolloWrapper = withApollo(props => {
                 credentials: 'same-origin',
             }),
         ]),
-        cache: new InMemoryCache({
-            typePolicies: {
-                Query: {
-                    fields: {
-                        games: simpleMerge,
-                        admin: simpleMerge,
-                        homepage: simpleMerge,
-                    },
-                },
-                Mutation: {
-                    fields: {
-                        user: simpleMerge,
-                        game: simpleMerge,
-                        group: simpleMerge,
-                        event: simpleMerge,
-                        admin: simpleMerge,
-                    },
-                },
-                Game: {
-                    fields: {
-                        ratingStats: overwriteMerge,
-                        ratings: overwriteMerge,
-                    },
-                },
-            },
-        }).restore(initialState || {}),
+        cache: new InMemoryCache(cacheConfig).restore(initialState || {}),
     })
 })

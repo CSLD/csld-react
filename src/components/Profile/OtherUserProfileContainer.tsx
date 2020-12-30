@@ -1,5 +1,6 @@
 import React from 'react'
 import { useQuery } from '@apollo/client'
+import isInBrowser from 'is-in-browser'
 import { LoadUserProfileQuery, LoadUserProfileQueryVariables } from '../../graphql/__generated__/typescript-operations'
 import UserProfilePanel from './UserProfilePanel'
 import { PAGE_SIZE } from './UserPagedCommentsPanel'
@@ -12,6 +13,8 @@ interface Props {
 
 const OtherUserProfileContainer = ({ userId }: Props) => {
     const userDataQuery = useQuery<LoadUserProfileQuery, LoadUserProfileQueryVariables>(userDataGql, {
+        skip: !isInBrowser,
+        fetchPolicy: 'cache-and-network',
         variables: {
             userId,
             commentsLimit: PAGE_SIZE,

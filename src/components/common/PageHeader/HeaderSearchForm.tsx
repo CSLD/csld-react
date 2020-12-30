@@ -102,6 +102,7 @@ export const HeaderSearchForm = () => {
             query,
             limit: MAX_RESULTS,
         },
+        fetchPolicy: 'cache-and-network',
         skip: !searchActive,
     })
 

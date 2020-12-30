@@ -4,6 +4,7 @@ import { useMutation, useQuery } from '@apollo/client'
 import { useTranslation } from 'react-i18next'
 import { Col, Row } from 'react-bootstrap'
 import classNames from 'classnames'
+import isInBrowser from 'is-in-browser'
 import { darkTheme } from '../../theme/darkTheme'
 import {
     DeleteEventMutation,
@@ -75,6 +76,7 @@ const EventDetailPanel = ({ eventId }: Props) => {
     const { t } = useTranslation('common')
     const { data } = useQuery<LoadEventQuery, LoadEventQueryVariables>(loadEventGql, {
         ssr: false,
+        skip: !isInBrowser,
         fetchPolicy: 'network-only',
         variables: { eventId },
     })

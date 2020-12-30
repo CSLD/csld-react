@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/client'
 import { createUseStyles } from 'react-jss'
 import { Col, Row } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
+import isInBrowser from 'is-in-browser'
 import { LoadGroupQuery, LoadGroupQueryVariables } from '../../graphql/__generated__/typescript-operations'
 import { darkTheme } from '../../theme/darkTheme'
 import { WidthFixer } from '../common/WidthFixer/WidthFixer'
@@ -56,6 +57,8 @@ const useStyles = createUseStyles({
 
 const GroupDetailPanel = ({ groupId }: Props) => {
     const { data, refetch } = useQuery<LoadGroupQuery, LoadGroupQueryVariables>(loadGroupGql, {
+        skip: !isInBrowser,
+        fetchPolicy: 'cache-and-network',
         variables: {
             groupId,
         },

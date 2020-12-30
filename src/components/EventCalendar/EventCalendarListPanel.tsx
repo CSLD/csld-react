@@ -4,6 +4,7 @@ import { createUseStyles } from 'react-jss'
 import { useApolloClient, useQuery } from '@apollo/client'
 import { Form as FinalForm } from 'react-final-form'
 import { Col, Row } from 'react-bootstrap'
+import isInBrowser from 'is-in-browser'
 import { darkTheme } from '../../theme/darkTheme'
 import {
     CalendarEventDataFragment,
@@ -49,7 +50,7 @@ const useStyles = createUseStyles({
     formSectionHeader,
 })
 
-const PAGE_SIZE = 25
+const PAGE_SIZE = 5
 
 type Page = Partial<{
     events: CalendarEventDataFragment[]
@@ -69,7 +70,7 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
     const { t } = useTranslation('common')
     const classes = useStyles()
     const [offset, setOffset] = useState(0)
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [page, setPage] = useState<Page>({})
     const [requiredLabels, setRequiredLabels] = useState<LabelFromGql[] | undefined>(undefined)
     const [optionalLabels, setOptionalLabels] = useState<LabelFromGql[] | undefined>(undefined)
@@ -92,6 +93,9 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
             limit: PAGE_SIZE,
         },
         ssr: false,
+        skip: !isInBrowser,
+        fetchPolicy: 'cache-and-network',
+        nextFetchPolicy: 'cache-first', // Do not reload on page change
         onCompleted: response => {
             setLoading(false)
             setPage(response.eventCalendar)
@@ -122,6 +126,7 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
                     client
                         .query<MoreCalendarEventsQuery, MoreCalendarEventsQueryVariables>({
                             query: moreCalendarEventsGql,
+                            fetchPolicy: 'network-only',
                             variables: {
                                 from: newFrom || values.from,
                                 to: newTo || values.to,

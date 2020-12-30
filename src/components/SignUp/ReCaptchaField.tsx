@@ -4,6 +4,7 @@ import { Field } from 'react-final-form'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { useTranslation } from 'react-i18next'
 import { createUseStyles } from 'react-jss'
+import isInBrowser from 'is-in-browser'
 import { GetConfigQuery, GetConfigQueryVariables } from '../../graphql/__generated__/typescript-operations'
 import { darkTheme } from '../../theme/darkTheme'
 
@@ -30,7 +31,10 @@ const ReCaptchaField = ({ name }: Props) => {
     const { t } = useTranslation('common')
     const classes = useStyles()
 
-    const configResult = useQuery<GetConfigQuery, GetConfigQueryVariables>(getConfigGql)
+    const configResult = useQuery<GetConfigQuery, GetConfigQueryVariables>(getConfigGql, {
+        skip: !isInBrowser,
+        fetchPolicy: 'cache-first',
+    })
     const reCaptchaKey = configResult.data?.config?.reCaptchaKey
 
     const validate = (input?: string) => {

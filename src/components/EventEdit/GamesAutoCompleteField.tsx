@@ -44,6 +44,7 @@ const GamesAutoCompleteField: React.ForwardRefRenderFunction<HTMLElement, Props>
     const { loading, refetch } = useQuery<AutoCompleteGamesQuery, AutoCompleteGamesQueryVariables>(
         autoCompleteGamesGql,
         {
+            fetchPolicy: 'cache-and-network',
             skip: true,
         },
     )
