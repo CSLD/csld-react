@@ -50,7 +50,7 @@ const useStyles = createUseStyles({
     formSectionHeader,
 })
 
-const PAGE_SIZE = 5
+const PAGE_SIZE = 25
 
 type Page = Partial<{
     events: CalendarEventDataFragment[]
