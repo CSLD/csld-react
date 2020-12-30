@@ -25,12 +25,8 @@ const useStylesStar = createUseStyles({
         color: darkTheme.backgroundControl,
         fontSize: '1.2rem',
         border: 0,
-        padding: 2,
-        marginTop: 6,
-
-        '&:focus': {
-            outline: 'none',
-        },
+        padding: 0,
+        margin: '8px 2px 2px',
     },
     active: {
         color: darkTheme.text,

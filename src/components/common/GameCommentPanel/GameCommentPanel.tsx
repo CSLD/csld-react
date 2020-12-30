@@ -86,9 +86,6 @@ const useStyles = createUseStyles({
             backgroundColor: darkTheme.textGreen,
             color: darkTheme.textOnLight,
         },
-        '&:focus': {
-            outline: 0,
-        },
     },
     commentHiddenButtonActive: {
         backgroundColor: darkTheme.backgroundControl,

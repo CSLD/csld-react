@@ -17,10 +17,6 @@ const useStyles = createUseStyles({
         textAlign: 'left',
         margin: '0 0 20px',
 
-        '&:focus': {
-            outline: `1px dotted ${darkTheme.text}`,
-        },
-
         '&:hover': {
             color: darkTheme.textOnLight,
         },

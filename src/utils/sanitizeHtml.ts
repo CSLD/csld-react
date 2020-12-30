@@ -86,6 +86,7 @@ export const sanitizeHtml = (inputHtml: string | null | undefined) => {
 
     const iframe = document.createElement('iframe', {})
     if (iframe.sandbox === undefined) {
+        // eslint-disable-next-line no-console
         console.warn('Your browser does not support sandboxed iframes. Please upgrade to a modern browser.')
         return input || ''
     }

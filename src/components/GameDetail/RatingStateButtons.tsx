@@ -26,10 +26,6 @@ const useStyles = createUseStyles({
         fontSize: '0.75rem',
         border: '1px solid #000',
 
-        '&:focus': {
-            outline: 'none',
-        },
-
         '&:hover': {
             backgroundColor: darkTheme.textGreen,
             color: darkTheme.backgroundWhite,

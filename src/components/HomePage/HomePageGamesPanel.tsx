@@ -25,10 +25,6 @@ const useStyles = createUseStyles({
         border: 0,
         color: darkTheme.text,
         backgroundColor: darkTheme.background,
-
-        '&:focus': {
-            outline: 0,
-        },
     },
     inner: {
         width: 1180,

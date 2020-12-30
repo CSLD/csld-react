@@ -7,12 +7,12 @@ const globalStyle = `
     @import url(https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&subset=latin,latin-ext,cyrillic-ext,cyrillic);
 
     body {
-      margin: 0;
-      font-family: Open Sans, sans-serif;
-      font-size: 16px;
-      background-color: ${darkTheme.backgroundLight};
-      box-sizing: border-box;
-      overflow-y: scroll;
+        margin: 0;
+          font-family: Open Sans, sans-serif;
+          font-size: 16px;
+          background-color: ${darkTheme.backgroundLight};
+          box-sizing: border-box;
+          overflow-y: scroll;
     }
     
     body.modal-open #mainNav {
@@ -20,13 +20,18 @@ const globalStyle = `
     }
         
     a {
-      text-decoration: none;
-      color: #6dc8b7;
+        text-decoration: none;
+        color: #6dc8b7;
     }
     
     a:hover {
-      text-decoration: none;
-      color: #afafaf;
+        text-decoration: none;
+        color: #afafaf;
+    }
+    
+    a:focus, button:focus {
+        outline-offset: 2px;    
+        outline: 1px dotted rgba(128, 128, 128, 0.7);
     }
     `
 

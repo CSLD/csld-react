@@ -39,10 +39,6 @@ const useStyles = createUseStyles({
         color: darkTheme.textDark,
         border: 0,
         cursor: 'pointer',
-
-        '&:focus': {
-            outline: 0,
-        },
     },
     tabTextHover: {
         '&:hover': {
