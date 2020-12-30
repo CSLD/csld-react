@@ -212,7 +212,9 @@ export const GameDetailPanel = ({ gameId }: Props) => {
                 />
             )}
             <WidthFixer className={classes.detailsWidthFixer}>
-                <div className={classes.detailsLeft}>{game.name && <GameHeaderPanel game={game} />}</div>
+                <div className={classes.detailsLeft}>
+                    <GameHeaderPanel game={game} />
+                </div>
                 <div className={classes.detailsRight}>
                     <GameRatingPanel game={game} />
                 </div>

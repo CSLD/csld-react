@@ -37,11 +37,11 @@ const useStyles = createUseStyles({
         color: darkTheme.textGreen,
         margin: '5px 0 15px',
     },
-    placeholderHeader: {
+    headerPlaceholder: {
         backgroundColor: darkTheme.textLighter,
         height: '2.25rem',
         margin: '5px 0 15px',
-        opacity: 0.03,
+        opacity: 0.04,
     },
     row: {
         display: 'flex',
@@ -63,7 +63,7 @@ const useStyles = createUseStyles({
     factPlaceholder: {
         background: darkTheme.textLighter,
         height: '1.15rem',
-        opacity: 0.03,
+        opacity: 0.04,
     },
     factLink: {
         wordBreak: 'break-all',
@@ -80,7 +80,7 @@ const useStyles = createUseStyles({
     descriptionPlaceholder: {
         background: darkTheme.textLighter,
         height: 140,
-        opacity: 0.03,
+        opacity: 0.04,
     },
     link: {
         color: darkTheme.textGreen,
@@ -144,7 +144,7 @@ export const GameHeaderPanel = ({ game }: Props) => {
     return (
         <div>
             {game.name && <h1 className={classes.header}>{game.name}</h1>}
-            {!game.name && <div className={classes.placeholderHeader} />}
+            {!game.name && <div className={classes.headerPlaceholder} />}
             <div className={classes.row}>
                 {haveData && (
                     <div className={classes.left}>
