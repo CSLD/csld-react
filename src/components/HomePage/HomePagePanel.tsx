@@ -32,12 +32,14 @@ const useStyles = createUseStyles({
         backgroundColor: darkTheme.backgroundNearWhite,
         padding: '15px 0 35px',
     },
+    /*
     pictures: {
         backgroundColor: darkTheme.background,
     },
     picturesInner: {
         padding: '30px 0',
     },
+     */
 })
 
 const mockComments = [
@@ -130,9 +132,11 @@ export const HomePagePanel = () => {
                     onToggleExpanded={handleToggleExpanded}
                 />
             </div>
+            {/*
             <div className={classes.pictures}>
                 <WidthFixer className={classes.picturesInner} />
             </div>
+            */}
         </>
     )
 }
