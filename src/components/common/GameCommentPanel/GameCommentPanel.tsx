@@ -126,6 +126,11 @@ const useStyles = createUseStyles({
     },
 })
 
+const firstWordOf = (name: string) => {
+    const sidx = name.indexOf(' ')
+    return sidx < 0 ? name : name.substr(0, sidx)
+}
+
 const GameCommentPanel = ({ comment, showVisibilityButton, onChangeCommentVisibility }: Props) => {
     const classes = useStyles()
     const { t } = useTranslation('common')
@@ -146,7 +151,7 @@ const GameCommentPanel = ({ comment, showVisibilityButton, onChangeCommentVisibi
                 <ProfileImage userId={comment.user.id} imageId={comment.user.image?.id} />
                 <div className={classes.headerMiddle}>
                     <UserLink userId={comment.user.id} className={classes.headerNameWrapper}>
-                        <span className={classes.headerNickName}>{nickname || name}</span>
+                        <span className={classes.headerNickName}>{nickname || firstWordOf(name)}</span>
                         <span className={classes.headerName}>{name}</span>
                     </UserLink>
                     {added}
