@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { Button } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
@@ -36,14 +36,14 @@ export const GamePagedCommentsPanel = ({ gameId, commentsDisabled }: Props) => {
     const [offset, setOffset] = useState(0)
     const [editModalShown, setEditModalShown] = useState(false)
     const [editModalLoaded, setEditModalLoaded] = useState(false)
-    const lastPageRef = useRef<CommentsPaged | undefined>(undefined)
+    const [cachedPage, setCachedPage] = useState<CommentsPaged | undefined>(undefined)
     const classes = useStyles()
     const { t } = useTranslation('common')
     const loggedInUser = useLoggedInUser()
 
     // Clear cached page when gameId changes
     useEffect(() => {
-        lastPageRef.current = undefined
+        setCachedPage(undefined)
     }, [gameId])
 
     const query = useQuery<MoreCommentsQuery, MoreCommentsQueryVariables>(moreCommentsGql, {
@@ -55,10 +55,10 @@ export const GamePagedCommentsPanel = ({ gameId, commentsDisabled }: Props) => {
         fetchPolicy: 'cache-and-network',
         skip: !isInBrowser,
         ssr: false,
+        onCompleted: data => {
+            setCachedPage(data.gameById?.commentsPaged as CommentsPaged | undefined)
+        },
     })
-
-    lastPageRef.current = (query.data && (query.data.gameById?.commentsPaged as CommentsPaged)) || lastPageRef.current
-    const page = lastPageRef.current
 
     const currentUsersComment = query.data?.gameById?.currentUsersComment?.comment
 
@@ -72,7 +72,7 @@ export const GamePagedCommentsPanel = ({ gameId, commentsDisabled }: Props) => {
 
     return (
         <>
-            {loggedInUser?.id && page && (
+            {loggedInUser?.id && cachedPage && (
                 <div className={classes.commentButtonWrapper}>
                     {!currentUsersComment && !commentsDisabled && (
                         <Button
@@ -115,7 +115,7 @@ export const GamePagedCommentsPanel = ({ gameId, commentsDisabled }: Props) => {
                     />
                 </React.Suspense>
             )}
-            <PagedCommentsPanel page={page} pageSize={PAGE_SIZE} offset={offset} onOffsetChanged={setOffset} />
+            <PagedCommentsPanel page={cachedPage} pageSize={PAGE_SIZE} offset={offset} onOffsetChanged={setOffset} />
         </>
     )
 }
