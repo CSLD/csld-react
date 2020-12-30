@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import { useMutation, useQuery } from '@apollo/client'
 import { useTranslation } from 'react-i18next'
@@ -21,6 +21,7 @@ import { useRoutes } from '../../hooks/useRoutes'
 import ConfirmationModal from '../common/ConfirmationModal/ConfirmationModal'
 import { canDelete, canEdit } from '../../utils/graphqlUtils'
 import { useShowToast } from '../../hooks/useShowToast'
+import { sanitizeHtml } from '../../utils/sanitizeHtml'
 
 const loadEventGql = require('./graphql/loadEvent.graphql')
 const deleteEventGql = require('./graphql/deleteEvent.graphql')
@@ -90,6 +91,8 @@ const EventDetailPanel = ({ eventId }: Props) => {
     const { fromFormatted, toFormatted, justOneDate } = formatTimeRange(event?.from, event?.to)
     const editVisible = canEdit(event?.allowedActions)
     const deleteVisible = canDelete(event?.allowedActions)
+    const description = event?.description
+    const sanitizedDescription = useMemo(() => sanitizeHtml(description), [description])
 
     const handleEditEvent = () => {
         routes.push(routes.eventEdit(eventId))
@@ -149,7 +152,7 @@ const EventDetailPanel = ({ eventId }: Props) => {
                                 <div
                                     className={classNames(classes.text, classes.description)}
                                     /* eslint-disable-next-line react/no-danger */
-                                    dangerouslySetInnerHTML={{ __html: event.description }}
+                                    dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
                                 />
                             )}
                             <div className={classes.labelsWrapper}>

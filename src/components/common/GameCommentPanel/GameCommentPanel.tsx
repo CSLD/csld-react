@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import { format } from 'date-fns-tz'
 import { useTranslation } from 'react-i18next'
@@ -11,6 +11,7 @@ import { GameRatingBox } from '../GameRatingBox/GameRatingBox'
 import { GameLink } from '../GameLink/GameLink'
 import UserLink from '../UserLink/UserLink'
 import { IconEye } from '../Icons/Icons'
+import { sanitizeHtml } from '../../../utils/sanitizeHtml'
 
 interface Props {
     readonly comment: Pick<Comment, 'id' | 'comment' | 'added' | 'amountOfUpvotes' | 'isHidden'> & {
@@ -138,7 +139,8 @@ const GameCommentPanel = ({ comment, showVisibilityButton, onChangeCommentVisibi
     const [visibilityButtonActive, setVisibilityButtonActive] = useState(comment.isHidden)
 
     const { nickname, name } = comment.user
-    const { game } = comment
+    const { game, comment: commentHtml } = comment
+    const sanitizedCommentHtml = useMemo(() => sanitizeHtml(commentHtml), [commentHtml])
 
     const handleToggleVisibility = () => {
         setVisibilityButtonActive(!visibilityButtonActive)
@@ -173,7 +175,7 @@ const GameCommentPanel = ({ comment, showVisibilityButton, onChangeCommentVisibi
                 </div>
             </div>
             {/* eslint-disable-next-line react/no-danger */}
-            <p className={classes.text} dangerouslySetInnerHTML={{ __html: comment.comment ?? '' }} />
+            <p className={classes.text} dangerouslySetInnerHTML={{ __html: sanitizedCommentHtml }} />
             {game && (
                 <div className={classes.game}>
                     {t('Game.aboutGame')}

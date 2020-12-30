@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { createUseStyles } from 'react-jss'
 import { Game, User, Group, Label } from 'src/graphql/__generated__/typescript-operations'
 import { useTranslation } from 'react-i18next'
@@ -7,6 +7,7 @@ import { darkTheme } from '../../theme/darkTheme'
 import UserLink from '../common/UserLink/UserLink'
 import GroupLink from '../common/GroupLink/GroupLink'
 import DetailLabelList from '../common/DetailLabelList/DetailLabelList'
+import { sanitizeHtml } from '../../utils/sanitizeHtml'
 
 interface Props {
     readonly game: Pick<
@@ -106,7 +107,9 @@ const buildFacts = (t: TFunction, i18n: Ti18n, facts: Array<{ count?: number | n
 export const GameHeaderPanel = ({ game }: Props) => {
     const classes = useStyles()
     const { t, i18n } = useTranslation('common')
-    const haveData = !!game.description
+    const { description } = game
+    const haveData = !!description
+    const sanitizedDescription = useMemo(() => sanitizeHtml(description), [description])
 
     const playersFacts = buildFacts(t, i18n, [
         {
@@ -228,7 +231,7 @@ export const GameHeaderPanel = ({ game }: Props) => {
             {haveData && (
                 <>
                     {/* eslint-disable-next-line react/no-danger */}
-                    <p className={classes.description} dangerouslySetInnerHTML={{ __html: game.description ?? '' }} />
+                    <p className={classes.description} dangerouslySetInnerHTML={{ __html: sanitizedDescription }} />
                     <div className={classes.divider} />
                     <DetailLabelList labels={game.labels} linkType="games" />
                 </>
