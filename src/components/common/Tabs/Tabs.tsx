@@ -52,7 +52,7 @@ const useStyles = createUseStyles({
     tabIcon: {
         fontSize: '1.75rem',
         color: darkTheme.backgroundWhite,
-        margin: '-17px 0 -17px',
+        margin: '-17px 0 -18px',
     },
 })
 

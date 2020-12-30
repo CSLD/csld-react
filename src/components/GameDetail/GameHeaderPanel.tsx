@@ -37,6 +37,12 @@ const useStyles = createUseStyles({
         color: darkTheme.textGreen,
         margin: '5px 0 15px',
     },
+    placeholderHeader: {
+        backgroundColor: darkTheme.textLighter,
+        height: '2.25rem',
+        margin: '5px 0 15px',
+        opacity: 0.03,
+    },
     row: {
         display: 'flex',
         marginBottom: -10,
@@ -54,6 +60,11 @@ const useStyles = createUseStyles({
         fontSize: '0.75rem',
         lineHeight: '150%',
     },
+    factPlaceholder: {
+        background: darkTheme.textLighter,
+        height: '1.15rem',
+        opacity: 0.03,
+    },
     factLink: {
         wordBreak: 'break-all',
     },
@@ -65,6 +76,11 @@ const useStyles = createUseStyles({
         color: darkTheme.textLighter,
         fontSize: '0.75rem',
         lineHeight: '140%',
+    },
+    descriptionPlaceholder: {
+        background: darkTheme.textLighter,
+        height: 140,
+        opacity: 0.03,
     },
     link: {
         color: darkTheme.textGreen,
@@ -89,6 +105,7 @@ const buildFacts = (t: TFunction, i18n: Ti18n, facts: Array<{ count?: number | n
 export const GameHeaderPanel = ({ game }: Props) => {
     const classes = useStyles()
     const { t, i18n } = useTranslation('common')
+    const haveData = !!game.description
 
     const playersFacts = buildFacts(t, i18n, [
         {
@@ -126,70 +143,96 @@ export const GameHeaderPanel = ({ game }: Props) => {
 
     return (
         <div>
-            <h1 className={classes.header}>{game.name}</h1>
+            {game.name && <h1 className={classes.header}>{game.name}</h1>}
+            {!game.name && <div className={classes.placeholderHeader} />}
             <div className={classes.row}>
-                <div className={classes.left}>
-                    <p className={classes.fact}>{playersFacts}</p>
-                    <p className={classes.fact}>{timeFacts}</p>
-                    {game.web && (
-                        <p className={`${classes.fact} ${classes.factLink}`}>
-                            {`${t('Game.web')} `}
-                            <a href={game.web} className={classes.link} target="_blank" rel="noreferrer">
-                                {game.web}
-                            </a>
-                        </p>
-                    )}
-                    {game.galleryURL && (
-                        <p className={`${classes.fact} ${classes.factLink}`}>
-                            {`${t('Game.gallery')} `}
-                            <a href={game.galleryURL} className={classes.link} target="_blank" rel="noreferrer">
-                                {game.galleryURL}
-                            </a>
-                        </p>
-                    )}
-                    {game.photoAuthor && (
+                {haveData && (
+                    <div className={classes.left}>
+                        <p className={classes.fact}>{playersFacts}</p>
+                        <p className={classes.fact}>{timeFacts}</p>
+                        {game.web && (
+                            <p className={`${classes.fact} ${classes.factLink}`}>
+                                {`${t('Game.web')} `}
+                                <a href={game.web} className={classes.link} target="_blank" rel="noreferrer">
+                                    {game.web}
+                                </a>
+                            </p>
+                        )}
+                        {game.galleryURL && (
+                            <p className={`${classes.fact} ${classes.factLink}`}>
+                                {`${t('Game.gallery')} `}
+                                <a href={game.galleryURL} className={classes.link} target="_blank" rel="noreferrer">
+                                    {game.galleryURL}
+                                </a>
+                            </p>
+                        )}
+                        {game.photoAuthor && (
+                            <p className={classes.fact}>
+                                {`${t('Game.photoAuthor')} `}
+                                {game.photoAuthor}
+                            </p>
+                        )}
+                    </div>
+                )}
+                {!haveData && (
+                    <div className={classes.left}>
+                        <p className={classes.factPlaceholder} />
+                        <p className={classes.factPlaceholder} />
+                        <p className={classes.factPlaceholder} />
+                        <p className={classes.factPlaceholder} />
+                        <p className={classes.factPlaceholder} />
+                    </div>
+                )}
+
+                {haveData && (
+                    <div className={classes.right}>
                         <p className={classes.fact}>
-                            {`${t('Game.photoAuthor')} `}
-                            {game.photoAuthor}
-                        </p>
-                    )}
-                </div>
-                <div className={classes.right}>
-                    <p className={classes.fact}>
-                        {t('Game.authors')}
-                        &nbsp;
-                        {game.authors.map((author, n) => (
-                            <React.Fragment key={author.id}>
-                                {n > 0 && ', '}
-                                <UserLink userId={author.id} className={classes.link}>
-                                    {author.nickname}
-                                    {author.nickname && author.name ? ' ' : ''}
-                                    {author.name}
-                                </UserLink>
-                            </React.Fragment>
-                        ))}
-                    </p>
-                    <p className={classes.fact}>
-                        {t('Game.groups')}
-                        &nbsp;
-                        {game.groupAuthor.length === 0 && <span>&mdash;</span>}
-                        {game.groupAuthor.length > 0 &&
-                            game.groupAuthor.map((group, n) => (
-                                <React.Fragment key={group.id}>
+                            {t('Game.authors')}
+                            &nbsp;
+                            {game.authors.map((author, n) => (
+                                <React.Fragment key={author.id}>
                                     {n > 0 && ', '}
-                                    <GroupLink groupId={group.id} className={classes.link}>
-                                        {group.name}
-                                    </GroupLink>
+                                    <UserLink userId={author.id} className={classes.link}>
+                                        {author.nickname}
+                                        {author.nickname && author.name ? ' ' : ''}
+                                        {author.name}
+                                    </UserLink>
                                 </React.Fragment>
                             ))}
-                    </p>
-                </div>
+                        </p>
+                        <p className={classes.fact}>
+                            {t('Game.groups')}
+                            &nbsp;
+                            {game.groupAuthor.length === 0 && <span>&mdash;</span>}
+                            {game.groupAuthor.length > 0 &&
+                                game.groupAuthor.map((group, n) => (
+                                    <React.Fragment key={group.id}>
+                                        {n > 0 && ', '}
+                                        <GroupLink groupId={group.id} className={classes.link}>
+                                            {group.name}
+                                        </GroupLink>
+                                    </React.Fragment>
+                                ))}
+                        </p>
+                    </div>
+                )}
+                {!haveData && (
+                    <div className={classes.right}>
+                        <p className={classes.factPlaceholder} />
+                        <p className={classes.factPlaceholder} />
+                    </div>
+                )}
             </div>
             <div className={classes.divider} />
-            {/* eslint-disable-next-line react/no-danger */}
-            <p className={classes.description} dangerouslySetInnerHTML={{ __html: game.description ?? '' }} />
-            <div className={classes.divider} />
-            <DetailLabelList labels={game.labels} linkType="games" />
+            {haveData && (
+                <>
+                    {/* eslint-disable-next-line react/no-danger */}
+                    <p className={classes.description} dangerouslySetInnerHTML={{ __html: game.description ?? '' }} />
+                    <div className={classes.divider} />
+                    <DetailLabelList labels={game.labels} linkType="games" />
+                </>
+            )}
+            {!haveData && <div className={classes.descriptionPlaceholder} />}
         </div>
     )
 }
