@@ -33,13 +33,14 @@ interface Props {
 
 const useStyles = createUseStyles({
     header: {
-        fontSize: '1.8rem',
+        fontSize: '1.75rem',
         color: darkTheme.textGreen,
         margin: '5px 0 15px',
+        fontWeight: 'bold',
     },
     headerPlaceholder: {
         backgroundColor: darkTheme.textLighter,
-        height: '2.25rem',
+        height: '2.20rem',
         margin: '5px 0 15px',
         opacity: 0.04,
     },

@@ -13,10 +13,10 @@ import ToastContextProvider from 'src/context/ToastContext/ToastContextProvider'
 import { PageHeader } from 'src/components/common/PageHeader/PageHeader'
 import { PageFooter } from 'src/components/common/PageFooter/PageFooter'
 import { InPlaceSignInContextProvider } from 'src/context/InPlaceSignInContext/InPlaceSignInContextProvider'
+import InPlaceSignInWrapper from 'src/components/common/InPlaceSignInWrapper/InPlaceSignInWrapper'
 
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import 'react-bootstrap-typeahead/css/Typeahead.css'
-import InPlaceSignInWrapper from 'src/components/common/InPlaceSignInWrapper/InPlaceSignInWrapper'
 
 // Import the CSS
 config.autoAddCss = false // Tell Font Awesome to skip adding the CSS automatically since it's being imported above
