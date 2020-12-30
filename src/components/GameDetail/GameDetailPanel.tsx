@@ -192,10 +192,12 @@ export const GameDetailPanel = ({ gameId }: Props) => {
     const handleHideDeleteModal = () => setDeleteConfirmShown(false)
 
     const handleDoDeleteGame = () => {
-        deleteGame().then(() => {
-            setDeleteConfirmShown(false)
-            showToast(t('GameDetail.gameDeleted'), 'success')
-            routes.push(routes.homepage())
+        deleteGame().then(res => {
+            if (res.data) {
+                setDeleteConfirmShown(false)
+                showToast(t('GameDetail.gameDeleted'), 'success')
+                routes.push(routes.homepage())
+            }
         })
     }
 

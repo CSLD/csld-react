@@ -43,8 +43,10 @@ const GroupEditModal = ({ id, initialName, onHide }: Props) => {
 
     const handleSave = async ({ name }: FormValues) => {
         if (id) {
-            await updateMutation({ variables: { input: { id, name } } })
-            onHide(true)
+            const res = await updateMutation({ variables: { input: { id, name } } })
+            if (res.data) {
+                onHide(true)
+            }
         } else {
             await createMutation({ variables: { input: { name } } }).then(res => {
                 const newId = res.data?.group.createGroup.id

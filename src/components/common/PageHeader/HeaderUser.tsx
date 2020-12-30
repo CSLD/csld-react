@@ -95,12 +95,14 @@ const HeaderUser = () => {
             routes.push(routes.adminMenu())
         }
         if (eventKey === 'logOut') {
-            await client.mutate({
+            const res = await client.mutate({
                 mutation: signOutMutation,
             })
 
-            client.resetStore()
-            routes.push(routes.homepage())
+            if (res.data) {
+                client.resetStore()
+                routes.push(routes.homepage())
+            }
         }
     }
 

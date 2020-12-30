@@ -99,10 +99,12 @@ const EventDetailPanel = ({ eventId }: Props) => {
     const handleHideDeleteModal = () => setDeleteConfirmShown(false)
 
     const handleDoDeleteEvent = () => {
-        deleteEvent({ variables: { eventId } }).then(() => {
-            setDeleteConfirmShown(false)
-            showToast(t('EventDetail.eventDeleted'), 'success')
-            routes.push(routes.homepage())
+        deleteEvent({ variables: { eventId } }).then(res => {
+            if (res.data) {
+                setDeleteConfirmShown(false)
+                showToast(t('EventDetail.eventDeleted'), 'success')
+                routes.push(routes.homepage())
+            }
         })
     }
 
