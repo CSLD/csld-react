@@ -46,6 +46,7 @@ const attributeWhitelist: { [key: string]: boolean | undefined } = {
     controls: true,
     height: true,
     href: true,
+    rel: true,
     src: true,
     style: true,
     target: true,
