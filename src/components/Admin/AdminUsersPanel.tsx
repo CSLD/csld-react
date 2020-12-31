@@ -4,6 +4,7 @@ import isInBrowser from 'is-in-browser'
 import { createUseStyles } from 'react-jss'
 import { Button, Dropdown, DropdownButton, Form } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
+import classNames from 'classnames'
 import {
     AdminUserFieldsFragment,
     DeleteUserMutation,
@@ -31,7 +32,13 @@ const useStyles = createUseStyles({
         backgroundColor: darkTheme.backgroundWhite,
         padding: '20px 0',
     },
+    widthFixer: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
     formRow: {
+        width: '100%',
         backgroundColor: darkTheme.backgroundRealWhite,
         display: 'flex',
         alignItems: 'center',
@@ -63,6 +70,11 @@ const useStyles = createUseStyles({
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         margin: '0 10px',
+    },
+    dropDown: {
+        minWidth: 70,
+        display: 'inline-block',
+        textAlign: 'left',
     },
     loading: {
         opacity: 0.5,
@@ -188,7 +200,11 @@ const AdminUserPanel = () => {
             <AdminTabs selectedTab="users" />
 
             <div className={classes.row}>
-                <WidthFixer className={isLoading && filteredUsers.length > 0 ? classes.loading : undefined}>
+                <WidthFixer
+                    className={classNames(classes.widthFixer, {
+                        [classes.loading]: isLoading && filteredUsers.length > 0,
+                    })}
+                >
                     <div className={classes.formRow} ref={formRef}>
                         <Form.Control
                             name="name"
@@ -214,7 +230,10 @@ const AdminUserPanel = () => {
                                         <UserLink userId={user.id}>{user.name}</UserLink>
                                     </div>
                                     <div className={classes.controls}>
-                                        <DropdownButton variant="dark" title={t(`UserRole.${user.role}`)}>
+                                        <DropdownButton
+                                            variant="dark"
+                                            title={<div className={classes.dropDown}>{t(`UserRole.${user.role}`)}</div>}
+                                        >
                                             <Dropdown.Item onSelect={handleChangeRole(user.id, UserRoleIn.User)}>
                                                 {t('UserRole.USER')}
                                             </Dropdown.Item>
