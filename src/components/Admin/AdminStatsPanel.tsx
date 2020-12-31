@@ -3,6 +3,7 @@ import { createUseStyles } from 'react-jss'
 import { useQuery } from '@apollo/client'
 import { Table } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
+import isInBrowser from 'is-in-browser'
 import { darkTheme } from '../../theme/darkTheme'
 import AdminTabs from './AdminTabs'
 import { LoadStatsQuery, LoadStatsQueryVariables } from '../../graphql/__generated__/typescript-operations'
@@ -27,6 +28,7 @@ const AdminStatsPanel = () => {
     const classes = useStyles()
     const { t } = useTranslation('common')
     const { data } = useQuery<LoadStatsQuery, LoadStatsQueryVariables>(loadStatsGql, {
+        skip: !isInBrowser,
         fetchPolicy: 'cache-and-network',
     })
 

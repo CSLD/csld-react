@@ -8,7 +8,7 @@ interface InitialProps {}
 
 const AdminLabelsPage: NextPage<Props, InitialProps> = () => {
     return (
-        <SignInRequiredWrapper requiredRole="ADMIN">
+        <SignInRequiredWrapper requiredRole="EDITOR">
             <AdminLabelsPanel />
         </SignInRequiredWrapper>
     )

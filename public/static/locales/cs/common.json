@@ -377,7 +377,7 @@
     "tabLabels": "Štítky",
     "tabStats": "Statistiky",
     "tabSelfRating": "Sebehodnocení",
-    "intro": "Admin sekce ještě není"
+    "intro": "With great power comes great responsibility."
   },
   "GraphQLError": {
     "NETWORK": "Chyba spojení se serverem. Zkuste znovu načíst stránku.",

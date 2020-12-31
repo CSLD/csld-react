@@ -1,4 +1,4 @@
-query LoadSelfRating {
+query LoadSelfRated {
     admin {
         selfRated {
             game {

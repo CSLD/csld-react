@@ -35,9 +35,9 @@ export type LoadAllUsersQuery = { __typename?: 'Query' } & {
     admin: { __typename?: 'AdminQuery' } & { allUsers: Array<{ __typename?: 'User' } & AdminUserFieldsFragment> }
 }
 
-export type LoadSelfRatingQueryVariables = Exact<{ [key: string]: never }>
+export type LoadSelfRatedQueryVariables = Exact<{ [key: string]: never }>
 
-export type LoadSelfRatingQuery = { __typename?: 'Query' } & {
+export type LoadSelfRatedQuery = { __typename?: 'Query' } & {
     admin: { __typename?: 'AdminQuery' } & {
         selfRated: Array<
             { __typename?: 'SelfRated' } & {
