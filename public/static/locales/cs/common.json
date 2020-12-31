@@ -392,5 +392,17 @@
     "signInRequired": "Prosíme, nejprve se přihlaste",
     "accessDenied": "Pro přístup na tuto stránku nemáte dostatečná oprávnění",
     "backToHomepage": "Zpět na hlavní stránku"
+  },
+  "AdminUsers": {
+    "filterPlaceholder": "Část jména nebo přezdívky...",
+    "showPrivileged": "Zobrazit pouze editory a administrátory",
+    "delete": "Smazat",
+    "deleteConfirm": "Opravdu si přejete uživatele smazat? Tato operace je nevratná!",
+    "showAll": "Zobrazit všech {{recordCount}} vyhovujících záznamů"
+  },
+  "UserRole": {
+    "ADMIN": "Admin",
+    "EDITOR": "Editor",
+    "USER": "Uživatel"
   }
 }

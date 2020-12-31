@@ -1,5 +1,32 @@
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> }
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> }
+export type DeleteUserMutationVariables = Exact<{
+    userId: Scalars['ID']
+}>
+
+export type DeleteUserMutation = { __typename?: 'Mutation' } & {
+    admin: { __typename?: 'AdminMutation' } & { deleteUser?: Maybe<{ __typename?: 'User' } & Pick<User, 'id'>> }
+}
+
+export type AdminUserFieldsFragment = { __typename?: 'User' } & Pick<User, 'id' | 'name' | 'nickname' | 'role'>
+
+export type LoadAllUsersQueryVariables = Exact<{ [key: string]: never }>
+
+export type LoadAllUsersQuery = { __typename?: 'Query' } & {
+    admin: { __typename?: 'AdminQuery' } & { allUsers: Array<{ __typename?: 'User' } & AdminUserFieldsFragment> }
+}
+
+export type UpdateUserRoleMutationVariables = Exact<{
+    userId: Scalars['ID']
+    role: UserRoleIn
+}>
+
+export type UpdateUserRoleMutation = { __typename?: 'Mutation' } & {
+    admin: { __typename?: 'AdminMutation' } & { setUserRole: { __typename?: 'User' } & AdminUserFieldsFragment }
+}
+
 export type CalendarEventDataFragment = { __typename?: 'Event' } & Pick<
     Event,
     'id' | 'name' | 'from' | 'to' | 'web' | 'loc'
@@ -10,8 +37,8 @@ export type LoadCalendarEventsQueryVariables = Exact<{
     to?: Maybe<Scalars['String']>
     offset: Scalars['Int']
     limit: Scalars['Int']
-    requiredLabels?: Maybe<Array<Scalars['ID']>>
-    optionalLabels?: Maybe<Array<Scalars['ID']>>
+    requiredLabels?: Maybe<Array<Scalars['ID']> | Scalars['ID']>
+    optionalLabels?: Maybe<Array<Scalars['ID']> | Scalars['ID']>
 }>
 
 export type LoadCalendarEventsQuery = { __typename?: 'Query' } & {
@@ -25,8 +52,8 @@ export type MoreCalendarEventsQueryVariables = Exact<{
     to?: Maybe<Scalars['String']>
     offset: Scalars['Int']
     limit: Scalars['Int']
-    requiredLabels?: Maybe<Array<Scalars['ID']>>
-    optionalLabels?: Maybe<Array<Scalars['ID']>>
+    requiredLabels?: Maybe<Array<Scalars['ID']> | Scalars['ID']>
+    optionalLabels?: Maybe<Array<Scalars['ID']> | Scalars['ID']>
 }>
 
 export type MoreCalendarEventsQuery = { __typename?: 'Query' } & {
@@ -373,8 +400,8 @@ export type LadderInitialGamesQueryVariables = Exact<{
     ladderType: LadderType
     offset: Scalars['Int']
     limit: Scalars['Int']
-    requiredLabels?: Maybe<Array<Scalars['ID']>>
-    optionalLabels?: Maybe<Array<Scalars['ID']>>
+    requiredLabels?: Maybe<Array<Scalars['ID']> | Scalars['ID']>
+    optionalLabels?: Maybe<Array<Scalars['ID']> | Scalars['ID']>
 }>
 
 export type LadderInitialGamesQuery = { __typename?: 'Query' } & {
@@ -389,8 +416,8 @@ export type LadderMoreGamesQueryVariables = Exact<{
     ladderType: LadderType
     offset: Scalars['Int']
     limit: Scalars['Int']
-    requiredLabels?: Maybe<Array<Scalars['ID']>>
-    optionalLabels?: Maybe<Array<Scalars['ID']>>
+    requiredLabels?: Maybe<Array<Scalars['ID']> | Scalars['ID']>
+    optionalLabels?: Maybe<Array<Scalars['ID']> | Scalars['ID']>
 }>
 
 export type LadderMoreGamesQuery = { __typename?: 'Query' } & {

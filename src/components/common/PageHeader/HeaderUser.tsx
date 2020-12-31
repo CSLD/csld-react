@@ -92,7 +92,7 @@ const HeaderUser = () => {
             routes.push(routes.changePassword())
         }
         if (eventKey === 'admin') {
-            routes.push(routes.adminMenu())
+            routes.push(routes.adminIntro())
         }
         if (eventKey === 'logOut') {
             const res = await client.mutate({
