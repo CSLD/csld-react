@@ -19,7 +19,6 @@ import AuthorsAutoCompleteField from './AuthorsAutoCompleteField'
 import GroupsAutoCompleteField from './GroupsAutoCompleteField'
 import { GroupAuthor } from './NewGroupModal'
 import { Author } from './NewAuthorModal'
-import { NewLabel } from '../common/form/NewLabelsField/NewLabelsField'
 import {
     CreateGameInput,
     CreateGameMutation,
@@ -38,6 +37,7 @@ import { IconBack } from '../common/Icons/Icons'
 import { useShowToast } from '../../hooks/useShowToast'
 import BigLoading from '../common/BigLoading/BigLoading'
 import SubmitButton from '../common/SubmitButton/SubmitButton'
+import { NewLabel } from '../common/form/NewLabelsField'
 
 const createGameGql = require('./graphql/createGame.graphql')
 const updateGameGql = require('./graphql/updateGame.graphql')

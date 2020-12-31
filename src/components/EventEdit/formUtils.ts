@@ -3,8 +3,8 @@ import { TFunction } from 'i18next'
 import { CreateEventInput, Event, Game, Label, Maybe } from '../../graphql/__generated__/typescript-operations'
 import { editorStateToHtml } from '../common/form/richTextInputUtils'
 import { createGameLabel, LinkedGame } from './GamesAutoCompleteField'
-import { NewLabel } from '../common/form/NewLabelsField/NewLabelsField'
 import { fieldValidator, validateRequired, validateTime } from '../../utils/validationUtils'
+import { NewLabel } from '../common/form/NewLabelsField'
 
 const buildDateTime = (date: string, time?: string) => (time ? `${date}T${time}:00` : `${date}T00:00:00`)
 
