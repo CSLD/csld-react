@@ -4,7 +4,7 @@ import { useLoggedInUser } from '../../hooks/useLoggedInUser'
 import { UserRole } from '../../graphql/__generated__/typescript-operations'
 import { useRoutes } from '../../hooks/useRoutes'
 
-type AdminTab = 'intro' | 'users' | 'labels' | 'ratingStats' | 'commentStats' | 'selfRating'
+type AdminTab = 'intro' | 'users' | 'labels' | 'stats' | 'selfRated'
 
 interface Props {
     readonly selectedTab: AdminTab
@@ -24,15 +24,11 @@ const tabs: Array<TabDefinition<AdminTab>> = [
         title: { key: 'Admin.tabLabels' },
     },
     {
-        key: 'ratingStats',
-        title: { key: 'Admin.tabRatingStats' },
+        key: 'stats',
+        title: { key: 'Admin.tabStats' },
     },
     {
-        key: 'commentStats',
-        title: { key: 'Admin.tabCommentState' },
-    },
-    {
-        key: 'selfRating',
+        key: 'selfRated',
         title: { key: 'Admin.tabSelfRating' },
     },
 ]
@@ -55,6 +51,12 @@ const AdminTabs = ({ selectedTab }: Props) => {
         }
         if (tab === 'labels') {
             routes.push(routes.adminLabels())
+        }
+        if (tab === 'stats') {
+            routes.push(routes.adminStats())
+        }
+        if (tab === 'selfRated') {
+            routes.push(routes.adminSelfRated())
         }
     }
 

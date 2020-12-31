@@ -35,6 +35,32 @@ export type LoadAllUsersQuery = { __typename?: 'Query' } & {
     admin: { __typename?: 'AdminQuery' } & { allUsers: Array<{ __typename?: 'User' } & AdminUserFieldsFragment> }
 }
 
+export type LoadSelfRatingQueryVariables = Exact<{ [key: string]: never }>
+
+export type LoadSelfRatingQuery = { __typename?: 'Query' } & {
+    admin: { __typename?: 'AdminQuery' } & {
+        selfRated: Array<
+            { __typename?: 'SelfRated' } & {
+                game: { __typename?: 'Game' } & Pick<Game, 'id' | 'name'>
+                user: { __typename?: 'User' } & Pick<User, 'id' | 'email' | 'name' | 'nickname'>
+            }
+        >
+    }
+}
+
+export type LoadStatsQueryVariables = Exact<{ [key: string]: never }>
+
+export type LoadStatsQuery = { __typename?: 'Query' } & {
+    admin: { __typename?: 'AdminQuery' } & {
+        stats: Array<
+            { __typename?: 'StatFact' } & Pick<
+                StatFact,
+                'id' | 'year' | 'month' | 'averageRating' | 'numRatings' | 'numComments'
+            >
+        >
+    }
+}
+
 export type SetLabelAuthorizedMutationVariables = Exact<{
     labelId: Scalars['ID']
     authorized: Scalars['Boolean']
@@ -1243,28 +1269,23 @@ export type AdminQuery = {
     __typename?: 'AdminQuery'
     allLabels: Array<Label>
     allUsers: Array<User>
-    ratingStats: Array<RatingStats>
-    commentStats: Array<CommentStats>
+    stats: Array<StatFact>
     selfRated: Array<SelfRated>
 }
 
-export type RatingStats = {
-    __typename?: 'RatingStats'
+export type StatFact = {
+    __typename?: 'StatFact'
+    id: Scalars['ID']
     year: Scalars['Int']
     month: Scalars['Int']
-    numRatings: Scalars['Int']
-    averageRating: Scalars['Float']
-}
-
-export type CommentStats = {
-    __typename?: 'CommentStats'
-    year: Scalars['Int']
-    month: Scalars['Int']
-    amount: Scalars['Int']
+    numRatings?: Maybe<Scalars['Int']>
+    averageRating?: Maybe<Scalars['Float']>
+    numComments?: Maybe<Scalars['Int']>
 }
 
 export type SelfRated = {
     __typename?: 'SelfRated'
+    id: Scalars['ID']
     user: User
     game: Game
 }

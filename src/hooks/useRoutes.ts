@@ -174,6 +174,16 @@ export const useRoutes = () => {
              * Label administration
              */
             adminLabels: (): Route => ({ href: { pathname: '/admin/labels' }, as: '/admin/labels' }),
+
+            /**
+             * Statistics in admin
+             */
+            adminStats: (): Route => ({ href: { pathname: '/admin/stats' }, as: '/admin/stats' }),
+
+            /**
+             * Self rating overview in admin
+             */
+            adminSelfRated: (): Route => ({ href: { pathname: '/admin/selfRated' }, as: '/admin/selfRated' }),
         }),
         [router],
     )

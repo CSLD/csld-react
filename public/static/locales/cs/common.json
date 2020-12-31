@@ -375,8 +375,7 @@
     "tabIntro": "Úvod",
     "tabUsers": "Uživatelé",
     "tabLabels": "Štítky",
-    "tabRatingStats": "Statistiky hodnocení",
-    "tabCommentState": "Statistiky komentářů",
+    "tabStats": "Statistiky",
     "tabSelfRating": "Sebehodnocení",
     "intro": "Admin sekce ještě není"
   },
@@ -414,5 +413,11 @@
     "cancel": "Storno",
     "save": "Uložit",
     "deleteConfirm": "Opravdu štítek smazat? Tato operace je nevratná!"
+  },
+  "AdminRatingStats": {
+    "month": "Měsíc",
+    "numRatings": "Počet hodnocení",
+    "averageRating": "Průměrné hodnocení",
+    "numComments": "Počet komentářů"
   }
 }

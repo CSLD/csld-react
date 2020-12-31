@@ -27,15 +27,22 @@ const errorLink = onError(({ graphQLErrors, networkError, operation, response })
     }
 
     if (!hasCustomErrorHandling) {
-        if (graphQLErrors && graphQLErrors.length > 0 && graphQLErrors[0].extensions?.code) {
-            const { errorClass, valuePath } = PropsFromGraphQLError(graphQLErrors[0])
-            if (response) {
-                response.errors = undefined
+        if (graphQLErrors && graphQLErrors.length > 0) {
+            if (graphQLErrors[0].extensions?.code) {
+                const { errorClass, valuePath } = PropsFromGraphQLError(graphQLErrors[0])
+                if (response) {
+                    response.errors = undefined
+                }
+                toastContextValue.actions.showToast(
+                    <GraphQLErrorContent errorClass={errorClass} valuePath={valuePath} />,
+                    'alert',
+                )
+            } else {
+                if (response) {
+                    response.errors = undefined
+                }
+                toastContextValue.actions.showToast(<GraphQLErrorContent errorClass="UNKNOWN" />, 'alert')
             }
-            toastContextValue.actions.showToast(
-                <GraphQLErrorContent errorClass={errorClass} valuePath={valuePath} />,
-                'alert',
-            )
         }
     }
 })
