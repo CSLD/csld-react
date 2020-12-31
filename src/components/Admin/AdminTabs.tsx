@@ -53,6 +53,9 @@ const AdminTabs = ({ selectedTab }: Props) => {
         if (tab === 'users') {
             routes.push(routes.adminUsers())
         }
+        if (tab === 'labels') {
+            routes.push(routes.adminLabels())
+        }
     }
 
     return <Tabs tabs={filteredTabs} selectedTab={selectedTab} onSelectTab={handleSelect} />

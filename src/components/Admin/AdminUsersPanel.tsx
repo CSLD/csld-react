@@ -244,7 +244,6 @@ const AdminUserPanel = () => {
                 </WidthFixer>
                 <ConfirmationModal
                     show={!!toDeleteUserId}
-                    size="md"
                     content={<span>{t('AdminUsers.deleteConfirm')}</span>}
                     onHide={handleHideDialog}
                     onCancel={handleHideDialog}

@@ -169,6 +169,11 @@ export const useRoutes = () => {
              * User administration
              */
             adminUsers: (): Route => ({ href: { pathname: '/admin/users' }, as: '/admin/users' }),
+
+            /**
+             * Label administration
+             */
+            adminLabels: (): Route => ({ href: { pathname: '/admin/labels' }, as: '/admin/labels' }),
         }),
         [router],
     )

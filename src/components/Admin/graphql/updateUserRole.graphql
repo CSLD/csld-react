@@ -1,4 +1,4 @@
-#import "./fragments.graphql"
+#import "./userFragment.graphql"
 
 mutation UpdateUserRole($userId: ID!, $role: UserRoleIn!) {
     admin {

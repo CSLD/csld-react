@@ -102,11 +102,11 @@ export const GameRatingPanel = ({
     const [selfRatingDismissed, setSelfRatingDismissed] = useState(false)
     const signInContext = useContext(InPlaceSignInContext)
 
-    const max = ratingStats.reduce((currentMax, rating) => Math.max(currentMax, rating.count), 0)
+    const max = (ratingStats ?? []).reduce((currentMax, rating) => Math.max(currentMax, rating.count), 0)
     let statsMap = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     if (amountOfRatings >= MIN_NUM_RATINGS) {
         // Compute stats only when we have enough ratings
-        statsMap = ratingStats.reduce((map, entry) => {
+        statsMap = (ratingStats ?? []).reduce((map, entry) => {
             // eslint-disable-next-line no-param-reassign
             map[10 - entry.rating] = Math.round((entry.count * 100) / max)
             return map

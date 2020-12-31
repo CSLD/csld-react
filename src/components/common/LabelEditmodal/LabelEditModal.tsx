@@ -2,15 +2,19 @@ import React from 'react'
 import { Button, Modal } from 'react-bootstrap'
 import { Form as FinalForm } from 'react-final-form'
 import { useTranslation } from 'react-i18next'
-import { useFocusInput } from '../../../../hooks/useFocusInput'
-import FormTextInputField from '../FormTextInputField'
-import { fieldValidator, validateRequired } from '../../../../utils/validationUtils'
+import { useFocusInput } from '../../../hooks/useFocusInput'
+import { fieldValidator, validateRequired } from '../../../utils/validationUtils'
+import SubmitButton from '../SubmitButton/SubmitButton'
+import FormTextInputField from '../form/FormTextInputField'
 
 interface Props {
+    readonly titleKey: string
     readonly existingNewLabels: Array<{ name: string }>
     readonly existingLabelNames: string[]
+    readonly submitting?: boolean
+    readonly initialValues?: FormValues
     readonly onHide: () => void
-    readonly onCreateLabel: (label: { name: string; description?: string }) => void
+    readonly onCreateLabel: (label: FormValues) => void
 }
 
 interface FormValues {
@@ -18,7 +22,15 @@ interface FormValues {
     description?: string
 }
 
-const NewLabelModal = ({ existingNewLabels, existingLabelNames, onHide, onCreateLabel }: Props) => {
+const LabelEditModal = ({
+    titleKey,
+    existingNewLabels,
+    existingLabelNames,
+    submitting = false,
+    initialValues,
+    onHide,
+    onCreateLabel,
+}: Props) => {
     const formRef = useFocusInput<HTMLFormElement>('name')
     const { t } = useTranslation('common')
 
@@ -29,11 +41,11 @@ const NewLabelModal = ({ existingNewLabels, existingLabelNames, onHide, onCreate
         }
 
         if (existingLabelNames.find(labelName => labelName.localeCompare(name) === 0)) {
-            return { name: t('NewLabelModal.labelExists') }
+            return { name: t('LabelEditModal.labelExists') }
         }
 
         if (existingNewLabels.find(existingLabel => existingLabel.name.localeCompare(name) === 0)) {
-            return { name: t('NewLabelModal.labelExists') }
+            return { name: t('LabelEditModal.labelExists') }
         }
 
         return undefined
@@ -41,27 +53,25 @@ const NewLabelModal = ({ existingNewLabels, existingLabelNames, onHide, onCreate
 
     return (
         <Modal show onHide={onHide}>
-            <FinalForm<FormValues> onSubmit={onCreateLabel} validate={validate}>
+            <FinalForm<FormValues> onSubmit={onCreateLabel} validate={validate} initialValues={initialValues}>
                 {({ handleSubmit }) => (
                     <form onSubmit={handleSubmit} ref={formRef}>
                         <Modal.Header closeButton>
-                            <Modal.Title>{t('NewLabelModal.title')}</Modal.Title>
+                            <Modal.Title>{t(titleKey)}</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             <FormTextInputField
                                 name="name"
-                                placeholder={t('NewLabelModal.name')}
+                                placeholder={t('LabelEditModal.name')}
                                 validate={fieldValidator(t, validateRequired)}
                             />
-                            <FormTextInputField name="description" placeholder={t('NewLabelModal.description')} />
+                            <FormTextInputField name="description" placeholder={t('LabelEditModal.description')} />
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="light" onClick={onHide}>
-                                {t('NewLabelModal.cancel')}
+                                {t('LabelEditModal.cancel')}
                             </Button>
-                            <Button variant="dark" type="submit">
-                                {t('NewLabelModal.save')}
-                            </Button>
+                            <SubmitButton submitting={submitting}>{t('LabelEditModal.save')}</SubmitButton>
                         </Modal.Footer>
                     </form>
                 )}
@@ -70,4 +80,4 @@ const NewLabelModal = ({ existingNewLabels, existingLabelNames, onHide, onCreate
     )
 }
 
-export default NewLabelModal
+export default LabelEditModal

@@ -1,0 +1,14 @@
+fragment adminUserFields on User {
+    id
+    name
+    nickname
+    role
+}
+
+fragment adminLabelFields on Label {
+    id
+    name
+    description
+    isAuthorized
+    isRequired
+}

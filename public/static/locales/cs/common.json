@@ -307,8 +307,9 @@
   "NewLabelsField": {
     "newLabel": "Nový štítek"
   },
-  "NewLabelModal": {
-    "title": "Vytvořit štítek",
+  "LabelEditModal": {
+    "titleNew": "Vytvořit štítek",
+    "titleEdit": "Upravit štítek",
     "name": "Název",
     "description": "Popis",
     "cancel": "Storno",
@@ -404,5 +405,14 @@
     "ADMIN": "Admin",
     "EDITOR": "Editor",
     "USER": "Uživatel"
+  },
+  "AdminLabels": {
+    "authorized": "Schváleno",
+    "required": "Vyžadováno",
+    "editTitle": "Úprava štítku",
+    "description": "Popisek",
+    "cancel": "Storno",
+    "save": "Uložit",
+    "deleteConfirm": "Opravdu štítek smazat? Tato operace je nevratná!"
   }
 }

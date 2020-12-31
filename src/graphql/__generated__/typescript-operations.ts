@@ -2,6 +2,14 @@ export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> }
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> }
+export type DeleteLabelMutationVariables = Exact<{
+    labelId: Scalars['ID']
+}>
+
+export type DeleteLabelMutation = { __typename?: 'Mutation' } & {
+    admin: { __typename?: 'AdminMutation' } & { deleteLabel?: Maybe<{ __typename?: 'Label' } & Pick<Label, 'id'>> }
+}
+
 export type DeleteUserMutationVariables = Exact<{
     userId: Scalars['ID']
 }>
@@ -10,12 +18,49 @@ export type DeleteUserMutation = { __typename?: 'Mutation' } & {
     admin: { __typename?: 'AdminMutation' } & { deleteUser?: Maybe<{ __typename?: 'User' } & Pick<User, 'id'>> }
 }
 
-export type AdminUserFieldsFragment = { __typename?: 'User' } & Pick<User, 'id' | 'name' | 'nickname' | 'role'>
+export type AdminLabelFieldsFragment = { __typename?: 'Label' } & Pick<
+    Label,
+    'id' | 'name' | 'description' | 'isAuthorized' | 'isRequired'
+>
+
+export type LoadAllLabelsQueryVariables = Exact<{ [key: string]: never }>
+
+export type LoadAllLabelsQuery = { __typename?: 'Query' } & {
+    admin: { __typename?: 'AdminQuery' } & { allLabels: Array<{ __typename?: 'Label' } & AdminLabelFieldsFragment> }
+}
 
 export type LoadAllUsersQueryVariables = Exact<{ [key: string]: never }>
 
 export type LoadAllUsersQuery = { __typename?: 'Query' } & {
     admin: { __typename?: 'AdminQuery' } & { allUsers: Array<{ __typename?: 'User' } & AdminUserFieldsFragment> }
+}
+
+export type SetLabelAuthorizedMutationVariables = Exact<{
+    labelId: Scalars['ID']
+    authorized: Scalars['Boolean']
+}>
+
+export type SetLabelAuthorizedMutation = { __typename?: 'Mutation' } & {
+    admin: { __typename?: 'AdminMutation' } & {
+        setLabelAuthorized: { __typename?: 'Label' } & AdminLabelFieldsFragment
+    }
+}
+
+export type SetLabelRequiredMutationVariables = Exact<{
+    labelId: Scalars['ID']
+    required: Scalars['Boolean']
+}>
+
+export type SetLabelRequiredMutation = { __typename?: 'Mutation' } & {
+    admin: { __typename?: 'AdminMutation' } & { setLabelRequired: { __typename?: 'Label' } & AdminLabelFieldsFragment }
+}
+
+export type UpdateLabelMutationVariables = Exact<{
+    input: UpdateLabelInput
+}>
+
+export type UpdateLabelMutation = { __typename?: 'Mutation' } & {
+    admin: { __typename?: 'AdminMutation' } & { updateLabel: { __typename?: 'Label' } & AdminLabelFieldsFragment }
 }
 
 export type UpdateUserRoleMutationVariables = Exact<{
@@ -26,6 +71,8 @@ export type UpdateUserRoleMutationVariables = Exact<{
 export type UpdateUserRoleMutation = { __typename?: 'Mutation' } & {
     admin: { __typename?: 'AdminMutation' } & { setUserRole: { __typename?: 'User' } & AdminUserFieldsFragment }
 }
+
+export type AdminUserFieldsFragment = { __typename?: 'User' } & Pick<User, 'id' | 'name' | 'nickname' | 'role'>
 
 export type CalendarEventDataFragment = { __typename?: 'Event' } & Pick<
     Event,

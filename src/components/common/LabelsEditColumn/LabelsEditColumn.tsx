@@ -7,7 +7,7 @@ import { formClasses } from '../../../utils/formClasses'
 import { Label } from '../../../graphql/__generated__/typescript-operations'
 import FormLabelListField from '../form/FormLabelListField'
 import { fieldValidator, validateRequiredArray } from '../../../utils/validationUtils'
-import NewLabelsField from '../form/NewLabelsField/NewLabelsField'
+import NewLabelsField from '../form/NewLabelsField'
 
 export type LabelFromGql = Pick<Label, 'id' | 'name' | 'description'>
 
