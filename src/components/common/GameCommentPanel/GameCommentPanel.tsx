@@ -20,6 +20,7 @@ interface Props {
         }
         readonly game?: Pick<Game, 'id' | 'name' | 'averageRating' | 'amountOfRatings'>
     }
+    readonly loading?: boolean
     readonly showVisibilityButton: boolean
     readonly onChangeCommentVisibility: (commentId: string, isHidden: boolean) => void
 }
@@ -29,6 +30,9 @@ const useStyles = createUseStyles({
         borderBottom: `1px solid ${darkTheme.backgroundAlmostNearWhite}`,
         padding: '10px 15px',
         color: darkTheme.textOnLightDark,
+    },
+    dimmed: {
+        opacity: 0.5,
     },
     header: {
         display: 'flex',
@@ -129,7 +133,7 @@ const firstWordOf = (name: string) => {
     return sidx < 0 ? name : name.substr(0, sidx)
 }
 
-const GameCommentPanel = ({ comment, showVisibilityButton, onChangeCommentVisibility }: Props) => {
+const GameCommentPanel = ({ comment, loading, showVisibilityButton, onChangeCommentVisibility }: Props) => {
     const classes = useStyles()
     const { t } = useTranslation('common')
     const added = format(parseDateTime(comment.added) || 0, 'dd.MM.yyyy')
@@ -145,7 +149,7 @@ const GameCommentPanel = ({ comment, showVisibilityButton, onChangeCommentVisibi
     }
 
     return (
-        <div className={classes.wrapper}>
+        <div className={classNames(classes.wrapper, loading && classes.dimmed)}>
             <div className={classes.header}>
                 <ProfileImage userId={comment.user.id} imageId={comment.user.image?.id} />
                 <div className={classes.headerMiddle}>

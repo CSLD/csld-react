@@ -14,12 +14,13 @@ const setCommentVisibleGql = require('./graphql/setCommentVisible.graphql')
 
 interface Props {
     readonly page?: CommentsPaged
+    readonly loading?: boolean
     readonly pageSize: number
     readonly offset: number
     readonly onOffsetChanged: (newOffset: number) => void
 }
 
-const PagedCommentsPanel = ({ offset, page, pageSize, onOffsetChanged }: Props) => {
+const PagedCommentsPanel = ({ offset, loading, page, pageSize, onOffsetChanged }: Props) => {
     const client = useApolloClient()
     const loggedInUser = useLoggedInUser()
 
@@ -39,6 +40,7 @@ const PagedCommentsPanel = ({ offset, page, pageSize, onOffsetChanged }: Props) 
                     <GameCommentPanel
                         key={comment.id}
                         comment={comment}
+                        loading={loading}
                         showVisibilityButton={showVisibilityButton}
                         onChangeCommentVisibility={handleChangeCommentVisibility}
                     />

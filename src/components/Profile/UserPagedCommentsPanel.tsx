@@ -36,7 +36,15 @@ const UserPagedCommentsPanel = ({ userId, firstPage }: Props) => {
         (offset === 0 ? firstPage : lastPageRef.current)
     const page = lastPageRef.current
 
-    return <PagedCommentsPanel page={page} pageSize={PAGE_SIZE} offset={offset} onOffsetChanged={setOffset} />
+    return (
+        <PagedCommentsPanel
+            page={page}
+            loading={query.loading}
+            pageSize={PAGE_SIZE}
+            offset={offset}
+            onOffsetChanged={setOffset}
+        />
+    )
 }
 
 export default UserPagedCommentsPanel

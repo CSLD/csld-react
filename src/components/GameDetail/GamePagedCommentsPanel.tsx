@@ -68,6 +68,9 @@ export const GamePagedCommentsPanel = ({ gameId, commentsDisabled }: Props) => {
         setEditModalShown(false)
     }
 
+    const dataPage = query.data?.gameById?.commentsPaged as CommentsPaged
+    const effectivePage = dataPage || cachedPage
+    const pageLoading = !dataPage
     const editModalLoading = editModalShown && !editModalLoaded
 
     return (
@@ -115,7 +118,13 @@ export const GamePagedCommentsPanel = ({ gameId, commentsDisabled }: Props) => {
                     />
                 </React.Suspense>
             )}
-            <PagedCommentsPanel page={cachedPage} pageSize={PAGE_SIZE} offset={offset} onOffsetChanged={setOffset} />
+            <PagedCommentsPanel
+                page={effectivePage}
+                loading={pageLoading}
+                pageSize={PAGE_SIZE}
+                offset={offset}
+                onOffsetChanged={setOffset}
+            />
         </>
     )
 }
