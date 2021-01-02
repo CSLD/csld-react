@@ -2,6 +2,7 @@ import * as React from 'react'
 import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/document'
 import { createGenerateId, JssProvider, SheetsRegistry } from 'react-jss'
 import { darkTheme } from '../../src/theme/darkTheme'
+import { GA_TRACKING_ID } from '../../src/utils/gtag'
 
 const globalStyle = `
     @import url(https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&subset=latin,latin-ext,cyrillic-ext,cyrillic);
@@ -69,6 +70,7 @@ class WebAppDocument extends Document {
         return (
             <Html>
                 <Head>
+                    <link rel="shortcut icon" href="images/favicon.png" />
                     <link
                         rel="stylesheet"
                         href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
@@ -76,6 +78,19 @@ class WebAppDocument extends Document {
                         crossOrigin="anonymous"
                     />
                     <style type="text/css">{globalStyle}</style>
+                    {/* Global Site Tag (gtag.js) - Google Analytics */}
+                    <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`} />
+                    <script
+                        dangerouslySetInnerHTML={{
+                            __html: `
+                              window.dataLayer = window.dataLayer || [];
+                              function gtag(){dataLayer.push(arguments);}
+                              gtag('js', new Date());
+                              gtag('config', '${GA_TRACKING_ID}', {
+                                page_path: window.location.pathname,
+                              });`,
+                        }}
+                    />
                 </Head>
                 <body>
                     <Main />

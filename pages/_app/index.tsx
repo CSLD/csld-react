@@ -17,9 +17,21 @@ import InPlaceSignInWrapper from 'src/components/common/InPlaceSignInWrapper/InP
 
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import 'react-bootstrap-typeahead/css/Typeahead.css'
+import { registerGTagPageview } from '../../src/utils/gtag'
 
 // Import the CSS
 config.autoAddCss = false // Tell Font Awesome to skip adding the CSS automatically since it's being imported above
+
+const handlePageChange = (url: URL) => {
+    // Reset window scroll on route change (= when we went to another page)
+    window.scroll({
+        top: 0,
+        left: 0,
+    })
+
+    // Register page change to GTag
+    registerGTagPageview(url)
+}
 
 class WebApp extends App<AppInitialProps & WithApolloProps<any>> {
     static async getInitialProps({ Component, ctx }: AppContext): Promise<AppInitialProps> {
@@ -32,13 +44,11 @@ class WebApp extends App<AppInitialProps & WithApolloProps<any>> {
         // Remove styles sent from server - we have generated out own
         document.getElementById('server-side-styles')?.remove()
 
-        Router.events.on('routeChangeComplete', () => {
-            // Reset window scroll on route change (= when we went to another page)
-            window.scroll({
-                top: 0,
-                left: 0,
-            })
-        })
+        Router.events.on('routeChangeComplete', handlePageChange)
+    }
+
+    componentWillUnmount() {
+        Router.events.off('routeChangeComplete', handlePageChange)
     }
 
     render() {
