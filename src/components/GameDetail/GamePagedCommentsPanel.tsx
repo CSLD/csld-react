@@ -56,7 +56,7 @@ export const GamePagedCommentsPanel = ({ gameId, commentsDisabled }: Props) => {
         skip: !isInBrowser,
         ssr: false,
         onCompleted: data => {
-            setCachedPage(data.gameById?.commentsPaged as CommentsPaged | undefined)
+            setCachedPage(data?.gameById?.commentsPaged as CommentsPaged | undefined)
         },
     })
 

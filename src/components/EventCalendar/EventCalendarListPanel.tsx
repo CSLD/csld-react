@@ -78,7 +78,7 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
     const initialValues = useMemo(() => {
         const now = new Date()
         return {
-            from: `${now.getFullYear()}-${format2(now.getMonth() + 1)}-${now.getDate()}`,
+            from: `${now.getFullYear()}-${format2(now.getMonth() + 1)}-${format2(now.getDate())}`,
             requiredLabels: initialRequiredLabelIds || [],
             optionalLabels: initialOptionalLabelIds || [],
         } as FormValues
@@ -98,9 +98,9 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
         nextFetchPolicy: 'cache-first', // Do not reload on page change
         onCompleted: response => {
             setLoading(false)
-            setPage(response.eventCalendar)
-            setRequiredLabels(response.authorizedRequiredLabels?.map(labelMapper))
-            setOptionalLabels(response.authorizedOptionalLabels?.map(labelMapper))
+            setPage(response?.eventCalendar || [])
+            setRequiredLabels(response?.authorizedRequiredLabels?.map(labelMapper))
+            setOptionalLabels(response?.authorizedOptionalLabels?.map(labelMapper))
         },
     })
 

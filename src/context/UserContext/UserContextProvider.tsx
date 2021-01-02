@@ -17,7 +17,7 @@ const UserContextProvider: React.FC = ({ children }) => {
         skip: !isInBrowser,
         fetchPolicy: 'network-only',
         onCompleted: (data: LoggedInUserQuery) => {
-            const { loggedInUser } = data
+            const loggedInUser = data?.loggedInUser
             setValue(
                 loggedInUser
                     ? {
