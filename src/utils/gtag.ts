@@ -3,7 +3,6 @@ const isInProduction = process.env.NODE_ENV === 'production'
 
 // https://developers.google.com/analytics/devguides/collection/gtagjs/pages
 export const registerGTagPageview = (url: URL) => {
-    console.log({ NODE_ENV: process.env.NODE_ENV })
     if (isInProduction) {
         const w = window as any
         w.gtag('config', GA_TRACKING_ID, {
