@@ -3,8 +3,10 @@ const isInProduction = process.env.NODE_ENV === 'production'
 
 // https://developers.google.com/analytics/devguides/collection/gtagjs/pages
 export const registerGTagPageview = (url: URL) => {
+    console.log({ NODE_ENV: process.env.NODE_ENV })
     if (isInProduction) {
-        window.gtag('config', GA_TRACKING_ID, {
+        const w = window as any
+        w.gtag('config', GA_TRACKING_ID, {
             page_path: url,
         })
     }
@@ -20,7 +22,8 @@ type GTagEvent = {
 // https://developers.google.com/analytics/devguides/collection/gtagjs/events
 export const registerGTagEvent = ({ action, category, label, value }: GTagEvent) => {
     if (isInProduction) {
-        window.gtag('event', action, {
+        const w = window as any
+        w.gtag('event', action, {
             event_category: category,
             event_label: label,
             value,
