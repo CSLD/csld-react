@@ -70,7 +70,7 @@ class WebAppDocument extends Document {
         return (
             <Html>
                 <Head>
-                    <link rel="shortcut icon" href="images/favicon.png" />
+                    <link rel="shortcut icon" href="/images/favicon.png" />
                     <link
                         rel="stylesheet"
                         href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
