@@ -8,7 +8,7 @@ import { IconFacebook } from '../Icons/Icons'
 const useStyles = createUseStyles({
     footerWrapper: {
         borderTop: '1px solid black',
-        background: 'backgroundLight',
+        background: darkTheme.backgroundLight,
         padding: '10px 0',
         color: darkTheme.textDark,
         fontSize: '0.8rem',

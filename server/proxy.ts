@@ -15,8 +15,8 @@ const transformCookiePath = (cookie: string) => {
                 iStart += 1
             }
             if (part.substring(iStart, iEq).toLowerCase() === 'path') {
-                // Use /graphql path
-                return ' Path=/graphql'
+                // Use / path
+                return ' Path=/'
             }
 
             // Not our cookie

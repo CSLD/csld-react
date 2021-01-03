@@ -1,10 +1,9 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import { useMutation, useQuery } from '@apollo/client'
 import { useTranslation } from 'react-i18next'
 import { Col, Row } from 'react-bootstrap'
 import classNames from 'classnames'
-import isInBrowser from 'is-in-browser'
 import { darkTheme } from '../../theme/darkTheme'
 import {
     DeleteEventMutation,
@@ -76,9 +75,9 @@ const EventDetailPanel = ({ eventId }: Props) => {
     const [deleteConfirmShown, setDeleteConfirmShown] = useState(false)
     const { t } = useTranslation('common')
     const { data } = useQuery<LoadEventQuery, LoadEventQueryVariables>(loadEventGql, {
-        ssr: false,
-        skip: !isInBrowser,
-        fetchPolicy: 'network-only',
+        ssr: true,
+        fetchPolicy: 'cache-first', // TODO - use cache-and-network when not on the first render?
+        nextFetchPolicy: 'network-only',
         variables: { eventId },
     })
     const [deleteEvent, { loading: deleteLoading }] = useMutation<DeleteEventMutation, DeleteEventMutationVariables>(
@@ -92,7 +91,12 @@ const EventDetailPanel = ({ eventId }: Props) => {
     const editVisible = canEdit(event?.allowedActions)
     const deleteVisible = canDelete(event?.allowedActions)
     const description = event?.description
-    const sanitizedDescription = useMemo(() => sanitizeHtml(description), [description])
+
+    // Sanitized needs browser so we sanitize description after first render
+    const [sanitizedDescription, setSanitizedDescription] = useState('')
+    useEffect(() => {
+        setSanitizedDescription(sanitizeHtml(description))
+    }, [description])
 
     const handleEditEvent = () => {
         routes.push(routes.eventEdit(eventId))
@@ -119,7 +123,7 @@ const EventDetailPanel = ({ eventId }: Props) => {
                 <WidthFixer>
                     {event && (
                         <>
-                            <div className={classes.header}>{event.name}</div>
+                            <h1 className={classes.header}>{event.name}</h1>
                             <div className={classes.text}>
                                 {t('EventDetail.players', { count: event.amountOfPlayers })}
                             </div>

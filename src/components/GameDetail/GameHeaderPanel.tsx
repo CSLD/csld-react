@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import { Game, User, Group, Label } from 'src/graphql/__generated__/typescript-operations'
 import { useTranslation } from 'react-i18next'
@@ -109,7 +109,11 @@ export const GameHeaderPanel = ({ game }: Props) => {
     const { t, i18n } = useTranslation('common')
     const { description } = game
     const haveData = !!description
-    const sanitizedDescription = useMemo(() => sanitizeHtml(description), [description])
+    const [sanitizedDescription, setSanitizedDescription] = useState('')
+    useEffect(() => {
+        // Sanitize description in useEffect, because we need browser for that, so we can't run it on server or during hydration render (would cause inconsistencies)
+        setSanitizedDescription(sanitizeHtml(description))
+    }, [description])
 
     const playersFacts = buildFacts(t, i18n, [
         {

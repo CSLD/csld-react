@@ -121,8 +121,8 @@ const AdminLabelsPanel = () => {
         UpdateLabelMutationVariables
     >(updateLabelGql)
 
-    const labels = data?.admin.allLabels || []
-    const sortedLabels = useMemo(() => sortLabels(labels), [labels])
+    const allLabels = data?.admin.allLabels
+    const sortedLabels = useMemo(() => sortLabels(allLabels || []), [allLabels])
     const isLoading = loading || setRequiredLoading || setAuthorizedLoading || deleteLoading || updateLoading
 
     const hideDialogs = () => {
@@ -131,7 +131,7 @@ const AdminLabelsPanel = () => {
     }
 
     const handleEditLabel = (label: AdminLabelFieldsFragment) => () => {
-        existingLabelNamesRef.current = labels.filter(({ id }) => id !== label.id).map(({ name }) => name ?? '')
+        existingLabelNamesRef.current = sortedLabels.filter(({ id }) => id !== label.id).map(({ name }) => name ?? '')
         setEditingLabel(label)
     }
 
@@ -192,7 +192,7 @@ const AdminLabelsPanel = () => {
 
             <div className={classes.row}>
                 {sortedLabels.length === 0 && <BigLoading />}
-                <WidthFixer className={isLoading && labels.length > 0 ? classes.loading : undefined}>
+                <WidthFixer className={isLoading && sortedLabels.length > 0 ? classes.loading : undefined}>
                     {sortedLabels.map(label => (
                         <div className={classes.labelRow} key={label.id}>
                             <div className={classes.name}>{label.name}</div>

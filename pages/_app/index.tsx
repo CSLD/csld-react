@@ -18,6 +18,7 @@ import InPlaceSignInWrapper from 'src/components/common/InPlaceSignInWrapper/InP
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import 'react-bootstrap-typeahead/css/Typeahead.css'
 import { registerGTagPageview } from '../../src/utils/gtag'
+import FirstRenderContextProvider from '../../src/context/FirstRenderContext/FirstRenderContextProvider'
 
 // Import the CSS
 config.autoAddCss = false // Tell Font Awesome to skip adding the CSS automatically since it's being imported above
@@ -59,14 +60,16 @@ class WebApp extends App<AppInitialProps & WithApolloProps<any>> {
                 <ToastContextProvider>
                     <ApolloProvider client={apollo}>
                         <UserContextProvider>
-                            <InPlaceSignInContextProvider>
-                                <PageHeader />
-                                <InPlaceSignInWrapper>
-                                    {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-                                    <Component {...pageProps} />
-                                </InPlaceSignInWrapper>
-                                <PageFooter />
-                            </InPlaceSignInContextProvider>
+                            <FirstRenderContextProvider>
+                                <InPlaceSignInContextProvider>
+                                    <PageHeader />
+                                    <InPlaceSignInWrapper>
+                                        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+                                        <Component {...pageProps} />
+                                    </InPlaceSignInWrapper>
+                                    <PageFooter />
+                                </InPlaceSignInContextProvider>
+                            </FirstRenderContextProvider>
                         </UserContextProvider>
                     </ApolloProvider>
                 </ToastContextProvider>

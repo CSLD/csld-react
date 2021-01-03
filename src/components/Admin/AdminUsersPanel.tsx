@@ -135,8 +135,8 @@ const AdminUserPanel = () => {
         DeleteUserMutationVariables
     >(deleteUserGql)
 
-    const allUsers = data?.admin?.allUsers || []
-    const filteredUsers = useMemo(() => filterUsers(allUsers, filterPrivileged, filterName), [
+    const allUsers = data?.admin?.allUsers
+    const filteredUsers = useMemo(() => filterUsers(allUsers || [], filterPrivileged, filterName), [
         allUsers,
         filterPrivileged,
         filterName,

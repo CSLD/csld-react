@@ -1,7 +1,6 @@
-import React, { useMemo, useState } from 'react'
+import React, { useContext, useMemo, useRef, useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import { useQuery } from '@apollo/client'
-import isInBrowser from 'is-in-browser'
 import { darkTheme } from '../../theme/darkTheme'
 import { WidthFixer } from '../common/WidthFixer/WidthFixer'
 import { HomePageGamesPanel } from './HomePageGamesPanel'
@@ -15,6 +14,7 @@ import {
 } from '../../graphql/__generated__/typescript-operations'
 import { BaseCommentData } from './BaseCommentPanel'
 import { TabDefinition, Tabs } from '../common/Tabs/Tabs'
+import { FirstRenderContext } from '../../context/FirstRenderContext/FirstRenderContext'
 
 const getHomePageDataQuery = require('./graphql/getHomePageData.graphql')
 const getMoreLastCommentsQuery = require('./graphql/getMoreLastComments.graphql')
@@ -85,10 +85,15 @@ const tabs: Array<TabDefinition<'recent'>> = [
 export const HomePagePanel = () => {
     const classes = useStyles()
     const [expanded, setExpanded] = useState(false)
+    const isFirstRender = useContext(FirstRenderContext)
+    const isFirstRenderRef = useRef<boolean>(isFirstRender) // Freeze value on our first render
     const handleToggleExpanded = () => setExpanded(old => !old)
     const homePageQuery = useQuery<GetHomePageDataQuery, GetHomePageDataQueryVariables>(getHomePageDataQuery, {
-        fetchPolicy: 'cache-and-network',
-        skip: !isInBrowser,
+        ssr: true,
+        // Use cache-first on first render so that query is not repeated on the first render but when we come
+        // back to the page, it is fired to fetch fresh data
+        fetchPolicy: isFirstRenderRef.current ? 'cache-first' : 'cache-and-network',
+        nextFetchPolicy: 'cache-and-network',
     })
     const moreCommentsQuery = useQuery<GetMoreLastCommentsQuery, GetMoreLastCommentsQueryVariables>(
         getMoreLastCommentsQuery,

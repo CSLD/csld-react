@@ -5,8 +5,6 @@ import { darkTheme } from '../../src/theme/darkTheme'
 import { GA_TRACKING_ID } from '../../src/utils/gtag'
 
 const globalStyle = `
-    @import url(https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&subset=latin,latin-ext,cyrillic-ext,cyrillic);
-
     body {
         margin: 0;
           font-family: Open Sans, sans-serif;
@@ -35,6 +33,15 @@ const globalStyle = `
         outline: 1px dotted rgba(128, 128, 128, 0.7);
     }
     `
+
+const initGA = `
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${GA_TRACKING_ID}', {
+page_path: window.location.pathname,
+});
+`
 
 class WebAppDocument extends Document {
     static async getInitialProps(ctx: DocumentContext) {
@@ -73,6 +80,10 @@ class WebAppDocument extends Document {
                     <link rel="shortcut icon" href="/images/favicon.png" />
                     <link
                         rel="stylesheet"
+                        href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&subset=latin,latin-ext,cyrillic-ext,cyrillic"
+                    />
+                    <link
+                        rel="stylesheet"
                         href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
                         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
                         crossOrigin="anonymous"
@@ -81,14 +92,9 @@ class WebAppDocument extends Document {
                     {/* Global Site Tag (gtag.js) - Google Analytics */}
                     <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`} />
                     <script
+                        /* eslint-disable-next-line react/no-danger */
                         dangerouslySetInnerHTML={{
-                            __html: `
-                              window.dataLayer = window.dataLayer || [];
-                              function gtag(){dataLayer.push(arguments);}
-                              gtag('js', new Date());
-                              gtag('config', '${GA_TRACKING_ID}', {
-                                page_path: window.location.pathname,
-                              });`,
+                            __html: initGA,
                         }}
                     />
                 </Head>

@@ -1,8 +1,10 @@
 import React from 'react'
 import fetch from 'isomorphic-unfetch'
 import { ApolloClient, createHttpLink, InMemoryCache, from, InMemoryCacheConfig } from '@apollo/react-hooks'
-import withApollo from 'next-with-apollo'
 import { onError } from '@apollo/client/link/error'
+import { HttpOptions } from '@apollo/client/link/http/selectHttpOptionsAndBody'
+import withApollo from 'next-with-apollo'
+import { getDataFromTree } from '@apollo/client/react/ssr'
 import { toastContextValue } from '../context/ToastContext/ToastContext'
 import GraphQLErrorContent, {
     PropsFromGraphQLError,
@@ -77,29 +79,40 @@ const cacheConfig: InMemoryCacheConfig = {
     },
 }
 
-export const withApolloWrapper = withApollo(props => {
-    const { initialState } = props
-    let uri = 'http://localhost:3000/graphql' // Fallback
+export const withApolloWrapper = withApollo(
+    props => {
+        const { initialState, headers } = props
+        let uri = 'http://localhost:3000/graphql' // Fallback
 
-    if (global.window) {
-        // Do requests back to origin
-        uri = `${global.window.location.origin}/graphql`
-    } else if (props.headers?.host) {
-        const host = props.headers?.['x-forwarded-host'] || props.headers?.host
-        if (host) {
-            const protocol = host.indexOf('localhost') >= 0 ? 'http://' : 'https://'
-            uri = `${protocol}${host}/graphql`
+        if (global.window) {
+            // Do requests back to origin
+            uri = `${global.window.location.origin}/graphql`
+        } else if (headers?.host) {
+            const host = headers?.['x-forwarded-host'] || headers?.host
+            if (host) {
+                const protocol = host.indexOf('localhost') >= 0 ? 'http://' : 'https://'
+                uri = `${protocol}${host}/graphql`
+            }
         }
-    }
 
-    return new ApolloClient({
-        link: from([
-            errorLink,
-            createHttpLink({
-                uri,
-                credentials: 'same-origin',
-            }),
-        ]),
-        cache: new InMemoryCache(cacheConfig).restore(initialState || {}),
-    })
-})
+        const httpLinkOptions: HttpOptions = {
+            uri,
+            credentials: 'same-origin',
+        }
+
+        if (headers) {
+            // This is used on server to send requests with proper authorization (on client we don't have request)
+            httpLinkOptions.headers = {
+                cookie: headers.cookie,
+            }
+        }
+
+        return new ApolloClient({
+            link: from([errorLink, createHttpLink(httpLinkOptions)]),
+            cache: new InMemoryCache(cacheConfig).restore(initialState || {}),
+        })
+    },
+    {
+        getDataFromTree,
+    },
+)
