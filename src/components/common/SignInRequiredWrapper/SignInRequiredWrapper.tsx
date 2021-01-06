@@ -12,7 +12,7 @@ import { IconBack } from '../Icons/Icons'
 import BigLoading from '../BigLoading/BigLoading'
 import { darkTheme } from '../../../theme/darkTheme'
 
-type RequiredRole = 'USER' | 'EDITOR' | 'ADMIN'
+type RequiredRole = 'ANONYMOUS' | 'USER' | 'EDITOR' | 'ADMIN'
 
 interface Props {
     readonly requiredRole?: RequiredRole
@@ -47,26 +47,29 @@ const SignInRequiredWrapper: React.FC<Props> = ({ requiredRole = 'USER', childre
     const { t } = useTranslation('common')
     const classes = useStyles()
 
-    if (!loggedIn && isInBrowser) {
-        return <SignInPanel infoMessage={t('SignInRequired.signInRequired')} stayOnPage />
-    }
+    // Execute checks only when role is not ANONYMOUS (ANONYMOUS role exists so that requirements can be conditional based, for example, on page params)
+    if (requiredRole !== 'ANONYMOUS') {
+        if (!loggedIn && isInBrowser) {
+            return <SignInPanel infoMessage={t('SignInRequired.signInRequired')} stayOnPage />
+        }
 
-    const role = loggedIn?.role
-    if (!role) {
-        // Loading
-        return (
-            <div className={classes.loadingWrapper}>
-                <BigLoading />
-            </div>
-        )
-    }
+        const role = loggedIn?.role
+        if (!role) {
+            // Loading
+            return (
+                <div className={classes.loadingWrapper}>
+                    <BigLoading />
+                </div>
+            )
+        }
 
-    if (requiredRole === 'EDITOR' && role !== UserRole.Editor && role !== UserRole.Admin) {
-        return <AccessDeniedPanel />
-    }
+        if (requiredRole === 'EDITOR' && role !== UserRole.Editor && role !== UserRole.Admin) {
+            return <AccessDeniedPanel />
+        }
 
-    if (requiredRole === 'ADMIN' && role !== UserRole.Admin) {
-        return <AccessDeniedPanel />
+        if (requiredRole === 'ADMIN' && role !== UserRole.Admin) {
+            return <AccessDeniedPanel />
+        }
     }
 
     return <>{children}</>

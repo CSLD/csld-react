@@ -17,7 +17,7 @@ const Profile: NextPage<Props, InitialProps> = () => {
     const idNum = parseInt(id, 10)
 
     return (
-        <SignInRequiredWrapper>
+        <SignInRequiredWrapper requiredRole={idNum > 0 ? 'ANONYMOUS' : 'USER'}>
             {id === 'settings' && <UserSettingsPanel />}
             {id === 'current' && <CurrentUserProfileContainer />}
             {id === 'changePassword' && <ChangePasswordPanel />}
