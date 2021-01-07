@@ -7,6 +7,7 @@ import FieldWithError from './FieldWithError'
 export interface FormTextInputFieldProps {
     readonly name: string
     readonly hint?: string
+    readonly className?: string
     readonly validate?: FieldValidator<string>
     readonly showErrorPlaceholder?: boolean
     readonly label?: string
@@ -33,6 +34,7 @@ const FormTextInputField = ({
     appendIcon,
     errorHint,
     autoComplete,
+    className,
     onBlur,
     onChange,
 }: FormTextInputFieldProps) => {
@@ -55,6 +57,7 @@ const FormTextInputField = ({
 
     return (
         <FieldWithError
+            className={className}
             meta={meta}
             showErrorPlaceholder={showErrorPlaceholder}
             hint={hint}

@@ -184,6 +184,14 @@ export const useRoutes = () => {
              * Self rating overview in admin
              */
             adminSelfRated: (): Route => ({ href: { pathname: '/admin/selfRated' }, as: '/admin/selfRated' }),
+
+            /**
+             * Search route
+             */
+            search: (initialQuery?: string): Route => ({
+                href: { pathname: '/search', query: { initialQuery } },
+                as: '/search',
+            }),
         }),
         [router],
     )

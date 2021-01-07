@@ -464,11 +464,6 @@ export type GetMoreLastCommentsQuery = { __typename?: 'Query' } & {
     }
 }
 
-export type LadderGameDataFragment = { __typename?: 'Game' } & Pick<
-    Game,
-    'id' | 'name' | 'year' | 'amountOfComments' | 'amountOfRatings' | 'averageRating' | 'totalRating'
-> & { labels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name'>> }
-
 export type LadderInitialGamesQueryVariables = Exact<{
     ladderType: LadderType
     offset: Scalars['Int']
@@ -621,6 +616,20 @@ export type StartRecoverPasswordMutation = { __typename?: 'Mutation' } & {
     user: { __typename?: 'UserMutation' } & Pick<UserMutation, 'startRecoverPassword'>
 }
 
+export type SearchPageGamesQueryVariables = Exact<{
+    query: Scalars['String']
+    limit: Scalars['Int']
+    offset: Scalars['Int']
+}>
+
+export type SearchPageGamesQuery = { __typename?: 'Query' } & {
+    games: { __typename?: 'GamesQuery' } & {
+        byQueryWithTotal: { __typename?: 'GamesPaged' } & Pick<GamesPaged, 'totalAmount'> & {
+                games: Array<{ __typename?: 'Game' } & LadderGameDataFragment>
+            }
+    }
+}
+
 export type LogInMutationVariables = Exact<{
     userName: Scalars['String']
     password: Scalars['String']
@@ -696,6 +705,11 @@ export type GameDetailCommentFragment = { __typename?: 'Comment' } & Pick<
                 image?: Maybe<{ __typename?: 'Image' } & Pick<Image, 'id'>>
             }
     }
+
+export type LadderGameDataFragment = { __typename?: 'Game' } & Pick<
+    Game,
+    'id' | 'name' | 'year' | 'amountOfComments' | 'amountOfRatings' | 'averageRating' | 'totalRating'
+> & { labels: Array<{ __typename?: 'Label' } & Pick<Label, 'id' | 'name'>> }
 
 export type CheckEmailQueryVariables = Exact<{
     email: Scalars['String']
@@ -807,10 +821,17 @@ export type HomepageQueryLastCommentsArgs = {
 export type GamesQuery = {
     __typename?: 'GamesQuery'
     byQuery: Array<Game>
+    byQueryWithTotal: GamesPaged
     ladder: GamesPaged
 }
 
 export type GamesQueryByQueryArgs = {
+    query: Scalars['String']
+    offset?: Maybe<Scalars['Int']>
+    limit?: Maybe<Scalars['Int']>
+}
+
+export type GamesQueryByQueryWithTotalArgs = {
     query: Scalars['String']
     offset?: Maybe<Scalars['Int']>
     limit?: Maybe<Scalars['Int']>

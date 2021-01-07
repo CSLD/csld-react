@@ -12,6 +12,7 @@ interface Props {
     readonly children: (isInvalid: boolean) => React.ReactNode
     readonly errorHint?: React.ReactNode
     readonly hideError?: boolean
+    readonly className?: string
 }
 
 const useStyles = createUseStyles({
@@ -30,13 +31,14 @@ const FieldWithError: React.FC<Props> = ({
     errorHint,
     controlId,
     hideError = false,
+    className,
     children,
 }) => {
     const showError = ((!hideError && (meta.touched || meta.modified)) || meta.submitFailed) && meta.error
     const classes = useStyles()
 
     return (
-        <Form.Group controlId={controlId}>
+        <Form.Group controlId={controlId} className={className}>
             {children(!!showError || !!errorHint)}
             {/* Autocomplete (AsyncTypeahead) does not work properly with Feedback so we must force-show it */}
             {showError && (

@@ -18,7 +18,7 @@ const useStyles = createUseStyles({
         fontSize: '0.85rem',
 
         '&:hover': {
-            color: darkTheme.textGreenDark,
+            color: darkTheme.textGreen,
         },
     },
 })

@@ -7,7 +7,8 @@
     "addEvent": "+ Přidat událost do kalendáře",
     "addGame": "+ Přidat hru",
     "search": {
-      "placeholder": "Hledaný výraz"
+      "placeholder": "Hledaný výraz",
+      "showMore": "Zobrazit více"
     },
     "signIn": "Přihlášení",
     "signUp": "Registrace",
@@ -419,5 +420,17 @@
     "numRatings": "Počet hodnocení",
     "averageRating": "Průměrné hodnocení",
     "numComments": "Počet komentářů"
+  },
+  "Search": {
+    "tabGames": "Hry",
+    "tabUsers": "Uživatelé",
+    "searchButton": "Hledat",
+    "query": "Hledaný výraz",
+    "queryHint": "Hledání probíhá po slovech. Vyhovují ty položky, jejichž název obsahuje slova začínající stejně, jako slova výrazu, ve stejném pořadí. Velikost písmen a diakritika nerozhoduje.",
+    "enterQuery": "Vložte dotaz do pole v horní části stránky a stiskněte Enter.",
+    "notFound": "Dotazu nic nevyhovuje",
+    "example1": "Dotaz <b>he whe</b> najde <b><u>He</u>ll on <u>Whe</u>els</b>.",
+    "example2": "Dotaz <b>na so</b> najde <b><u>Ná</u>rod <u>So</u>bě</b> a <b><u>Na</u>rutoLARP 2020: <u>So</u>umrak shinobi</b>.",
+    "example3": "Dotaz <b>D L B</b> najde <b><u>D</u>e <u>l</u>a <u>B</u>ête</b>."
   }
 }

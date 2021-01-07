@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useRef, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useRef, useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import { useTranslation } from 'react-i18next'
 import { useQuery } from '@apollo/client'
@@ -11,6 +11,8 @@ import {
     SearchGamesQueryVariables,
 } from '../../../graphql/__generated__/typescript-operations'
 import { GameBaseDataPanel } from '../GameBaseDataPanel/GameBaseDataPanel'
+import { useRoutes } from '../../../hooks/useRoutes'
+import { TextLink } from '../TextLink/TextLink'
 
 export const searchInputId = 'headerSearchInput'
 
@@ -43,9 +45,9 @@ const useStyles = createUseStyles({
         backgroundColor: darkTheme.backgroundControl,
         color: darkTheme.text,
         border: 0,
-        width: 30,
+        width: 26,
         height: 26,
-        padding: '2px 0 0 4px',
+        padding: '2px 0 0',
         overflow: 'hidden',
         cursor: 'pointer',
         borderTopRightRadius: 4,
@@ -71,6 +73,10 @@ const useStyles = createUseStyles({
         color: darkTheme.text,
         fontSize: '0.75rem',
     },
+    moreText: {
+        padding: '15px 5px 10px',
+        alignSelf: 'center',
+    },
     iconLoading: {
         fontSize: '1.25rem',
     },
@@ -82,9 +88,9 @@ const useStyles = createUseStyles({
     },
 })
 
-const MAX_RESULTS = 5
+const MAX_RESULTS = 6
 const MIN_SEARCH_LENGTH = 3
-const BLUR_TIMEOUT = 500
+const BLUR_TIMEOUT = 100
 const CHANGE_TIMEOUT = 500
 
 export const HeaderSearchForm = () => {
@@ -96,6 +102,7 @@ export const HeaderSearchForm = () => {
     const changeTimeoutRef = useRef(0)
     const inputRef = useRef<HTMLInputElement | null>(null)
     const lastGames = useRef<BaseGameDataFragment[]>([])
+    const routes = useRoutes()
     const searchActive = query.length >= 3
     const searchResult = useQuery<SearchGamesQuery, SearchGamesQueryVariables>(searchGamesQuery, {
         variables: {
@@ -143,8 +150,20 @@ export const HeaderSearchForm = () => {
         }
     }
 
+    const handleClickSearch = (e?: FormEvent<HTMLFormElement>) => {
+        e?.preventDefault()
+        e?.stopPropagation()
+        const queryInput = inputRef.current
+        if (queryInput) {
+            routes.push(routes.search(queryInput.value))
+            queryInput.value = ''
+        }
+    }
+
+    const moreRoute = routes.search(inputRef.current?.value)
+
     return (
-        <div className={classes.wrapper}>
+        <form className={classes.wrapper} onSubmit={handleClickSearch}>
             <input
                 id={searchInputId}
                 placeholder={t('PageHeader.search.placeholder')}
@@ -154,7 +173,7 @@ export const HeaderSearchForm = () => {
                 onBlur={handleBlur}
                 ref={inputRef}
             />
-            <button type="button" className={classes.searchButton}>
+            <button type="submit" className={classes.searchButton}>
                 <IconSearch />
             </button>
             {searchActive && focused && (
@@ -170,16 +189,33 @@ export const HeaderSearchForm = () => {
                     )}
                     {haveGames &&
                         games?.map((game, n) => {
-                            const gameClasses = classNames({
-                                [classes.gameSpacer]: n > 0,
-                                [classes.gameLoading]: loadingWithData,
-                            })
+                            if (n < 5) {
+                                // Game
+                                const gameClasses = classNames({
+                                    [classes.gameSpacer]: n > 0,
+                                    [classes.gameLoading]: loadingWithData,
+                                })
+                                return (
+                                    <GameBaseDataPanel
+                                        key={game.id}
+                                        game={game}
+                                        className={gameClasses}
+                                        variant="dark"
+                                    />
+                                )
+                            }
+
+                            // Show "more" link instead of the game
                             return (
-                                <GameBaseDataPanel key={game.id} game={game} className={gameClasses} variant="dark" />
+                                <div className={classes.moreText} key="more">
+                                    <TextLink href={moreRoute.href} as={moreRoute.as}>
+                                        {t('PageHeader.search.showMore')}
+                                    </TextLink>
+                                </div>
                             )
                         })}
                 </div>
             )}
-        </div>
+        </form>
     )
 }
