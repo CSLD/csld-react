@@ -1,5 +1,6 @@
 import { zonedTimeToUtc } from 'date-fns-tz'
 import { format } from 'date-fns'
+import { Maybe } from 'graphql/jsutils/Maybe'
 
 export const parseDateTime = (isoString?: string | null) => {
     if (!isoString) {
@@ -20,4 +21,12 @@ export const formatTimeRange = (from?: string | null, to?: string | null) => {
     const justOneDate = fromFormatted === toFormatted
 
     return { justOneDate, fromFormatted, toFormatted }
+}
+
+export const computeAge = (birthDate: Maybe<string>) => {
+    if (!birthDate) {
+        return 0
+    }
+
+    return Math.round((new Date().getTime() - new Date(birthDate).getTime()) / (365.2425 * 24 * 60 * 60 * 1000))
 }

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Maybe } from 'graphql/jsutils/Maybe'
 import { darkTheme } from '../../theme/darkTheme'
 import { WidthFixer } from '../common/WidthFixer/WidthFixer'
+import { computeAge } from '../../utils/dateUtils'
 
 interface UserData {
     readonly id: string
@@ -51,14 +52,6 @@ const useStyles = createUseStyles({
         color: darkTheme.textLighter,
     },
 })
-
-const computeAge = (birthDate: Maybe<string>) => {
-    if (!birthDate) {
-        return 0
-    }
-
-    return Math.round((new Date().getTime() - new Date(birthDate).getTime()) / (365.2425 * 24 * 60 * 60 * 1000))
-}
 
 const UserDetailPanel = ({ userData }: Props) => {
     const classes = useStyles()

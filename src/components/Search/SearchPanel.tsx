@@ -9,6 +9,7 @@ import { TabDefinition, Tabs } from '../common/Tabs/Tabs'
 import FormTextInputField from '../common/form/FormTextInputField'
 import GamesSearchPanel from './GamesSearchPanel'
 import { useFocusInput } from '../../hooks/useFocusInput'
+import UserSearchPanel from './UserSearchPanel'
 
 interface Props {
     readonly initialQuery?: string
@@ -111,6 +112,7 @@ const SearchPanel = ({ initialQuery }: Props) => {
                 <WidthFixer>
                     {!query && t('Search.enterQuery')}
                     {!!query && selectedTab === 'games' && <GamesSearchPanel query={query} />}
+                    {!!query && selectedTab === 'users' && <UserSearchPanel query={query} />}
                 </WidthFixer>
             </div>
         </>

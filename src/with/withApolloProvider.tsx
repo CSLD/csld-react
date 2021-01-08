@@ -59,6 +59,12 @@ const cacheConfig: InMemoryCacheConfig = {
                 games: simpleMerge,
                 admin: simpleMerge,
                 homepage: simpleMerge,
+
+                // Allow using fetchMore properly in usersByQuery
+                usersByQuery: {
+                    keyArgs: ['query'],
+                    merge: (existing = [], incoming) => [...existing, ...incoming],
+                },
             },
         },
         Mutation: {

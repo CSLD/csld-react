@@ -630,6 +630,20 @@ export type SearchPageGamesQuery = { __typename?: 'Query' } & {
     }
 }
 
+export type SearchPageUsersQueryVariables = Exact<{
+    query: Scalars['String']
+    offset: Scalars['Int']
+    limit: Scalars['Int']
+}>
+
+export type SearchPageUsersQuery = { __typename?: 'Query' } & {
+    usersByQuery: Array<
+        { __typename?: 'User' } & Pick<User, 'id' | 'name' | 'nickname' | 'birthDate' | 'city'> & {
+                image?: Maybe<{ __typename?: 'Image' } & Pick<Image, 'id'>>
+            }
+    >
+}
+
 export type LogInMutationVariables = Exact<{
     userName: Scalars['String']
     password: Scalars['String']
