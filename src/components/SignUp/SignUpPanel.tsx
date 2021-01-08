@@ -9,7 +9,6 @@ import { useRoutes } from 'src/hooks/useRoutes'
 import { UrlObject } from 'url'
 import FormPageRow from '../common/FormPageRow/FormPageRow'
 import FormTextInputField from '../common/form/FormTextInputField'
-import { darkTheme } from '../../theme/darkTheme'
 import { fieldValidator, validateDate, validateEmail, validateRequired } from '../../utils/validationUtils'
 import FormFileInputField from '../common/form/FormFileInputField'
 import { CreateUserMutation, CreateUserMutationVariables } from '../../graphql/__generated__/typescript-operations'
@@ -23,10 +22,6 @@ import SubmitButton from '../common/SubmitButton/SubmitButton'
 const createUserlGql = require(`./graphql/createUserMutation.graphql`)
 
 const useStyles = createUseStyles({
-    error: {
-        color: darkTheme.red,
-        marginBottom: 16,
-    },
     rowFixer: {
         marginBottom: '-20px',
     },
@@ -44,7 +39,7 @@ interface FormData {
     profilePicture: string
 }
 
-type TState = 'idle' | 'loading' | 'error'
+type TState = 'idle' | 'loading'
 
 const validate = (t: TFunction) => (data: FormData) => {
     return {
@@ -106,13 +101,12 @@ const SignUpPanel = () => {
             return undefined
         }
 
-        setState('error')
+        setState('idle')
         return undefined
     }
 
     return (
         <FormPageRow headerText={t('SignUp.header')}>
-            {state === 'error' && <div className={classes.error}>{t('SignUp.error')}</div>}
             <FinalForm<FormData>
                 onSubmit={onSubmit}
                 validate={validate(t)}

@@ -16,6 +16,8 @@ export const convertFileInput = (fileInput?: string) => {
     }
 }
 
+const d2 = (num: number) => (num < 10 ? `0${num}` : `${num}`)
+
 /**
  * Convert date input value from DD.MM.YYYY format to our date
  */
@@ -25,7 +27,7 @@ export const convertDateInput = (dateInput?: string) => {
     }
 
     const d = dateInput.split('.')
-    return `${d[2]}-${d[1]}-${d[0]}`
+    return `${d[2]}-${d2(parseInt(d[1], 10))}-${d2(parseInt(d[0], 10))}`
 }
 
 /**
