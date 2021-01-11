@@ -15,6 +15,7 @@ import { useRoutes } from '../../hooks/useRoutes'
 import { useFocusInput } from '../../hooks/useFocusInput'
 import { useHideInPlaceLogin } from '../../hooks/useHideInPlaceLogin'
 import SubmitButton from '../common/SubmitButton/SubmitButton'
+import { useShowToast } from '../../hooks/useShowToast'
 
 const logInMutationGql = require('./graphql/logInMutation.graphql')
 
@@ -58,6 +59,7 @@ const SignInPanel = ({ infoMessage, stayOnPage, onSuccess }: Props) => {
     const routes = useRoutes()
     const router = useRouter()
     const formRef = useFocusInput<HTMLFormElement>('email')
+    const showToast = useShowToast()
 
     // When link is clicked, we need to hide in-place login, so user sees page content
     const hideInPlaceLogin = useHideInPlaceLogin()
@@ -87,6 +89,9 @@ const SignInPanel = ({ infoMessage, stayOnPage, onSuccess }: Props) => {
                 // Ho to homepage
                 routes.push(routes.homepage())
             }
+        } else {
+            // Show error message
+            showToast(t('SignIn.error'), 'alert')
         }
     }
     const { href: recoverHref, as: recoverAs } = routes.recoverPasswordStart()
@@ -106,11 +111,6 @@ const SignInPanel = ({ infoMessage, stayOnPage, onSuccess }: Props) => {
                             autoComplete="current-password"
                             placeholder={t('SignIn.password')}
                         />
-                        {/* <FormCheckBoxField
-                                name="keepLoggedIn"
-                                label={t('SignIn.keepLoggedIn')}
-                                showErrorPlaceholder={false}
-                            /> */}
                         <div className={classes.recoverPassword}>
                             <TextLink href={recoverHref} as={recoverAs} onClick={hideInPlaceLogin}>
                                 {t('SignIn.forgotPassword')}

@@ -15,6 +15,7 @@ interface State {
 
 const useStyles = createUseStyles({
     toast: {
+        maxWidth: '70vw',
         position: 'fixed',
         left: '50vw',
         transform: 'translateX(-50%)',
