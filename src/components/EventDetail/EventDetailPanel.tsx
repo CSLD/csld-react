@@ -4,6 +4,7 @@ import { useMutation, useQuery } from '@apollo/client'
 import { useTranslation } from 'react-i18next'
 import { Col, Row } from 'react-bootstrap'
 import classNames from 'classnames'
+import isInBrowser from 'is-in-browser'
 import { darkTheme } from '../../theme/darkTheme'
 import {
     DeleteEventMutation,
@@ -76,7 +77,7 @@ const EventDetailPanel = ({ eventId }: Props) => {
     const { t } = useTranslation('common')
     const { data } = useQuery<LoadEventQuery, LoadEventQueryVariables>(loadEventGql, {
         ssr: true,
-        fetchPolicy: 'cache-first', // TODO - use cache-and-network when not on the first render?
+        fetchPolicy: isInBrowser ? 'cache-and-network' : 'cache-first',
         nextFetchPolicy: 'network-only',
         variables: { eventId },
     })
