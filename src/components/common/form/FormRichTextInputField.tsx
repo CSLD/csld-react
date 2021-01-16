@@ -2,6 +2,7 @@ import React, { FocusEvent, useCallback, useEffect, useRef, useState } from 'rea
 import { useField } from 'react-final-form'
 import { DraftHandleValue, Editor, EditorState, RichUtils } from 'draft-js'
 import { Form } from 'react-bootstrap'
+// Might user https://www.npmjs.com/package/react-draft-wysiwyg instead
 import {
     BoldButton,
     DraftJsStyleButtonProps,
