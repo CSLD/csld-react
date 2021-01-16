@@ -29,6 +29,10 @@ describe('validateDate', () => {
         expect(validateDate('29.2.2021')).toBe('Errors.invalidDate')
     })
 
+    it('should reject date with spaces', () => {
+        expect(validateDate('12 2 2021')).toBe('Errors.invalidDate')
+    })
+
     it('should pass correct date', () => {
         expect(validateDate('28.2.2021')).toBeUndefined()
     })
