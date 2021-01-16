@@ -22,6 +22,7 @@ import { createInputFromValues, FormValues, validate } from './formUtils'
 import { useShowToast } from '../../hooks/useShowToast'
 import BigLoading from '../common/BigLoading/BigLoading'
 import SubmitButton from '../common/SubmitButton/SubmitButton'
+import FormDateInputField from '../common/form/FormDateInputField'
 
 const createEventGql = require('./graphql/createEvent.graphql')
 const updateEventGql = require('./graphql/updateEvent.graphql')
@@ -111,11 +112,7 @@ const EventEditForm = ({
                                 />
                                 <Row>
                                     <Col md={6}>
-                                        <FormTextInputField
-                                            name="fromDate"
-                                            type="date"
-                                            hint={t('EventEdit.fromDate')}
-                                        />
+                                        <FormDateInputField name="fromDate" placeholder={t('EventEdit.fromDate')} />
                                     </Col>
                                     <Col md={6}>
                                         <FormTextInputField
@@ -127,7 +124,7 @@ const EventEditForm = ({
                                 </Row>
                                 <Row>
                                     <Col md={6}>
-                                        <FormTextInputField name="toDate" type="date" hint={t('EventEdit.toDate')} />
+                                        <FormDateInputField name="toDate" placeholder={t('EventEdit.toDate')} />
                                     </Col>
                                     <Col md={6}>
                                         <FormTextInputField

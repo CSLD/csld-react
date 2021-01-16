@@ -22,7 +22,7 @@ interface ResultMap {
 const isStringOrUndefined = (input: any): input is string | undefined =>
     input === undefined || typeof input === 'string'
 
-export const validateRequired = (input?: string) => (input ? undefined : 'Errors.required')
+export const validateRequired = (input?: string | Date) => (input ? undefined : 'Errors.required')
 
 export const validateRequiredArray = (input?: unknown[]) => (input?.length ? undefined : 'Errors.required')
 

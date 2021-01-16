@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { createUseStyles } from 'react-jss'
 import { useApolloClient, useQuery } from '@apollo/client'
@@ -21,8 +21,9 @@ import Pager from '../common/Pager/Pager'
 import LabelFilterFields from '../common/LabelFilterFields/LabelFilterFields'
 import CalendarEventPanel from './CalendarEventPanel'
 import { formSectionHeader } from '../../utils/formClasses'
-import FormTextInputField from '../common/form/FormTextInputField'
 import BigLoading from '../common/BigLoading/BigLoading'
+import FormDateInputField from '../common/form/FormDateInputField'
+import { formatISODate } from '../../utils/dateUtils'
 
 const loadCalendarEventsGql = require('./graphql/loadCalendarEvents.graphql')
 const moreCalendarEventsGql = require('./graphql/moreCalendarEvents.graphql')
@@ -33,8 +34,8 @@ interface Props {
 }
 
 interface FormValues {
-    from: string
-    to?: string
+    from: Date
+    to?: Date
     requiredLabels: string[]
     optionalLabels: string[]
 }
@@ -57,8 +58,6 @@ type Page = Partial<{
     totalAmount: number
 }>
 
-const format2 = (num: number) => (num < 10 ? `0${num}` : `${num}`)
-
 const tabs: Array<TabDefinition<number>> = [
     {
         key: 0,
@@ -78,7 +77,7 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
     const initialValues = useMemo(() => {
         const now = new Date()
         return {
-            from: `${now.getFullYear()}-${format2(now.getMonth() + 1)}-${format2(now.getDate())}`,
+            from: now,
             requiredLabels: initialRequiredLabelIds || [],
             optionalLabels: initialOptionalLabelIds || [],
         } as FormValues
@@ -86,7 +85,7 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
 
     useQuery<LoadCalendarEventsQuery, LoadCalendarEventsQueryVariables>(loadCalendarEventsGql, {
         variables: {
-            from: initialValues.from,
+            from: formatISODate(initialValues.from),
             requiredLabels: initialRequiredLabelIds,
             optionalLabels: initialOptionalLabelIds,
             offset: 0,
@@ -117,8 +116,8 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
                     newOptionalLabels,
                 }: {
                     newOffset?: number
-                    newFrom?: string
-                    newTo?: string
+                    newFrom?: Date
+                    newTo?: Date
                     newRequiredLabels?: string[]
                     newOptionalLabels?: string[]
                 }) => {
@@ -128,8 +127,8 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
                             query: moreCalendarEventsGql,
                             fetchPolicy: 'network-only',
                             variables: {
-                                from: newFrom || values.from,
-                                to: newTo || values.to,
+                                from: formatISODate(newFrom || values.from),
+                                to: formatISODate(newTo || values.to),
                                 offset: newOffset !== undefined ? newOffset : offset,
                                 limit: PAGE_SIZE,
                                 requiredLabels: newRequiredLabels || values.requiredLabels,
@@ -147,12 +146,12 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
                     refreshList({ newOffset })
                 }
 
-                const handleFromChanged = (e: ChangeEvent<HTMLInputElement>) => {
-                    refreshList({ newFrom: e.target.value })
+                const handleFromChanged = (newValue?: Date) => {
+                    refreshList({ newFrom: newValue })
                 }
 
-                const handleToChanged = (e: ChangeEvent<HTMLInputElement>) => {
-                    refreshList({ newTo: e.target.value })
+                const handleToChanged = (newValue?: Date) => {
+                    refreshList({ newTo: newValue })
                 }
 
                 return (
@@ -178,18 +177,16 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
                                             <header className={classes.formSectionHeader}>
                                                 {t('EventCalendar.eventFrom')}
                                             </header>
-                                            <FormTextInputField
+                                            <FormDateInputField
                                                 name="from"
-                                                type="date"
                                                 showErrorPlaceholder={false}
                                                 onChange={handleFromChanged}
                                             />
                                             <header className={classes.formSectionHeader}>
                                                 {t('EventCalendar.eventTo')}
                                             </header>
-                                            <FormTextInputField
+                                            <FormDateInputField
                                                 name="to"
-                                                type="date"
                                                 showErrorPlaceholder={false}
                                                 onChange={handleToChanged}
                                             />

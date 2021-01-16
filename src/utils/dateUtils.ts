@@ -30,3 +30,5 @@ export const computeAge = (birthDate: Maybe<string>) => {
 
     return Math.round((new Date().getTime() - new Date(birthDate).getTime()) / (365.2425 * 24 * 60 * 60 * 1000))
 }
+
+export const formatISODate = (date?: Date) => (date ? format(date, 'yyyy-MM-dd') : undefined)

@@ -5,14 +5,16 @@ import { editorStateToHtml } from '../common/form/richTextInputUtils'
 import { createGameLabel, LinkedGame } from './GamesAutoCompleteField'
 import { fieldValidator, validateRequired, validateTime } from '../../utils/validationUtils'
 import { NewLabel } from '../common/form/NewLabelsField'
+import { formatISODate } from '../../utils/dateUtils'
 
-const buildDateTime = (date: string, time?: string) => (time ? `${date}T${time}:00` : `${date}T00:00:00`)
+const buildDateTime = (date?: Date, time?: string) =>
+    time ? `${formatISODate(date)}T${time}:00` : `${formatISODate(date)}T00:00:00`
 
 export interface FormValues {
     name: string
-    fromDate?: string
+    fromDate?: Date
     fromTime?: string
-    toDate?: string
+    toDate?: Date
     toTime?: string
     amountOfPlayers?: string
     web?: string
@@ -52,8 +54,8 @@ export const validate = (t: TFunction) => (data: FormValues) => {
 
     if (!res.fromDate && !res.toDate) {
         // Check date relationship
-        const from = new Date(data.fromDate || '').getTime()
-        const to = new Date(data.toDate || '').getTime()
+        const from = data.fromDate?.getTime() || 0
+        const to = data.toDate?.getTime() || 0
 
         if (to < from) {
             res.toDate = t('EventEdit.dateMismatch')
@@ -70,8 +72,8 @@ export const validate = (t: TFunction) => (data: FormValues) => {
 
 export const createInputFromValues = (data: FormValues): CreateEventInput => ({
     name: data.name,
-    fromDate: buildDateTime(data.fromDate || '', data.fromTime),
-    toDate: buildDateTime(data.toDate || '', data.toTime),
+    fromDate: buildDateTime(data.fromDate, data.fromTime),
+    toDate: buildDateTime(data.toDate, data.toTime),
     amountOfPlayers: parseInt(data.amountOfPlayers || '1', 10),
     web: data.web,
     loc: data.loc,
@@ -96,7 +98,7 @@ const getDate = (dateTime: string | undefined | null) => {
         return undefined
     }
 
-    return match[1]
+    return new Date(match[1])
 }
 
 const getTime = (dateTime: string | undefined | null) => {
@@ -135,8 +137,6 @@ export const toInitialValues = (event: LoadedEvent): FormValues => ({
 
 export const emptyInitialValues: FormValues = {
     name: '',
-    fromDate: '',
-    toDate: '',
     loc: '',
     games: [],
     requiredLabels: [],
