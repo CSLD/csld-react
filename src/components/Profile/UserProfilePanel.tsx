@@ -79,7 +79,9 @@ const UserProfilePanel = ({ userId, user, profileOnly }: Props) => {
     )
     useEffect(() => {
         // We do this in useEffect so that this code is not called on server where window is not available
-        setICal(`${window.location.protocol}${window.location.host}/ical?id=${userId}`)
+        if (userId) {
+            setICal(`${window.location.protocol}//${window.location.host}/ical?id=${userId}`)
+        }
     }, [userId])
 
     return (
