@@ -6,6 +6,8 @@
     "blog": "Články",
     "addEvent": "+ Přidat událost do kalendáře",
     "addGame": "+ Přidat hru",
+    "addEventShort": "+ Událost",
+    "addGameShort": "+ Hra",
     "search": {
       "placeholder": "Hledaný výraz",
       "showMore": "Zobrazit více"

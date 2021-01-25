@@ -6,11 +6,12 @@ import { createUseStyles } from 'react-jss'
 import { UserContext } from 'src/context/UserContext/UserContext'
 import isInBrowser from 'is-in-browser'
 import { useRouter } from 'next/router'
-import { headerLinkStyle, HeaderNavLink } from './HeaderNavLink'
+import { headerLinkStyle, headerLinkStyleMd, HeaderNavLink } from './HeaderNavLink'
 import { darkTheme } from '../../../theme/darkTheme'
 import { isAtLeastEditor } from '../../../utils/roleUtils'
 import { useRoutes } from '../../../hooks/useRoutes'
 import { InPlaceSignInContext } from '../../../context/InPlaceSignInContext/InPlaceSignInContext'
+import { breakPoints } from '../../../theme/breakPoints'
 
 const signOutMutation = require('./graphql/signOutMutation.graphql')
 
@@ -45,6 +46,9 @@ const useStyles = createUseStyles({
         borderRadius: 2,
     },
     signInLink: headerLinkStyle,
+    [`@media(min-width: ${breakPoints.md}px)`]: {
+        signInLink: headerLinkStyleMd,
+    },
 })
 
 const CustomToggle = React.forwardRef<HTMLButtonElement, CustomToggleProps>(

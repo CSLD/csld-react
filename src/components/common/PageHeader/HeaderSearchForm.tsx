@@ -13,6 +13,7 @@ import {
 import { GameBaseDataPanel } from '../GameBaseDataPanel/GameBaseDataPanel'
 import { useRoutes } from '../../../hooks/useRoutes'
 import { TextLink } from '../TextLink/TextLink'
+import { breakPoints } from '../../../theme/breakPoints'
 
 export const searchInputId = 'headerSearchInput'
 
@@ -21,6 +22,8 @@ const searchGamesQuery = require('./graphql/searchGamesQuery.graphql')
 const useStyles = createUseStyles({
     wrapper: {
         display: 'flex',
+        width: '100%',
+        marginTop: 3,
         position: 'relative',
         transition: 'border-color ease-in-out .15s, box-shadow ease-in-out .15s',
         '&:focus-within': {
@@ -29,6 +32,7 @@ const useStyles = createUseStyles({
             boxShadow: 'inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6)',
         },
         marginRight: 15,
+        marginBottom: 5,
     },
     searchInput: {
         backgroundColor: darkTheme.backgroundControl,
@@ -37,7 +41,7 @@ const useStyles = createUseStyles({
         padding: '5px 24px 5px 8px',
         borderTopLeftRadius: 4,
         borderBottomLeftRadius: 4,
-        width: 150,
+        flexGrow: 1,
         outline: 0,
         fontSize: '0.69rem',
     },
@@ -85,6 +89,14 @@ const useStyles = createUseStyles({
     },
     gameLoading: {
         opacity: 0.8,
+    },
+    [`@media(min-width: ${breakPoints.md}px)`]: {
+        searchInput: {
+            width: 150,
+        },
+        wrapper: {
+            marginBottom: 0,
+        },
     },
 })
 

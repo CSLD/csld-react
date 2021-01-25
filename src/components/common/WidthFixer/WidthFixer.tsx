@@ -1,18 +1,23 @@
 import React from 'react'
 import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
+import { breakPoints } from '../../../theme/breakPoints'
 
 interface Props {
     readonly className?: string
 }
 
 const useStyles = createUseStyles({
-    // TODO: Make width responsive
     widthFixer: {
-        width: 1200,
         margin: '0 auto',
         padding: '0 15px',
         boxSizing: 'border-box',
+        width: '100%',
+    },
+    [`@media(min-width: ${breakPoints.xl}px)`]: {
+        widthFixer: {
+            width: breakPoints.xl,
+        },
     },
 })
 

@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FocusEvent, useState } from 'react'
 import { useField } from 'react-final-form'
-import { FieldValidator } from 'final-form'
 import { Form, InputGroup } from 'react-bootstrap'
+import { FieldValidator } from 'final-form'
 import FieldWithError from './FieldWithError'
 
 export interface FormTextInputFieldProps {
