@@ -1,6 +1,7 @@
 import React, { useContext, useMemo, useRef, useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import { useQuery } from '@apollo/client'
+import { Row } from 'react-bootstrap'
 import { darkTheme } from '../../theme/darkTheme'
 import { WidthFixer } from '../common/WidthFixer/WidthFixer'
 import { HomePageGamesPanel } from './HomePageGamesPanel'
@@ -22,11 +23,7 @@ const getMoreLastCommentsQuery = require('./graphql/getMoreLastComments.graphql'
 const useStyles = createUseStyles({
     gamesAndEvents: {
         backgroundColor: darkTheme.background,
-    },
-    gamesAndEventsInner: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        padding: '8px 0 35px',
+        paddingBottom: 35,
     },
     comments: {
         backgroundColor: darkTheme.backgroundNearWhite,
@@ -123,10 +120,10 @@ export const HomePagePanel = () => {
         <>
             <div className={classes.gamesAndEvents}>
                 <WidthFixer>
-                    <div className={classes.gamesAndEventsInner}>
+                    <Row>
                         <HomePageGamesPanel lastGames={lastAddedGames} topGames={topGames} />
                         <HomePageEventsPanel nextEvents={nextEvents} />
-                    </div>
+                    </Row>
                 </WidthFixer>
             </div>
             <Tabs tabs={tabs} selectedTab="recent" />

@@ -42,8 +42,15 @@ const useStyles = createUseStyles({
         color: darkTheme.textGreen,
         marginBottom: 3,
     },
+    bottomLine: {
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        display: 'inline-block',
+        textOverflow: 'ellipsis',
+    },
     textByIcon: {
         margin: '0 8px 0 3px',
+        whiteSpace: 'nowrap',
     },
 })
 
@@ -70,7 +77,7 @@ export const EventBaseDataPanel = ({ event, className }: Props) => {
                     </>
                 )}
             </div>
-            <div>
+            <div className={classes.bottomLine}>
                 <IconUser />
                 <span className={classes.textByIcon}>{event.amountOfPlayers}</span>
                 <IconLocation />

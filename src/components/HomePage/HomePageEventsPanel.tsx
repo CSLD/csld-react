@@ -1,6 +1,7 @@
 import React from 'react'
 import { createUseStyles } from 'react-jss'
 import { useTranslation } from 'react-i18next'
+import { Col } from 'react-bootstrap'
 import { EventBaseData } from './EventBaseDataPanel'
 import { darkTheme } from '../../theme/darkTheme'
 import { GameEventGrid } from './GameEventGrid'
@@ -12,9 +13,6 @@ interface Props {
 
 const useStyles = createUseStyles({
     wrapper: {
-        width: 570,
-        margin: '0 -10px',
-        overflow: 'hidden',
         backgroundColor: darkTheme.background,
     },
 })
@@ -26,9 +24,9 @@ export const HomePageEventsPanel = ({ nextEvents = loadingEvents }: Props) => {
     const { t } = useTranslation('common')
 
     return (
-        <div className={classes.wrapper}>
+        <Col xl={6} className={classes.wrapper}>
             <GridHeader>{t('HomePage.nextEvents')}</GridHeader>
             <GameEventGrid elements={nextEvents} />
-        </div>
+        </Col>
     )
 }

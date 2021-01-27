@@ -26,7 +26,6 @@ interface Props {
 // https://css-tricks.com/line-clampin/
 const useStyles = createUseStyles({
     wrapper: {
-        width: 377,
         height: 170,
         marginBottom: 20,
     },
@@ -68,7 +67,7 @@ const useStyles = createUseStyles({
         display: 'flex',
         whiteSpace: 'nowrap',
         alignItems: 'center',
-        marginTop: 8,
+        lineHeight: '150%',
     },
     link: {
         color: darkTheme.textGreenDark,
@@ -81,7 +80,6 @@ const useStyles = createUseStyles({
         minWidth: 0,
     },
     date: {
-        marginTop: 5,
         color: darkTheme.text,
         fontSize: '0.7rem',
     },
@@ -93,7 +91,7 @@ const useStyles = createUseStyles({
         flexShrink: 1,
     },
     rating: {
-        margin: '0 5px',
+        marginRight: 5,
     },
     ...ratingStyles,
 })
@@ -126,6 +124,8 @@ export const BaseCommentPanel = ({ comment }: Props) => {
                             </UserLink>
                             &nbsp;
                             {t('HomePage.commentAbout')}
+                        </div>
+                        <div className={classes.textRow}>
                             <GameRatingBox
                                 amountOfRatings={comment?.game?.amountOfRatings || 0}
                                 rating={comment?.game?.averageRating}

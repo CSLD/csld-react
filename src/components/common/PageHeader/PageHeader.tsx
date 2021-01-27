@@ -17,6 +17,15 @@ import { IconMenu } from '../Icons/Icons'
 const useStyles = createUseStyles({
     placeholder: {
         height: 55,
+        [`@media(min-width: ${breakPoints.md}px)`]: {
+            height: 105,
+        },
+        [`@media(min-width: ${breakPoints.lg}px)`]: {
+            height: 55,
+        },
+    },
+    image: {
+        height: 55,
     },
     container: {
         backgroundColor: darkTheme.backgroundLight,
@@ -86,6 +95,7 @@ const useStyles = createUseStyles({
             flexBasis: 'auto',
             justifyContent: 'center',
             borderTop: 0,
+            marginBottom: 10,
         },
         userPart: {
             margin: 0,
@@ -113,6 +123,7 @@ const useStyles = createUseStyles({
         linksPart: {
             order: 2,
             justifyContent: 'flex-start',
+            marginBottom: 0,
         },
         innerContainer: {
             height: 55,
@@ -157,7 +168,7 @@ export const PageHeader = () => {
                         <a
                             role="button"
                             tabIndex={0}
-                            className={classNames(classes.rightSpacer, classes.part)}
+                            className={classNames(classes.rightSpacer, classes.part, classes.image)}
                             onClick={hideInPlaceLogin}
                         >
                             <img

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import { useTranslation } from 'react-i18next'
+import { Col } from 'react-bootstrap'
 import { GameBaseData } from '../common/GameBaseDataPanel/GameBaseDataPanel'
 import { GridHeader } from './GridHeader'
 import { IconMoveLeft, IconMoveRight } from '../common/Icons/Icons'
@@ -13,11 +14,6 @@ interface Props {
 }
 
 const useStyles = createUseStyles({
-    wrapper: {
-        width: 570,
-        overflow: 'hidden',
-        backgroundColor: darkTheme.background,
-    },
     iconButton: {
         cursor: 'pointer',
         padding: 5,
@@ -25,15 +21,6 @@ const useStyles = createUseStyles({
         border: 0,
         color: darkTheme.text,
         backgroundColor: darkTheme.background,
-    },
-    inner: {
-        width: 1180,
-        display: 'flex',
-        position: 'relative',
-        transition: 'left 0.3s ease-out',
-    },
-    item: {
-        width: 590,
     },
 })
 
@@ -47,9 +34,9 @@ export const HomePageGamesPanel = ({ lastGames = gamesLoading, topGames = gamesL
     const handleChangePage = () => setCarouselPage(old => 1 - old)
 
     return (
-        <div className={classes.wrapper}>
-            <div className={classes.inner} style={{ left: -10 - carouselPage * 590 }}>
-                <div className={classes.item}>
+        <Col xl={6}>
+            {carouselPage === 0 && (
+                <>
                     <GridHeader>
                         <button type="button" className={classes.iconButton} onClick={handleChangePage}>
                             <IconMoveLeft />
@@ -60,8 +47,10 @@ export const HomePageGamesPanel = ({ lastGames = gamesLoading, topGames = gamesL
                         </button>
                     </GridHeader>
                     <GameEventGrid elements={lastGames} />
-                </div>
-                <div className={classes.item}>
+                </>
+            )}
+            {carouselPage === 1 && (
+                <>
                     <GridHeader>
                         <button type="button" className={classes.iconButton} onClick={handleChangePage}>
                             <IconMoveLeft />
@@ -72,8 +61,8 @@ export const HomePageGamesPanel = ({ lastGames = gamesLoading, topGames = gamesL
                         </button>
                     </GridHeader>
                     <GameEventGrid elements={topGames} />
-                </div>
-            </div>
-        </div>
+                </>
+            )}
+        </Col>
     )
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 import { createUseStyles } from 'react-jss'
 import { useTranslation } from 'react-i18next'
+import { Row, Col } from 'react-bootstrap'
 import { BaseCommentData, BaseCommentPanel } from './BaseCommentPanel'
 import { darkTheme } from '../../theme/darkTheme'
 import { WidthFixer } from '../common/WidthFixer/WidthFixer'
@@ -48,7 +49,6 @@ const useStyles = createUseStyles({
     },
     commentsWrapper: {
         width: '100%',
-        display: 'flex',
         justifyContent: 'space-between',
         transition: 'height 0.3s ease-in',
         overflow: 'hidden',
@@ -69,16 +69,16 @@ export const HomePageCommentsPanel = ({ comments, expanded, onToggleExpanded }: 
     return (
         <WidthFixer className={classes.outerWrapper}>
             <div className={classes.commentsTitle}>{t('HomePage.recentComments')}</div>
-            <div className={classes.commentsWrapper} style={{ height: 190 * numInColumn }}>
+            <Row className={classes.commentsWrapper}>
                 {commentsInColumns.map((column, n) => (
                     // eslint-disable-next-line react/no-array-index-key
-                    <div className={classes.commentsColumn} key={`col_${n}`}>
+                    <Col lg={4} className={classes.commentsColumn} key={`col_${n}`}>
                         {column.map((comment, i) => (
                             <BaseCommentPanel key={comment ? comment.id : `c_${n}_${i}`} comment={comment} />
                         ))}
-                    </div>
+                    </Col>
                 ))}
-            </div>
+            </Row>
             <button type="button" className={classes.commentsMoreLess} onClick={onToggleExpanded}>
                 {t(expanded ? 'HomePage.commentsShrink' : 'HomePage.commentsExpand')}
             </button>

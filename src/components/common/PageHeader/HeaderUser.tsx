@@ -45,6 +45,9 @@ const useStyles = createUseStyles({
         marginRight: 2,
         borderRadius: 2,
     },
+    dropDown: {
+        flexShrink: 0,
+    },
     signInLink: headerLinkStyle,
     [`@media(min-width: ${breakPoints.md}px)`]: {
         signInLink: headerLinkStyleMd,
@@ -129,7 +132,7 @@ const HeaderUser = () => {
 
     if (user?.id) {
         return (
-            <Dropdown onSelect={handleSelect}>
+            <Dropdown onSelect={handleSelect} className={classes.dropDown}>
                 <Dropdown.Toggle as={CustomToggle} userId={user.id} userName={user.name || ''} imageId={user.imageId} />
 
                 <Dropdown.Menu>

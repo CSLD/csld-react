@@ -10,12 +10,13 @@ const useStyles = createUseStyles({
         display: 'flex',
         flexDirection: 'row',
         flexWrap: 'wrap',
-        width: 650,
         backgroundColor: darkTheme.background,
+        margin: '0 -10px',
+        justifyContent: 'center',
     },
     element: {
         margin: 10,
-        width: 275,
+        width: 260,
     },
 })
 
