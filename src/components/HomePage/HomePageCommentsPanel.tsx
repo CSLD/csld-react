@@ -34,6 +34,7 @@ const useStyles = createUseStyles({
     buttonWrapper: {
         width: '100%',
         display: 'flex',
+        justifyContent: 'center',
     },
     commentsMoreLess: {
         background: darkTheme.backgroundAlmostNearWhite2,
