@@ -31,7 +31,7 @@ const useStyles = createUseStyles({
         border: 0,
         display: 'flex',
         alignItems: 'center',
-        marginLeft: 8,
+        margin: '8px 0 6px -3px',
 
         '&:hover': {
             color: darkTheme.textGreen,
@@ -51,6 +51,11 @@ const useStyles = createUseStyles({
     signInLink: headerLinkStyle,
     [`@media(min-width: ${breakPoints.md}px)`]: {
         signInLink: headerLinkStyleMd,
+    },
+    [`@media(min-width: ${breakPoints.md}px)`]: {
+        button: {
+            margin: '0 0 0 8px',
+        },
     },
 })
 
