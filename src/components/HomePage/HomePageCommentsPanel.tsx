@@ -84,7 +84,7 @@ export const HomePageCommentsPanel = ({ comments, expanded, onToggleExpanded }: 
                     </Col>
                 ))}
             </Row>
-            <div style={{ maxWidth: 380 }}>
+            <div className={classes.buttonWrapper}>
                 <button type="button" className={classes.commentsMoreLess} onClick={onToggleExpanded}>
                     {t(expanded ? 'HomePage.commentsShrink' : 'HomePage.commentsExpand')}
                 </button>
