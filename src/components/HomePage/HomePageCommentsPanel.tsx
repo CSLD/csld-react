@@ -31,6 +31,10 @@ const useStyles = createUseStyles({
         textTransform: 'uppercase',
         margin: '20px 0 30px',
     },
+    buttonWrapper: {
+        width: '100%',
+        display: 'flex',
+    },
     commentsMoreLess: {
         background: darkTheme.backgroundAlmostNearWhite2,
         color: darkTheme.textOnLight,
@@ -39,9 +43,10 @@ const useStyles = createUseStyles({
         outline: 0,
         border: 0,
         textAlign: 'center',
-        width: 380,
+        maxWidth: 380,
+        flexGrow: 1,
         padding: 5,
-        marginTop: -5,
+        margin: '-5px 12px 0',
 
         '&:hover': {
             background: darkTheme.backgroundAlmostNearWhite,
@@ -79,9 +84,11 @@ export const HomePageCommentsPanel = ({ comments, expanded, onToggleExpanded }: 
                     </Col>
                 ))}
             </Row>
-            <button type="button" className={classes.commentsMoreLess} onClick={onToggleExpanded}>
-                {t(expanded ? 'HomePage.commentsShrink' : 'HomePage.commentsExpand')}
-            </button>
+            <div style={{ maxWidth: 380 }}>
+                <button type="button" className={classes.commentsMoreLess} onClick={onToggleExpanded}>
+                    {t(expanded ? 'HomePage.commentsShrink' : 'HomePage.commentsExpand')}
+                </button>
+            </div>
         </WidthFixer>
     )
 }
