@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import { GameBaseData, GameBaseDataPanel } from '../common/GameBaseDataPanel/GameBaseDataPanel'
 import { darkTheme } from '../../theme/darkTheme'
 import { EventBaseData, EventBaseDataPanel } from './EventBaseDataPanel'
+import { breakPoints } from '../../theme/breakPoints'
 
 const useStyles = createUseStyles({
     grid: {
@@ -16,7 +17,13 @@ const useStyles = createUseStyles({
     },
     element: {
         margin: 10,
-        width: 260,
+        width: '100%',
+    },
+
+    [`@media(min-width: ${breakPoints.md}px)`]: {
+        element: {
+            width: 260,
+        },
     },
 })
 
