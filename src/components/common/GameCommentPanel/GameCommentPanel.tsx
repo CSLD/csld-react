@@ -28,13 +28,19 @@ interface Props {
 const useStyles = createUseStyles({
     wrapper: {
         borderBottom: `1px solid ${darkTheme.backgroundAlmostNearWhite}`,
-        padding: '10px 15px',
+        padding: '10px 0',
         color: darkTheme.textOnLightDark,
     },
     dimmed: {
         opacity: 0.5,
     },
     header: {
+        display: 'flex',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        overflow: 'hidden',
+    },
+    headerUser: {
         display: 'flex',
         alignItems: 'center',
     },
@@ -48,6 +54,7 @@ const useStyles = createUseStyles({
         borderRadius: 3,
         backgroundColor: darkTheme.backgroundWhite,
         overflow: 'hidden',
+        whiteSpace: 'nowrap',
     },
     headerNickName: {
         padding: '3px 5px',
@@ -151,13 +158,15 @@ const GameCommentPanel = ({ comment, loading, showVisibilityButton, onChangeComm
     return (
         <div className={classNames(classes.wrapper, loading && classes.dimmed)}>
             <div className={classes.header}>
-                <ProfileImage userId={comment.user.id} imageId={comment.user.image?.id} />
-                <div className={classes.headerMiddle}>
-                    <UserLink userId={comment.user.id} className={classes.headerNameWrapper}>
-                        <span className={classes.headerNickName}>{nickname || firstWordOf(name)}</span>
-                        <span className={classes.headerName}>{name}</span>
-                    </UserLink>
-                    {added}
+                <div className={classes.headerUser}>
+                    <ProfileImage userId={comment.user.id} imageId={comment.user.image?.id} />
+                    <div className={classes.headerMiddle}>
+                        <UserLink userId={comment.user.id} className={classes.headerNameWrapper}>
+                            <span className={classes.headerNickName}>{nickname || firstWordOf(name)}</span>
+                            <span className={classes.headerName}>{name}</span>
+                        </UserLink>
+                        {added}
+                    </div>
                 </div>
                 <div className={classes.headerLikes}>
                     {showVisibilityButton && (

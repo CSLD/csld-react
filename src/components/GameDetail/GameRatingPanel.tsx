@@ -5,6 +5,7 @@ import { createUseStyles } from 'react-jss'
 import { useTranslation } from 'react-i18next'
 import classNames from 'classnames'
 import { Maybe } from 'graphql/jsutils/Maybe'
+import { Col, Row } from 'react-bootstrap'
 import { darkTheme } from '../../theme/darkTheme'
 import { GameRatingBox, ratingStyles } from '../common/GameRatingBox/GameRatingBox'
 import { IconUser } from '../common/Icons/Icons'
@@ -28,22 +29,14 @@ const useStyles = createUseStyles({
         fontSize: '0.8rem',
         textAlign: 'center',
     },
-    row: {
-        display: 'flex',
-        marginBottom: 25,
-    },
     left: {
         display: 'flex',
         flexDirection: 'column',
-        width: 150,
         padding: '0 10px',
         textAlign: 'center',
     },
     right: {
-        width: 200,
-        padding: '0 10px',
-        display: 'flex',
-        flexDirection: 'column',
+        padding: '0 10px 25px',
     },
     statsRow: {
         display: 'flex',
@@ -122,8 +115,8 @@ export const GameRatingPanel = ({
 
     return (
         <div className={classes.wrapper}>
-            <div className={classes.row}>
-                <div className={classes.left}>
+            <Row>
+                <Col xs={5} className={classes.left}>
                     <GameRatingBox amountOfRatings={amountOfRatings} rating={averageRating} size="big" />
                     <span className={classes.totalPlayed}>
                         <IconUser />
@@ -134,8 +127,8 @@ export const GameRatingPanel = ({
                         <span className={classes.yourRating}>{t('GameDetail.yourRating', { rating })}</span>
                     )}
                     {loggedInUser && <RatingStateButtons gameId={gameId} state={ratingState} />}
-                </div>
-                <div className={classes.right}>
+                </Col>
+                <Col xs={7} className={classes.right}>
                     {statsMap.map((size, n) => {
                         const ratingGrade = getRatingForGame(999, (10 - n) * 10 - 1)
                         const gaugeClassName = classNames({
@@ -156,8 +149,8 @@ export const GameRatingPanel = ({
                             </div>
                         )
                     })}
-                </div>
-            </div>
+                </Col>
+            </Row>
             {!loggedInUser && (
                 <div className={classes.login}>
                     {t('GameDetail.logInToRateBefore')}

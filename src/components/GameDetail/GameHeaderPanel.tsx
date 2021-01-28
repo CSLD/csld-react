@@ -3,6 +3,7 @@ import { createUseStyles } from 'react-jss'
 import { Game, User, Group, Label } from 'src/graphql/__generated__/typescript-operations'
 import { useTranslation } from 'react-i18next'
 import { i18n as Ti18n, TFunction } from 'i18next'
+import { Row, Col } from 'react-bootstrap'
 import { darkTheme } from '../../theme/darkTheme'
 import UserLink from '../common/UserLink/UserLink'
 import GroupLink from '../common/GroupLink/GroupLink'
@@ -44,17 +45,6 @@ const useStyles = createUseStyles({
         height: '2.20rem',
         margin: '5px 0 15px',
         opacity: 0.04,
-    },
-    row: {
-        display: 'flex',
-        marginBottom: -10,
-    },
-    left: {
-        margin: '0 20px 0 0',
-        width: '33%',
-    },
-    right: {
-        width: '66%',
     },
     fact: {
         margin: '0 0 10px',
@@ -150,12 +140,12 @@ export const GameHeaderPanel = ({ game }: Props) => {
     ])
 
     return (
-        <div>
+        <>
             {game.name && <h1 className={classes.header}>{game.name}</h1>}
             {!game.name && <div className={classes.headerPlaceholder} />}
-            <div className={classes.row}>
+            <Row>
                 {haveData && (
-                    <div className={classes.left}>
+                    <Col lg={4}>
                         <p className={classes.fact}>{playersFacts}</p>
                         <p className={classes.fact}>{timeFacts}</p>
                         {game.web && (
@@ -180,20 +170,19 @@ export const GameHeaderPanel = ({ game }: Props) => {
                                 {game.photoAuthor}
                             </p>
                         )}
-                    </div>
+                    </Col>
                 )}
                 {!haveData && (
-                    <div className={classes.left}>
+                    <Col lg={4}>
                         <p className={classes.factPlaceholder} />
                         <p className={classes.factPlaceholder} />
                         <p className={classes.factPlaceholder} />
                         <p className={classes.factPlaceholder} />
                         <p className={classes.factPlaceholder} />
-                    </div>
+                    </Col>
                 )}
-
                 {haveData && (
-                    <div className={classes.right}>
+                    <Col lg={7}>
                         <p className={classes.fact}>
                             {t('Game.authors')}
                             &nbsp;
@@ -222,15 +211,15 @@ export const GameHeaderPanel = ({ game }: Props) => {
                                     </React.Fragment>
                                 ))}
                         </p>
-                    </div>
+                    </Col>
                 )}
                 {!haveData && (
-                    <div className={classes.right}>
+                    <Col lg={7}>
                         <p className={classes.factPlaceholder} />
                         <p className={classes.factPlaceholder} />
-                    </div>
+                    </Col>
                 )}
-            </div>
+            </Row>
             <div className={classes.divider} />
             {haveData && (
                 <>
@@ -241,6 +230,6 @@ export const GameHeaderPanel = ({ game }: Props) => {
                 </>
             )}
             {!haveData && <div className={classes.descriptionPlaceholder} />}
-        </div>
+        </>
     )
 }

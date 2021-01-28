@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
 import { createUseStyles } from 'react-jss'
 import { useTranslation } from 'react-i18next'
+import { Row, Col } from 'react-bootstrap'
 import {
     CachedGameDataFragment,
     CommentsPaged,
@@ -40,31 +41,18 @@ const useStyles = createUseStyles({
     details: {
         backgroundColor: darkTheme.background,
     },
-    detailsWidthFixer: {
-        display: 'flex',
-        padding: '10px 20px 20px',
+    detailsRow: {
+        paddingTop: 20,
     },
-    detailsLeft: {
-        width: 700,
-        marginRight: 100,
-    },
-    detailsRight: {
-        paddingTop: 10,
+    detailsColumn: {
+        paddingBottom: 20,
     },
     extras: {
         backgroundColor: darkTheme.backgroundNearWhite,
+        padding: '10px 0',
     },
-    extrasWidthFixer: {
-        display: 'flex',
-    },
-    extrasLeft: {
-        width: '75%',
-        padding: '25px 0 20px',
-    },
-    extrasRight: {
-        width: '25%',
-        boxSizing: 'border-box',
-        padding: '25px 0 20px 20px',
+    extrasColumn: {
+        margin: '10px 0',
     },
     coverImage: {
         width: '100%',
@@ -205,39 +193,47 @@ export const GameDetailPanel = ({ gameId }: Props) => {
                     src={`/game-image/?id=${game.id}&imageId=${game.coverImage.id}`}
                 />
             )}
-            <WidthFixer className={classes.detailsWidthFixer}>
-                <div className={classes.detailsLeft}>
-                    <GameHeaderPanel game={game} />
-                </div>
-                <div className={classes.detailsRight}>
-                    <GameRatingPanel game={game} />
-                </div>
+            <WidthFixer>
+                <Row className={classes.detailsRow}>
+                    <Col lg={8} md={6} className={classes.detailsColumn}>
+                        <GameHeaderPanel game={game} />
+                    </Col>
+                    <Col lg={4} md={6} className={classes.detailsColumn}>
+                        <GameRatingPanel game={game} />
+                    </Col>
+                </Row>
             </WidthFixer>
             <Tabs tabs={tabs} selectedTab={selectedTab} onSelectTab={setSelectedTab} />
             <div className={classes.extras}>
-                <WidthFixer className={classes.extrasWidthFixer}>
-                    <div className={classes.extrasLeft}>
-                        {selectedTab === 'comments' && (
-                            <GamePagedCommentsPanel gameId={gameId} commentsDisabled={!!game.commentsDisabled} />
-                        )}
-                        {selectedTab === 'video' && (
-                            <iframe title="video" src={game.video?.path || ''} width="800" height="450" />
-                        )}
-                    </div>
-                    <div className={classes.extrasRight}>
-                        {editVisible && (
-                            <ActionButton onClick={handleEditGame}>{t('GameDetail.editGame')}</ActionButton>
-                        )}
-                        {deleteVisible && (
-                            <ActionButton onClick={handleDeleteGame}>{t('GameDetail.deleteGame')}</ActionButton>
-                        )}
-                        <GameListPanel games={game.similarGames} titleKey="GameDetail.similarGames" />
-                        <EventListPanel events={game.events} titleKey="GameDetail.events" />
-                        <GameListPanel games={game.gamesOfAuthors} titleKey="GameDetail.gamesOfAuthors" />
-                        {isAtLeastEditor(loggedInUser?.role) && (
-                            <RatingsListPanel gameId={game.id} ratings={game.ratings} onRatingDeleted={handleRefetch} />
-                        )}
-                    </div>
+                <WidthFixer>
+                    <Row>
+                        <Col lg={9} className={classes.extrasColumn}>
+                            {selectedTab === 'comments' && (
+                                <GamePagedCommentsPanel gameId={gameId} commentsDisabled={!!game.commentsDisabled} />
+                            )}
+                            {selectedTab === 'video' && (
+                                <iframe title="video" src={game.video?.path || ''} width="800" height="450" />
+                            )}
+                        </Col>
+                        <Col lg={3} className={classes.extrasColumn}>
+                            {editVisible && (
+                                <ActionButton onClick={handleEditGame}>{t('GameDetail.editGame')}</ActionButton>
+                            )}
+                            {deleteVisible && (
+                                <ActionButton onClick={handleDeleteGame}>{t('GameDetail.deleteGame')}</ActionButton>
+                            )}
+                            <GameListPanel games={game.similarGames} titleKey="GameDetail.similarGames" />
+                            <EventListPanel events={game.events} titleKey="GameDetail.events" />
+                            <GameListPanel games={game.gamesOfAuthors} titleKey="GameDetail.gamesOfAuthors" />
+                            {isAtLeastEditor(loggedInUser?.role) && (
+                                <RatingsListPanel
+                                    gameId={game.id}
+                                    ratings={game.ratings}
+                                    onRatingDeleted={handleRefetch}
+                                />
+                            )}
+                        </Col>
+                    </Row>
                 </WidthFixer>
             </div>
             <ConfirmationModal
