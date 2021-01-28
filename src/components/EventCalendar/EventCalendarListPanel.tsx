@@ -20,7 +20,7 @@ import { WidthFixer } from '../common/WidthFixer/WidthFixer'
 import Pager from '../common/Pager/Pager'
 import LabelFilterFields from '../common/LabelFilterFields/LabelFilterFields'
 import CalendarEventPanel from './CalendarEventPanel'
-import { formSectionHeader } from '../../utils/formClasses'
+import { formSectionHeaderStyles } from '../../utils/formClasses'
 import BigLoading from '../common/BigLoading/BigLoading'
 import FormDateInputField from '../common/form/FormDateInputField'
 import { formatISODate } from '../../utils/dateUtils'
@@ -48,7 +48,7 @@ const useStyles = createUseStyles({
     loading: {
         opacity: 0.5,
     },
-    formSectionHeader,
+    ...formSectionHeaderStyles,
 })
 
 const PAGE_SIZE = 25
@@ -174,17 +174,13 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
                                             />
                                         </Col>
                                         <Col md={3}>
-                                            <header className={classes.formSectionHeader}>
-                                                {t('EventCalendar.eventFrom')}
-                                            </header>
+                                            <header className={classes.header}>{t('EventCalendar.eventFrom')}</header>
                                             <FormDateInputField
                                                 name="from"
                                                 showErrorPlaceholder={false}
                                                 onChange={handleFromChanged}
                                             />
-                                            <header className={classes.formSectionHeader}>
-                                                {t('EventCalendar.eventTo')}
-                                            </header>
+                                            <header className={classes.header}>{t('EventCalendar.eventTo')}</header>
                                             <FormDateInputField
                                                 name="to"
                                                 showErrorPlaceholder={false}

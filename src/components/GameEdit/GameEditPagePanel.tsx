@@ -52,7 +52,7 @@ type LoadedGame = Pick<
 const useStyles = createUseStyles({
     row: {
         backgroundColor: darkTheme.backgroundNearWhite,
-        padding: '16px 0',
+        padding: '8px 0',
     },
     body: {
         backgroundColor: darkTheme.backgroundWhite,

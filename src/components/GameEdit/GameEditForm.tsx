@@ -326,7 +326,7 @@ const GameEditForm = ({
                                 <SubmitButton submitting={loading}>{t('GameEdit.save')}</SubmitButton>
                                 {submitFailed && <span className={classes.formError}>{t('GameEdit.formError')}</span>}
                             </Col>
-                            <Col md={3}>
+                            <Col md={3} className={classes.labelsCol}>
                                 <LabelsEditColumn
                                     authorizedOptionalLabels={authorizedOptionalLabels}
                                     authorizedRequiredLabels={authorizedRequiredLabels}
