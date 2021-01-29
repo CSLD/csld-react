@@ -5,6 +5,7 @@ import { Maybe } from 'graphql/jsutils/Maybe'
 import { darkTheme } from '../../theme/darkTheme'
 import { WidthFixer } from '../common/WidthFixer/WidthFixer'
 import { computeAge } from '../../utils/dateUtils'
+import { breakPoints } from '../../theme/breakPoints'
 
 interface UserData {
     readonly id: string
@@ -31,6 +32,9 @@ const useStyles = createUseStyles({
     fixer: {
         display: 'flex',
     },
+    nameWrapper: {
+        overflow: 'hidden',
+    },
     image: {
         width: 80,
         height: 80,
@@ -41,15 +45,27 @@ const useStyles = createUseStyles({
         flexShrink: 0,
     },
     header: {
-        fontSize: '1.75rem',
+        fontSize: '1rem',
         fontWeight: 'bold',
         marginBottom: '0.3rem',
         color: darkTheme.textGreen,
-        lineHeight: '100%',
+        lineHeight: '125%',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
     },
     text: {
         fontSize: '0.75rem',
         color: darkTheme.textLighter,
+    },
+    [`@media(min-width: ${breakPoints.md}px)`]: {
+        header: {
+            fontSize: '1.33rem',
+        },
+    },
+    [`@media(min-width: ${breakPoints.lg}px)`]: {
+        header: {
+            fontSize: '1.75rem',
+        },
     },
 })
 
@@ -70,7 +86,7 @@ const UserDetailPanel = ({ userData }: Props) => {
                 )}
                 {!userData && <div className={classes.image} />}
                 {userData && (
-                    <div>
+                    <div className={classes.nameWrapper}>
                         <div className={classes.header}>
                             {userData.nickname} {userData.name} {userData.email}
                         </div>

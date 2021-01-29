@@ -139,7 +139,7 @@ const UserSettingsPanel = () => {
                                         hint={t('UserSettings.profilePictureHint')}
                                     />
                                     <Row>
-                                        <Col>
+                                        <Col md={6}>
                                             <FormTextInputField
                                                 name="name"
                                                 placeholder={t('UserFields.name')}
@@ -147,7 +147,7 @@ const UserSettingsPanel = () => {
                                                 validate={fieldValidator(t, validateRequired)}
                                             />
                                         </Col>
-                                        <Col>
+                                        <Col md={6}>
                                             <FormTextInputField
                                                 name="nickname"
                                                 placeholder={t('UserFields.nickName')}
@@ -156,14 +156,14 @@ const UserSettingsPanel = () => {
                                         </Col>
                                     </Row>
                                     <Row>
-                                        <Col>
+                                        <Col md={6}>
                                             <FormTextInputField
                                                 name="city"
                                                 placeholder={t('UserFields.city')}
                                                 hint={t('UserFields.cityHint')}
                                             />
                                         </Col>
-                                        <Col>
+                                        <Col md={6}>
                                             <FormTextInputField
                                                 name="birthDate"
                                                 placeholder={t('UserFields.birthDate')}

@@ -1,6 +1,7 @@
 import React from 'react'
 import { createUseStyles } from 'react-jss'
 import { GameBaseData, GameBaseDataPanel } from '../GameBaseDataPanel/GameBaseDataPanel'
+import { breakPoints } from '../../../theme/breakPoints'
 
 interface Props {
     readonly games: GameBaseData[]
@@ -10,12 +11,19 @@ const useStyles = createUseStyles({
     games: {
         display: 'flex',
         flexWrap: 'wrap',
-        marginRight: -20,
-        marginBottom: 30,
     },
     game: {
-        width: 425,
-        margin: '10px 20px 10px 0',
+        margin: '0 0 20px',
+        flexBasis: '100%',
+    },
+    [`@media(min-width: ${breakPoints.md}px)`]: {
+        games: {
+            marginRight: -20,
+        },
+        game: {
+            flexBasis: 'calc(50% - 20px)',
+            margin: '0 20px 20px 0',
+        },
     },
 })
 

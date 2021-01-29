@@ -41,6 +41,7 @@ const useStyles = createUseStyles({
         borderRadius: 4,
         padding: 15,
         boxSizing: 'border-box',
+        overflow: 'hidden',
     },
     rightWrapper: {
         display: 'block',

@@ -180,10 +180,8 @@ const EventDetailPanel = ({ eventId }: Props) => {
                 <WidthFixer>
                     {event && (
                         <Row>
-                            <Col md={9} className={games.length === 0 ? classes.hideUpToMd : undefined}>
-                                <WidthFixer>
-                                    <DetailGameList games={games} />
-                                </WidthFixer>
+                            <Col md={9} className={games.length === 0 ? 'd-none d-md-block' : undefined}>
+                                <DetailGameList games={games} />
                             </Col>
                             <Col md={3}>
                                 {editVisible && (

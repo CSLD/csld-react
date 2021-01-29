@@ -18,6 +18,7 @@ import { GameListPanel } from '../common/GameListPanel/GameListPanel'
 import { DetailListHeader } from '../common/DetailListHeader/DetailListHeader'
 import DetailGameList from '../common/DetailGameList/DetailGameList'
 import BigLoading from '../common/BigLoading/BigLoading'
+import { breakPoints } from '../../theme/breakPoints'
 
 export type UserProfileUser = Maybe<
     { __typename?: 'User' } & {
@@ -58,6 +59,12 @@ const useStyles = createUseStyles({
         fontSize: '0.75rem',
         margin: '15px 0 15px 15px',
     },
+    rightCol: {
+        marginTop: 20,
+    },
+    [`@media(min-width: ${breakPoints.md}px)`]: {
+        rightCol: { marginTop: 0 },
+    },
 })
 
 const UserProfilePanel = ({ userId, user, profileOnly }: Props) => {
@@ -84,6 +91,10 @@ const UserProfilePanel = ({ userId, user, profileOnly }: Props) => {
         }
     }, [userId])
 
+    const hasGames = (user?.authoredGames?.length ?? 0) > 0
+    const hasComments = (user?.commentsPaged?.comments?.length ?? 0) > 0
+    const hasCommentsOrGames = hasGames || hasComments
+
     return (
         <>
             <UserDetailPanel
@@ -107,18 +118,16 @@ const UserProfilePanel = ({ userId, user, profileOnly }: Props) => {
                 {!user && <BigLoading />}
                 <WidthFixer>
                     <Row>
-                        <Col md={9}>
-                            {user && (user.authoredGames?.length ?? 0) > 0 && (
-                                <DetailGameList games={user.authoredGames} />
-                            )}
-                            {user && (
+                        <Col md={9} className={hasCommentsOrGames ? undefined : 'd-none d-md-block'}>
+                            {user && hasGames && <DetailGameList games={user.authoredGames} />}
+                            {user && hasComments && (
                                 <UserPagedCommentsPanel
                                     userId={user.id}
                                     firstPage={user.commentsPaged as CommentsPaged}
                                 />
                             )}
                         </Col>
-                        <Col>
+                        <Col md={3} className={hasCommentsOrGames ? classes.rightCol : undefined}>
                             {playedGames && (
                                 <GameListPanel
                                     titleKey="UserDetail.gamesPlayed"

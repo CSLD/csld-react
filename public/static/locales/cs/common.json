@@ -177,12 +177,12 @@
 
   "UserDetail": {
     "player_0": "Hráč jednoho larpu",
-    "player_1": "Hráč {{count}} larpů",
-    "player_2": "Hráč {{count}} larpů",
+    "player_1": "Hráč {{count}} larpů",
+    "player_2": "Hráč {{count}} larpů",
     "author_0": ", tvůrce jednoho larpu",
-    "author_1": ", tvůrce {{count}} larpů",
-    "author_2": ", tvůrce {{count}} larpů",
-    "age": " / {{age}} let",
+    "author_1": ", tvůrce {{count}} larpů",
+    "author_2": ", tvůrce {{count}} larpů",
+    "age": " / {{age}} let",
     "profile": "Profil",
     "settings": "Nastavení",
     "changePassword": "Změna hesla",

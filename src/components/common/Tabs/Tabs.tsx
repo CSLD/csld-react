@@ -24,21 +24,25 @@ const useStyles = createUseStyles({
     },
     widthFixer: {
         display: 'flex',
+        minHeight: 49,
+        alignItems: 'stretch',
     },
     tab: {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        position: 'relative',
     },
     tabText: {
         fontSize: '0.9rem',
         fontWeight: 700,
-        padding: '14px 5px 7px',
+        padding: '10px 5px',
         margin: '0 10px',
         background: 'transparent',
         color: darkTheme.textDark,
         border: 0,
         cursor: 'pointer',
+        height: '100%',
     },
     tabTextHover: {
         '&:hover': {
@@ -48,7 +52,8 @@ const useStyles = createUseStyles({
     tabIcon: {
         fontSize: '1.75rem',
         color: darkTheme.backgroundWhite,
-        margin: '-17px 0 -18px',
+        position: 'absolute',
+        bottom: -17,
     },
 })
 
