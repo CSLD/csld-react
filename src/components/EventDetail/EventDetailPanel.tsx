@@ -22,6 +22,7 @@ import ConfirmationModal from '../common/ConfirmationModal/ConfirmationModal'
 import { canDelete, canEdit } from '../../utils/graphqlUtils'
 import { useShowToast } from '../../hooks/useShowToast'
 import { sanitizeHtml } from '../../utils/sanitizeHtml'
+import { breakPoints } from '../../theme/breakPoints'
 
 const loadEventGql = require('./graphql/loadEvent.graphql')
 const deleteEventGql = require('./graphql/deleteEvent.graphql')
@@ -66,6 +67,14 @@ const useStyles = createUseStyles({
 
         '&:hover': {
             color: darkTheme.text,
+        },
+    },
+    hideUpToMd: {
+        display: 'none',
+    },
+    [`@media(min-width: ${breakPoints.md}px)`]: {
+        hideUpToMd: {
+            display: 'initial',
         },
     },
 })
@@ -171,7 +180,7 @@ const EventDetailPanel = ({ eventId }: Props) => {
                 <WidthFixer>
                     {event && (
                         <Row>
-                            <Col md={9}>
+                            <Col md={9} className={games.length === 0 ? classes.hideUpToMd : undefined}>
                                 <WidthFixer>
                                     <DetailGameList games={games} />
                                 </WidthFixer>

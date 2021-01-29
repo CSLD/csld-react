@@ -9,7 +9,7 @@ export const formSectionHeaderStyles: Styles<'header'> = {
         color: darkTheme.textOnLight,
         borderBottom: '1px solid rgba(0,0,0,.1)',
         padding: '8px 8px 8px 18px',
-        margin: '0 0 12px -18px',
+        margin: '0 -15px 12px -18px',
     },
 }
 
@@ -31,11 +31,14 @@ export const formClasses: Styles<string> = {
     },
     ...formSectionHeaderStyles,
     headerRight: {
-        margin: '0 0 12px -18px',
+        margin: '0 -15px 12px -18px',
     },
     [`@media(min-width: ${breakPoints.md}px)`]: {
+        header: {
+            margin: '0 0 12px -18px',
+        },
         headerRight: {
-            margin: '0 -18px 12px -18px',
+            margin: '0 -15px 12px -18px',
         },
     },
     subHeader: {

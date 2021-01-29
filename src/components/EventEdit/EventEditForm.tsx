@@ -155,7 +155,7 @@ const EventEditForm = ({
                                 <SubmitButton submitting={loading}>{t('EventEdit.save')}</SubmitButton>
                                 {submitFailed && <span className={classes.formError}>{t('EventEdit.formError')}</span>}
                             </Col>
-                            <Col md={3}>
+                            <Col md={3} className={classes.labelsCol}>
                                 <LabelsEditColumn
                                     authorizedRequiredLabels={authorizedRequiredLabels}
                                     authorizedOptionalLabels={authorizedOptionalLabels}
