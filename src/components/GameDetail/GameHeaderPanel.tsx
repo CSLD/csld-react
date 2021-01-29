@@ -37,7 +37,7 @@ const useStyles = createUseStyles({
     header: {
         fontSize: '1.75rem',
         color: darkTheme.textGreen,
-        margin: '5px 0 15px',
+        marginBottom: 15,
         fontWeight: 'bold',
     },
     headerPlaceholder: {
