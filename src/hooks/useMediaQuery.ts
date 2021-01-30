@@ -20,12 +20,11 @@ export const useMediaQuery = (mediaQuery: string) => {
 
         // Start listening
         const listener = (e: MediaQueryListEvent) => {
-            console.log({ newMatches: e.matches })
             setMatches(e.matches)
         }
         matcher.addEventListener('change', listener)
 
-        // return () => matcher.removeEventListener('change', listener)
+        return () => matcher.removeEventListener('change', listener)
     }, [mediaQuery, setMatches])
 
     return matches
