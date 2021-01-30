@@ -51,6 +51,8 @@ const useStyles = createUseStyles({
         color: darkTheme.textLighter,
         fontSize: '0.75rem',
         lineHeight: '150%',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
     },
     factPlaceholder: {
         background: darkTheme.textLighter,
@@ -68,6 +70,12 @@ const useStyles = createUseStyles({
         color: darkTheme.textLighter,
         fontSize: '0.75rem',
         lineHeight: '140%',
+        overflow: 'hidden',
+
+        '& p': {
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+        },
     },
     descriptionPlaceholder: {
         background: darkTheme.textLighter,
