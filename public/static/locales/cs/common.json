@@ -160,7 +160,7 @@
   "FormFileInput": {
     "defaultLabel": "Vybrat...",
     "defaultPlaceholder": "Soubor není vybraný",
-    "fileTooBig": "Soubor je příliš velký"
+    "fileTooBig": "Soubor je příliš velký, limit je {{limit}}"
   },
 
   "ReCaptchaField": {

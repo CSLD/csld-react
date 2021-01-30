@@ -42,7 +42,9 @@ const FormFileInputField = ({
         meta,
     } = useField<string>(name)
 
-    const errorText = fileTooBigError ? t('FormFileInput.fileTooBig') : meta.error
+    const errorText = fileTooBigError
+        ? t('FormFileInput.fileTooBig', { limit: `${sizeLimit / 1000000} MB` })
+        : meta.error
     const showError = fileTooBigError || ((meta.touched || meta.modified) && meta.error)
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
