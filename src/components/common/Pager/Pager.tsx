@@ -3,12 +3,12 @@ import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
 import { darkTheme } from '../../../theme/darkTheme'
 import { generatePageOffsets } from './pagerUtils'
+import { useIsMdOrLarger } from '../../../hooks/useMediaQuery'
 
 interface Props {
     readonly currentOffset: number
     readonly totalAmount: number
     readonly pageSize: number
-    readonly maxPages?: number
     readonly onOffsetChanged: (newOffset: number) => void
 }
 
@@ -38,8 +38,10 @@ const useStyles = createUseStyles({
     },
 })
 
-const Pager = ({ currentOffset, totalAmount, pageSize, maxPages = 10, onOffsetChanged }: Props) => {
+const Pager = ({ currentOffset, totalAmount, pageSize, onOffsetChanged }: Props) => {
     const classes = useStyles()
+    const isMdOrLarger = useIsMdOrLarger()
+    const maxPages = isMdOrLarger ? 10 : 4
 
     const lastPageOffset = totalAmount - 1 - ((totalAmount - 1) % pageSize)
     const prevPageOffset = Math.max(currentOffset - pageSize, 0)
