@@ -1,7 +1,7 @@
 import React from 'react'
 import { useQuery } from '@apollo/client'
 import { Field } from 'react-final-form'
-import ReCAPTCHA from 'react-google-recaptcha'
+import ReCAPTCHA, { ReCAPTCHAProps } from 'react-google-recaptcha'
 import { useTranslation } from 'react-i18next'
 import { createUseStyles } from 'react-jss'
 import isInBrowser from 'is-in-browser'
@@ -14,6 +14,7 @@ const getConfigGql = require(`./graphql/getConfigQuery.graphql`)
 
 interface Props {
     readonly name: string
+    readonly size?: ReCAPTCHAProps['size']
 }
 
 const useStyles = createUseStyles({
@@ -27,7 +28,7 @@ const useStyles = createUseStyles({
     },
 })
 
-const ReCaptchaField = ({ name }: Props) => {
+const ReCaptchaField = ({ name, size }: Props) => {
     const { t } = useTranslation('common')
     const classes = useStyles()
 
@@ -50,7 +51,7 @@ const ReCaptchaField = ({ name }: Props) => {
 
                 return (
                     <div className={classes.wrapper}>
-                        {reCaptchaKey && <ReCAPTCHA sitekey={reCaptchaKey} onChange={handleChange} />}
+                        {reCaptchaKey && <ReCAPTCHA sitekey={reCaptchaKey} size={size} onChange={handleChange} />}
                         {error && <div className={classes.error}>{error}</div>}
                     </div>
                 )

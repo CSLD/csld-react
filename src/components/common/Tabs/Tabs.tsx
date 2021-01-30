@@ -26,6 +26,8 @@ const useStyles = createUseStyles({
         display: 'flex',
         minHeight: 49,
         alignItems: 'stretch',
+        overflowX: 'auto',
+        overflowY: 'hidden',
     },
     tab: {
         display: 'flex',

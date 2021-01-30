@@ -18,8 +18,9 @@ import { convertDateInput, convertFileInput } from '../../utils/graphqlUtils'
 import { useIsEmailAvailable } from '../../hooks/useIsEmailAvailable'
 import { useFocusInput } from '../../hooks/useFocusInput'
 import SubmitButton from '../common/SubmitButton/SubmitButton'
+import { useIsMdOrLarger } from '../../hooks/useMediaQuery'
 
-const createUserlGql = require(`./graphql/createUserMutation.graphql`)
+const createUserGql = require(`./graphql/createUserMutation.graphql`)
 
 const useStyles = createUseStyles({
     rowFixer: {
@@ -68,7 +69,10 @@ const SignUpPanel = () => {
     const formRef = useFocusInput<HTMLFormElement>('email')
     const [state, setState] = useState<TState>('idle')
     const { usedByUser, isEmailAvailable } = useIsEmailAvailable()
+    const isMdOrLarger = useIsMdOrLarger()
     const { href: recoverHref, as: recoverAs } = routes.recoverPasswordStart()
+
+    console.log({ isMdOrLarger })
 
     const onSubmit = async (data: FormData) => {
         setState('loading')
@@ -90,7 +94,7 @@ const SignUpPanel = () => {
         }
 
         const res = await client.mutate<CreateUserMutation, CreateUserMutationVariables>({
-            mutation: createUserlGql,
+            mutation: createUserGql,
             variables,
         })
 
@@ -129,7 +133,7 @@ const SignUpPanel = () => {
                                 }
                             />
                             <Row className={classes.rowFixer}>
-                                <Col>
+                                <Col md={6}>
                                     <FormTextInputField
                                         name="password"
                                         type="password"
@@ -138,7 +142,7 @@ const SignUpPanel = () => {
                                         validate={fieldValidator(t, validateRequired)}
                                     />
                                 </Col>
-                                <Col>
+                                <Col md={6}>
                                     <FormTextInputField
                                         name="passwordAgain"
                                         type="password"
@@ -156,7 +160,7 @@ const SignUpPanel = () => {
                                 hint={t('SignUp.profilePictureHint')}
                             />
                             <Row>
-                                <Col>
+                                <Col md={6}>
                                     <FormTextInputField
                                         name="name"
                                         placeholder={t('UserFields.name')}
@@ -164,7 +168,7 @@ const SignUpPanel = () => {
                                         validate={fieldValidator(t, validateRequired)}
                                     />
                                 </Col>
-                                <Col>
+                                <Col md={6}>
                                     <FormTextInputField
                                         name="nickname"
                                         placeholder={t('UserFields.nickName')}
@@ -173,14 +177,14 @@ const SignUpPanel = () => {
                                 </Col>
                             </Row>
                             <Row>
-                                <Col>
+                                <Col md={6}>
                                     <FormTextInputField
                                         name="city"
                                         placeholder={t('UserFields.city')}
                                         hint={t('UserFields.cityHint')}
                                     />
                                 </Col>
-                                <Col>
+                                <Col md={6}>
                                     <FormTextInputField
                                         name="birthDate"
                                         placeholder={t('UserFields.birthDate')}
@@ -189,7 +193,9 @@ const SignUpPanel = () => {
                                     />
                                 </Col>
                             </Row>
-                            <ReCaptchaField name="recaptcha" />
+                            {/* ReCaptcha cannot change width when active, so we have to recreate it when size changes */}
+                            {isMdOrLarger === true && <ReCaptchaField name="recaptcha" />}
+                            {isMdOrLarger === false && <ReCaptchaField name="recaptcha" size="compact" />}
                             <SubmitButton submitting={state === 'loading'} disabled={!!usedByUser}>
                                 {t('SignUp.submit')}
                             </SubmitButton>
