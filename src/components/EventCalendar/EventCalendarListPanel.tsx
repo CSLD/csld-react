@@ -20,10 +20,11 @@ import { WidthFixer } from '../common/WidthFixer/WidthFixer'
 import Pager from '../common/Pager/Pager'
 import LabelFilterFields from '../common/LabelFilterFields/LabelFilterFields'
 import CalendarEventPanel from './CalendarEventPanel'
-import { formSectionHeaderStyles } from '../../utils/formClasses'
+import { formSectionHeaderStyles, formSectionHeaderStylesMd } from '../../utils/formClasses'
 import BigLoading from '../common/BigLoading/BigLoading'
 import FormDateInputField from '../common/form/FormDateInputField'
 import { formatISODate } from '../../utils/dateUtils'
+import { breakPoints } from '../../theme/breakPoints'
 
 const loadCalendarEventsGql = require('./graphql/loadCalendarEvents.graphql')
 const moreCalendarEventsGql = require('./graphql/moreCalendarEvents.graphql')
@@ -49,6 +50,16 @@ const useStyles = createUseStyles({
         opacity: 0.5,
     },
     ...formSectionHeaderStyles,
+    labelsCol: {
+        padding: '0 15px',
+    },
+    [`@media(min-width: ${breakPoints.md}px)`]: formSectionHeaderStylesMd,
+    [`@media(max-width: ${breakPoints.md - 1}px)`]: {
+        labelsCol: {
+            padding: '0 30px',
+            marginTop: 16,
+        },
+    },
 })
 
 const PAGE_SIZE = 25
@@ -173,7 +184,7 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
                                                 onOffsetChanged={handleOffsetChanged}
                                             />
                                         </Col>
-                                        <Col md={3}>
+                                        <Col md={3} className={classes.labelsCol}>
                                             <header className={classes.header}>{t('EventCalendar.eventFrom')}</header>
                                             <FormDateInputField
                                                 name="from"

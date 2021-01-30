@@ -6,6 +6,7 @@ import { CalendarEventDataFragment } from '../../graphql/__generated__/typescrip
 import { darkTheme } from '../../theme/darkTheme'
 import EventLink from '../common/EventLink/EventLink'
 import { formatTimeRange } from '../../utils/dateUtils'
+import { breakPoints } from '../../theme/breakPoints'
 
 interface Props {
     readonly event: CalendarEventDataFragment
@@ -20,15 +21,18 @@ const useStyles = createUseStyles({
         backgroundColor: darkTheme.backgroundRealWhite,
         fontSize: '0.75rem',
         borderRadius: 5,
+        flexWrap: 'wrap',
     },
     fact: {
-        flexBasis: 150,
+        flexBasis: '100%',
         margin: '0 8px',
         flex: 0,
+        whiteSpace: 'nowrap',
     },
     text: {
         margin: '0 8px',
         flex: 1,
+        flexBasis: '100%',
     },
     name: {
         fontSize: '1rem',
@@ -38,6 +42,32 @@ const useStyles = createUseStyles({
 
         '&:hover': {
             color: darkTheme.text,
+        },
+    },
+    dates: {
+        padding: '12px 0',
+    },
+    [`@media(min-width: ${breakPoints.md}px)`]: {
+        wrapper: {
+            flexWrapper: 'nowrap',
+        },
+        text: {
+            flexBasis: 0,
+        },
+        fact: {
+            flexBasis: 60,
+        },
+        dates: {
+            padding: 0,
+            flexBasis: 120,
+        },
+    },
+    [`@media(min-width: ${breakPoints.lg}px)`]: {
+        fact: {
+            flexBasis: 120,
+        },
+        text: {
+            flexBasis: 0,
         },
     },
 })
@@ -56,7 +86,7 @@ const CalendarEventPanel = ({ event }: Props) => {
                 <br />
                 {event.labels?.map(label => label.name).join(', ')}
             </div>
-            <div className={classes.fact}>
+            <div className={classNames(classes.fact, classes.dates)}>
                 {!justOneDate && `${t('EventCalendar.eventFrom')}: `}
                 {fromFormatted}
                 {!justOneDate && (

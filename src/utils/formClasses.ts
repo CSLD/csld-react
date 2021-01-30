@@ -2,13 +2,25 @@ import { Styles } from 'react-jss'
 import { darkTheme } from '../theme/darkTheme'
 import { breakPoints } from '../theme/breakPoints'
 
-export const formSectionHeaderStyles: Styles<'header'> = {
+export const formSectionHeaderStyles: Styles<'header' | 'headerRight'> = {
     header: {
         backgroundColor: darkTheme.backgroundRealWhite,
         fontSize: '1.25rem',
         color: darkTheme.textOnLight,
         borderBottom: '1px solid rgba(0,0,0,.1)',
         padding: '8px 8px 8px 18px',
+        margin: '0 -15px 12px -18px',
+    },
+    headerRight: {
+        margin: '0 -15px 12px -18px',
+    },
+}
+
+export const formSectionHeaderStylesMd: Styles<'header' | 'headerRight'> = {
+    header: {
+        margin: '0 0 12px -18px',
+    },
+    headerRight: {
         margin: '0 -15px 12px -18px',
     },
 }
@@ -30,17 +42,7 @@ export const formClasses: Styles<string> = {
         fontSize: '0.75rem',
     },
     ...formSectionHeaderStyles,
-    headerRight: {
-        margin: '0 -15px 12px -18px',
-    },
-    [`@media(min-width: ${breakPoints.md}px)`]: {
-        header: {
-            margin: '0 0 12px -18px',
-        },
-        headerRight: {
-            margin: '0 -15px 12px -18px',
-        },
-    },
+    [`@media(min-width: ${breakPoints.md}px)`]: formSectionHeaderStylesMd,
     subHeader: {
         color: darkTheme.textOnLight,
         borderBottom: '1px solid rgba(0,0,0,.1)',
