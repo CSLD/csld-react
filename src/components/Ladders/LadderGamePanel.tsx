@@ -5,6 +5,7 @@ import { LadderGameDataFragment } from 'src/graphql/__generated__/typescript-ope
 import { GameRatingBox } from '../common/GameRatingBox/GameRatingBox'
 import { GameLink } from '../common/GameLink/GameLink'
 import { IconNumComments, IconNumRatings } from '../common/Icons/Icons'
+import { breakPoints } from '../../theme/breakPoints'
 
 interface Props {
     readonly game: LadderGameDataFragment
@@ -19,24 +20,31 @@ const useStyles = createUseStyles({
         backgroundColor: darkTheme.backgroundRealWhite,
         fontSize: '0.75rem',
         borderRadius: 5,
+        flexWrap: 'wrap',
+        justifyContent: 'center',
     },
     fact: {
-        flexBasis: 80,
+        flexBasis: 50,
         margin: '0 8px',
         flex: 0,
+        order: 3,
     },
     text: {
-        margin: '0 8px',
+        flexBasis: '100%',
+        margin: '0 8px 8px',
         flex: 1,
+        textAlign: 'center',
+        order: 1,
     },
     ratingBox: {
-        flexBasis: 145,
-        margin: '0 8px',
+        flexBasis: '100%',
+        margin: '0 8px 12px',
         flex: 0,
+        order: 2,
     },
     link: {
         fontSize: '1rem',
-        color: darkTheme.textGreen,
+        color: darkTheme.textGreenDark,
 
         '&:hover': {
             color: darkTheme.text,
@@ -45,6 +53,30 @@ const useStyles = createUseStyles({
     icon: {
         color: darkTheme.textGreen,
         marginLeft: 4,
+    },
+    [`@media(min-width: ${breakPoints.md}px)`]: {
+        wrapper: {
+            flexWrap: 'nowrap',
+        },
+        ratingBox: {
+            flexBasis: 90,
+            order: 1,
+            margin: '0 8px',
+        },
+        text: {
+            margin: '0 8px',
+            flexBasis: 0,
+            textAlign: 'left',
+            order: 2,
+        },
+    },
+    [`@media(min-width: ${breakPoints.lg}px)`]: {
+        ratingBox: {
+            flexBasis: 145,
+        },
+        fact: {
+            flexBasis: 80,
+        },
     },
 })
 

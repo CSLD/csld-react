@@ -22,6 +22,7 @@ import Pager from '../common/Pager/Pager'
 import { useRoutes } from '../../hooks/useRoutes'
 import { LabelFromGql } from '../common/LabelsEditColumn/LabelsEditColumn'
 import BigLoading from '../common/BigLoading/BigLoading'
+import { breakPoints } from '../../theme/breakPoints'
 
 const ladderInitialGames = require('./graphql/ladderInitialGames.graphql')
 const ladderMoreGames = require('./graphql/ladderMoreGames.graphql')
@@ -42,10 +43,21 @@ const useStyles = createUseStyles({
         backgroundColor: darkTheme.backgroundWhite,
     },
     widthFixer: {
-        padding: '20px 0',
+        paddingTop: 20,
+        paddingBottom: 20,
     },
     loading: {
         opacity: 0.5,
+    },
+    labelsCol: {
+        padding: '0 15px',
+    },
+    [`@media(max-width: ${breakPoints.md - 1}px)`]: {
+        labelsCol: {
+            padding: '0 30px',
+            marginTop: 16,
+            marginBottom: 16,
+        },
     },
 })
 
@@ -178,7 +190,7 @@ const LadderPanel = ({ ladderType, initialRequiredLabelIds, initialOptionalLabel
                                                 onOffsetChanged={handleOffsetChanged}
                                             />
                                         </Col>
-                                        <Col md={3}>
+                                        <Col md={3} className={classes.labelsCol}>
                                             <LabelFilterFields
                                                 requiredLabelList={requiredLabels}
                                                 optionalLabelList={optionalLabels}
