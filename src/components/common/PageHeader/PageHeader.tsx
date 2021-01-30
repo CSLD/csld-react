@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import Link from 'next/link'
 import classNames from 'classnames'
 import { Button } from 'react-bootstrap'
+import { Router } from 'next/router'
 import { HeaderNavLink } from './HeaderNavLink'
 import { darkTheme } from '../../../theme/darkTheme'
 import { WidthFixer } from '../WidthFixer/WidthFixer'
@@ -148,6 +149,17 @@ export const PageHeader = () => {
     const { t } = useTranslation('common')
     const routes = useRoutes()
     const [showMenu, setShowMenu] = useState(false)
+
+    // Hide menu on page change
+    useEffect(() => {
+        const hideMenu = () => setShowMenu(false)
+
+        Router.events.on('routeChangeComplete', hideMenu)
+
+        return () => {
+            Router.events.off('routeChangeComplete', hideMenu)
+        }
+    }, [setShowMenu])
 
     // Set document title
     useEffect(() => {

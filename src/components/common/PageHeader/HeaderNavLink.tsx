@@ -25,7 +25,6 @@ export const headerLinkStyle = {
 
     '&:hover': {
         color: darkTheme.textGreen,
-        textDecoration: 'underline',
     },
 }
 

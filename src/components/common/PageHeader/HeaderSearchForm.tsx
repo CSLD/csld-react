@@ -61,7 +61,8 @@ const useStyles = createUseStyles({
     results: {
         position: 'absolute',
         left: 0,
-        width: 250,
+        minWidth: 250,
+        width: '100%',
         top: 28,
         zIndex: 1001,
         padding: 7,
