@@ -32,3 +32,5 @@ export const useMediaQuery = (mediaQuery: string) => {
 }
 
 export const useIsMdOrLarger = () => useMediaQuery(`(min-width: ${breakPoints.md}px)`)
+
+export const useIsLgOrLarger = () => useMediaQuery(`(min-width: ${breakPoints.lg}px)`)

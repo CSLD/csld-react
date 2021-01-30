@@ -6,6 +6,7 @@ import { BaseCommentData, BaseCommentPanel } from './BaseCommentPanel'
 import { darkTheme } from '../../theme/darkTheme'
 import { WidthFixer } from '../common/WidthFixer/WidthFixer'
 import { toChunks } from '../../utils/chunkUtils'
+import { useIsLgOrLarger } from '../../hooks/useMediaQuery'
 
 interface Props {
     readonly comments: (BaseCommentData | undefined)[]
@@ -68,14 +69,17 @@ const useStyles = createUseStyles({
 export const HomePageCommentsPanel = ({ comments, expanded, onToggleExpanded }: Props) => {
     const classes = useStyles()
     const { t } = useTranslation('common')
+    const isLgOrLarger = useIsLgOrLarger()
 
     const numInColumn = expanded ? HPC_ROWS_EXPANDED : HPC_ROWS_NORMAL
     const commentsInColumns = toChunks(comments, numInColumn)
 
+    const height = 190 * (isLgOrLarger ? numInColumn : comments.length)
+
     return (
         <WidthFixer className={classes.outerWrapper}>
             <div className={classes.commentsTitle}>{t('HomePage.recentComments')}</div>
-            <Row className={classes.commentsWrapper}>
+            <Row className={classes.commentsWrapper} style={{ height }}>
                 {commentsInColumns.map((column, n) => (
                     // eslint-disable-next-line react/no-array-index-key
                     <Col lg={4} className={classes.commentsColumn} key={`col_${n}`}>
