@@ -22,6 +22,7 @@ import UserLink from '../common/UserLink/UserLink'
 import { useFocusInput } from '../../hooks/useFocusInput'
 import ConfirmationModal from '../common/ConfirmationModal/ConfirmationModal'
 import AdminTabs from './AdminTabs'
+import { breakPoints } from '../../theme/breakPoints'
 
 const loadAllUsersGql = require('./graphql/loadAllUsers.graphql')
 const updateUserRoleGql = require('./graphql/updateUserRole.graphql')
@@ -43,33 +44,37 @@ const useStyles = createUseStyles({
         display: 'flex',
         alignItems: 'center',
         margin: '0 0 20px',
-        padding: '10px 20px',
+        padding: 10,
+        flexWrap: 'wrap',
     },
     checkBox: {
         flexShrink: 0,
-        marginLeft: 20,
+        paddingTop: 10,
+        flexBasis: '100%',
     },
     userRow: {
         backgroundColor: darkTheme.backgroundRealWhite,
         display: 'flex',
         alignItems: 'center',
         margin: '4px 0',
-        padding: '4px 20px',
+        padding: 10,
+        flexWrap: 'wrap',
+        width: '100%',
     },
     moreUsersRow: {
         margin: '20px 0 0',
         textAlign: 'center',
     },
     nick: {
-        width: 200,
+        flexBasis: '100%',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
     },
     name: {
-        width: 400,
+        flexBasis: '100%',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
-        margin: '0 10px',
+        margin: '10px 0',
     },
     dropDown: {
         minWidth: 70,
@@ -81,6 +86,29 @@ const useStyles = createUseStyles({
     },
     controls: {
         display: 'flex',
+    },
+    [`@media(min-width: ${breakPoints.md}px)`]: {
+        formRow: {
+            flexWrap: 'nowrap',
+        },
+        checkBox: {
+            paddingTop: 0,
+            marginLeft: 20,
+            flexBasis: 'unset',
+        },
+    },
+    [`@media(min-width: ${breakPoints.lg}px)`]: {
+        userRow: {
+            flexWrap: 'nowrap',
+            margin: '0 10px',
+            padding: '4px 20px',
+        },
+        nick: {
+            flexBasis: 200,
+        },
+        name: {
+            flexBasis: 400,
+        },
     },
 })
 

@@ -22,6 +22,9 @@ const useStyles = createUseStyles({
         width: 'auto',
         margin: '0 auto',
     },
+    head: {
+        wordBreak: 'break-word',
+    },
 })
 
 const AdminStatsPanel = () => {
@@ -48,7 +51,7 @@ const AdminStatsPanel = () => {
                     <WidthFixer>
                         <Table striped bordered size="sm" className={classes.table}>
                             <thead>
-                                <tr>
+                                <tr className={classes.head}>
                                     <th>{t('AdminRatingStats.month')}</th>
                                     <th>{t('AdminRatingStats.numRatings')}</th>
                                     <th>{t('AdminRatingStats.averageRating')}</th>
@@ -57,9 +60,9 @@ const AdminStatsPanel = () => {
                             </thead>
                             <tbody>
                                 {sortedStats.map(fact => (
-                                    <tr>
+                                    <tr key={fact.id}>
                                         <td>
-                                            {fact.year} / {fact.month < 10 ? `0${fact.month}` : fact.month}
+                                            {fact.year}&nbsp;/&nbsp;{fact.month < 10 ? `0${fact.month}` : fact.month}
                                         </td>
                                         <td>{fact.numRatings ?? 0}</td>
                                         <td>{fact.averageRating?.toFixed(2)}</td>

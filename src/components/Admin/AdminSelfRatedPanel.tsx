@@ -63,7 +63,7 @@ const AdminSelfRatedPanel = () => {
                 {!isLoading && (
                     <WidthFixer>
                         {selfRated.map(entry => (
-                            <div className={classes.userRow}>
+                            <div key={`${entry.game.id}:${entry.user.id}`} className={classes.userRow}>
                                 <div className={classes.email}>{entry.user.email}</div>
                                 <div className={classes.nick}>{entry.user.nickname}</div>
                                 <div className={classes.name}>

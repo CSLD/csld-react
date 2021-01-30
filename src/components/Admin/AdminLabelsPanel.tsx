@@ -24,6 +24,7 @@ import BigLoading from '../common/BigLoading/BigLoading'
 import { IconEdit, IconTrash } from '../common/Icons/Icons'
 import LabelEditModal from '../common/LabelEditmodal/LabelEditModal'
 import ConfirmationModal from '../common/ConfirmationModal/ConfirmationModal'
+import { breakPoints } from '../../theme/breakPoints'
 
 const loadAllLabelsGql = require('./graphql/loadAllLabels.graphql')
 const setLabelRequiredGql = require('./graphql/setLabelRequired.graphql')
@@ -43,25 +44,51 @@ const useStyles = createUseStyles({
         alignItems: 'center',
         margin: '4px 0',
         padding: '4px 20px',
+        flexDirection: 'column',
     },
     loading: {
         opacity: 0.5,
     },
     name: {
-        width: 200,
+        flexBasis: '100%',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         flexShrink: 0,
+        fontSize: '1.75rem',
     },
     description: {
         flexGrow: 1,
-        margin: '0 8px',
+        flexBasis: '100%',
+        margin: '4px 8px 10px',
     },
     controls: {
         flexShrink: 0,
+        paddingBottom: 10,
+        zoom: 0.75,
     },
     buttonSpace: {
         marginLeft: 4,
+    },
+    [`@media(min-width: ${breakPoints.sm}px)`]: {
+        controls: {
+            zoom: 1,
+        },
+    },
+    [`@media(min-width: ${breakPoints.lg}px)`]: {
+        name: {
+            fontSize: '1rem',
+            flexBasis: 200,
+        },
+        labelRow: {
+            flexDirection: 'row',
+        },
+        description: {
+            flexBasis: 0,
+            margin: '0 8px',
+        },
+        controls: {
+            paddingBottom: 0,
+        },
     },
 })
 
