@@ -52,15 +52,16 @@ const useStyles = createUseStyles({
         alignItems: 'center',
     },
     linksPart: {
-        order: 6,
+        order: 8,
         flexBasis: '100%',
         flexDirection: 'column',
         alignItems: 'flex-start',
         borderTop: `1px solid ${darkTheme.textOnLight}`,
+        marginBottom: 8,
     },
     userPart: {
         order: 7,
-        margin: '10px 0 5px',
+        margin: '0 0 5px',
         flexBasis: '100%',
         flexDirection: 'column',
         alignItems: 'flex-start',
