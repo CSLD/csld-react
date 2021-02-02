@@ -45,28 +45,36 @@ const onProxyRes = (proxyRes: any) => {
     }
 }
 
-const proxy: { [key: string]: {} } = {
+const proxy = ({
+    API_URL,
+    API_PATH,
+    USER_ICON_PATH,
+    GAME_IMAGE_PATH,
+    ICAL_PATH,
+}: {
+    [key: string]: string | undefined
+}): { [key: string]: {} } => ({
     '/graphql': {
-        target: process.env.API_URL,
-        pathRewrite: { '^/graphql': process.env.API_PATH },
+        target: API_URL,
+        pathRewrite: { '^/graphql': API_PATH },
         changeOrigin: true,
         onProxyRes,
     },
     '/user-icon': {
-        target: process.env.API_URL,
-        pathRewrite: { '^/user-icon': process.env.USER_ICON_PATH },
+        target: API_URL,
+        pathRewrite: { '^/user-icon': USER_ICON_PATH },
         changeOrigin: true,
     },
     '/game-image': {
-        target: process.env.API_URL,
-        pathRewrite: { '^/game-image': process.env.GAME_IMAGE_PATH },
+        target: API_URL,
+        pathRewrite: { '^/game-image': GAME_IMAGE_PATH },
         changeOrigin: true,
     },
     '/ical': {
-        target: process.env.API_URL,
-        pathRewrite: { '^/ical': process.env.ICAL_PATH },
+        target: API_URL,
+        pathRewrite: { '^/ical': ICAL_PATH },
         changeOrigin: true,
     },
-}
+})
 
 export default proxy

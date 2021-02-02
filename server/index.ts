@@ -7,10 +7,13 @@ import nextI18next from './i18n'
 import routes from './routes'
 import proxy from './proxy'
 
-require('dotenv').config()
+const dev = process.env.NODE_ENV !== 'production'
+
+require('dotenv').config({
+    path: dev ? '.env.dev' : '.env.prod',
+})
 
 const port = parseInt(process.env.PORT || '3000', 10)
-const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
 const handler = routes.getRequestHandler(app)
 
@@ -24,8 +27,9 @@ app.prepare().then(() => {
     if (process.env.PROXY_MODE === 'local') {
         // eslint-disable-next-line global-require
         const proxyMiddleware = require('http-proxy-middleware')
-        Object.keys(proxy).forEach(context => {
-            server.use(proxyMiddleware(context, proxy[context]))
+        const proxyConfig = proxy(process.env)
+        Object.keys(proxyConfig).forEach(context => {
+            server.use(proxyMiddleware(context, proxyConfig[context]))
         })
     }
 
