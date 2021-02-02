@@ -62,6 +62,11 @@ const proxy: { [key: string]: {} } = {
         pathRewrite: { '^/game-image': process.env.GAME_IMAGE_PATH },
         changeOrigin: true,
     },
+    '/ical': {
+        target: process.env.API_URL,
+        pathRewrite: { '^/ical': process.env.GAME_IMAGE_PATH },
+        changeOrigin: true,
+    },
 }
 
 export default proxy
