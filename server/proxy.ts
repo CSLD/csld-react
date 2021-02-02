@@ -64,7 +64,7 @@ const proxy: { [key: string]: {} } = {
     },
     '/ical': {
         target: process.env.API_URL,
-        pathRewrite: { '^/ical': process.env.GAME_IMAGE_PATH },
+        pathRewrite: { '^/ical': process.env.ICAL_PATH },
         changeOrigin: true,
     },
 }
