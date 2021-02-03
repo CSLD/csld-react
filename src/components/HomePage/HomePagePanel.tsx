@@ -127,9 +127,6 @@ export const HomePagePanel = () => {
                 <meta property="og:image" content="/images/favicon.png" />
             </Head>
             <div className={classes.gamesAndEvents}>
-                <Head>
-                    <title>Test</title>
-                </Head>
                 <WidthFixer>
                     <Row>
                         <HomePageGamesPanel lastGames={lastAddedGames} topGames={topGames} />
