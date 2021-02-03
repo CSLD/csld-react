@@ -2,6 +2,8 @@ import React, { useContext, useMemo, useRef, useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import { useQuery } from '@apollo/client'
 import { Row } from 'react-bootstrap'
+import Head from 'next/head'
+import { useTranslation } from 'react-i18next'
 import { darkTheme } from '../../theme/darkTheme'
 import { WidthFixer } from '../common/WidthFixer/WidthFixer'
 import { HomePageGamesPanel } from './HomePageGamesPanel'
@@ -81,6 +83,7 @@ const tabs: Array<TabDefinition<'recent'>> = [
 
 export const HomePagePanel = () => {
     const classes = useStyles()
+    const { t } = useTranslation('common')
     const [expanded, setExpanded] = useState(false)
     const isFirstRender = useContext(FirstRenderContext)
     const isFirstRenderRef = useRef<boolean>(isFirstRender) // Freeze value on our first render
@@ -118,7 +121,15 @@ export const HomePagePanel = () => {
 
     return (
         <>
+            <Head>
+                <meta property="og:title" content={t('HomePage.pageTitle')} />
+                <meta property="og:description" content={t('HomePage.pageDescription')} />
+                <meta property="og:image" content="/images/favicon.png" />
+            </Head>
             <div className={classes.gamesAndEvents}>
+                <Head>
+                    <title>Test</title>
+                </Head>
                 <WidthFixer>
                     <Row>
                         <HomePageGamesPanel lastGames={lastAddedGames} topGames={topGames} />

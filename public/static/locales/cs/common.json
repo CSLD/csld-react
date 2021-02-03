@@ -27,6 +27,8 @@
   },
 
   "HomePage": {
+    "pageTitle": "Larpová databáze",
+    "pageDescription": "Larpy, larpový kalendář",
     "lastAddedGames": "Naposledy přidáno",
     "bestGames": "Nejoblíbenější",
     "recent": "Nedávné",
