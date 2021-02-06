@@ -436,5 +436,11 @@
     "example1": "Dotaz <b>he whe</b> najde <b><u>He</u>ll on <u>Whe</u>els</b>.",
     "example2": "Dotaz <b>na so</b> najde <b><u>Ná</u>rod <u>So</u>bě</b> a <b><u>Na</u>rutoLARP 2020: <u>So</u>umrak shinobi</b>.",
     "example3": "Dotaz <b>D L B</b> najde <b><u>D</u>e <u>l</u>a <u>B</u>ête</b>."
+  },
+
+  "Error": {
+    "notFound": "Omlouváme se, stránka neexistuje",
+    "otherError": "Omlouváme se, na stránce se vyskytla chyba (kód {{statusCode}})",
+    "toHomepage": "Na domovskou stránku"
   }
 }

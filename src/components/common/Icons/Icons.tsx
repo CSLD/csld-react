@@ -19,6 +19,7 @@ import {
     faComments,
     faTimesCircle,
     faBan,
+    faExclamationTriangle,
     faBars,
 } from '@fortawesome/free-solid-svg-icons'
 import { faFacebook } from '@fortawesome/free-brands-svg-icons'
@@ -72,3 +73,5 @@ export const IconClose = (props: IconProps) => <FontAwesomeIcon icon={faTimesCir
 export const IconDisabled = (props: IconProps) => <FontAwesomeIcon icon={faBan} {...props} />
 
 export const IconMenu = (props: IconProps) => <FontAwesomeIcon icon={faBars} {...props} />
+
+export const IconExclamationTriangle = (props: IconProps) => <FontAwesomeIcon icon={faExclamationTriangle} {...props} />
