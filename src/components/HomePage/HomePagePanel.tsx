@@ -81,11 +81,7 @@ const tabs: Array<TabDefinition<'recent'>> = [
     },
 ]
 
-interface Props {
-    readonly baseUrl?: string
-}
-
-export const HomePagePanel = ({ baseUrl }: Props) => {
+export const HomePagePanel = () => {
     const classes = useStyles()
     const { t } = useTranslation('common')
     const [expanded, setExpanded] = useState(false)
@@ -129,7 +125,7 @@ export const HomePagePanel = ({ baseUrl }: Props) => {
                 <title>{t('HomePage.pageTitle')}</title>
                 <meta property="og:title" content={t('HomePage.pageTitle')} />
                 <meta property="og:description" content={t('HomePage.pageDescription')} />
-                <meta property="og:image" content={`${baseUrl}/images/favicon.png`} />
+                <meta property="og:image" content={`${process.env.SELF_URL}/images/favicon.png`} />
             </Head>
             <div className={classes.gamesAndEvents}>
                 <WidthFixer>

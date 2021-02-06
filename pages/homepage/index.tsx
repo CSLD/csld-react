@@ -1,15 +1,12 @@
 import React from 'react'
 import { NextPage } from 'next'
 import { HomePagePanel } from '../../src/components/HomePage/HomePagePanel'
-import { getBaseUrl } from '../../src/utils/urlUtils'
 
-interface Props {
-    readonly baseUrl: string
-}
+interface Props {}
 interface InitialProps {}
 
-const HomePage: NextPage<Props, InitialProps> = ({ baseUrl }) => <HomePagePanel baseUrl={baseUrl} />
+const HomePage: NextPage<Props, InitialProps> = () => <HomePagePanel />
 
-HomePage.getInitialProps = async ({ req }) => ({ namespacesRequired: ['common'], baseUrl: getBaseUrl(req) })
+HomePage.getInitialProps = async () => ({ namespacesRequired: ['common'] })
 
 export default HomePage
