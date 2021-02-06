@@ -4,6 +4,7 @@ import { useQuery } from '@apollo/client'
 import { Row } from 'react-bootstrap'
 import Head from 'next/head'
 import { useTranslation } from 'react-i18next'
+import { baseUrl } from 'src/utils/urlUtils'
 import { darkTheme } from '../../theme/darkTheme'
 import { WidthFixer } from '../common/WidthFixer/WidthFixer'
 import { HomePageGamesPanel } from './HomePageGamesPanel'
@@ -125,7 +126,7 @@ export const HomePagePanel = () => {
                 <title>{t('HomePage.pageTitle')}</title>
                 <meta property="og:title" content={t('HomePage.pageTitle')} />
                 <meta property="og:description" content={t('HomePage.pageDescription')} />
-                <meta property="og:image" content={`${process.env.SELF_URL}/images/favicon.png`} />
+                <meta property="og:image" content={`${baseUrl()}/images/favicon.png`} />
             </Head>
             <div className={classes.gamesAndEvents}>
                 <WidthFixer>

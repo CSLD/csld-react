@@ -25,6 +25,7 @@ const nextConfig = {
         API_URL: process.env.API_URL,
         API_KEY: process.env.API_KEY,
         STATIC_PATH: process.env.STATIC_PATH,
+        SELF_URL: process.env.SELF_URL,
     },
 }
 
