@@ -126,7 +126,7 @@ export const HomePagePanel = () => {
                 <title>{t('HomePage.pageTitle')}</title>
                 <meta property="og:title" content={t('HomePage.pageTitle')} />
                 <meta property="og:description" content={t('HomePage.pageDescription')} />
-                <meta property="og:image" content={`${baseUrl()}/images/favicon.png`} />
+                <meta property="og:image" content={`${baseUrl()}/images/logo50.png`} />
             </Head>
             <div className={classes.gamesAndEvents}>
                 <WidthFixer>
