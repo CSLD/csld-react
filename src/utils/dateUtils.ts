@@ -1,4 +1,3 @@
-import { zonedTimeToUtc } from 'date-fns-tz'
 import { format } from 'date-fns'
 import { Maybe } from 'graphql/jsutils/Maybe'
 
@@ -7,7 +6,7 @@ export const parseDateTime = (isoString?: string | null) => {
         return undefined
     }
 
-    return zonedTimeToUtc(isoString, 'Europe/Prague')
+    return new Date(isoString)
 }
 
 export const hasTimePart = (date?: Date) => date && (date.getHours() !== 0 || date.getMinutes() !== 0)
