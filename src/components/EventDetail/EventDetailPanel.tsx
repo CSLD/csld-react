@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next'
 import { Col, Row } from 'react-bootstrap'
 import classNames from 'classnames'
 import isInBrowser from 'is-in-browser'
-import Head from 'next/head'
 import { darkTheme } from '../../theme/darkTheme'
 import {
     DeleteEventMutation,
@@ -25,6 +24,7 @@ import { useShowToast } from '../../hooks/useShowToast'
 import { sanitizeHtml } from '../../utils/sanitizeHtml'
 import { breakPoints } from '../../theme/breakPoints'
 import { htmlToText } from '../../utils/textUtils'
+import OpenGraphMeta from '../common/OpenGraphMeta/OpenGraphMeta'
 
 const loadEventGql = require('./graphql/loadEvent.graphql')
 const deleteEventGql = require('./graphql/deleteEvent.graphql')
@@ -134,11 +134,7 @@ const EventDetailPanel = ({ eventId }: Props) => {
     return (
         <>
             <div className={classes.headerWrapper}>
-                <Head>
-                    <title>{event?.name ?? ''}</title>
-                    <meta property="og:title" content={event?.name ?? ''} />
-                    <meta property="og:description" content={textDescription} />
-                </Head>
+                <OpenGraphMeta title={event?.name ?? ''} description={textDescription} />
                 <WidthFixer>
                     {event && (
                         <>

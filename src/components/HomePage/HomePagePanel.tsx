@@ -2,9 +2,7 @@ import React, { useContext, useMemo, useRef, useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import { useQuery } from '@apollo/client'
 import { Row } from 'react-bootstrap'
-import Head from 'next/head'
 import { useTranslation } from 'react-i18next'
-import { baseUrl } from 'src/utils/urlUtils'
 import { darkTheme } from '../../theme/darkTheme'
 import { WidthFixer } from '../common/WidthFixer/WidthFixer'
 import { HomePageGamesPanel } from './HomePageGamesPanel'
@@ -19,6 +17,7 @@ import {
 import { BaseCommentData } from './BaseCommentPanel'
 import { TabDefinition, Tabs } from '../common/Tabs/Tabs'
 import { FirstRenderContext } from '../../context/FirstRenderContext/FirstRenderContext'
+import OpenGraphMeta from '../common/OpenGraphMeta/OpenGraphMeta'
 
 const getHomePageDataQuery = require('./graphql/getHomePageData.graphql')
 const getMoreLastCommentsQuery = require('./graphql/getMoreLastComments.graphql')
@@ -122,12 +121,12 @@ export const HomePagePanel = () => {
 
     return (
         <>
-            <Head>
-                <title>{t('HomePage.pageTitle')}</title>
-                <meta property="og:title" content={t('HomePage.pageTitle')} />
-                <meta property="og:description" content={t('HomePage.pageDescription')} />
-                <meta property="og:image" content={`${baseUrl()}/images/logo50.png`} />
-            </Head>
+            <OpenGraphMeta
+                isHomepage
+                title={t('HomePage.pageTitle')}
+                description={t('HomePage.pageDescription')}
+                image="/images/logo200.png"
+            />
             <div className={classes.gamesAndEvents}>
                 <WidthFixer>
                     <Row>

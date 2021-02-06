@@ -3,7 +3,6 @@ import { useMutation, useQuery } from '@apollo/client'
 import { createUseStyles } from 'react-jss'
 import { useTranslation } from 'react-i18next'
 import { Row, Col } from 'react-bootstrap'
-import Head from 'next/head'
 import {
     CachedGameDataFragment,
     CommentsPaged,
@@ -30,7 +29,7 @@ import { canDelete, canEdit } from '../../utils/graphqlUtils'
 import { useShowToast } from '../../hooks/useShowToast'
 import { searchInputId } from '../common/PageHeader/HeaderSearchForm'
 import { htmlToText } from '../../utils/textUtils'
-import { baseUrl } from '../../utils/urlUtils'
+import OpenGraphMeta from '../common/OpenGraphMeta/OpenGraphMeta'
 
 const cachedGameDataGql = require('./graphql/cachedGameData.graphql')
 const gameDetailGql = require('./graphql/gameDetail.graphql')
@@ -194,12 +193,7 @@ export const GameDetailPanel = ({ gameId }: Props) => {
 
     return (
         <div className={classes.details}>
-            <Head>
-                <title>{game.name}</title>
-                <meta property="og:title" content={game.name ?? ''} />
-                <meta property="og:description" content={textDescription} />
-                {gameImageUrl && <meta property="og:image" content={`${baseUrl()}${gameImageUrl}`} />}
-            </Head>
+            <OpenGraphMeta title={game.name ?? ''} description={textDescription} image={gameImageUrl} />
             {gameImageUrl && <img className={classes.coverImage} alt="" src={gameImageUrl} />}
             <WidthFixer>
                 <Row className={classes.detailsRow}>
