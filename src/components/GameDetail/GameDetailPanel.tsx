@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
 import { createUseStyles } from 'react-jss'
 import { useTranslation } from 'react-i18next'
 import { Row, Col } from 'react-bootstrap'
+import Head from 'next/head'
 import {
     CachedGameDataFragment,
     CommentsPaged,
@@ -28,6 +29,8 @@ import { useRoutes } from '../../hooks/useRoutes'
 import { canDelete, canEdit } from '../../utils/graphqlUtils'
 import { useShowToast } from '../../hooks/useShowToast'
 import { searchInputId } from '../common/PageHeader/HeaderSearchForm'
+import { htmlToText } from '../../utils/textUtils'
+import { baseUrl } from '../../utils/urlUtils'
 
 const cachedGameDataGql = require('./graphql/cachedGameData.graphql')
 const gameDetailGql = require('./graphql/gameDetail.graphql')
@@ -84,6 +87,7 @@ const tabVideo: TabDefinition<TabTabs> = {
 
 const emptyGame = {
     name: '',
+    description: '',
     labels: [],
     authors: [],
     groupAuthor: [],
@@ -184,15 +188,19 @@ export const GameDetailPanel = ({ gameId }: Props) => {
     const editVisible = canEdit(game?.allowedActions)
     const deleteVisible = canDelete(game?.allowedActions)
 
+    const gameImageUrl = game.coverImage ? `/game-image/?id=${game.id}&imageId=${game.coverImage.id}` : undefined
+    const gameDescription = game.description
+    const textDescription = useMemo(() => htmlToText(gameDescription).substring(0, 300), [gameDescription])
+
     return (
         <div className={classes.details}>
-            {game.coverImage && (
-                <img
-                    className={classes.coverImage}
-                    alt=""
-                    src={`/game-image/?id=${game.id}&imageId=${game.coverImage.id}`}
-                />
-            )}
+            <Head>
+                <title>{game.name}</title>
+                <meta property="og:title" content={game.name ?? ''} />
+                <meta property="og:description" content={textDescription} />
+                {gameImageUrl && <meta property="og:image" content={`${baseUrl()}${gameImageUrl}`} />}
+            </Head>
+            {gameImageUrl && <img className={classes.coverImage} alt="" src={gameImageUrl} />}
             <WidthFixer>
                 <Row className={classes.detailsRow}>
                     <Col lg={8} md={6} className={classes.detailsColumn}>
