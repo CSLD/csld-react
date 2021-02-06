@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import { useMutation, useQuery } from '@apollo/client'
 import { useTranslation } from 'react-i18next'
 import { Col, Row } from 'react-bootstrap'
 import classNames from 'classnames'
 import isInBrowser from 'is-in-browser'
+import Head from 'next/head'
 import { darkTheme } from '../../theme/darkTheme'
 import {
     DeleteEventMutation,
@@ -23,6 +24,7 @@ import { canDelete, canEdit } from '../../utils/graphqlUtils'
 import { useShowToast } from '../../hooks/useShowToast'
 import { sanitizeHtml } from '../../utils/sanitizeHtml'
 import { breakPoints } from '../../theme/breakPoints'
+import { htmlToText } from '../../utils/textUtils'
 
 const loadEventGql = require('./graphql/loadEvent.graphql')
 const deleteEventGql = require('./graphql/deleteEvent.graphql')
@@ -127,9 +129,16 @@ const EventDetailPanel = ({ eventId }: Props) => {
         })
     }
 
+    const textDescription = useMemo(() => htmlToText(description).substring(0, 300), [description])
+
     return (
         <>
             <div className={classes.headerWrapper}>
+                <Head>
+                    <title>{event?.name ?? ''}</title>
+                    <meta property="og:title" content={event?.name ?? ''} />
+                    <meta property="og:description" content={textDescription} />
+                </Head>
                 <WidthFixer>
                     {event && (
                         <>
