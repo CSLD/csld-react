@@ -93,8 +93,8 @@ export const useRoutes = () => {
              * Route to event list
              */
             calendar: (initialRequiredLabelIds?: string[], initialOptionalLabelIds?: string[]): Route => ({
-                href: { pathname: '/calendar', query: { initialRequiredLabelIds, initialOptionalLabelIds } },
-                as: '/calendar',
+                href: { pathname: '/kalendar', query: { initialRequiredLabelIds, initialOptionalLabelIds } },
+                as: '/kalendar',
             }),
 
             /**
