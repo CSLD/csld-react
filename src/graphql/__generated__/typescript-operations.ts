@@ -935,7 +935,7 @@ export type Event = {
     loc?: Maybe<Scalars['String']>
     web?: Maybe<Scalars['String']>
     deleted?: Maybe<Scalars['Boolean']>
-    amountOfPlayers: Scalars['Int']
+    amountOfPlayers?: Maybe<Scalars['Int']>
     from?: Maybe<Scalars['String']>
     to?: Maybe<Scalars['String']>
     location?: Maybe<EventLocation>
@@ -1273,9 +1273,9 @@ export type CreateEventInput = {
     name: Scalars['String']
     fromDate: Scalars['String']
     toDate: Scalars['String']
-    amountOfPlayers: Scalars['Int']
+    amountOfPlayers?: Maybe<Scalars['Int']>
     web?: Maybe<Scalars['String']>
-    loc: Scalars['String']
+    loc?: Maybe<Scalars['String']>
     description?: Maybe<Scalars['String']>
     games: Array<Scalars['ID']>
     labels: Array<Scalars['ID']>
@@ -1289,9 +1289,9 @@ export type UpdateEventInput = {
     name: Scalars['String']
     fromDate: Scalars['String']
     toDate: Scalars['String']
-    amountOfPlayers: Scalars['Int']
+    amountOfPlayers?: Maybe<Scalars['Int']>
     web?: Maybe<Scalars['String']>
-    loc: Scalars['String']
+    loc?: Maybe<Scalars['String']>
     description?: Maybe<Scalars['String']>
     games: Array<Scalars['ID']>
     labels: Array<Scalars['ID']>

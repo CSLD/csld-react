@@ -137,14 +137,10 @@ const EventEditForm = ({
                                 <FormTextInputField
                                     name="amountOfPlayers"
                                     placeholder={t('EventEdit.amountOfPlayers')}
-                                    validate={fieldValidator(t, [validateRequired, validatePositiveInteger])}
+                                    validate={fieldValidator(t, validatePositiveInteger)}
                                 />
                                 <FormTextInputField name="web" placeholder={t('EventEdit.web')} />
-                                <FormTextInputField
-                                    name="loc"
-                                    placeholder={t('EventEdit.loc')}
-                                    validate={fieldValidator(t, validateRequired)}
-                                />
+                                <FormTextInputField name="loc" placeholder={t('EventEdit.loc')} />
                                 <FormRichTextInputField name="description" hint={t('EventEdit.description')} />
                                 <GamesAutoCompleteField
                                     name="games"
@@ -159,6 +155,7 @@ const EventEditForm = ({
                                 <LabelsEditColumn
                                     authorizedRequiredLabels={authorizedRequiredLabels}
                                     authorizedOptionalLabels={authorizedOptionalLabels}
+                                    allowNoRequiredLabel
                                 />
                             </Col>
                         </Row>

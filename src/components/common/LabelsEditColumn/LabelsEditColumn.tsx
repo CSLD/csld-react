@@ -14,11 +14,12 @@ export type LabelFromGql = Pick<Label, 'id' | 'name' | 'description'>
 interface Props {
     readonly authorizedOptionalLabels?: LabelFromGql[]
     readonly authorizedRequiredLabels?: LabelFromGql[]
+    readonly allowNoRequiredLabel?: boolean
 }
 
 const useStyles = createUseStyles(formClasses)
 
-const LabelsEditColumn = ({ authorizedOptionalLabels, authorizedRequiredLabels }: Props) => {
+const LabelsEditColumn = ({ authorizedOptionalLabels, authorizedRequiredLabels, allowNoRequiredLabel }: Props) => {
     const classes = useStyles()
     const { t } = useTranslation('common')
     const existingOptionalLabels = useMemo(
@@ -42,7 +43,7 @@ const LabelsEditColumn = ({ authorizedOptionalLabels, authorizedRequiredLabels }
             <FormLabelListField
                 name="requiredLabels"
                 labels={requiredLabels}
-                validate={fieldValidator(t, validateRequiredArray)}
+                validate={allowNoRequiredLabel ? undefined : fieldValidator(t, validateRequiredArray)}
             />
             <header className={classes.subHeader}>{t('LabelsEditColumn.optionalLabels')}</header>
             <FormLabelListField name="optionalLabels" labels={optionalLabels} />

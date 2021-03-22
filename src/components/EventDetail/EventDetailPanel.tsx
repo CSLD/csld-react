@@ -131,6 +131,8 @@ const EventDetailPanel = ({ eventId }: Props) => {
 
     const textDescription = useMemo(() => htmlToText(description).substring(0, 300), [description])
 
+    const amountOfPlayers = event?.amountOfPlayers
+
     return (
         <>
             <div className={classes.headerWrapper}>
@@ -139,9 +141,11 @@ const EventDetailPanel = ({ eventId }: Props) => {
                     {event && (
                         <>
                             <h1 className={classes.header}>{event.name}</h1>
-                            <div className={classes.text}>
-                                {t('EventDetail.players', { count: event.amountOfPlayers })}
-                            </div>
+                            {typeof amountOfPlayers === 'number' && (
+                                <div className={classes.text}>
+                                    {t('EventDetail.players', { count: amountOfPlayers })}
+                                </div>
+                            )}
                             {event.web && (
                                 <div className={classes.text}>
                                     <strong>{t('Event.web')}: </strong>
