@@ -5,10 +5,11 @@ import { IconLoading } from '../Icons/Icons'
 interface Props {
     readonly submitting: boolean
     readonly disabled?: boolean
+    readonly className?: string
 }
 
-const SubmitButton: React.FC<Props> = ({ submitting, disabled, children }) => (
-    <Button variant="dark" type="submit" disabled={submitting || disabled}>
+const SubmitButton: React.FC<Props> = ({ submitting, disabled, className, children }) => (
+    <Button variant="dark" type="submit" disabled={submitting || disabled} className={className}>
         {submitting && (
             <>
                 <IconLoading />

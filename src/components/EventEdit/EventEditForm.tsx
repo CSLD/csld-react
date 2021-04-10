@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMutation } from '@apollo/client'
 import { createUseStyles } from 'react-jss'
 import { Form as FinalForm } from 'react-final-form'
-import { Col, Row } from 'react-bootstrap'
+import { Col, Row, Button } from 'react-bootstrap'
 import GamesAutoCompleteField, { CreateNewGameCallback } from './GamesAutoCompleteField'
 import LabelsEditColumn, { LabelFromGql } from '../common/LabelsEditColumn/LabelsEditColumn'
 import { fieldValidator, validatePositiveInteger, validateRequired } from '../../utils/validationUtils'
@@ -61,6 +61,11 @@ const EventEditForm = ({
         updateEventGql,
     )
     const loading = createLoading || updateLoading
+    const [formExpanded, setFormExpanded] = useState(false)
+
+    const handleExpandFields = () => {
+        setFormExpanded(true)
+    }
 
     const handleOnSubmit = (values: FormValues) => {
         const input = createInputFromValues(values)
@@ -101,64 +106,81 @@ const EventEditForm = ({
 
                 return (
                     <form onSubmit={handleSubmit} className={classes.form} ref={formRef}>
+                        <header className={`${classes.header} fullWidth`}>{t('EventEdit.eventFields')}</header>
+                        <header className={classes.subHeader}>{t('EventEdit.requiredFields')}</header>
+                        <FormTextInputField
+                            name="name"
+                            placeholder={t('EventEdit.name')}
+                            validate={fieldValidator(t, validateRequired)}
+                        />
                         <Row>
-                            <Col md={9}>
-                                <header className={classes.header}>{t('EventEdit.eventFields')}</header>
-                                <header className={classes.subHeader}>{t('EventEdit.requiredFields')}</header>
-                                <FormTextInputField
-                                    name="name"
-                                    placeholder={t('EventEdit.name')}
-                                    validate={fieldValidator(t, validateRequired)}
-                                />
-                                <Row>
-                                    <Col md={6}>
-                                        <FormDateInputField name="fromDate" placeholder={t('EventEdit.fromDate')} />
-                                    </Col>
-                                    <Col md={6}>
-                                        <FormTextInputField
-                                            name="fromTime"
-                                            placeholder={t('EventEdit.fromTime')}
-                                            hint={t('EventEdit.timeHint')}
-                                        />
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col md={6}>
-                                        <FormDateInputField name="toDate" placeholder={t('EventEdit.toDate')} />
-                                    </Col>
-                                    <Col md={6}>
-                                        <FormTextInputField
-                                            name="toTime"
-                                            placeholder={t('EventEdit.toTime')}
-                                            hint={t('EventEdit.timeHint')}
-                                        />
-                                    </Col>
-                                </Row>
-                                <FormTextInputField
-                                    name="amountOfPlayers"
-                                    placeholder={t('EventEdit.amountOfPlayers')}
-                                    validate={fieldValidator(t, validatePositiveInteger)}
-                                />
-                                <FormTextInputField name="web" placeholder={t('EventEdit.web')} />
-                                <FormTextInputField name="loc" placeholder={t('EventEdit.loc')} />
-                                <FormRichTextInputField name="description" hint={t('EventEdit.description')} />
-                                <GamesAutoCompleteField
-                                    name="games"
-                                    placeholder={t('EventEdit.games')}
-                                    hint={t('AutoComplete.startTyping')}
-                                    onCreateNew={onCreateNewGame}
-                                />
-                                <SubmitButton submitting={loading}>{t('EventEdit.save')}</SubmitButton>
-                                {submitFailed && <span className={classes.formError}>{t('EventEdit.formError')}</span>}
+                            <Col md={6}>
+                                <FormDateInputField name="fromDate" placeholder={t('EventEdit.fromDate')} />
                             </Col>
-                            <Col md={3} className={classes.labelsCol}>
-                                <LabelsEditColumn
-                                    authorizedRequiredLabels={authorizedRequiredLabels}
-                                    authorizedOptionalLabels={authorizedOptionalLabels}
-                                    allowNoRequiredLabel
+                            <Col md={6}>
+                                <FormTextInputField
+                                    name="fromTime"
+                                    placeholder={t('EventEdit.fromTime')}
+                                    hint={t('EventEdit.timeHint')}
                                 />
                             </Col>
                         </Row>
+                        <Row>
+                            <Col md={6}>
+                                <FormDateInputField name="toDate" placeholder={t('EventEdit.toDate')} />
+                            </Col>
+                            <Col md={6}>
+                                <FormTextInputField
+                                    name="toTime"
+                                    placeholder={t('EventEdit.toTime')}
+                                    hint={t('EventEdit.timeHint')}
+                                />
+                            </Col>
+                        </Row>
+                        {!formExpanded && (
+                            <>
+                                <SubmitButton submitting={loading}>{t('EventEdit.save')}</SubmitButton>
+                                {submitFailed && <span className={classes.formError}>{t('EventEdit.formError')}</span>}
+                                &nbsp;&nbsp;
+                                <Button variant="light" onClick={handleExpandFields}>
+                                    {t('EventEdit.showFields')}
+                                </Button>
+                            </>
+                        )}
+                        {formExpanded && (
+                            <>
+                                <header className={classes.subHeader}>{t('EventEdit.additionalFields')}</header>
+                                <Row>
+                                    <Col md={9}>
+                                        <FormTextInputField
+                                            name="amountOfPlayers"
+                                            placeholder={t('EventEdit.amountOfPlayers')}
+                                            validate={fieldValidator(t, validatePositiveInteger)}
+                                        />
+                                        <FormTextInputField name="web" placeholder={t('EventEdit.web')} />
+                                        <FormTextInputField name="loc" placeholder={t('EventEdit.loc')} />
+                                        <FormRichTextInputField name="description" hint={t('EventEdit.description')} />
+                                        <GamesAutoCompleteField
+                                            name="games"
+                                            placeholder={t('EventEdit.games')}
+                                            hint={t('AutoComplete.startTyping')}
+                                            onCreateNew={onCreateNewGame}
+                                        />
+                                        <SubmitButton submitting={loading}>{t('EventEdit.save')}</SubmitButton>
+                                        {submitFailed && (
+                                            <span className={classes.formError}>{t('EventEdit.formError')}</span>
+                                        )}
+                                    </Col>
+                                    <Col md={3} className={classes.labelsCol}>
+                                        <LabelsEditColumn
+                                            authorizedRequiredLabels={authorizedRequiredLabels}
+                                            authorizedOptionalLabels={authorizedOptionalLabels}
+                                            allowNoRequiredLabel
+                                        />
+                                    </Col>
+                                </Row>
+                            </>
+                        )}
                     </form>
                 )
             }}

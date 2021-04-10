@@ -327,6 +327,8 @@
   "EventEdit": {
     "eventFields": "Údaje události",
     "requiredFields": "Povinné údaje",
+    "additionalFields": "Doplňující údaje",
+    "showFields": "Zobrazit doplňující údaje",
     "name": "Název",
     "fromDate": "Začátek události (datum)",
     "fromTime": "Začátek události (čas)",
