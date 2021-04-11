@@ -58,6 +58,7 @@ const useStyles = createUseStyles({
     },
     coverImage: {
         width: '100%',
+        minHeight: '29.75vw',
     },
 })
 
