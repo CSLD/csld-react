@@ -2,6 +2,7 @@ import next from 'next'
 import express from 'express'
 import path from 'path'
 import nextI18NextMiddleware from 'next-i18next/middleware'
+import fs from 'fs'
 
 import nextI18next from './i18n'
 import routes from './routes'
@@ -9,8 +10,16 @@ import proxy from './proxy'
 
 const dev = process.env.NODE_ENV !== 'production'
 
+const getEnvFileName = () => {
+    if (fs.existsSync('.env.local')) {
+        return '.env.local'
+    }
+
+    return dev ? '.env.dev' : '.env.prod'
+}
+
 require('dotenv').config({
-    path: dev ? '.env.dev' : '.env.prod',
+    path: getEnvFileName(),
 })
 
 const port = parseInt(process.env.PORT || '3000', 10)
