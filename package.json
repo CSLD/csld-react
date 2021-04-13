@@ -7,6 +7,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "dev": "nodemon",
+    "dev-staging": "cross-env API_ENV=staging nodemon",
+    "dev-prod": "cross-env API_ENV=prod nodemon",
     "build": "next build && tsc --project tsconfig.server.json",
     "clean": "rimraf node_modules coverage .next dist",
     "start": "cross-env NODE_ENV=production node dist/index.js",
