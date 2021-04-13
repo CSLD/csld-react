@@ -67,4 +67,8 @@ export const formClasses: Styles<string> = {
             marginBottom: 16,
         },
     },
+    expandButton: {
+        display: 'block',
+        marginBottom: 8,
+    },
 }

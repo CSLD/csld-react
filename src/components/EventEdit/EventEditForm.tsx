@@ -139,12 +139,11 @@ const EventEditForm = ({
                         </Row>
                         {!formExpanded && (
                             <>
-                                <SubmitButton submitting={loading}>{t('EventEdit.save')}</SubmitButton>
-                                {submitFailed && <span className={classes.formError}>{t('EventEdit.formError')}</span>}
-                                &nbsp;&nbsp;
-                                <Button variant="light" onClick={handleExpandFields}>
+                                <Button variant="light" onClick={handleExpandFields} className={classes.expandButton}>
                                     {t('EventEdit.showFields')}
                                 </Button>
+                                <SubmitButton submitting={loading}>{t('EventEdit.save')}</SubmitButton>
+                                {submitFailed && <span className={classes.formError}>{t('EventEdit.formError')}</span>}
                             </>
                         )}
                         {formExpanded && (
