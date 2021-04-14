@@ -30,11 +30,11 @@ const useStyles = createUseStyles({
         marginBottom: 20,
     },
     text: {
-        padding: 15,
+        paddingBottom: 15,
         width: '100%',
         height: 100,
         boxSizing: 'border-box',
-        background: darkTheme.backgroundWhite,
+
         color: darkTheme.textOnLight,
         fontSize: '0.8rem',
         lineHeight: '140%',
@@ -62,6 +62,9 @@ const useStyles = createUseStyles({
         fontSize: '0.8rem',
         paddingLeft: 15,
         marginBottom: 15,
+        background: darkTheme.backgroundWhite,
+        paddingTop: 6,
+        paddingBottom: 6,
     },
     textRow: {
         display: 'flex',
