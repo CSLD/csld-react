@@ -37,7 +37,6 @@ const useStyles = createUseStyles({
         background: darkTheme.backgroundWhite,
         color: darkTheme.textOnLight,
         fontSize: '0.8rem',
-        marginBottom: 15,
         lineHeight: '140%',
         borderRadius: 4,
     },
@@ -62,6 +61,7 @@ const useStyles = createUseStyles({
         color: darkTheme.textDark,
         fontSize: '0.8rem',
         paddingLeft: 15,
+        marginBottom: 15,
     },
     textRow: {
         display: 'flex',
@@ -104,16 +104,6 @@ export const BaseCommentPanel = ({ comment }: Props) => {
 
     return (
         <div className={classes.wrapper}>
-            <div className={classes.text}>
-                <div className={classes.textInner}>
-                    {comment?.commentAsText}
-                    {comment && (
-                        <GameLink game={comment.game} className={classNames(classes.more, classes.link)}>
-                            {t('HomePage.commentMore')}
-                        </GameLink>
-                    )}
-                </div>
-            </div>
             <div className={classes.row}>
                 <ProfileImage userId={comment?.user.id} imageId={comment?.user?.image?.id} />
                 {comment && (
@@ -139,6 +129,16 @@ export const BaseCommentPanel = ({ comment }: Props) => {
                         <div className={classes.date}>{added}</div>
                     </div>
                 )}
+            </div>
+            <div className={classes.text}>
+                <div className={classes.textInner}>
+                    {comment?.commentAsText}
+                    {comment && (
+                        <GameLink game={comment.game} className={classNames(classes.more, classes.link)}>
+                            {t('HomePage.commentMore')}
+                        </GameLink>
+                    )}
+                </div>
             </div>
         </div>
     )
