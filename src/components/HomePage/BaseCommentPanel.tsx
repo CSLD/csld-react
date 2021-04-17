@@ -53,7 +53,7 @@ const useStyles = createUseStyles({
         bottom: 0,
         width: 100,
         textAlign: 'right',
-        background: 'linear-gradient(to right, rgba(245, 245, 245, 0), rgba(245, 245, 245, 1) 70%)',
+        background: 'linear-gradient(to right, rgba(239, 239, 239, 0), rgba(239, 239, 239, 1) 70%)',
     },
     row: {
         display: 'flex',
