@@ -60,6 +60,12 @@ const useStyles = createUseStyles({
             marginTop: 16,
         },
     },
+    iCal: {
+        backgroundColor: darkTheme.backgroundRealWhite,
+        padding: 20,
+        borderRadius: 4,
+        marginBottom: 20,
+    },
 })
 
 const PAGE_SIZE = 25
@@ -172,6 +178,12 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
                             {(!events || !requiredLabels || !optionalLabels) && <BigLoading />}
                             {events && requiredLabels && optionalLabels && (
                                 <WidthFixer className={loading ? classes.loading : undefined}>
+                                    <div className={classes.iCal}>
+                                        {t('EventCalendar.iCalText')}{' '}
+                                        <a href={t('EventCalendar.iCalLink')} target="_blank" rel="noreferrer">
+                                            {t('EventCalendar.iCalLink')}
+                                        </a>
+                                    </div>
                                     <Row>
                                         <Col md={9}>
                                             {events.map(event => (

@@ -374,7 +374,9 @@
     "events": "Události",
     "link": "Web akce",
     "eventFrom": "Od",
-    "eventTo": "Do"
+    "eventTo": "Do",
+    "iCalText": "Přidejte si larpový kalendář do svého pomocí odkazu:",
+    "iCalLink": "https://calendar.google.com/calendar/ical/3a28s0se1pq6qs76fpmftldsr8%40group.calendar.google.com/public/basic.ics"
   },
   "Admin": {
     "tabIntro": "Úvod",
