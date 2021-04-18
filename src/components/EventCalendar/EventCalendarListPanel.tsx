@@ -198,9 +198,20 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
                                     </div>
                                     <Row>
                                         <Col md={9}>
-                                            {events.map(event => (
-                                                <CalendarEventPanel key={event.id} event={event} />
-                                            ))}
+                                            {eventsByMonth.map((eventsInMonth, index) => {
+                                                if (eventsInMonth.length > 0) {
+                                                    console.log('eventsByMonth.length: ', eventsByMonth.length)
+                                                    return (
+                                                        <>
+                                                            <div>{index}</div>
+                                                            {eventsInMonth.map(event => (
+                                                                <CalendarEventPanel key={event.id} event={event} />
+                                                            ))}
+                                                        </>
+                                                    )
+                                                }
+                                                return null
+                                            })}
                                             <Pager
                                                 currentOffset={offset}
                                                 pageSize={PAGE_SIZE}
