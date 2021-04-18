@@ -179,9 +179,9 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
                             {events && requiredLabels && optionalLabels && (
                                 <WidthFixer className={loading ? classes.loading : undefined}>
                                     <div className={classes.iCal}>
-                                        {t('EventCalendar.iCalText')}{' '}
-                                        <a href={t('EventCalendar.iCalLink')} target="_blank" rel="noreferrer">
-                                            {t('EventCalendar.iCalLink')}
+                                        {t('EventCalendar.gCalText')}
+                                        <a href={t('EventCalendar.gCalUrl')} target="_blank" rel="noreferrer">
+                                            {t('EventCalendar.gCalLink')}
                                         </a>
                                     </div>
                                     <Row>
