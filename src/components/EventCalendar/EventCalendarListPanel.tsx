@@ -128,7 +128,7 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
         },
     })
 
-    const transformEventsByMonth = (events: any): EventsByMonth => {
+    const transformEventsByMonth = (events: Array<CalendarEventDataFragment>): EventsByMonth => {
         const monthsInYear = 12
         const eventsByMonth = generateTwoDimensionalArray(monthsInYear, 0)
         events?.forEach((event: CalendarEventDataFragment) => {
