@@ -19,12 +19,13 @@ import { TabDefinition, Tabs } from '../common/Tabs/Tabs'
 import { WidthFixer } from '../common/WidthFixer/WidthFixer'
 import Pager from '../common/Pager/Pager'
 import LabelFilterFields from '../common/LabelFilterFields/LabelFilterFields'
-import CalendarEventPanel from './CalendarEventPanel'
 import { formSectionHeaderStyles, formSectionHeaderStylesMd } from '../../utils/formClasses'
 import BigLoading from '../common/BigLoading/BigLoading'
 import FormDateInputField from '../common/form/FormDateInputField'
 import { formatISODate, parseDateTime } from '../../utils/dateUtils'
 import { breakPoints } from '../../theme/breakPoints'
+import { generateTwoDimensionalArray } from '../../utils/utils'
+import { EventsInMonth } from './EventsInMonth'
 
 const loadCalendarEventsGql = require('./graphql/loadCalendarEvents.graphql')
 const moreCalendarEventsGql = require('./graphql/moreCalendarEvents.graphql')
@@ -80,6 +81,8 @@ type Page = Partial<{
     totalAmount: number
 }>
 
+type EventsByMonth = Array<Array<CalendarEventDataFragment>>
+
 const tabs: Array<TabDefinition<number>> = [
     {
         key: 0,
@@ -125,13 +128,18 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
         },
     })
 
+    const transformEventsByMonth = (events: any): EventsByMonth => {
+        const monthsInYear = 12
+        const eventsByMonth = generateTwoDimensionalArray(monthsInYear, 0)
+        events?.forEach((event: CalendarEventDataFragment) => {
+            const monthOfEvent = parseDateTime(event.from).getMonth()
+            eventsByMonth[monthOfEvent].push(event)
+        })
+        return eventsByMonth
+    }
+
     const { events } = page
-    const eventsByMonth: Array<Array<CalendarEventDataFragment>> = Array.from(Array(12), () => new Array(0))
-    events?.forEach(event => {
-        const monthOfEvent = parseDateTime(event.from).getMonth()
-        eventsByMonth[monthOfEvent].push(event)
-    })
-    console.log('eventsByMonth: ', eventsByMonth)
+    const eventsByMonth = transformEventsByMonth(events)
 
     return (
         <FinalForm<FormValues> initialValues={initialValues} onSubmit={() => {}}>
@@ -182,7 +190,6 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
                     refreshList({ newTo: newValue })
                 }
 
-                // @ts-ignore
                 return (
                     <>
                         <Tabs<number> tabs={tabs} selectedTab={0} />
@@ -198,20 +205,10 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
                                     </div>
                                     <Row>
                                         <Col md={9}>
-                                            {eventsByMonth.map((eventsInMonth, index) => {
-                                                if (eventsInMonth.length > 0) {
-                                                    console.log('eventsByMonth.length: ', eventsByMonth.length)
-                                                    return (
-                                                        <>
-                                                            <div>{index}</div>
-                                                            {eventsInMonth.map(event => (
-                                                                <CalendarEventPanel key={event.id} event={event} />
-                                                            ))}
-                                                        </>
-                                                    )
-                                                }
-                                                return null
-                                            })}
+                                            {eventsByMonth.map((eventsInMonth, index) => (
+                                                // eslint-disable-next-line
+                                                <EventsInMonth eventsInMonth={eventsInMonth} monthNumber={index} key={index} />
+                                            ))}
                                             <Pager
                                                 currentOffset={offset}
                                                 pageSize={PAGE_SIZE}
