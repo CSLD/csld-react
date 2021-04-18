@@ -84,7 +84,6 @@ const CalendarEventPanel = ({ event }: Props) => {
     const classes = useStyles()
     const { t } = useTranslation('common')
     const { fromFormatted, toFormatted, justOneDate } = formatTimeRange(event?.from, event?.to)
-
     return (
         <div className={classes.wrapper}>
             <div className={classes.text}>

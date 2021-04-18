@@ -23,7 +23,7 @@ import CalendarEventPanel from './CalendarEventPanel'
 import { formSectionHeaderStyles, formSectionHeaderStylesMd } from '../../utils/formClasses'
 import BigLoading from '../common/BigLoading/BigLoading'
 import FormDateInputField from '../common/form/FormDateInputField'
-import { formatISODate } from '../../utils/dateUtils'
+import { formatISODate, parseDateTime } from '../../utils/dateUtils'
 import { breakPoints } from '../../theme/breakPoints'
 
 const loadCalendarEventsGql = require('./graphql/loadCalendarEvents.graphql')
@@ -126,6 +126,12 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
     })
 
     const { events } = page
+    const eventsByMonth: Array<Array<CalendarEventDataFragment>> = Array.from(Array(12), () => new Array(0))
+    events?.forEach(event => {
+        const monthOfEvent = parseDateTime(event.from).getMonth()
+        eventsByMonth[monthOfEvent].push(event)
+    })
+    console.log('eventsByMonth: ', eventsByMonth)
 
     return (
         <FinalForm<FormValues> initialValues={initialValues} onSubmit={() => {}}>
@@ -176,6 +182,7 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
                     refreshList({ newTo: newValue })
                 }
 
+                // @ts-ignore
                 return (
                     <>
                         <Tabs<number> tabs={tabs} selectedTab={0} />
