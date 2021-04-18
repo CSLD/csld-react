@@ -67,6 +67,9 @@ const useStyles = createUseStyles({
         padding: 20,
         borderRadius: 4,
         marginBottom: 20,
+        '& a': {
+            fontWeight: 'bold',
+        },
     },
 })
 
@@ -181,13 +184,7 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
                             {events && requiredLabels && optionalLabels && (
                                 <WidthFixer className={loading ? classes.loading : undefined}>
                                     <div className={classes.iCal}>
-                                        {/* eslint-disable-next-line react/style-prop-object */}
-                                        <a
-                                            href={t('EventCalendar.gCalUrl')}
-                                            target="_blank"
-                                            rel="noreferrer"
-                                            style={{ fontWeight: 'bold' }}
-                                        >
+                                        <a href={t('EventCalendar.gCalUrl')} target="_blank" rel="noreferrer">
                                             {t('EventCalendar.gCalLink')}
                                         </a>
                                         {t('EventCalendar.gCalText')}

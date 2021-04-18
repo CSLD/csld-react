@@ -23,5 +23,4 @@ export const darkTheme = {
     ratingGreat: '#BD2430',
     ratingAverage: '#6dc8b7',
     ratingNotRated: '#CCC',
-    title: '#000',
 }

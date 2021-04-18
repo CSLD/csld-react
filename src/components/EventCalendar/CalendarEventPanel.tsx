@@ -43,7 +43,7 @@ const useStyles = createUseStyles({
     },
     name: {
         fontSize: '1rem',
-        color: darkTheme.title,
+        color: darkTheme.textOnLightDark,
         '&:hover': {
             color: darkTheme.textGreen,
         },
