@@ -41,7 +41,7 @@ const useStyles = createUseStyles({
     },
 })
 
-const LineWithMonth = ({ monthNumber }: LineWithMonthProps) => {
+const MonthSeparator = ({ monthNumber }: LineWithMonthProps) => {
     const classes = useStyles()
     const { t } = useTranslation('common')
     return <div className={classes.separator}>{t(`Month.${monthNumber}`)}</div>
@@ -51,7 +51,7 @@ export const EventsInMonth = ({ eventsInMonth, monthNumber }: EventsInMonthProps
     if (eventsInMonth.length > 0) {
         return (
             <>
-                <LineWithMonth monthNumber={monthNumber} />
+                <MonthSeparator monthNumber={monthNumber} />
                 {eventsInMonth.map((event: CalendarEventDataFragment) => (
                     <CalendarEventPanel key={event.id} event={event} />
                 ))}
