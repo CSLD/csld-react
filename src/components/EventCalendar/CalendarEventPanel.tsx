@@ -25,17 +25,14 @@ const useStyles = createUseStyles({
     },
     fact: {
         flexBasis: '100%',
-        margin: '0 8px',
+        margin: '0 16px',
         flex: 0,
         whiteSpace: 'nowrap',
     },
     text: {
-        margin: '0 8px',
+        margin: '0 16px',
         flex: 1,
         flexBasis: '100%',
-    },
-    name: {
-        fontSize: '1rem',
     },
     link: {
         color: darkTheme.textGreen,
@@ -44,8 +41,19 @@ const useStyles = createUseStyles({
             color: darkTheme.text,
         },
     },
+    name: {
+        fontSize: '1rem',
+        color: darkTheme.title,
+        '&:hover': {
+            color: darkTheme.textGreen,
+        },
+    },
+    labels: {
+        color: darkTheme.textDark,
+    },
     dates: {
         padding: '12px 0',
+        color: darkTheme.textDark,
     },
     [`@media(min-width: ${breakPoints.md}px)`]: {
         wrapper: {
@@ -84,7 +92,7 @@ const CalendarEventPanel = ({ event }: Props) => {
                     {event.name}
                 </EventLink>
                 <br />
-                {event.labels?.map(label => label.name).join(', ')}
+                <div className={classes.labels}>{event.labels?.map(label => label.name).join(', ')}</div>
             </div>
             <div className={classNames(classes.fact, classes.dates)}>
                 {!justOneDate && `${t('EventCalendar.eventFrom')}: `}

@@ -375,9 +375,9 @@
     "link": "Web akce",
     "eventFrom": "Od",
     "eventTo": "Do",
-    "gCalText": "Zobrazte si larpový kalendář ve svém ",
+    "gCalLink": "Přidejte si ",
     "gCalUrl": "https://calendar.google.com/calendar/u/0?cid=M2EyOHMwc2UxcHE2cXM3NmZwbWZ0bGRzcjhAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ",
-    "gCalLink": "google kalendáři."
+    "gCalText": "larpový kalendář do svého google kalendáře."
   },
   "Admin": {
     "tabIntro": "Úvod",

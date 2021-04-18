@@ -5,7 +5,7 @@ import { breakPoints } from '../theme/breakPoints'
 export const formSectionHeaderStyles: Styles<'header' | 'headerRight'> = {
     header: {
         backgroundColor: darkTheme.backgroundRealWhite,
-        fontSize: '1.25rem',
+        fontSize: '1rem',
         color: darkTheme.textOnLight,
         borderBottom: '1px solid rgba(0,0,0,.1)',
         padding: '8px 8px 8px 18px',
