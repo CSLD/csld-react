@@ -62,9 +62,14 @@ const useStyles = createUseStyles({
     },
     iCal: {
         backgroundColor: darkTheme.backgroundRealWhite,
+        fontStyle: 'italic',
+        textAlign: 'center',
         padding: 20,
         borderRadius: 4,
         marginBottom: 20,
+        '& a': {
+            fontWeight: 'bold',
+        },
     },
 })
 
@@ -179,10 +184,10 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
                             {events && requiredLabels && optionalLabels && (
                                 <WidthFixer className={loading ? classes.loading : undefined}>
                                     <div className={classes.iCal}>
-                                        {t('EventCalendar.gCalText')}
                                         <a href={t('EventCalendar.gCalUrl')} target="_blank" rel="noreferrer">
                                             {t('EventCalendar.gCalLink')}
                                         </a>
+                                        {t('EventCalendar.gCalText')}
                                     </div>
                                     <Row>
                                         <Col md={9}>
