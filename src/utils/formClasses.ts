@@ -38,7 +38,7 @@ export const formClasses: Styles<string> = {
     form: {
         backgroundColor: darkTheme.backgroundWhite,
         color: darkTheme.textOnLight,
-        padding: '0 15px',
+        padding: '15px',
     },
     helpText: {
         fontSize: '0.75rem',
@@ -69,6 +69,16 @@ export const formClasses: Styles<string> = {
     },
     expandButton: {
         display: 'block',
-        marginBottom: 8,
+        margin: '-6px 0 24px 6px',
+        fontSize: '0.9rem',
+        borderWidth: 0,
+        backgroundColor: 'transparent',
+        color: darkTheme.textOnLight,
+        '&:hover': {
+            color: `${darkTheme.textGreen} !important`,
+        },
+    },
+    expandArrow: {
+        marginLeft: 4,
     },
 }
