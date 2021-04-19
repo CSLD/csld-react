@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, Fragment } from 'react'
 import { useTranslation } from 'react-i18next'
 import { createUseStyles } from 'react-jss'
 import { useApolloClient, useQuery } from '@apollo/client'
@@ -23,8 +23,9 @@ import CalendarEventPanel from './CalendarEventPanel'
 import { formSectionHeaderStyles, formSectionHeaderStylesMd } from '../../utils/formClasses'
 import BigLoading from '../common/BigLoading/BigLoading'
 import FormDateInputField from '../common/form/FormDateInputField'
-import { formatISODate } from '../../utils/dateUtils'
+import { formatISODate, parseDateTime } from '../../utils/dateUtils'
 import { breakPoints } from '../../theme/breakPoints'
+import { MonthSeparator } from './MonthSeparator'
 
 const loadCalendarEventsGql = require('./graphql/loadCalendarEvents.graphql')
 const moreCalendarEventsGql = require('./graphql/moreCalendarEvents.graphql')
@@ -126,6 +127,7 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
     })
 
     const { events } = page
+    let currentMonth = ''
 
     return (
         <FinalForm<FormValues> initialValues={initialValues} onSubmit={() => {}}>
@@ -191,9 +193,21 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
                                     </div>
                                     <Row>
                                         <Col md={9}>
-                                            {events.map(event => (
-                                                <CalendarEventPanel key={event.id} event={event} />
-                                            ))}
+                                            {events.map(event => {
+                                                const lastMonth = currentMonth
+                                                currentMonth = parseDateTime(event.from).toLocaleString('cs-CZ', {
+                                                    month: 'long',
+                                                    year: 'numeric',
+                                                })
+                                                return (
+                                                    <Fragment key={event.id}>
+                                                        {currentMonth !== lastMonth && (
+                                                            <MonthSeparator>{currentMonth}</MonthSeparator>
+                                                        )}
+                                                        <CalendarEventPanel event={event} />
+                                                    </Fragment>
+                                                )
+                                            })}
                                             <Pager
                                                 currentOffset={offset}
                                                 pageSize={PAGE_SIZE}
