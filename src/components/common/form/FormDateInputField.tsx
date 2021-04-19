@@ -71,7 +71,7 @@ const FormDateInputField = ({
 
     return (
         <FieldWithError
-            className={className}
+            className={`${className} mb-1`}
             meta={meta}
             showErrorPlaceholder={showErrorPlaceholder}
             hint={hint}

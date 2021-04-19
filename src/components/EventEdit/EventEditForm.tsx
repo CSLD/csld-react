@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next'
 import { useMutation } from '@apollo/client'
 import { createUseStyles } from 'react-jss'
 import { Form as FinalForm } from 'react-final-form'
-import { Col, Row, Button } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
+import { ChevronDown } from 'react-bootstrap-icons'
 import GamesAutoCompleteField, { CreateNewGameCallback } from './GamesAutoCompleteField'
 import LabelsEditColumn, { LabelFromGql } from '../common/LabelsEditColumn/LabelsEditColumn'
 import { fieldValidator, validatePositiveInteger, validateRequired } from '../../utils/validationUtils'
@@ -106,8 +107,6 @@ const EventEditForm = ({
 
                 return (
                     <form onSubmit={handleSubmit} className={classes.form} ref={formRef}>
-                        <header className={`${classes.header} fullWidth`}>{t('EventEdit.eventFields')}</header>
-                        <header className={classes.subHeader}>{t('EventEdit.requiredFields')}</header>
                         <FormTextInputField
                             name="name"
                             placeholder={t('EventEdit.name')}
@@ -139,9 +138,10 @@ const EventEditForm = ({
                         </Row>
                         {!formExpanded && (
                             <>
-                                <Button variant="light" onClick={handleExpandFields} className={classes.expandButton}>
+                                <button type="button" onClick={handleExpandFields} className={classes.expandButton}>
                                     {t('EventEdit.showFields')}
-                                </Button>
+                                    <ChevronDown className={classes.expandArrow} />
+                                </button>
                                 <SubmitButton submitting={loading}>{t('EventEdit.save')}</SubmitButton>
                                 {submitFailed && <span className={classes.formError}>{t('EventEdit.formError')}</span>}
                             </>
