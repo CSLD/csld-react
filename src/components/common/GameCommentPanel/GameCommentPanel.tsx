@@ -43,6 +43,7 @@ const useStyles = createUseStyles({
     headerUser: {
         display: 'flex',
         alignItems: 'center',
+        marginBottom: '10px',
     },
     headerMiddle: {
         lineHeight: '180%',
