@@ -18,8 +18,8 @@ interface Props {
 
 const useStyles = createUseStyles({
     button: {
-        backgroundColor: darkTheme.backgroundWhite,
-        color: darkTheme.textOnLightDark,
+        backgroundColor: darkTheme.backgroundControl,
+        color: darkTheme.textOnLightLighter,
         marginBottom: 2,
         borderRadius: 4,
         padding: 2,
@@ -27,12 +27,12 @@ const useStyles = createUseStyles({
         border: '1px solid #000',
 
         '&:hover': {
-            backgroundColor: darkTheme.textGreen,
-            color: darkTheme.backgroundWhite,
+            backgroundColor: darkTheme.backgroundWhite,
+            color: darkTheme.textOnLightDark,
         },
     },
     selected: {
-        backgroundColor: darkTheme.textOnLight,
+        backgroundColor: darkTheme.textGreen,
         color: darkTheme.backgroundWhite,
     },
 })
