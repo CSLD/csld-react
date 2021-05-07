@@ -51,6 +51,7 @@ const proxy = ({
     USER_ICON_PATH,
     GAME_IMAGE_PATH,
     ICAL_PATH,
+    CAL_SYNC_PATH,
 }: {
     [key: string]: string | undefined
 }): { [key: string]: {} } => ({
@@ -77,7 +78,7 @@ const proxy = ({
     },
     '/cal-sync': {
         target: API_URL,
-        pathRewrite: { '^/cal-sync': ICAL_PATH },
+        pathRewrite: { '^/cal-sync': CAL_SYNC_PATH },
         changeOrigin: true,
     },
 })
