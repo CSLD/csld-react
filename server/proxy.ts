@@ -75,6 +75,11 @@ const proxy = ({
         pathRewrite: { '^/ical': ICAL_PATH },
         changeOrigin: true,
     },
+    '/cal-sync': {
+        target: API_URL,
+        pathRewrite: { '^/cal-sync': ICAL_PATH },
+        changeOrigin: true,
+    },
 })
 
 export default proxy

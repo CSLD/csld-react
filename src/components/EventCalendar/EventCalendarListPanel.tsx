@@ -195,10 +195,13 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
                                         <Col md={9}>
                                             {events.map(event => {
                                                 const lastMonth = currentMonth
-                                                currentMonth = parseDateTime(event.from).toLocaleString('cs-CZ', {
-                                                    month: 'long',
-                                                    year: 'numeric',
-                                                })
+                                                const parsedDate = parseDateTime(event.from)
+                                                currentMonth = parsedDate
+                                                    ? parsedDate.toLocaleString('cs-CZ', {
+                                                          month: 'long',
+                                                          year: 'numeric',
+                                                      })
+                                                    : '???'
                                                 return (
                                                     <Fragment key={event.id}>
                                                         {currentMonth !== lastMonth && (
