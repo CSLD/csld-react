@@ -74,7 +74,7 @@ const useStyles = createUseStyles({
     },
 })
 
-const PAGE_SIZE = 25
+const PAGE_SIZE = 100
 
 type Page = Partial<{
     events: CalendarEventDataFragment[]
