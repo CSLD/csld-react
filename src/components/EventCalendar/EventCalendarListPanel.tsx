@@ -1,4 +1,4 @@
-import React, { useMemo, useState, Fragment } from 'react'
+import React, { useMemo, useState, Fragment, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { createUseStyles } from 'react-jss'
 import { useApolloClient, useQuery } from '@apollo/client'
@@ -24,6 +24,7 @@ import { formSectionHeaderStyles, formSectionHeaderStylesMd } from '../../utils/
 import BigLoading from '../common/BigLoading/BigLoading'
 import FormDateInputField from '../common/form/FormDateInputField'
 import { formatISODate, parseDateTime } from '../../utils/dateUtils'
+import { createMetaTag } from '../../utils/htmlUtils'
 import { breakPoints } from '../../theme/breakPoints'
 import { MonthSeparator } from './MonthSeparator'
 
@@ -125,6 +126,14 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
             setOptionalLabels(response?.authorizedOptionalLabels?.map(labelMapper))
         },
     })
+
+    useEffect(() => {
+        document.title = t('EventCalendar.pageTitle')
+        const ogImage = createMetaTag('og:image', '/images/logo200.png')
+        document.head.append(ogImage)
+        const ogDescription = createMetaTag('og:description', t('EventCalendar.pageDescription'))
+        document.head.append(ogDescription)
+    }, [t])
 
     const { events } = page
     let currentMonth = ''
