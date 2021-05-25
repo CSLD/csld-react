@@ -216,7 +216,7 @@ export const PageHeader = () => {
                     </div>
                     <div className={classNames(classes.part, classes.userPart, { 'd-none d-md-flex': !showMenu })}>
                         <HeaderSearchForm />
-                        <HeaderUser />
+                        <HeaderUser onInPlaceSignIn={handleToggleMenu} />
                     </div>
                     <Button
                         variant="dark"

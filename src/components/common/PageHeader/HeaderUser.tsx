@@ -15,6 +15,13 @@ import { breakPoints } from '../../../theme/breakPoints'
 
 const signOutMutation = require('./graphql/signOutMutation.graphql')
 
+interface Props {
+    /**
+     * Called when in place login is initiated
+     */
+    readonly onInPlaceSignIn?: () => void
+}
+
 interface CustomToggleProps {
     userId: string
     userName: string
@@ -82,7 +89,7 @@ const CustomToggle = React.forwardRef<HTMLButtonElement, CustomToggleProps>(
     },
 )
 
-const HeaderUser = () => {
+const HeaderUser = ({ onInPlaceSignIn }: Props) => {
     const { t } = useTranslation('common')
     const routes = useRoutes()
     const router = useRouter()
@@ -125,6 +132,7 @@ const HeaderUser = () => {
         } else {
             // Show in-place sign in
             signInContext.setValue(true)
+            onInPlaceSignIn?.()
         }
     }
 
