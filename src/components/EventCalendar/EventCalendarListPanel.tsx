@@ -26,6 +26,7 @@ import FormDateInputField from '../common/form/FormDateInputField'
 import { formatISODate, parseDateTime } from '../../utils/dateUtils'
 import { breakPoints } from '../../theme/breakPoints'
 import { MonthSeparator } from './MonthSeparator'
+import OpenGraphMeta from '../common/OpenGraphMeta/OpenGraphMeta'
 
 const loadCalendarEventsGql = require('./graphql/loadCalendarEvents.graphql')
 const moreCalendarEventsGql = require('./graphql/moreCalendarEvents.graphql')
@@ -130,121 +131,130 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
     let currentMonth = ''
 
     return (
-        <FinalForm<FormValues> initialValues={initialValues} onSubmit={() => {}}>
-            {({ values }) => {
-                const refreshList = ({
-                    newOffset,
-                    newFrom,
-                    newTo,
-                    newRequiredLabels,
-                    newOptionalLabels,
-                }: {
-                    newOffset?: number
-                    newFrom?: Date
-                    newTo?: Date
-                    newRequiredLabels?: string[]
-                    newOptionalLabels?: string[]
-                }) => {
-                    setLoading(true)
-                    client
-                        .query<MoreCalendarEventsQuery, MoreCalendarEventsQueryVariables>({
-                            query: moreCalendarEventsGql,
-                            fetchPolicy: 'network-only',
-                            variables: {
-                                from: formatISODate(newFrom || values.from),
-                                to: formatISODate(newTo || values.to),
-                                offset: newOffset !== undefined ? newOffset : offset,
-                                limit: PAGE_SIZE,
-                                requiredLabels: newRequiredLabels || values.requiredLabels,
-                                optionalLabels: newOptionalLabels || values.optionalLabels,
-                            },
-                        })
-                        .then(response => {
-                            setPage(response.data.eventCalendar)
-                            setLoading(false)
-                        })
-                }
+        <>
+            <OpenGraphMeta
+                title={t('EventCalendar.pageTitle')}
+                description={t('EventCalendar.pageDescription')}
+                image="/images/lk-logo.png"
+            />
+            <FinalForm<FormValues> initialValues={initialValues} onSubmit={() => {}}>
+                {({ values }) => {
+                    const refreshList = ({
+                        newOffset,
+                        newFrom,
+                        newTo,
+                        newRequiredLabels,
+                        newOptionalLabels,
+                    }: {
+                        newOffset?: number
+                        newFrom?: Date
+                        newTo?: Date
+                        newRequiredLabels?: string[]
+                        newOptionalLabels?: string[]
+                    }) => {
+                        setLoading(true)
+                        client
+                            .query<MoreCalendarEventsQuery, MoreCalendarEventsQueryVariables>({
+                                query: moreCalendarEventsGql,
+                                fetchPolicy: 'network-only',
+                                variables: {
+                                    from: formatISODate(newFrom || values.from),
+                                    to: formatISODate(newTo || values.to),
+                                    offset: newOffset !== undefined ? newOffset : offset,
+                                    limit: PAGE_SIZE,
+                                    requiredLabels: newRequiredLabels || values.requiredLabels,
+                                    optionalLabels: newOptionalLabels || values.optionalLabels,
+                                },
+                            })
+                            .then(response => {
+                                setPage(response.data.eventCalendar)
+                                setLoading(false)
+                            })
+                    }
 
-                const handleOffsetChanged = (newOffset: number) => {
-                    setOffset(newOffset)
-                    refreshList({ newOffset })
-                }
+                    const handleOffsetChanged = (newOffset: number) => {
+                        setOffset(newOffset)
+                        refreshList({ newOffset })
+                    }
 
-                const handleFromChanged = (newValue?: Date) => {
-                    refreshList({ newFrom: newValue })
-                }
+                    const handleFromChanged = (newValue?: Date) => {
+                        refreshList({ newFrom: newValue })
+                    }
 
-                const handleToChanged = (newValue?: Date) => {
-                    refreshList({ newTo: newValue })
-                }
+                    const handleToChanged = (newValue?: Date) => {
+                        refreshList({ newTo: newValue })
+                    }
 
-                return (
-                    <>
-                        <Tabs<number> tabs={tabs} selectedTab={0} />
-                        <div className={classes.row}>
-                            {(!events || !requiredLabels || !optionalLabels) && <BigLoading />}
-                            {events && requiredLabels && optionalLabels && (
-                                <WidthFixer className={loading ? classes.loading : undefined}>
-                                    <div className={classes.iCal}>
-                                        <a href={t('EventCalendar.gCalUrl')} target="_blank" rel="noreferrer">
-                                            {t('EventCalendar.gCalLink')}
-                                        </a>
-                                        {t('EventCalendar.gCalText')}
-                                    </div>
-                                    <Row>
-                                        <Col md={9}>
-                                            {events.map(event => {
-                                                const lastMonth = currentMonth
-                                                const parsedDate = parseDateTime(event.from)
-                                                currentMonth = parsedDate
-                                                    ? parsedDate.toLocaleString('cs-CZ', {
-                                                          month: 'long',
-                                                          year: 'numeric',
-                                                      })
-                                                    : '???'
-                                                return (
-                                                    <Fragment key={event.id}>
-                                                        {currentMonth !== lastMonth && (
-                                                            <MonthSeparator>{currentMonth}</MonthSeparator>
-                                                        )}
-                                                        <CalendarEventPanel event={event} />
-                                                    </Fragment>
-                                                )
-                                            })}
-                                            <Pager
-                                                currentOffset={offset}
-                                                pageSize={PAGE_SIZE}
-                                                totalAmount={page.totalAmount ?? 0}
-                                                onOffsetChanged={handleOffsetChanged}
-                                            />
-                                        </Col>
-                                        <Col md={3} className={classes.labelsCol}>
-                                            <header className={classes.header}>{t('EventCalendar.eventFrom')}</header>
-                                            <FormDateInputField
-                                                name="from"
-                                                showErrorPlaceholder={false}
-                                                onChange={handleFromChanged}
-                                            />
-                                            <header className={classes.header}>{t('EventCalendar.eventTo')}</header>
-                                            <FormDateInputField
-                                                name="to"
-                                                showErrorPlaceholder={false}
-                                                onChange={handleToChanged}
-                                            />
-                                            <LabelFilterFields
-                                                requiredLabelList={requiredLabels}
-                                                optionalLabelList={optionalLabels}
-                                                onSelectionChanged={refreshList}
-                                            />
-                                        </Col>
-                                    </Row>
-                                </WidthFixer>
-                            )}
-                        </div>
-                    </>
-                )
-            }}
-        </FinalForm>
+                    return (
+                        <>
+                            <Tabs<number> tabs={tabs} selectedTab={0} />
+                            <div className={classes.row}>
+                                {(!events || !requiredLabels || !optionalLabels) && <BigLoading />}
+                                {events && requiredLabels && optionalLabels && (
+                                    <WidthFixer className={loading ? classes.loading : undefined}>
+                                        <div className={classes.iCal}>
+                                            <a href={t('EventCalendar.gCalUrl')} target="_blank" rel="noreferrer">
+                                                {t('EventCalendar.gCalLink')}
+                                            </a>
+                                            {t('EventCalendar.gCalText')}
+                                        </div>
+                                        <Row>
+                                            <Col md={9}>
+                                                {events.map(event => {
+                                                    const lastMonth = currentMonth
+                                                    const parsedDate = parseDateTime(event.from)
+                                                    currentMonth = parsedDate
+                                                        ? parsedDate.toLocaleString('cs-CZ', {
+                                                              month: 'long',
+                                                              year: 'numeric',
+                                                          })
+                                                        : '???'
+                                                    return (
+                                                        <Fragment key={event.id}>
+                                                            {currentMonth !== lastMonth && (
+                                                                <MonthSeparator>{currentMonth}</MonthSeparator>
+                                                            )}
+                                                            <CalendarEventPanel event={event} />
+                                                        </Fragment>
+                                                    )
+                                                })}
+                                                <Pager
+                                                    currentOffset={offset}
+                                                    pageSize={PAGE_SIZE}
+                                                    totalAmount={page.totalAmount ?? 0}
+                                                    onOffsetChanged={handleOffsetChanged}
+                                                />
+                                            </Col>
+                                            <Col md={3} className={classes.labelsCol}>
+                                                <header className={classes.header}>
+                                                    {t('EventCalendar.eventFrom')}
+                                                </header>
+                                                <FormDateInputField
+                                                    name="from"
+                                                    showErrorPlaceholder={false}
+                                                    onChange={handleFromChanged}
+                                                />
+                                                <header className={classes.header}>{t('EventCalendar.eventTo')}</header>
+                                                <FormDateInputField
+                                                    name="to"
+                                                    showErrorPlaceholder={false}
+                                                    onChange={handleToChanged}
+                                                />
+                                                <LabelFilterFields
+                                                    requiredLabelList={requiredLabels}
+                                                    optionalLabelList={optionalLabels}
+                                                    onSelectionChanged={refreshList}
+                                                />
+                                            </Col>
+                                        </Row>
+                                    </WidthFixer>
+                                )}
+                            </div>
+                        </>
+                    )
+                }}
+            </FinalForm>
+        </>
     )
 }
 
