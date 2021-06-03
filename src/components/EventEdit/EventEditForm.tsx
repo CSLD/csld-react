@@ -117,25 +117,10 @@ const EventEditForm = ({
                                 <FormDateInputField name="fromDate" placeholder={t('EventEdit.fromDate')} />
                             </Col>
                             <Col md={6}>
-                                <FormTextInputField
-                                    name="fromTime"
-                                    placeholder={t('EventEdit.fromTime')}
-                                    hint={t('EventEdit.timeHint')}
-                                />
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md={6}>
                                 <FormDateInputField name="toDate" placeholder={t('EventEdit.toDate')} />
                             </Col>
-                            <Col md={6}>
-                                <FormTextInputField
-                                    name="toTime"
-                                    placeholder={t('EventEdit.toTime')}
-                                    hint={t('EventEdit.timeHint')}
-                                />
-                            </Col>
                         </Row>
+
                         {!formExpanded && (
                             <>
                                 <button type="button" onClick={handleExpandFields} className={classes.expandButton}>
@@ -151,6 +136,22 @@ const EventEditForm = ({
                                 <header className={classes.subHeader}>{t('EventEdit.additionalFields')}</header>
                                 <Row>
                                     <Col md={9}>
+                                        <Row>
+                                            <Col md={6}>
+                                                <FormTextInputField
+                                                    name="fromTime"
+                                                    placeholder={t('EventEdit.fromTime')}
+                                                    hint={t('EventEdit.timeHint')}
+                                                />
+                                            </Col>
+                                            <Col md={6}>
+                                                <FormTextInputField
+                                                    name="toTime"
+                                                    placeholder={t('EventEdit.toTime')}
+                                                    hint={t('EventEdit.timeHint')}
+                                                />
+                                            </Col>
+                                        </Row>
                                         <FormTextInputField
                                             name="amountOfPlayers"
                                             placeholder={t('EventEdit.amountOfPlayers')}
