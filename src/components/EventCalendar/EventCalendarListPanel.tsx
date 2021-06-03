@@ -135,7 +135,7 @@ const EventCalendarListPanel = ({ initialRequiredLabelIds, initialOptionalLabelI
             <OpenGraphMeta
                 title={t('EventCalendar.pageTitle')}
                 description={t('EventCalendar.pageDescription')}
-                image="/images/logo200.png"
+                image="/images/lk-logo.png"
             />
             <FinalForm<FormValues> initialValues={initialValues} onSubmit={() => {}}>
                 {({ values }) => {
