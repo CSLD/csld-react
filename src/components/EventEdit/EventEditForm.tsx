@@ -62,7 +62,7 @@ const EventEditForm = ({
         updateEventGql,
     )
     const loading = createLoading || updateLoading
-    const [formExpanded, setFormExpanded] = useState(false)
+    const [formExpanded, setFormExpanded] = useState(Boolean(eventId)) // Start contracted on new item, expanded one edit
 
     const handleExpandFields = () => {
         setFormExpanded(true)
