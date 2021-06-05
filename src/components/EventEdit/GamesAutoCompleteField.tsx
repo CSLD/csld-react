@@ -53,7 +53,7 @@ const GamesAutoCompleteField: React.ForwardRefRenderFunction<HTMLElement, Props>
         refetch({
             query,
             offset: 0,
-            limit: 7,
+            limit: 10,
         }).then(data =>
             data.data.games.byQuery.map(game => ({
                 ...game,

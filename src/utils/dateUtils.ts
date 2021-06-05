@@ -18,8 +18,9 @@ export const formatTimeRange = (from?: string | null, to?: string | null) => {
     const fromFormatted = fromDate && format(fromDate, justDates ? 'd.M.yyy' : 'd.M.yyy HH:mm')
     const toFormatted = toDate && format(toDate, justDates ? 'd.M.yyy' : 'd.M.yyy HH:mm')
     const justOneDate = fromFormatted === toFormatted
+    const future = (fromDate?.getTime() || 0) > new Date().getTime()
 
-    return { justOneDate, fromFormatted, toFormatted }
+    return { justOneDate, fromFormatted, toFormatted, future }
 }
 
 export const computeAge = (birthDate: Maybe<string>) => {
