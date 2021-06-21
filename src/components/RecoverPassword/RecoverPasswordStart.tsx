@@ -52,7 +52,7 @@ const RecoverPasswordStart = () => {
     const onSubmit = async ({ email }: FormData) => {
         setState('loading')
 
-        const recoverUrl = `${window.location}/`
+        const recoverUrl = window.location.toString()
         const res = await client.mutate<StartRecoverPasswordMutation, StartRecoverPasswordMutationVariables>({
             mutation: startRecoverPasswordGQL,
             variables: { email, recoverUrl },
